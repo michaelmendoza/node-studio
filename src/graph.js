@@ -5,9 +5,6 @@ import Filter from './filter.js';
 
 class Graph {
 	constructor(id) {
-		this.nodes = [];
-		this.links = [];
-
 		this.createGraph(id);
 	}
 

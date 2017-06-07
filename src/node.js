@@ -1,4 +1,6 @@
 
+import Links from './links.js';
+
 class Node {
 	
 	constructor(svg, props) {
@@ -64,7 +66,7 @@ class Node {
 				.attr('fill', '#222222') 
 				.attr('opacity', 0.5)
 		})
-		
+
 		var grab = grip.append("rect")
 			.attr("x", 0).attr("y", 0)	    
 			.attr("width", 14).attr("height", 14)
@@ -74,7 +76,7 @@ class Node {
 		grab.on("mousedown", () => {
 			this.isDragged = true;
 			this.mouse = d3.mouse(grab.node());
-		})
+		})	
 
 		g.on("mouseup", () => {
 			this.isDragged = false;
@@ -83,9 +85,11 @@ class Node {
 		g.on("mousemove", (event) => {
 			if(this.isDragged) {
 				var m = d3.mouse(svg.node());
-				var x = (m[0] - this.mouse[0] - gripX);
-				var y = (m[1] - this.mouse[1] - gripY);
-				g.attr("transform", "translate(" + x + "," + y + ")");
+				this.x = (m[0] - this.mouse[0] - gripX);
+				this.y = (m[1] - this.mouse[1] - gripY);
+				g.attr("transform", "translate(" + this.x + "," + this.y + ")");
+
+				Links.update();
 			}
 		})
 	}
