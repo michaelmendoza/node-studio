@@ -44,7 +44,7 @@ class Node {
 
 	createTitle(g) {
 		g.append('text')
-			.attr("x", this.width / 2).attr("y", 20)
+			.attr("x", this.width / 2).attr("y", 16)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "middle")
 			.attr("alignment-baseline", "central")
@@ -72,26 +72,32 @@ class Node {
 			.attr("width", 14).attr("height", 14)
 			.attr("fill", '#FFFFFF')
 			.attr("opacity", 0)
+			.attr("class", "grab")
 
+		// Activate Node drag
 		grab.on("mousedown", () => {
 			this.isDragged = true;
 			this.mouse = d3.mouse(grab.node());
+
+			svg.on("mousemove", (event) => {
+				if(this.isDragged) {
+					var m = d3.mouse(svg.node());
+					this.x = (m[0] - this.mouse[0] - gripX);
+					this.y = (m[1] - this.mouse[1] - gripY);
+					g.attr("transform", "translate(" + this.x + "," + this.y + ")");
+
+					Links.update();
+				}
+			})			
+
+			d3.event.preventDefault();
 		})	
 
+		// Deactivate Node drag 
 		g.on("mouseup", () => {
 			this.isDragged = false;
 		})	
 
-		g.on("mousemove", (event) => {
-			if(this.isDragged) {
-				var m = d3.mouse(svg.node());
-				this.x = (m[0] - this.mouse[0] - gripX);
-				this.y = (m[1] - this.mouse[1] - gripY);
-				g.attr("transform", "translate(" + this.x + "," + this.y + ")");
-
-				Links.update();
-			}
-		})
 	}
 
 	createNodeInput(g, input) {

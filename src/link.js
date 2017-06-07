@@ -28,7 +28,7 @@ class Link {
 
 	  return bezier(this.getLinkPoints())
 	}
-
+	
 	drawLink() {
 	  return this.svg.append("path")
 	  	.attr("d", this.bezierLine())  

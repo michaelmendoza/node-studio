@@ -6,3 +6,15 @@ body {
 svg {
 	shape-rendering: crispEdges;
 }
+
+.grab {
+	cursor: -moz-grab;
+	cursor: -webkit-grab;
+	cursor: grab;
+
+	&:active {
+		cursor: -moz-grabbing;
+		cursor: -webkit-grabbing;
+		cursor: grabbing;
+	}
+}
