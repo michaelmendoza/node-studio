@@ -16,16 +16,6 @@ class Link {
 		var x2 = end.node.x + end.xOffset;
 		var y2 = end.node.y + end.yOffset;
 
-		/*
-		svg.append("line")
-			.attr("x1", x1)
-			.attr("y1", y1)
-			.attr("x2", x2)
-			.attr("y2", y2)
-			.attr("stroke", "#222222")
-		  .attr("stroke-width", 1)
-		*/
-
 		var bezierLine = d3.line()
 			.curve(d3.curveBasis)
 	    .x(function(d) { return d[0]; })

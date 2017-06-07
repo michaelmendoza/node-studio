@@ -10,6 +10,7 @@ class Node {
 		this.input = props.input;
 		this.output = props.output;
 
+		this.isDragged = false;
 		this.portCount = 0;
 
 		this.createNode(svg);
@@ -21,6 +22,7 @@ class Node {
 
 		this.createNodeBox(g);
 		this.createTitle(g);
+		this.createGrip(g, svg);
 		this.input.forEach((item)=> {
 			this.createNodeInput(g, item);
 		})
@@ -31,11 +33,11 @@ class Node {
 
 	createNodeBox(g) {
 		g.append("rect")
-		    .attr("x", 0).attr("y", 0)	    
-		    .attr("width", this.width).attr("height", this.height)
-		    .attr("rx", 6).attr("ry", 6)
-		    .attr("fill", '#F7F7F7')
-		    .style("filter", "url(#drop-shadow)")
+			.attr("x", 0).attr("y", 0)	    
+			.attr("width", this.width).attr("height", this.height)
+			.attr("rx", 6).attr("ry", 6)
+			.attr("fill", '#F7F7F7')
+			.style("filter", "url(#drop-shadow)")
 	}
 
 	createTitle(g) {
@@ -46,6 +48,46 @@ class Node {
 			.attr("alignment-baseline", "central")
 			.style("font-size", "18px")
 			.text(this.title)
+	}
+
+	createGrip(g, svg) {
+		var gripX = 10, gripY = 10;
+		var grip = g.append("g");
+		grip.attr("transform", "translate(" + gripX + "," + gripY + ")");
+
+		var pos = [[4,4], [10,4], [4,10], [10,10]];
+		pos.forEach((p)=> {
+			grip.append('circle')
+				.attr('cx', p[0])
+				.attr('cy', p[1])
+				.attr('r', 2)
+				.attr('fill', '#222222') 
+				.attr('opacity', 0.5)
+		})
+		
+		var grab = grip.append("rect")
+			.attr("x", 0).attr("y", 0)	    
+			.attr("width", 14).attr("height", 14)
+			.attr("fill", '#FFFFFF')
+			.attr("opacity", 0)
+
+		grab.on("mousedown", () => {
+			this.isDragged = true;
+			this.mouse = d3.mouse(grab.node());
+		})
+
+		g.on("mouseup", () => {
+			this.isDragged = false;
+		})	
+
+		g.on("mousemove", (event) => {
+			if(this.isDragged) {
+				var m = d3.mouse(svg.node());
+				var x = (m[0] - this.mouse[0] - gripX);
+				var y = (m[1] - this.mouse[1] - gripY);
+				g.attr("transform", "translate(" + x + "," + y + ")");
+			}
+		})
 	}
 
 	createNodeInput(g, input) {
