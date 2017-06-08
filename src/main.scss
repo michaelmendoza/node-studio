@@ -1,6 +1,8 @@
 
 body {
 	font-family: 'Roboto', 'Helvetica Neue', sans-serif;
+	margin: 0;
+	padding: 0;
 }
 
 svg {
@@ -18,3 +20,55 @@ svg {
 		cursor: grabbing;
 	}
 }
+
+// Typography Styles
+.material-icons {
+  font-family: 'Material Icons';
+  font-weight: normal;
+  font-style: normal;
+  font-size: 24px;  /* Preferred icon size */
+  display: inline-block;
+  line-height: 1;
+  text-transform: none;
+  letter-spacing: normal;
+  word-wrap: normal;
+  white-space: nowrap;
+  direction: ltr;
+
+  /* Support for all WebKit browsers. */
+  -webkit-font-smoothing: antialiased;
+  /* Support for Safari and Chrome. */
+  text-rendering: optimizeLegibility;
+
+  /* Support for Firefox. */
+  -moz-osx-font-smoothing: grayscale;
+
+  /* Support for IE. */
+  font-feature-settings: 'liga';
+}
+
+
+#app-controls {
+	float: left;
+	height: 800px;
+	width: 60px;
+	background-color: #673AB7;
+	color: #FEFEFE;
+}
+
+#app-chart {
+	margin-left: 60px;
+	height: 100%;
+	width: 100%;
+}
+
+.icon-button {
+	cursor: pointer;
+	text-align: center;
+	padding: 12px 0 12px 0;
+
+	&:hover {
+		background-color: lighten(#673AB7, 5%);
+	}
+}
+

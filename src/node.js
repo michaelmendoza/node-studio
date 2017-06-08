@@ -99,7 +99,7 @@ class Node {
 		})	
 
 	}
-
+	
 	createNodeInput(g, input) {
 		input.node = this;
 		input.xOffset = 0;
