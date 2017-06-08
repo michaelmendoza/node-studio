@@ -15,8 +15,16 @@ class Link {
 	getLinkPoints() {
 		var x1 = this.start.node.x + this.start.xOffset;
 		var y1 = this.start.node.y + this.start.yOffset;
-		var x2 = this.end.node.x + this.end.xOffset;
-		var y2 = this.end.node.y + this.end.yOffset;
+		
+		if(this.end.mouse) {
+			x2 = this.end.mouse[0];
+			y2 = this.end.mouse[1];
+		}
+		else {
+			var x2 = this.end.node.x + this.end.xOffset;
+			var y2 = this.end.node.y + this.end.yOffset;			
+		}
+		
 		return [[x1, y1], [(x1+x2)/2, y1], [(x1+x2)/2, (y1+y2)/2], [(x1+x2)/2, y2], [x2, y2]];
 	}
 

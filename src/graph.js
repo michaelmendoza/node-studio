@@ -39,8 +39,11 @@ class Graph {
 	}
 
 	addNode(nodeType) {
-		if(nodeType == 'add')
-			new Node(this.svg, { x:10, y:10, title:'Add', input:[], output:[]});
+		if(nodeType == 'add') {
+			var input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}];
+			var output = [{name:'Image', value:null}];
+			new Node(this.svg, { x:10, y:10, title:'Add', input:input, output:output});
+		}
 		else if(nodeType == 'custom')
 			new Node(this.svg, { x:10, y:10, title:'Custom', input:[], output:[]});	
 		else if(nodeType == 'fit')
@@ -49,6 +52,10 @@ class Graph {
 			new Node(this.svg, { x:10, y:10, title:'Histogram', input:[], output:[]});
 		else if(nodeType == 'image')
 			new Node(this.svg, { x:10, y:10, title:'Image', input:[], output:[]});
+	}
+
+	createLink() {
+		
 	}
 
 }

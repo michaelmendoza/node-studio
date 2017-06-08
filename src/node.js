@@ -1,9 +1,13 @@
 
+import Link from './link.js';
 import Links from './links.js';
+import Port from './port.js';
+import Ports from './ports.js';
 
 class Node {
 	
 	constructor(svg, props) {
+		this.svg = svg;
 		this.x = props.x;
 		this.y = props.y;
 		this.width = props.width || 140;
@@ -13,6 +17,7 @@ class Node {
 		this.output = props.output;
 
 		this.isDragged = false;
+		this.creatingLink = false;
 		this.portCount = 0;
 
 		this.createNode(svg);
@@ -25,12 +30,18 @@ class Node {
 		this.createNodeBox(g);
 		this.createTitle(g);
 		this.createGrip(g, svg);
-		this.input.forEach((item)=> {
-			this.createNodeInput(g, item);
+		this.input = this.input.map((item) => {
+			return this.createNodeInput(g, item);
 		})
-		this.output.forEach((item)=> {
-			this.createNodeOutput(g, item);
+		this.output = this.output.map((item) => {
+			return this.createNodeOutput(g, item);
 		})
+		//this.input.forEach((item)=> {
+		//	this.createNodeInput(g, item);
+		//})
+		//this.output.forEach((item)=> {
+		//	this.createNodeOutput(g, item);
+		//})
 	}
 
 	createNodeBox(g) {
@@ -101,11 +112,15 @@ class Node {
 	}
 	
 	createNodeInput(g, input) {
+		input = new Port(input);
 		input.node = this;
 		input.xOffset = 0;
 		input.yOffset = 50 + this.portCount++ * 20;
 
-		g.append('circle')
+		var port = g.append('g')
+			.attr('class', 'node-input-port')
+
+		port.append('circle')
 			.attr('cx', input.xOffset)
 			.attr('cy', input.yOffset)
 			.attr('r', 4)
@@ -113,21 +128,35 @@ class Node {
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
 
-		g.append('text')
+		port.append('text')
 			.attr("x", 10).attr("y", input.yOffset)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "start")
 			.attr("alignment-baseline", "central")
 			.style("font-size", "12px")
 			.text(input.name)	 
+
+		port.on("mouseover", () => {
+			input.onHover();
+		})
+
+		port.on("mouseleave", () => {
+			//input.offHover();
+		})
+
+		return input;
 	}
 
 	createNodeOutput(g, output) {
+		output = new Port(output);
 		output.node = this;
 		output.xOffset = this.width;
 		output.yOffset = 50 + this.portCount++ * 20;
 
-		g.append('circle')
+		var port = g.append('g')
+			.attr('class', 'node-output-port')
+
+		port.append('circle')
 			.attr('cx', output.xOffset)
 			.attr('cy', output.yOffset)
 			.attr('r', 4)
@@ -135,13 +164,35 @@ class Node {
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
 
-		g.append('text')
+		port.append('text')
 			.attr("x", this.width - 10).attr("y", output.yOffset)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "end")
 			.attr("alignment-baseline", "central")
 			.style("font-size", "12px")
-			.text(output.name)	 
+			.text(output.name)	
+
+		port.on("mousedown", () => {
+			this.creatingLink = true;
+			this.newlink = new Link(this.svg, 
+				this.output[this.output.indexOf(output)], 
+				{mouse: d3.mouse(this.svg.node())}
+			);
+
+			this.svg.on("mousemove", () => {
+				if(this.creatingLink) {
+					this.newlink.end.mouse = d3.mouse(this.svg.node());
+					Links.update();
+				}
+			})
+
+			this.svg.on("mouseup", () => {
+				this.creatingLink = false;
+				this.newlink.end = Ports.activePort;
+			})				
+		})	
+
+		return output;
 	}
 
 }
