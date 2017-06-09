@@ -17,6 +17,7 @@ class AppControls extends React.Component {
 				<div className="icon-button" onClick={this.handleAddNode.bind('fit')}><i className="material-icons">timeline</i></div>
 				<div className="icon-button" onClick={this.handleAddNode.bind('histogram')}><i className="material-icons">insert_chart</i></div>
 				<div className="icon-button" onClick={this.handleAddNode.bind('custom')}><i className="material-icons">code</i></div>
+				<div className="icon-button" onClick={this.handleAddNode.bind('view')}><i className="material-icons">pageview</i></div>
 			</section>
 		);
 	}

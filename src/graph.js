@@ -22,6 +22,7 @@ class Graph {
 
 		Filter.createShadowFilter(this.svg);
 
+		/*
 		var input = [];
 		var output = [{name:'Image', value:null}];
 		var node = new Node(this.svg, { x:10, y:10, title:'Image', input:input, output:output});
@@ -36,12 +37,15 @@ class Graph {
 
 		var link = new Link(this.svg, node.output[0], node3.input[0]);
 		var link2 = new Link(this.svg, node2.output[0], node3.input[1]);
+		*/
 	}
 
 	addNode(nodeType) {
+		var input, output;
+
 		if(nodeType == 'add') {
-			var input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}];
-			var output = [{name:'Image', value:null}];
+			input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}];
+			output = [{name:'Image', value:null}];
 			new Node(this.svg, { x:10, y:10, title:'Add', input:input, output:output});
 		}
 		else if(nodeType == 'custom')
@@ -50,8 +54,14 @@ class Graph {
 			new Node(this.svg, { x:10, y:10, title:'Fit', input:[], output:[]});			
 		else if(nodeType == 'histogram')
 			new Node(this.svg, { x:10, y:10, title:'Histogram', input:[], output:[]});
-		else if(nodeType == 'image')
-			new Node(this.svg, { x:10, y:10, title:'Image', input:[], output:[]});
+		else if(nodeType == 'image') {
+			output = [{name:'Image', value:null}];
+			new Node(this.svg, { x:10, y:10, title:'Image', input:[], output:output});
+		}
+		else if(nodeType == 'view') {
+			input = [{name:'Image', value:null}];
+			new Node(this.svg, { x:10, y:10, title:'View', input:input, output:[]});
+		}
 	}
 
 	createLink() {

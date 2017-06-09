@@ -49,8 +49,10 @@ class Node {
 			.attr("fill", '#F7F7F7')
 			.style("filter", "url(#drop-shadow)")
 
-		box.on("dragover", this.nodeDragOver);
-		box.on("drop", this.nodeDrop.bind(this, g));
+		if(this.title == 'Image') {
+			box.on("dragover", this.nodeDragOver);
+			box.on("drop", this.nodeDrop.bind(this, g));			
+		}
 	}	
 
 	nodeDragOver() {
