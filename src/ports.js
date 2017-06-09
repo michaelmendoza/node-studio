@@ -6,7 +6,7 @@ class Ports {
 	}
 
 	clearActivePort() {
-		//this.activePort = null;
+		this.activePort = null;
 	}
 
 	setActivePort(port) {

@@ -9,12 +9,13 @@ class Port {
 
 	onHover() {
 		console.log('Hover on Port - ' + this.name);
+		this.port.selectAll('circle').attr('r', 6);
 		Ports.setActivePort(this);
 	}
 
 	offHover() {
 		console.log('Off Hover on Port - ' + this.name);
-		Ports.clearActivePort();
+		this.port.selectAll('circle').attr('r', 4);
 	}
 }
 

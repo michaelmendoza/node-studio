@@ -21,23 +21,6 @@ class Graph {
 			.attr("class", "svg-chart");	
 
 		Filter.createShadowFilter(this.svg);
-
-		/*
-		var input = [];
-		var output = [{name:'Image', value:null}];
-		var node = new Node(this.svg, { x:10, y:10, title:'Image', input:input, output:output});
-
-		var input2 = [];
-		var output2 = [{name:'Image', value:null}];
-		var node2 = new Node(this.svg, { x:10, y:200, title:'Image', input:input2, output:output2});
-
-		var input3 = [{name:'Image 1', value:node}, {name:'Image 2', value:node2}];
-		var output3 = [{name:'Image', value:null}];
-		var node3 = new Node(this.svg, { x:230, y:100, title:'Add', input:input3, output:output3});
-
-		var link = new Link(this.svg, node.output[0], node3.input[0]);
-		var link2 = new Link(this.svg, node2.output[0], node3.input[1]);
-		*/
 	}
 
 	addNode(nodeType) {
@@ -66,6 +49,23 @@ class Graph {
 
 	createLink() {
 
+	}
+
+	exampleNetwork() {
+		var input = [];
+		var output = [{name:'Image', value:null}];
+		var node = new Node(this.svg, { x:10, y:10, title:'Image', input:input, output:output});
+
+		var input2 = [];
+		var output2 = [{name:'Image', value:null}];
+		var node2 = new Node(this.svg, { x:10, y:200, title:'Image', input:input2, output:output2});
+
+		var input3 = [{name:'Image 1', value:node}, {name:'Image 2', value:node2}];
+		var output3 = [{name:'Image', value:null}];
+		var node3 = new Node(this.svg, { x:230, y:100, title:'Add', input:input3, output:output3});
+
+		var link = new Link(this.svg, node.output[0], node3.input[0]);
+		var link2 = new Link(this.svg, node2.output[0], node3.input[1]);	
 	}
 
 }

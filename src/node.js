@@ -125,34 +125,33 @@ class Node {
 				}
 			})			
 
+			// Deactivate Node drag 
+			svg.on("mouseup", () => {
+				this.isDragged = false;
+			})
+
 			d3.event.preventDefault();
 		})	
-
-		// Deactivate Node drag 
-		g.on("mouseup", () => {
-			this.isDragged = false;
-		})	
-
 	}
 	
-	createNodeInput(g, input) {
+	createNodeInput(g, input) { 
 		input = new Port(input);
 		input.node = this;
 		input.xOffset = 0;
 		input.yOffset = 50 + this.portCount++ * 20;
 
-		var port = g.append('g')
+		input.port = g.append('g')
 			.attr('class', 'node-input-port')
 
-		port.append('circle')
+		input.port.append('circle')
 			.attr('cx', input.xOffset)
 			.attr('cy', input.yOffset)
 			.attr('r', 4)
 			.attr('fill', '#0024BA')    
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
-
-		port.append('text')
+			
+		input.port.append('text')
 			.attr("x", 10).attr("y", input.yOffset)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "start")
@@ -160,12 +159,12 @@ class Node {
 			.style("font-size", "12px")
 			.text(input.name)	 
 
-		port.on("mouseover", () => {
+		input.port.on("mouseover", () => {
 			input.onHover();
 		})
 
-		port.on("mouseleave", () => {
-			//input.offHover();
+		input.port.on("mouseleave", () => {
+			input.offHover();
 		})
 
 		return input;
@@ -177,10 +176,10 @@ class Node {
 		output.xOffset = this.width;
 		output.yOffset = 50 + this.portCount++ * 20;
 
-		var port = g.append('g')
+		output.port = g.append('g')
 			.attr('class', 'node-output-port')
 
-		port.append('circle')
+		output.port.append('circle')
 			.attr('cx', output.xOffset)
 			.attr('cy', output.yOffset)
 			.attr('r', 4)
@@ -188,7 +187,7 @@ class Node {
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
 
-		port.append('text')
+		output.port.append('text')
 			.attr("x", this.width - 10).attr("y", output.yOffset)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "end")
@@ -196,8 +195,10 @@ class Node {
 			.style("font-size", "12px")
 			.text(output.name)	
 
-		port.on("mousedown", () => {
+		output.port.on("mousedown", () => {
 			this.creatingLink = true;
+			Ports.clearActivePort();
+
 			this.newlink = new Link(this.svg, 
 				this.output[this.output.indexOf(output)], 
 				{mouse: d3.mouse(this.svg.node())}
@@ -212,7 +213,12 @@ class Node {
 
 			this.svg.on("mouseup", () => {
 				this.creatingLink = false;
-				this.newlink.end = Ports.activePort;
+				if(Ports.activePort != null)
+					this.newlink.end = Ports.activePort;
+				else 
+					Links.removeLink(this.newlink);
+				Links.update();
+
 			})				
 		})	
 

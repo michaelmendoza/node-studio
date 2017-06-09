@@ -7,6 +7,7 @@ class Link {
 		this.svg = svg;
 		this.start = start;
 		this.end = end;
+		this.name = "link-" + Links.links.length;
 
 		this.link = this.drawLink();
 		Links.addLink(this);
@@ -43,11 +44,16 @@ class Link {
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)
 		  .attr("fill", "none")
+		  .attr("class", this.name)
 	}
-
+	
 	updateLink() {
 		var p = this.getLinkPoints();
 		this.link.attr("d", this.bezierLine())  
+	}
+
+	removeLink() {
+		this.svg.selectAll("path." + this.name).remove();
 	}
 }
 
