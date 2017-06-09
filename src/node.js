@@ -4,9 +4,12 @@ import Links from './links.js';
 import Port from './port.js';
 import Ports from './ports.js';
 
+import ImageFileStore from './lib/lib.js';
+
 class Node {
 	
 	constructor(svg, props) {
+
 		this.svg = svg;
 		this.x = props.x;
 		this.y = props.y;
@@ -36,21 +39,40 @@ class Node {
 		this.output = this.output.map((item) => {
 			return this.createNodeOutput(g, item);
 		})
-		//this.input.forEach((item)=> {
-		//	this.createNodeInput(g, item);
-		//})
-		//this.output.forEach((item)=> {
-		//	this.createNodeOutput(g, item);
-		//})
 	}
 
 	createNodeBox(g) {
-		g.append("rect")
+		var box = g.append("rect")
 			.attr("x", 0).attr("y", 0)	    
 			.attr("width", this.width).attr("height", this.height)
 			.attr("rx", 6).attr("ry", 6)
 			.attr("fill", '#F7F7F7')
 			.style("filter", "url(#drop-shadow)")
+
+		box.on("dragover", this.nodeDragOver);
+		box.on("drop", this.nodeDrop.bind(this, g));
+	}	
+
+	nodeDragOver() {
+			d3.event.stopPropagation();
+			d3.event.preventDefault();
+			d3.event.dataTransfer.dropEffect = 'copy';
+	}
+
+	nodeDrop(g) {
+			d3.event.stopPropagation();
+			d3.event.preventDefault();
+			ImageFileStore.readFile(d3.event);
+
+			ImageFileStore.on('filesloaded', () => {
+				console.log('filesloaded');
+				var i = ImageFileStore;
+				g.append('image')
+					.attr("xlink:href", i.files[0].img.src)
+					.attr('x', this.width / 2 - 40 / 2)
+				  .attr('y', 40)
+				  .attr('width', 40)
+			})
 	}
 
 	createTitle(g) {

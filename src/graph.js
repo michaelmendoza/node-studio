@@ -24,11 +24,11 @@ class Graph {
 
 		var input = [];
 		var output = [{name:'Image', value:null}];
-		var node = new Node(this.svg, { x:10, y:10, title:'Node 1', input:input, output:output});
+		var node = new Node(this.svg, { x:10, y:10, title:'Image', input:input, output:output});
 
 		var input2 = [];
 		var output2 = [{name:'Image', value:null}];
-		var node2 = new Node(this.svg, { x:10, y:200, title:'Node 2', input:input2, output:output2});
+		var node2 = new Node(this.svg, { x:10, y:200, title:'Image', input:input2, output:output2});
 
 		var input3 = [{name:'Image 1', value:node}, {name:'Image 2', value:node2}];
 		var output3 = [{name:'Image', value:null}];
@@ -55,7 +55,7 @@ class Graph {
 	}
 
 	createLink() {
-		
+
 	}
 
 }

@@ -1,5 +1,4 @@
 import React from 'react';
-import ReactDOM from 'react-dom';
 
 import AppStore from './app-store.js';
 
@@ -8,7 +7,7 @@ class AppControls extends React.Component {
 	handleAddNode() {
 		AppStore.addNode(this);
 	}
-
+	
 	render() {
 		return (
 			<section className='app-controls'>  
@@ -23,4 +22,4 @@ class AppControls extends React.Component {
 	}
 }
 
-ReactDOM.render(<AppControls/>, document.getElementById('app-controls'));
+export default AppControls;
