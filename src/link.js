@@ -1,4 +1,5 @@
 
+import ContextMenu from './context-menu.js';
 import Links from './links.js';
 
 class Link {
@@ -39,14 +40,34 @@ class Link {
 	}
 	
 	drawLink() {
-	  return this.svg.append("path")
+	  var link = this.svg.append("path")
 	  	.attr("d", this.bezierLine())  
 			.attr("stroke", "#222222")
-		  .attr("stroke-width", 1)
+		  .attr("stroke-width", 2)
 		  .attr("fill", "none")
 		  .attr("class", this.name)
+
+		link.on('mouseover', () => {
+			link.attr("stroke", "#0024BA")
+				.attr("stroke-width", 3)
+		})
+
+		link.on('mouseleave', () => {
+			link.attr("stroke", "#0024BA")
+				.attr("stroke-width", 2)
+		})
+
+		link.on('contextmenu', () => {
+			d3.event.stopPropagation();
+			d3.event.preventDefault();
+
+			var m = d3.mouse(this.svg.node());
+			ContextMenu.create(this.svg, m[0], m[1], this.removeLink.bind(this));
+		})
+
+		return link;
 	}
-	
+
 	updateLink() {
 		var p = this.getLinkPoints();
 		this.link.attr("d", this.bezierLine())  

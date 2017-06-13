@@ -1,4 +1,5 @@
 
+import ContextMenu from './context-menu.js';
 import Link from './link.js';
 import Links from './links.js';
 import Port from './port.js';
@@ -28,6 +29,7 @@ class Node {
 
 	createNode(svg) {
 		var g = svg.append("g");
+		this.g = g;
 		g.attr("transform", "translate(" + this.x + "," + this.y + ")");
 
 		this.createNodeBox(g);
@@ -40,6 +42,10 @@ class Node {
 			return this.createNodeOutput(g, item);
 		})
 	}
+	
+	removeNode() {
+		this.g.remove();
+	}
 
 	createNodeBox(g) {
 		var box = g.append("rect")
@@ -48,6 +54,10 @@ class Node {
 			.attr("rx", 6).attr("ry", 6)
 			.attr("fill", '#F7F7F7')
 			.style("filter", "url(#drop-shadow)")
+			.on("contextmenu", () => {
+				var m = d3.mouse(this.svg.node());
+				ContextMenu.create(this.svg, m[0], m[1], this.removeNode.bind(this));
+			})
 
 		if(this.title == 'Image') {
 			box.on("dragover", this.nodeDragOver);
@@ -205,6 +215,9 @@ class Node {
 			);
 
 			this.svg.on("mousemove", () => {
+				d3.event.stopPropagation();
+				d3.event.preventDefault();
+
 				if(this.creatingLink) {
 					this.newlink.end.mouse = d3.mouse(this.svg.node());
 					Links.update();

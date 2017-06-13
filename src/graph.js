@@ -18,7 +18,11 @@ class Graph {
 
 		this.svg.attr("width", width)
 			.attr("height", height)		
-			.attr("class", "svg-chart");	
+			.attr("class", "svg-chart")
+			.on('contextmenu', () => {
+				d3.event.stopPropagation();
+				d3.event.preventDefault();
+			})
 
 		Filter.createShadowFilter(this.svg);
 	}

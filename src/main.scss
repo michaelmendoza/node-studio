@@ -6,7 +6,11 @@ body {
 }
 
 svg {
-	shape-rendering: crispEdges;
+	shape-rendering: auto;
+
+	text {
+		pointer-events: none;
+	}
 }
 
 .grab {
