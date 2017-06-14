@@ -11,7 +11,6 @@ import ImageFileStore from './lib/lib.js';
 class Node {
 	
 	constructor(svg, props) {
-
 		this.svg = svg;
 		this.x = props.x;
 		this.y = props.y;
@@ -26,24 +25,23 @@ class Node {
 		this.portCount = 0;
 
 		this.id = 'node-' + Nodes.nodes.length;
-		this.createNode(svg);
+		this.createNode();
 		Nodes.addNode(this);
 	}
 
-	createNode(svg) {
-		var g = svg.append("g");
-		this.g = g;
-		g.attr("transform", "translate(" + this.x + "," + this.y + ")")
+	createNode() {
+		this.g = this.svg.append("g");
+		this.g.attr("transform", "translate(" + this.x + "," + this.y + ")")
 		 .attr("class", this.id)
 
-		this.createNodeBox(g);
-		this.createTitle(g);
-		this.createGrip(g, svg);
+		this.createNodeBox();
+		this.createTitle();
+		this.createGrip();
 		this.input = this.input.map((item) => {
-			return this.createNodeInput(g, item);
+			return this.createNodeInput(item);
 		})
 		this.output = this.output.map((item) => {
-			return this.createNodeOutput(g, item);
+			return this.createNodeOutput(item);
 		})
 	}
 
@@ -51,8 +49,8 @@ class Node {
 		this.g.remove();
 	}
 
-	createNodeBox(g) {
-		var box = g.append("rect")
+	createNodeBox() {
+		var box = this.g.append("rect")
 			.attr("x", 0).attr("y", 0)	    
 			.attr("width", this.width).attr("height", this.height)
 			.attr("rx", 6).attr("ry", 6)
@@ -63,9 +61,7 @@ class Node {
 				var removeNode = Nodes.removeNode.bind(Nodes, this); 
 				ContextMenu.create(this.svg, m[0], m[1], removeNode);
 			})
-
-		this.box = box;
-
+		
 		if(this.title == 'Image') {
 			box.on("dragover", this.nodeDragOver.bind(this));
 			box.on("drop", this.nodeDrop.bind(this));			
@@ -81,14 +77,12 @@ class Node {
 	nodeDrop() {
 			d3.event.stopPropagation();
 			d3.event.preventDefault();
-			Nodes.setActiveNode(this);
-			console.log(this.id);
-			
+			Nodes.setActiveNode(this);			
 			ImageFileStore.readFile(d3.event);
 	}
 
-	createTitle(g) {
-		g.append('text')
+	createTitle() {
+		this.g.append('text')
 			.attr("x", this.width / 2).attr("y", 16)
 			.attr("fill", "#222222")
 			.attr("text-anchor", "middle")
@@ -97,9 +91,9 @@ class Node {
 			.text(this.title)		
 	}
 
-	createGrip(g, svg) {
+	createGrip() { 
 		var gripX = 10, gripY = 10;
-		var grip = g.append("g");
+		var grip = this.g.append("g");
 		grip.attr("transform", "translate(" + gripX + "," + gripY + ")");
 
 		var pos = [[4,4], [10,4], [4,10], [10,10]];
@@ -124,19 +118,19 @@ class Node {
 			this.isDragged = true;
 			this.mouse = d3.mouse(grab.node());
 
-			svg.on("mousemove", (event) => {
+			this.svg.on("mousemove", (event) => {
 				if(this.isDragged) {
-					var m = d3.mouse(svg.node());
+					var m = d3.mouse(this.svg.node());
 					this.x = (m[0] - this.mouse[0] - gripX);
 					this.y = (m[1] - this.mouse[1] - gripY);
-					g.attr("transform", "translate(" + this.x + "," + this.y + ")");
+					this.g.attr("transform", "translate(" + this.x + "," + this.y + ")");
 
 					Links.update();
 				}
 			})			
 
 			// Deactivate Node drag 
-			svg.on("mouseup", () => {
+			this.svg.on("mouseup", () => {
 				this.isDragged = false;
 			})
 
@@ -144,99 +138,15 @@ class Node {
 		})	
 	}
 	
-	createNodeInput(g, input) { 
+	createNodeInput(input) { 
 		input = new Port(input);
-		input.node = this;
-		input.xOffset = 0;
-		input.yOffset = 50 + this.portCount++ * 20;
-
-		input.port = g.append('g')
-			.attr('class', 'node-input-port')
-
-		input.port.append('circle')
-			.attr('cx', input.xOffset)
-			.attr('cy', input.yOffset)
-			.attr('r', 4)
-			.attr('fill', '#0024BA')    
-			.attr("stroke", "#222222")
-		  .attr("stroke-width", 1)	
-		  .attr("cursor", "pointer")
-			
-		input.port.append('text')
-			.attr("x", 10).attr("y", input.yOffset)
-			.attr("fill", "#222222")
-			.attr("text-anchor", "start")
-			.attr("alignment-baseline", "central")
-			.style("font-size", "12px")
-			.text(input.name)	 
-
-		input.port.on("mouseover", () => {
-			input.onHover();
-		})
-
-		input.port.on("mouseleave", () => {
-			input.offHover();
-		})
-
+		input.createInputPort(this);
 		return input;
 	}
 
-	createNodeOutput(g, output) {
+	createNodeOutput(output) { 
 		output = new Port(output);
-		output.node = this;
-		output.xOffset = this.width;
-		output.yOffset = 50 + this.portCount++ * 20;
-
-		output.port = g.append('g')
-			.attr('class', 'node-output-port')
-
-		output.port.append('circle')
-			.attr('cx', output.xOffset)
-			.attr('cy', output.yOffset)
-			.attr('r', 4)
-			.attr('fill', '#0024BA')    
-			.attr("stroke", "#222222")
-		  .attr("stroke-width", 1)	
-		  .attr("class", "pointer");
-
-		output.port.append('text')
-			.attr("x", this.width - 10).attr("y", output.yOffset)
-			.attr("fill", "#222222")
-			.attr("text-anchor", "end")
-			.attr("alignment-baseline", "central")
-			.style("font-size", "12px")
-			.text(output.name)	
-
-		output.port.on("mousedown", () => {
-			this.creatingLink = true;
-			Ports.clearActivePort();
-
-			this.newlink = new Link(this.svg, 
-				this.output[this.output.indexOf(output)], 
-				{mouse: d3.mouse(this.svg.node())}
-			);
-
-			this.svg.on("mousemove", () => {
-				d3.event.stopPropagation();
-				d3.event.preventDefault();
-
-				if(this.creatingLink) {
-					this.newlink.end.mouse = d3.mouse(this.svg.node());
-					Links.update();
-				}
-			})
-
-			this.svg.on("mouseup", () => {
-				this.creatingLink = false;
-				if(Ports.activePort != null)
-					this.newlink.end = Ports.activePort;
-				else 
-					Links.removeLink(this.newlink);
-				Links.update();
-
-			})				
-		})	
-
+		output.createOutputPort(this);
 		return output;
 	}
 }
