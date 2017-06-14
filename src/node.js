@@ -2,6 +2,7 @@
 import ContextMenu from './context-menu.js';
 import Link from './link.js';
 import Links from './links.js';
+import Nodes from './nodes.js';
 import Port from './port.js';
 import Ports from './ports.js';
 
@@ -24,13 +25,16 @@ class Node {
 		this.creatingLink = false;
 		this.portCount = 0;
 
+		this.id = 'node-' + Nodes.nodes.length;
 		this.createNode(svg);
+		Nodes.addNode(this);
 	}
 
 	createNode(svg) {
 		var g = svg.append("g");
 		this.g = g;
-		g.attr("transform", "translate(" + this.x + "," + this.y + ")");
+		g.attr("transform", "translate(" + this.x + "," + this.y + ")")
+		 .attr("class", this.id)
 
 		this.createNodeBox(g);
 		this.createTitle(g);
@@ -42,7 +46,7 @@ class Node {
 			return this.createNodeOutput(g, item);
 		})
 	}
-	
+
 	removeNode() {
 		this.g.remove();
 	}
@@ -55,13 +59,16 @@ class Node {
 			.attr("fill", '#F7F7F7')
 			.style("filter", "url(#drop-shadow)")
 			.on("contextmenu", () => {
-				var m = d3.mouse(this.svg.node());
-				ContextMenu.create(this.svg, m[0], m[1], this.removeNode.bind(this));
+				var m = d3.mouse(this.svg.node()); 
+				var removeNode = Nodes.removeNode.bind(Nodes, this); 
+				ContextMenu.create(this.svg, m[0], m[1], removeNode);
 			})
 
+		this.box = box;
+
 		if(this.title == 'Image') {
-			box.on("dragover", this.nodeDragOver);
-			box.on("drop", this.nodeDrop.bind(this, g));			
+			box.on("dragover", this.nodeDragOver.bind(this));
+			box.on("drop", this.nodeDrop.bind(this));			
 		}
 	}	
 
@@ -71,20 +78,13 @@ class Node {
 			d3.event.dataTransfer.dropEffect = 'copy';
 	}
 
-	nodeDrop(g) {
+	nodeDrop() {
 			d3.event.stopPropagation();
 			d3.event.preventDefault();
+			Nodes.setActiveNode(this);
+			console.log(this.id);
+			
 			ImageFileStore.readFile(d3.event);
-
-			ImageFileStore.on('filesloaded', () => {
-				console.log('filesloaded');
-				var i = ImageFileStore;
-				g.append('image')
-					.attr("xlink:href", i.files[0].img.src)
-					.attr('x', this.width / 2 - 40 / 2)
-				  .attr('y', 40)
-				  .attr('width', 40)
-			})
 	}
 
 	createTitle(g) {
@@ -94,7 +94,7 @@ class Node {
 			.attr("text-anchor", "middle")
 			.attr("alignment-baseline", "central")
 			.style("font-size", "18px")
-			.text(this.title)
+			.text(this.title)		
 	}
 
 	createGrip(g, svg) {
@@ -160,6 +160,7 @@ class Node {
 			.attr('fill', '#0024BA')    
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
+		  .attr("cursor", "pointer")
 			
 		input.port.append('text')
 			.attr("x", 10).attr("y", input.yOffset)
@@ -196,6 +197,7 @@ class Node {
 			.attr('fill', '#0024BA')    
 			.attr("stroke", "#222222")
 		  .attr("stroke-width", 1)	
+		  .attr("class", "pointer");
 
 		output.port.append('text')
 			.attr("x", this.width - 10).attr("y", output.yOffset)
@@ -237,7 +239,6 @@ class Node {
 
 		return output;
 	}
-
 }
 
 export default Node;

@@ -42,7 +42,7 @@ class Link {
 	drawLink() {
 	  var link = this.svg.append("path")
 	  	.attr("d", this.bezierLine())  
-			.attr("stroke", "#222222")
+			.attr("stroke", "#0024BA")
 		  .attr("stroke-width", 2)
 		  .attr("fill", "none")
 		  .attr("class", this.name)
