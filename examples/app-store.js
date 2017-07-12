@@ -1,5 +1,4 @@
-
-import Graph from "./graph.js";
+import Graph from "../src/graph.js";
 import ImageFileStore from './lib/lib.js';
 
 class AppStore {

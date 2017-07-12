@@ -1,20 +1,10 @@
 
 var path = require('path');
 var webpack = require('webpack');
-
-module.exports = { 
-  entry: { lib:'./src/lib.js' },
-	output: {
-		path: path.join(__dirname, "build"),
-		filename: "[name].js",
-		library: ["ImageNodes", "[name]"],
-		libraryTarget: "umd"
-	},
-	externals: [
-		'react',
-		'react-dom',
-		'dicom-parser'
-	],
+ 
+module.exports = {
+  entry: './examples/main.js',
+  output: { path: __dirname, filename: 'build/bundle.js' },
   module: {
     loaders: [
     	{ test: /\.(jpg|png)$/, loader: 'url?limit=25000' },
