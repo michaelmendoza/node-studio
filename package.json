@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "test": "webpack-dev-server",
+    "test": "webpack-dev-server"
   },
   "dependencies": {
     "dicom-parser": "1.7.4",
@@ -40,7 +40,7 @@
     "dicom",
     "mri"
   ],
-  "author": "Michael Mendoza <iammichaelmendoza@gmail.com>",
+  "author": "Michael Mendoza <https://github.com/michaelmendoza>",
   "license": "ISC",
   "bugs": {
     "url": "https://github.com/michaelmendoza/graph-nodes/issues"
