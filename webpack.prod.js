@@ -3,11 +3,11 @@ var path = require('path');
 var webpack = require('webpack');
 
 module.exports = { 
-  entry: { lib:'./src/lib.js' },
+  entry: { ImageNodes:'./src/lib.js' },
 	output: {
-		path: path.join(__dirname, "build"),
+		path: path.join(__dirname, "dist"),
 		filename: "[name].js",
-		library: ["ImageNodes", "[name]"],
+		library: "[name]",
 		libraryTarget: "umd"
 	},
 	externals: [

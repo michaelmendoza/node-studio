@@ -28,7 +28,7 @@
     "webpack-dev-server": "^1.15.2"
   },
   "description": "A library for visual programming of image-processing algorithms on dicom images",
-  "main": "src/lib.js",
+  "main": "dist/ImageNodes.js", 
   "repository": {
     "type": "git",
     "url": "git+https://github.com/michaelmendoza/image-nodes.git"
