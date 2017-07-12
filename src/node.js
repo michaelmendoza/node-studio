@@ -6,7 +6,7 @@ import Nodes from './nodes.js';
 import Port from './port.js';
 import Ports from './ports.js';
 
-import ImageFileStore from './lib/lib.js';
+import ImageNode from './node-image.js';
 
 class Node {
 	
@@ -78,7 +78,7 @@ class Node {
 			d3.event.stopPropagation();
 			d3.event.preventDefault();
 			Nodes.setActiveNode(this);			
-			ImageFileStore.readFile(d3.event);
+			ImageNode.readFile(d3.event);
 	}
 
 	createTitle() {

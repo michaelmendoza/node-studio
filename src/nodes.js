@@ -1,5 +1,5 @@
 
-import ImageFileStore from './lib/lib.js';
+import ImageNode from './node-image.js';
 
 class Nodes {
 
@@ -7,10 +7,9 @@ class Nodes {
 		this.activeNode = null;
 		this.nodes = [];
 
-		ImageFileStore.on('filesloaded', () => {
+		ImageNode.on('filesloaded', () => {
 			console.log('filesloaded');
-			var i = ImageFileStore;
-			var imgsrc = i.files[i.files.length-1].img.src;
+			var imgsrc = ImageNode.getLatestImage();
 
 			this.activeNode.svg.selectAll('.' + this.activeNode.id)
 				.append('image')

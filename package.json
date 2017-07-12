@@ -1,6 +1,6 @@
 {
-  "name": "graph-node",
-  "version": "1.0.0",
+  "name": "image-nodes",
+  "version": "0.0.1",
   "private": true,
   "scripts": {
     "start": "webpack; node server/server.js",

@@ -2,11 +2,16 @@
 import Node from './node.js';
 import Link from './link.js';
 import Filter from './filter.js';
+import ImageNode from './node-image.js';
 
 class Graph {
 	constructor(id) {
 		this.createGraph(id);
 	}
+
+	setImageLoader(loader) {
+		this.loader = ImageNode.setImageLoader(loader);
+	} 
 
 	createGraph(id, data, props) {
 		props = props || {};

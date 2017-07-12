@@ -2,12 +2,12 @@
 var path = require('path');
 var webpack = require('webpack');
 
-module.exports = {
-  entry: { bundle:'./src/main.js', lib:'./src/lib.js' },
+module.exports = { 
+  entry: { lib:'./src/lib.js' },
 	output: {
 		path: path.join(__dirname, "build"),
 		filename: "[name].js",
-		library: ["Graph", "[name]"],
+		library: ["ImageNodes", "[name]"],
 		libraryTarget: "umd"
 	},
 	externals: [

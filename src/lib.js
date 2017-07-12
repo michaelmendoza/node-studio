@@ -1,5 +1,4 @@
 
-import AppControls from './app-controls.jsx';
-import AppStore from './app-store.js';
+import Graph from './graph';
 
-export default AppStore;
+export default Graph;
