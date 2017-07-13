@@ -6,15 +6,15 @@ import Filter from './filter.js';
 import ImageNode from './node-image.js';
 
 class Graph {
-	constructor(id) {
-		this.createGraph(id);
-	}
-	
+	constructor(id, props) { 
+		this.createGraph(id, props);
+	} 
+
 	setImageLoader(loader) {
 		this.loader = ImageNode.setImageLoader(loader);
 	} 
 
-	createGraph(id, data, props) {
+	createGraph(id, props) {
 		props = props || {};
 		var width = props.width || 800;
 		var height = props.height || 600;
