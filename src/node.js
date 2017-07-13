@@ -16,7 +16,7 @@ class Node {
 		this.x = props.x;
 		this.y = props.y;
 		this.width = props.width || 140;
-		this.height = props.heights || 140;
+		this.height = props.height || 140;
 		this.title = props.title;
 		this.input = props.input;
 		this.output = props.output;

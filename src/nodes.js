@@ -6,7 +6,7 @@ class Nodes {
 	constructor() {
 		this.activeNode = null;
 		this.nodes = [];
-
+		
 		ImageNode.on('filesloaded', () => {
 			console.log('filesloaded');
 			var imgsrc = ImageNode.getLatestImage();
@@ -20,6 +20,10 @@ class Nodes {
 		}) 			
 	}
 
+	getNodes() {
+		return this.nodes;
+	}
+	
 	addNode(node) {
 		this.nodes.push(node);
 	}

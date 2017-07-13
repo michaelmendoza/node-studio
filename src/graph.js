@@ -1,5 +1,6 @@
 
 import { select, event } from 'd3';
+import Grid from './grid.js';
 import Node from './node.js';
 import Link from './link.js';
 import Filter from './filter.js';
@@ -31,29 +32,31 @@ class Graph {
 			})
 
 		Filter.createShadowFilter(this.svg);
+		this.grid = new Grid(width, height, 10);
 	}
 
 	addNode(nodeType) {
 		var input, output;
+		var pt = this.grid.next();
 
 		if(nodeType == 'add') {
 			input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}];
 			output = [{name:'Image', value:null}];
-			new Node(this.svg, { x:10, y:10, title:'Add', input:input, output:output});
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Add', input:input, output:output});
 		}
 		else if(nodeType == 'custom')
-			new Node(this.svg, { x:10, y:10, title:'Custom', input:[], output:[]});	
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Custom', input:[], output:[]});	
 		else if(nodeType == 'fit')
-			new Node(this.svg, { x:10, y:10, title:'Fit', input:[], output:[]});			
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Fit', input:[], output:[]});			
 		else if(nodeType == 'histogram')
-			new Node(this.svg, { x:10, y:10, title:'Histogram', input:[], output:[]});
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Histogram', input:[], output:[]});
 		else if(nodeType == 'image') {
 			output = [{name:'Image', value:null}];
-			new Node(this.svg, { x:10, y:10, title:'Image', input:[], output:output});
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Image', input:[], output:output});
 		}
 		else if(nodeType == 'view') {
 			input = [{name:'Image', value:null}];
-			new Node(this.svg, { x:10, y:10, title:'View', input:input, output:[]});
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'View', input:input, output:[]});
 		}
 	}
 
