@@ -11,6 +11,8 @@ module.exports = {
 		libraryTarget: "umd"
 	},
 	externals: [
+		'd3',
+		'events',
 		'react',
 		'react-dom',
 		'dicom-parser'
