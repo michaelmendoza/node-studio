@@ -1,4 +1,5 @@
 
+import { event, mouse } from 'd3';
 import Link from './link.js';
 import Links from './links.js';
 import Ports from './ports.js';
@@ -74,15 +75,15 @@ class Port {
 
 			node.newlink = new Link(node.svg, 
 				node.output[node.output.indexOf(this)], 
-				{mouse: d3.mouse(node.svg.node())}
+				{mouse: mouse(node.svg.node())}
 			);
 
 			node.svg.on("mousemove", () => {
-				d3.event.stopPropagation();
-				d3.event.preventDefault();
+				event.stopPropagation();
+				event.preventDefault();
 
 				if(node.creatingLink) {
-					node.newlink.end.mouse = d3.mouse(node.svg.node());
+					node.newlink.end.mouse = mouse(node.svg.node());
 					Links.update();
 				}
 			})

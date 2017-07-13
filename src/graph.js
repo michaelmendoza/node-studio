@@ -1,4 +1,5 @@
 
+import { select, event } from 'd3';
 import Node from './node.js';
 import Link from './link.js';
 import Filter from './filter.js';
@@ -8,7 +9,7 @@ class Graph {
 	constructor(id) {
 		this.createGraph(id);
 	}
-
+	
 	setImageLoader(loader) {
 		this.loader = ImageNode.setImageLoader(loader);
 	} 
@@ -19,14 +20,14 @@ class Graph {
 		var height = props.height || 600;
 		var margin = { top: 10, right: 10, bottom: 10, left: 10 };
 
-		this.svg = d3.select(id).append("svg")
+		this.svg = select(id).append("svg")
 
 		this.svg.attr("width", width)
 			.attr("height", height)		
 			.attr("class", "svg-chart")
 			.on('contextmenu', () => {
-				d3.event.stopPropagation();
-				d3.event.preventDefault();
+				event.stopPropagation();
+				event.preventDefault();
 			})
 
 		Filter.createShadowFilter(this.svg);

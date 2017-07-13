@@ -1,4 +1,5 @@
 
+import { curveBasis, event, line, mouse } from 'd3';
 import ContextMenu from './context-menu.js';
 import Links from './links.js';
 
@@ -30,9 +31,9 @@ class Link {
 		return [[x1, y1], [(x1+x2)/2, y1], [(x1+x2)/2, (y1+y2)/2], [(x1+x2)/2, y2], [x2, y2]];
 	}
 
-	bezierLine() {
-		var bezier = d3.line()
-			.curve(d3.curveBasis)
+	bezierLine() { 
+		var bezier = line()
+			.curve(curveBasis)
 	    .x(function(d) { return d[0]; })
 	    .y(function(d) { return d[1]; })	
 
@@ -58,10 +59,10 @@ class Link {
 		})
 
 		link.on('contextmenu', () => {
-			d3.event.stopPropagation();
-			d3.event.preventDefault();
+			event.stopPropagation();
+			event.preventDefault();
 
-			var m = d3.mouse(this.svg.node());
+			var m = mouse(this.svg.node());
 			ContextMenu.create(this.svg, m[0], m[1], this.removeLink.bind(this));
 		})
 

@@ -1,5 +1,6 @@
 
 import ContextMenu from './context-menu.js';
+import { event, mouse } from 'd3';
 import Link from './link.js';
 import Links from './links.js';
 import Nodes from './nodes.js';
@@ -57,7 +58,7 @@ class Node {
 			.attr("fill", '#F7F7F7')
 			.style("filter", "url(#drop-shadow)")
 			.on("contextmenu", () => {
-				var m = d3.mouse(this.svg.node()); 
+				var m = mouse(this.svg.node()); 
 				var removeNode = Nodes.removeNode.bind(Nodes, this); 
 				ContextMenu.create(this.svg, m[0], m[1], removeNode);
 			})
@@ -69,16 +70,16 @@ class Node {
 	}	
 
 	nodeDragOver() {
-			d3.event.stopPropagation();
-			d3.event.preventDefault();
-			d3.event.dataTransfer.dropEffect = 'copy';
+			event.stopPropagation();
+			event.preventDefault();
+			event.dataTransfer.dropEffect = 'copy';
 	}
 
 	nodeDrop() {
-			d3.event.stopPropagation();
-			d3.event.preventDefault();
+			event.stopPropagation();
+			event.preventDefault();
 			Nodes.setActiveNode(this);			
-			ImageNode.readFile(d3.event);
+			ImageNode.readFile(event);
 	}
 
 	createTitle() {
@@ -116,11 +117,11 @@ class Node {
 		// Activate Node drag
 		grab.on("mousedown", () => {
 			this.isDragged = true;
-			this.mouse = d3.mouse(grab.node());
+			this.mouse = mouse(grab.node());
 
-			this.svg.on("mousemove", (event) => {
+			this.svg.on("mousemove", () => {
 				if(this.isDragged) {
-					var m = d3.mouse(this.svg.node());
+					var m = mouse(this.svg.node());
 					this.x = (m[0] - this.mouse[0] - gripX);
 					this.y = (m[1] - this.mouse[1] - gripY);
 					this.g.attr("transform", "translate(" + this.x + "," + this.y + ")");
@@ -134,7 +135,7 @@ class Node {
 				this.isDragged = false;
 			})
 
-			d3.event.preventDefault();
+			event.preventDefault();
 		})	
 	}
 	
