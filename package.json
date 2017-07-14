@@ -1,6 +1,6 @@
 {
   "name": "image-nodes",
-  "version": "0.0.10",
+  "version": "0.0.11",
   "private": false,
   "scripts": {
     "test": "webpack-dev-server"
