@@ -15,6 +15,10 @@ class NodeImage extends EventEmitter {
 		this.loader.readFile(event);
 	}
 
+	getFiles() {
+		return this.loader.files;
+	}
+
 	getLatestImage() { 
 		var files = this.loader.files;
 		return files[files.length-1].img.src;

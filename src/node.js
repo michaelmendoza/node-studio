@@ -64,6 +64,7 @@ class Node {
 			})
 		
 		if(this.title == 'Image') {
+			this.createDropdown();
 			box.on("dragover", this.nodeDragOver.bind(this));
 			box.on("drop", this.nodeDrop.bind(this));			
 		}
@@ -149,6 +150,76 @@ class Node {
 		output = new Port(output);
 		output.createOutputPort(this);
 		return output;
+	}
+
+	createDropdown() {
+
+		var props = { showDropdown:false };
+
+		var dropdown = this.svg.append("g");
+		dropdown.attr("transform", "translate(" + 30 + "," + 120 + ")")
+		 .attr("class", 'dropdown')
+
+		var box = dropdown.append("rect")
+			.attr("x", 0).attr("y", 0)	 
+			.attr("rx", 6).attr("ry", 6)
+			.attr("width", 100).attr("height", 20)
+			.style("fill", '#FEFEFE')
+			.style("stroke", "AAAAAA")
+			.style("stroke-width", 1)
+
+		var text = dropdown.append("text")
+			.attr("x", 20).attr("y", 14)
+			.attr("font-size", 10)
+			.text('Select Image')
+
+		box.on('mouseover', () => { box.style("fill", '#CECECE') })
+		box.on('mouseleave', () => { box.style("fill", '#FEFEFE') })
+		box.on('click', () => { 
+			if(!props.showDropdown) {
+				var data = ImageNode.getFiles();
+				var index = 0;
+				data.forEach((d) => { d.index = index++; })
+
+				dropdown.append("rect")
+					.attr('class', 'list')
+					.attr("x", 0).attr("y", 30)
+					.attr("width", 100).attr("height", index * 50 + 10)
+					.style("fill", '#FEFEFE')
+					.style("filter", "url(#drop-shadow)") 
+
+				var list = dropdown.append('g')
+					.attr('class', 'dropdown-list')
+					.attr("transform", "translate(" + 30 + "," + 40 + ")")
+				var options = list.selectAll('image')
+					.data(data)
+					.enter()
+					.append('image')
+					.attr("xlink:href", (d) => { return d.img.src; })
+					.attr('x', 0)
+				  .attr('y', (d) => { return d.index * 50 })
+				  .attr('width', 40)
+			}
+			else 
+				dropdown.selectAll("rect.list").remove();
+			
+			props.showDropdown = !props.showDropdown;
+		})
+
+
+
+		/*
+		var data = ['a','b','c'];
+		var dropDown = this.g.append('select')
+			.attr('class', 'selection')
+			.attr('name', 'list')
+		var options = dropDown.selectAll('option')
+			.data(data)
+			.enter()
+			.append('option')
+			.text((d) => { return d })
+			.text((d) => { return d })
+		*/
 	}
 }
 
