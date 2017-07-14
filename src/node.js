@@ -1,8 +1,9 @@
 
 import ContextMenu from './context-menu.js';
-import { event, mouse } from 'd3';
+import { event, line, mouse } from 'd3';
 import Link from './link.js';
 import Links from './links.js';
+import NodeDropdown from './node-dropdown.js';
 import Nodes from './nodes.js';
 import Port from './port.js';
 import Ports from './ports.js';
@@ -20,6 +21,9 @@ class Node {
 		this.title = props.title;
 		this.input = props.input;
 		this.output = props.output;
+
+		this.file = null;
+		this.img = null;
 
 		this.isDragged = false;
 		this.creatingLink = false;
@@ -68,6 +72,8 @@ class Node {
 			box.on("dragover", this.nodeDragOver.bind(this));
 			box.on("drop", this.nodeDrop.bind(this));			
 		}
+		if(this.title == 'View') 
+			this.createPlaySVG();
 	}	
 
 	nodeDragOver() {
@@ -153,73 +159,26 @@ class Node {
 	}
 
 	createDropdown() {
+		new NodeDropdown(this);
+	}
 
-		var props = { showDropdown:false };
+	createPlaySVG() {
+		var playData = [{"x":0, "y":0}, {"x": 10, "y":7}, {"x": 0, "y": 14 }, {"x": 0, "y": 0}];
 
-		var dropdown = this.svg.append("g");
-		dropdown.attr("transform", "translate(" + 30 + "," + 120 + ")")
-		 .attr("class", 'dropdown')
+		var lineFunction = line()
+			.x(function(d) { return d.x; })
+			.y(function(d) { return d.y; })
 
-		var box = dropdown.append("rect")
-			.attr("x", 0).attr("y", 0)	 
-			.attr("rx", 6).attr("ry", 6)
-			.attr("width", 100).attr("height", 20)
-			.style("fill", '#FEFEFE')
-			.style("stroke", "AAAAAA")
-			.style("stroke-width", 1)
+		var playSVG = this.g.append("path")
+			.attr("d", lineFunction(playData))
+			.attr("stroke", "#757575")
+			.attr("stroke-width", 1)
+			.attr("fill", "#757575")
+			.attr("transform", "translate(" + (this.width - 25) + "," + 10 + ")");
 
-		var text = dropdown.append("text")
-			.attr("x", 20).attr("y", 14)
-			.attr("font-size", 10)
-			.text('Select Image')
-
-		box.on('mouseover', () => { box.style("fill", '#CECECE') })
-		box.on('mouseleave', () => { box.style("fill", '#FEFEFE') })
-		box.on('click', () => { 
-			if(!props.showDropdown) {
-				var data = ImageNode.getFiles();
-				var index = 0;
-				data.forEach((d) => { d.index = index++; })
-
-				dropdown.append("rect")
-					.attr('class', 'list')
-					.attr("x", 0).attr("y", 30)
-					.attr("width", 100).attr("height", index * 50 + 10)
-					.style("fill", '#FEFEFE')
-					.style("filter", "url(#drop-shadow)") 
-
-				var list = dropdown.append('g')
-					.attr('class', 'dropdown-list')
-					.attr("transform", "translate(" + 30 + "," + 40 + ")")
-				var options = list.selectAll('image')
-					.data(data)
-					.enter()
-					.append('image')
-					.attr("xlink:href", (d) => { return d.img.src; })
-					.attr('x', 0)
-				  .attr('y', (d) => { return d.index * 50 })
-				  .attr('width', 40)
-			}
-			else 
-				dropdown.selectAll("rect.list").remove();
-			
-			props.showDropdown = !props.showDropdown;
-		})
-
-
-
-		/*
-		var data = ['a','b','c'];
-		var dropDown = this.g.append('select')
-			.attr('class', 'selection')
-			.attr('name', 'list')
-		var options = dropDown.selectAll('option')
-			.data(data)
-			.enter()
-			.append('option')
-			.text((d) => { return d })
-			.text((d) => { return d })
-		*/
+		playSVG.on('mouseover', () => { playSVG.style("fill", 'blue') });
+		playSVG.on('mouseleave', () => { playSVG.style("fill", '#757575') });
+		playSVG.on('click', () => { });
 	}
 }
 
