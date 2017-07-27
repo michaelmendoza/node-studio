@@ -32,7 +32,7 @@ class Nodes {
 		node.removeNode();
 		var index = this.nodes.indexOf(node);
 		this.nodes.splice(index, 1);
-	}
+	} 
 
 	update() {
 
@@ -43,4 +43,7 @@ class Nodes {
 	}
 }
 
-export default new Nodes();
+var nodes = new Nodes();
+window.nodes = nodes;
+
+export default nodes;

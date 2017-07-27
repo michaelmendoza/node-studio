@@ -42,16 +42,13 @@ class Node {
 		this.createNodeBox();
 		this.createTitle();
 		this.createGrip();
+		this.createNodeDelete();
 		this.input = this.input.map((item) => {
 			return this.createNodeInput(item);
 		})
 		this.output = this.output.map((item) => {
 			return this.createNodeOutput(item);
 		})
-	}
-
-	removeNode() {
-		this.g.remove();
 	}
 
 	createNodeBox() {
@@ -75,6 +72,26 @@ class Node {
 		if(this.title == 'View') 
 			this.createPlaySVG();
 	}	
+
+	createNodeDelete() { 
+		var b = this.g.append('rect')
+			.attr("x", this.width - 20).attr("y", 12)
+			.attr("width", 10).attr("height", 10)
+			.attr("fill", "#757575")
+			.attr("opacity", 0)
+		var d = this.g.append('text')
+			.attr("x", this.width - 20).attr("y", 22)
+			.attr("fill", "#757575")
+			.text('x')
+
+		b.on('mouseover', () => { d.attr("fill", "red"); });
+		b.on('mouseleave', () => { d.attr("fill", "#757575"); });
+		b.on('click', () => { Nodes.removeNode(this); }) 
+	}
+	
+	removeNode() {
+		this.g.remove();
+	}
 
 	nodeDragOver() {
 			event.stopPropagation();
