@@ -1,6 +1,7 @@
 
 import ContextMenu from './context-menu.js';
 import { event, line, mouse } from 'd3';
+import ImageMath from "./image-math.js";
 import Link from './link.js';
 import Links from './links.js';
 import NodeDropdown from './node-dropdown.js';
@@ -21,6 +22,8 @@ class Node {
 		this.title = props.title;
 		this.input = props.input;
 		this.output = props.output;
+		this.inputport = null;
+		this.outputport = null;
 
 		this.file = null;
 		this.img = null;
@@ -43,11 +46,11 @@ class Node {
 		this.createTitle();
 		this.createGrip();
 		this.createNodeDelete();
-		this.input = this.input.map((item) => {
-			return this.createNodeInput(item);
+		this.inputport = this.input.map((item, index) => {
+			return this.createNodeInput(item, index);
 		})
-		this.output = this.output.map((item) => {
-			return this.createNodeOutput(item);
+		this.outputport = this.output.map((item, index) => {
+			return this.createNodeOutput(item, index);
 		})
 	}
 
@@ -88,7 +91,7 @@ class Node {
 		b.on('mouseleave', () => { d.attr("fill", "#757575"); });
 		b.on('click', () => { Nodes.removeNode(this); }) 
 	}
-	
+
 	removeNode() {
 		this.g.remove();
 	}
@@ -163,14 +166,14 @@ class Node {
 		})	
 	}
 	
-	createNodeInput(input) { 
-		input = new Port(input);
+	createNodeInput(input, index) { 
+		input = new Port(input, index);
 		input.createInputPort(this);
 		return input;
 	}
 
-	createNodeOutput(output) { 
-		output = new Port(output);
+	createNodeOutput(output, index) { 
+		output = new Port(output, index);
 		output.createOutputPort(this);
 		return output;
 	}
@@ -191,11 +194,43 @@ class Node {
 			.attr("stroke", "#757575")
 			.attr("stroke-width", 1)
 			.attr("fill", "#757575")
-			.attr("transform", "translate(" + (this.width - 25) + "," + 10 + ")");
+			.attr("transform", "translate(" + (this.width - 45) + "," + 10 + ")");
 
 		playSVG.on('mouseover', () => { playSVG.style("fill", 'blue') });
 		playSVG.on('mouseleave', () => { playSVG.style("fill", '#757575') });
-		playSVG.on('click', () => { });
+		playSVG.on('click', () => { Nodes.runNodes(); });
+	}
+
+	getInputNode(index) {
+		return this.input[index].link.getInputNode();
+	}
+
+	runNode() {
+		if(this.title == 'View') { 
+			var node = this.getInputNode(0);
+			var data = node.runNode();
+			var img = ImageMath.createImg(data);
+			img.onload = () => {
+				console.log('img-loaded');
+				var imgsrc = img.src;
+				this.svg.selectAll('.' + this.id)
+					.append('image')
+					.attr("xlink:href", imgsrc)
+					.attr('x', this.width / 2 - 40 / 2)
+				  .attr('y', 40)
+				  .attr('width', 40)
+			}
+		}
+		else if(this.title == 'Add') {
+			var data = this.getInputNode(0).runNode();
+			var data2 = this.getInputNode(1).runNode();
+			var dataOut = ImageMath.getBlankImageData(data.width, data.height);
+			ImageMath.addImage(data, data2, dataOut);
+			return dataOut;
+		}
+		else if(this.title == 'Image') {
+			return ImageMath.getImageData(this.img);
+		}
 	}
 }
 

@@ -15,6 +15,14 @@ class Link {
 		Links.addLink(this);
 	}
 	
+	getInputNode() {
+		return this.start.node;
+	}
+
+	getOutputNode() {
+		return this.end.node;
+	}
+
 	getLinkPoints() {
 		var x1 = this.start.node.x + this.start.xOffset;
 		var y1 = this.start.node.y + this.start.yOffset;

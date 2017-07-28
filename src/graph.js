@@ -2,6 +2,7 @@
 import { select, event } from 'd3';
 import Grid from './grid.js';
 import Node from './node.js';
+import Nodes from './nodes.js';
 import Link from './link.js';
 import Filter from './filter.js';
 import ImageNode from './node-image.js';
@@ -81,6 +82,9 @@ class Graph {
 		var link2 = new Link(this.svg, node2.output[0], node3.input[1]);	
 	}
 
+	runGraph() {
+		Nodes.runNodes();
+	}
 }
 
 export default Graph;

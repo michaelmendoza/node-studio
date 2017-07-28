@@ -5,9 +5,10 @@ import Links from './links.js';
 import Ports from './ports.js';
 
 class Port {
-	constructor(props) {
+	constructor(props, index) {
 		this.name = props.name;
 		this.value = props.value;
+		this.index = index;
 	}
 
 	createInputPort(node) {
@@ -73,8 +74,9 @@ class Port {
 			node.creatingLink = true;
 			Ports.clearActivePort();
 
-			node.newlink = new Link(node.svg, 
-				node.output[node.output.indexOf(this)], 
+			node.newlink = new Link(
+				node.svg, 
+				node.outputport[this.index], 
 				{mouse: mouse(node.svg.node())}
 			);
 
@@ -90,8 +92,14 @@ class Port {
 			
 			node.svg.on("mouseup", () => {
 				node.creatingLink = false;
-				if(Ports.activePort != null)
+				if(Ports.activePort != null) {
 					node.newlink.end = Ports.activePort;
+					// Set output link
+					node.output[this.index].link = node.newlink;
+					// Set input link
+					var port = node.newlink.end;
+					port.node.input[port.index].link = node.newlink;
+				}
 				else 
 					Links.removeLink(node.newlink);
 				Links.update();

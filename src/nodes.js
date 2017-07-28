@@ -7,10 +7,12 @@ class Nodes {
 		this.activeNode = null;
 		this.nodes = [];
 		
+		// TODO: Move img setting/creation to node
 		ImageNode.on('filesloaded', () => {
 			console.log('filesloaded');
 			var imgsrc = ImageNode.getLatestImage();
-
+			this.activeNode.file = ImageNode.getLastestFile();
+			this.activeNode.img = this.activeNode.file.img;
 			this.activeNode.svg.selectAll('.' + this.activeNode.id)
 				.append('image')
 				.attr("xlink:href", imgsrc)
@@ -24,6 +26,12 @@ class Nodes {
 		return this.nodes;
 	}
 	
+	getViewNodes() {
+		return this.nodes.filter((node) => {
+			return node.title == 'View'
+		})
+	}
+
 	addNode(node) {
 		this.nodes.push(node);
 	}
@@ -40,6 +48,13 @@ class Nodes {
 
 	setActiveNode(node) {
 		this.activeNode = node;
+	}
+
+	runNodes() {
+		var viewNodes = this.getViewNodes();
+		viewNodes.forEach((viewNode) => {
+			viewNode.runNode(); 
+		}) 
 	}
 }
 
