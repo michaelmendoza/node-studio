@@ -51,9 +51,9 @@ class Nodes {
 		}) 
 	}
 
-	render() {
+	render(svg) {
 		this.nodes.forEach((node) => {
-			node.createNode();
+			node.createNode(svg);
 		});
 	}
 }

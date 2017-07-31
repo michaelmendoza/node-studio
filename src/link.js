@@ -48,7 +48,9 @@ class Link {
 	  return bezier(this.getLinkPoints())
 	}
 	
-	drawLink() {
+	drawLink(svg) {
+		this.svg = this.svg || svg;
+		
 	  var link = this.svg.append("path")
 	  	.attr("d", this.bezierLine())  
 			.attr("stroke", "#0024BA")

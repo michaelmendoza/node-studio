@@ -36,9 +36,9 @@ class Graph {
 		Filter.createShadowFilter(this.svg);
 		this.grid = new Grid(width, height, 10);
 
-		// Render saved nodes and links
-		Nodes.render();
-		Links.render();
+		// Render saved nodes/links and updates svg 
+		Nodes.render(this.svg);
+		Links.render(this.svg);
 	}
 
 	addNode(nodeType) {

@@ -37,8 +37,10 @@ class Node {
 		this.createNode();
 		Nodes.addNode(this);
 	}
-	
-	createNode() {
+
+	createNode(svg) {
+		this.svg = this.svg || svg;
+
 		this.g = this.svg.append("g");
 		this.g.attr("transform", "translate(" + this.x + "," + this.y + ")")
 		 .attr("class", this.id)

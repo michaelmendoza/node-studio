@@ -21,9 +21,9 @@ class Links {
 		})
 	}
 
-	render() {
+	render(svg) {
 		this.links.forEach((link) => {
-			link.drawLink();
+			link.drawLink(svg);
 		})
 	}
 
