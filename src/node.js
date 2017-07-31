@@ -4,6 +4,7 @@ import { event, line, mouse } from 'd3';
 import ImageMath from "./image-math.js";
 import Link from './link.js';
 import Links from './links.js';
+import NodeActions from './node-actions.js';
 import NodeDropdown from './node-dropdown.js';
 import Nodes from './nodes.js';
 import Port from './port.js';
@@ -201,36 +202,21 @@ class Node {
 		playSVG.on('click', () => { Nodes.runNodes(); });
 	}
 
+	createImg(imgsrc) {
+		this.svg.selectAll('.' + this.id)
+			.append('image')
+			.attr("xlink:href", imgsrc)
+			.attr('x', this.width / 2 - 40 / 2)
+		  .attr('y', 40)
+		  .attr('width', 40)
+	}
+
 	getInputNode(index) {
 		return this.input[index].link.getInputNode();
 	}
 
-	runNode() {
-		if(this.title == 'View') { 
-			var node = this.getInputNode(0);
-			var data = node.runNode();
-			var img = ImageMath.createImg(data);
-			img.onload = () => {
-				console.log('img-loaded');
-				var imgsrc = img.src;
-				this.svg.selectAll('.' + this.id)
-					.append('image')
-					.attr("xlink:href", imgsrc)
-					.attr('x', this.width / 2 - 40 / 2)
-				  .attr('y', 40)
-				  .attr('width', 40)
-			}
-		}
-		else if(this.title == 'Add') {
-			var data = this.getInputNode(0).runNode();
-			var data2 = this.getInputNode(1).runNode();
-			var dataOut = ImageMath.getBlankImageData(data.width, data.height);
-			ImageMath.addImage(data, data2, dataOut);
-			return dataOut;
-		}
-		else if(this.title == 'Image') {
-			return ImageMath.getImageData(this.img);
-		}
+	runNode() { 
+		return NodeActions.runAction(this.title.toLowerCase(), { node:this });
 	}
 }
 

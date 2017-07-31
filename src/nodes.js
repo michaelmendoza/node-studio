@@ -7,18 +7,12 @@ class Nodes {
 		this.activeNode = null;
 		this.nodes = [];
 		
-		// TODO: Move img setting/creation to node
 		ImageNode.on('filesloaded', () => {
-			console.log('filesloaded');
+			var node = this.activeNode;
 			var imgsrc = ImageNode.getLatestImage();
-			this.activeNode.file = ImageNode.getLastestFile();
-			this.activeNode.img = this.activeNode.file.img;
-			this.activeNode.svg.selectAll('.' + this.activeNode.id)
-				.append('image')
-				.attr("xlink:href", imgsrc)
-				.attr('x', this.activeNode.width / 2 - 40 / 2)
-			  .attr('y', 40)
-			  .attr('width', 40)
+			node.file = ImageNode.getLastestFile();
+			node.img = node.file.img;
+			node.createImg(imgsrc);
 		}) 			
 	}
 

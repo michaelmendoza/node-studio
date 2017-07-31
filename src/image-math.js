@@ -19,11 +19,20 @@ class ImageMath {
 
 	addImage(imageData, imageData2, imageOut) {
 		for (var i = 0; i < imageData.data.length; i += 4) {
-			imageOut[i] = imageData[i] + imageData2[i];
-			imageOut[i+1] = imageData[i+1] + imageData2[i+1]
-			imageOut[i+2] = imageData[i+2] + imageData2[i+2]
-			imageOut[i+2] = 255;
+			imageOut.data[i] = imageData.data[i] + imageData2.data[i];
+			imageOut.data[i+1] = imageData.data[i+1] + imageData2.data[i+1]
+			imageOut.data[i+2] = imageData.data[i+2] + imageData2.data[i+2]
+			imageOut.data[i+3] = 255;
 		}
+	}
+
+	invert(imageData, imageOut) {
+		for (var i = 0; i < imageData.data.length; i += 4) {
+			imageOut.data[i] = 255 - imageData.data[i];
+			imageOut.data[i+1] = 255 - imageData.data[i+1];
+			imageOut.data[i+2] = 255 - imageData.data[i+2];
+			imageOut.data[i+3] = 255;
+		}	
 	}
 
 	createImg(imageData) {
