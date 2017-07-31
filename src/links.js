@@ -21,6 +21,12 @@ class Links {
 		})
 	}
 
+	render() {
+		this.links.forEach((link) => {
+			link.drawLink();
+		})
+	}
+
 }
 
 export default new Links();

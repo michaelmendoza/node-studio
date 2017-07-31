@@ -50,6 +50,12 @@ class Nodes {
 			viewNode.runNode(); 
 		}) 
 	}
+
+	render() {
+		this.nodes.forEach((node) => {
+			node.createNode();
+		});
+	}
 }
 
 var nodes = new Nodes();

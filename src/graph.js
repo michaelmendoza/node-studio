@@ -4,6 +4,7 @@ import Grid from './grid.js';
 import Node from './node.js';
 import Nodes from './nodes.js';
 import Link from './link.js';
+import Links from './links.js';
 import Filter from './filter.js';
 import ImageNode from './node-image.js';
 
@@ -34,6 +35,10 @@ class Graph {
 
 		Filter.createShadowFilter(this.svg);
 		this.grid = new Grid(width, height, 10);
+
+		// Render saved nodes and links
+		Nodes.render();
+		Links.render();
 	}
 
 	addNode(nodeType) {

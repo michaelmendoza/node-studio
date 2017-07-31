@@ -37,7 +37,7 @@ class Node {
 		this.createNode();
 		Nodes.addNode(this);
 	}
-
+	
 	createNode() {
 		this.g = this.svg.append("g");
 		this.g.attr("transform", "translate(" + this.x + "," + this.y + ")")

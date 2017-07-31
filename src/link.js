@@ -85,6 +85,7 @@ class Link {
 	removeLink() {
 		this.svg.selectAll("path." + this.name).remove();
 	}
+
 }
 
 export default Link;
