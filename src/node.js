@@ -39,7 +39,7 @@ class Node {
 	}
 
 	createNode(svg) {
-		this.svg = this.svg || svg;
+		this.svg = svg || this.svg;
 
 		this.g = this.svg.append("g");
 		this.g.attr("transform", "translate(" + this.x + "," + this.y + ")")
