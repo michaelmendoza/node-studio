@@ -11,10 +11,10 @@ class Port {
 		this.index = index;
 	}
 
-	createInputPort(node) {
+	createInputPort(node, index) {
 		this.node = node;
 		this.xOffset = 0;
-		this.yOffset = 50 + node.portCount++ * 20;
+		this.yOffset = 50 + index * 20;
 
 		this.port = this.node.g.append('g')
 			.attr('class', 'node-input-port')
@@ -45,10 +45,10 @@ class Port {
 		})
 	}
 
-	createOutputPort(node) { 
+	createOutputPort(node, index) { 
 		this.node = node;
 		this.xOffset = node.width;
-		this.yOffset = 50 + node.portCount++ * 20;
+		this.yOffset = 50 + (node.inputport.length + index) * 20;
 
 		this.port = node.g.append('g')
 			.attr('class', 'node-output-port')

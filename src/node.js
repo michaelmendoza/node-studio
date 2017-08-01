@@ -171,13 +171,13 @@ class Node {
 	
 	createNodeInput(input, index) { 
 		input = new Port(input, index);
-		input.createInputPort(this);
+		input.createInputPort(this, index);
 		return input;
 	}
 
 	createNodeOutput(output, index) { 
 		output = new Port(output, index);
-		output.createOutputPort(this);
+		output.createOutputPort(this, index);
 		return output;
 	}
 
