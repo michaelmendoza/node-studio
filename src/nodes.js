@@ -46,9 +46,10 @@ class Nodes {
 
 	runNodes() {
 		var viewNodes = this.getViewNodes();
-		viewNodes.forEach((viewNode) => {
-			viewNode.runNode(); 
+		this.viewport =  viewNodes.map((viewNode) => {
+			return viewNode.runNode(); 
 		}) 
+		return this.viewport;
 	}
 
 	render(svg) {

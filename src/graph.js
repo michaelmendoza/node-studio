@@ -90,6 +90,11 @@ class Graph {
 	runGraph() {
 		Nodes.runNodes();
 	}
+
+	queryGraph() {
+		return Nodes.viewport;
+	}
+
 }
 
 export default Graph;
