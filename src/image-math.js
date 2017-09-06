@@ -1,3 +1,5 @@
+import Regression from './regression.js';
+
 class ImageMath {
 	
 	getImageData(img) {
@@ -15,6 +17,19 @@ class ImageMath {
 		canvas.width = width;
 		canvas.height = height;		
 		return context.getImageData(0, 0, width, height);
+	}
+
+	createImg(imageData) {
+		var canvas = document.createElement('canvas');
+		var context = canvas.getContext('2d');
+		canvas.width = imageData.width;
+		canvas.height = imageData.height;
+
+		context.putImageData(imageData, 0, 0);
+		var dataURL = canvas.toDataURL();     
+		var img = document.createElement('img');
+		img.src = dataURL;
+		return img;
 	}
 
 	addImage(imageData, imageData2, imageOut) {
@@ -35,17 +50,26 @@ class ImageMath {
 		}	
 	}
 
-	createImg(imageData) {
-		var canvas = document.createElement('canvas');
-		var context = canvas.getContext('2d');
-		canvas.width = imageData.width;
-		canvas.height = imageData.height;
+	linearImageMap(x, y, imageOut) { 
+		var lengthX = x.length;					// Number of images
+		var lengthY = y[0].data.length; // Number of pixels
+		for (var i = 0; i < lengthY; i += 4) { // Interate through pixels
 
-		context.putImageData(imageData, 0, 0);
-		var dataURL = canvas.toDataURL();     
-		var img = document.createElement('img');
-		img.src = dataURL;
-		return img;
+			var pixelY = Array(lengthX);
+			for (var j = 0; j < lengthX; j++) { // Interate through images
+				var data = y[j].data;
+				var avg = (data[i] + data[i +1] + data[i +2]) / 3; // Average pixel value
+				pixelY[j] = Math.log(avg); // Ln(y)
+			}
+
+			var beta = Regression.linearLeastSquares(x, pixelY);
+
+			imageOut.data[i]     = beta[0]; // red
+			imageOut.data[i + 1] = beta[0]; // green
+			imageOut.data[i + 2] = beta[0]; // blue
+			imageOut.data[i + 3] = 255;
+		} 
+
 	}
 
 }

@@ -10,6 +10,8 @@ import ImageNode from './node-image.js';
 
 class Graph {
 	constructor(id, props) { 
+		this.nodes = Nodes;
+		this.links = Links;
 		this.createGraph(id, props);
 	} 
 
@@ -52,8 +54,11 @@ class Graph {
 		}
 		else if(nodeType == 'custom')
 			new Node(this.svg, { x:pt.x, y:pt.y, title:'Custom', input:[], output:[]});	
-		else if(nodeType == 'fit')
-			new Node(this.svg, { x:pt.x, y:pt.y, title:'Fit', input:[], output:[]});			
+		else if(nodeType == 'fit') {
+			input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}, {name:'Image 3', value:null}, {name:'Image 4', value:null}, {name:'Image 5', value:null}];
+			output = [{name:'Image', value:null}];			
+			new Node(this.svg, { x:pt.x, y:pt.y, title:'Fit', input:input, output:output});			
+		}
 		else if(nodeType == 'histogram')
 			new Node(this.svg, { x:pt.x, y:pt.y, title:'Histogram', input:[], output:[]});
 		else if(nodeType == 'image') {
