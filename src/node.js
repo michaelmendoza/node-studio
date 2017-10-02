@@ -140,12 +140,19 @@ class Node {
 		var grab = grip.append("rect")
 			.attr("x", 0).attr("y", 0)	    
 			.attr("width", 14).attr("height", 14)
-			.attr("fill", '#FFFFFF')
+			.attr("fill", '#222222')
 			.attr("opacity", 0)
 			.attr("class", "grab")
 
-		// Activate Node drag
-		grab.on("mousedown", () => {
+		var grab2 = grip.append("rect")
+			.attr("x", 40).attr("y", 0)	    
+			.attr("width", 40).attr("height", 14)
+			.attr("fill", '#222222')
+			.attr("opacity", 0)
+			.attr("class", "grab")
+
+
+		var mousedownHandler = () => {
 			this.isDragged = true;
 			this.mouse = mouse(grab.node());
 
@@ -166,7 +173,11 @@ class Node {
 			})
 
 			event.preventDefault();
-		})	
+		}
+
+		// Activate Node drag
+		grab.on("mousedown", mousedownHandler);
+		grab2.on("mousedown", mousedownHandler);	
 	}
 	
 	createNodeInput(input, index) { 
