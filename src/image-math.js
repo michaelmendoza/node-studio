@@ -51,8 +51,8 @@ class ImageMath {
 	}
 
 	linearImageMap(x, y, imageOut) { 
-		var lengthX = x.length;					// Number of images
-		var lengthY = y[0].data.length; // Number of pixels
+		var lengthX = x.length;				// Number of images
+		var lengthY = y[0].data.length; 	// Number of pixels
 		for (var i = 0; i < lengthY; i += 4) { // Interate through pixels
 
 			var pixelY = Array(lengthX);

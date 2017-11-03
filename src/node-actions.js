@@ -1,4 +1,5 @@
 import ImageMath from "./image-math.js";
+import PixelMath from "./pixel-math.js";
 
 class NodeActions {
 	runAction(action, args) {
@@ -16,15 +17,16 @@ class NodeActions {
 		var node = args.node;
 		var data = node.getInputNode(0).runNode();
 		var data2 = node.getInputNode(1).runNode();
-		var dataOut = ImageMath.getBlankImageData(data.width, data.height);
-		ImageMath.addImage(data, data2, dataOut);
-		return dataOut;
+		var dataOut = PixelMath.add(data, data2);
+		//var dataOut = ImageMath.getBlankImageData(data.width, data.height);
+		//ImageMath.addImage(data, data2, dataOut);
+		return dataOut; 
 	}
 	
 	runCustom(args) {
 		return null;
 	}
-
+	
 	runFit(args) { 
 		var node = args.node;
 		var data = Array(5);
@@ -33,22 +35,24 @@ class NodeActions {
 		data[2] = node.getInputNode(2).runNode();
 		data[3] = node.getInputNode(3).runNode();
 		data[4] = node.getInputNode(4).runNode();
-		var dataOut = ImageMath.getBlankImageData(data[0].width, data[0].height);
-		var times = [15, 30, 45, 60, 75];
-		ImageMath.linearImageMap(times, data, dataOut);
+		var times = [30, 60, 90, 120, 150]; 
+		var dataOut = PixelMath.linearImageMap(times, data);
+		//var dataOut = PixelMath.nonlinearImageMap(times, data);
 		return dataOut;
 	}
 
 	runImage(args) {
-		return ImageMath.getImageData(args.node.img);
+		return args.node.file;
+		//return ImageMath.getImageData(args.node.img);
 	}
 	
-	runView(args) {
+	runView(args) { 
 		var node = args.node;
 		var data = node.getInputNode(0).runNode();
-		var img = ImageMath.createImg(data);
+		var img = data.dicom.createImg(); // Note: Should be DICOM 
+		//var img = ImageMath.createImg(data);
 		img.onload = () => { node.createImg(img.src); }		
-		return img;
+		return data;
 	}
 }
 
