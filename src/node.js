@@ -57,7 +57,7 @@ class Node {
 		})
 	}
 
-	createNodeBox() {
+	createNodeBox() { 
 		var box = this.g.append("rect")
 			.attr("x", 0).attr("y", 0)	    
 			.attr("width", this.width).attr("height", this.height)
@@ -75,8 +75,6 @@ class Node {
 			box.on("dragover", this.nodeDragOver.bind(this));
 			box.on("drop", this.nodeDrop.bind(this));			
 		}
-		if(this.title == 'View') 
-			this.createPlaySVG();
 	}	
 
 	createNodeDelete() { 
@@ -194,25 +192,6 @@ class Node {
 
 	createDropdown() {
 		new NodeDropdown(this);
-	}
-
-	createPlaySVG() {
-		var playData = [{"x":0, "y":0}, {"x": 10, "y":7}, {"x": 0, "y": 14 }, {"x": 0, "y": 0}];
-
-		var lineFunction = line()
-			.x(function(d) { return d.x; })
-			.y(function(d) { return d.y; })
-
-		var playSVG = this.g.append("path")
-			.attr("d", lineFunction(playData))
-			.attr("stroke", "#757575")
-			.attr("stroke-width", 1)
-			.attr("fill", "#757575")
-			.attr("transform", "translate(" + (this.width - 45) + "," + 10 + ")");
-
-		playSVG.on('mouseover', () => { playSVG.style("fill", 'blue') });
-		playSVG.on('mouseleave', () => { playSVG.style("fill", '#757575') });
-		playSVG.on('click', () => { Nodes.runNodes(); });
 	}
 
 	createImg(imgsrc) {

@@ -7,13 +7,15 @@ class Nodes {
 		this.activeNode = null;
 		this.nodes = [];
 		
+		/*
 		ImageNode.on('filesloaded', () => {
 			var node = this.activeNode;
 			var imgsrc = ImageNode.getLatestImage();
 			node.file = ImageNode.getLastestFile();
 			node.img = node.file.img;
 			node.createImg(imgsrc);
-		}) 			
+		}) 		
+		*/	
 	}
 
 	getNodes() {

@@ -58,7 +58,9 @@ class NodeDropdown {
 				  .attr('y', (d) => { return d.index * 50 + 15 })
 				  .attr('width', 40)
 
-				options.on('click', (d) => {
+				/** Handle selecting an image in the list of image files */
+				options.on('click', (d) => { 
+					node.file = d;
 					node.svg.selectAll('.' + node.id)
 						.append('image')
 						.attr("xlink:href", d.img.src)
