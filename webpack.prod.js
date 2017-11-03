@@ -15,7 +15,8 @@ module.exports = {
 		'events',
 		'react',
 		'react-dom',
-		'dicom-parser'
+		'dicom-parser',
+    'ml-matrix'
 	],
   module: {
     loaders: [
