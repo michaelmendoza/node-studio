@@ -30,11 +30,7 @@ class NodeActions {
 	runFit(args) { 
 		var node = args.node;
 		var data = Array(5);
-		data[0] = node.getInputNode(0).runNode();
-		data[1] = node.getInputNode(1).runNode();
-		data[2] = node.getInputNode(2).runNode();
-		data[3] = node.getInputNode(3).runNode();
-		data[4] = node.getInputNode(4).runNode();
+		data = node.getInputNode(0).runNode().fileset;
 		var times = [30, 60, 90, 120, 150]; 
 		var dataOut = PixelMath.linearImageMap(times, data);
 		//var dataOut = PixelMath.nonlinearImageMap(times, data);

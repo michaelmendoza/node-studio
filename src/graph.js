@@ -55,7 +55,7 @@ class Graph {
 		else if(nodeType == 'custom')
 			new Node(this.svg, { x:pt.x, y:pt.y, title:'Custom', input:[], output:[]});	
 		else if(nodeType == 'fit') {
-			input = [{name:'Image 1', value:null}, {name:'Image 2', value:null}, {name:'Image 3', value:null}, {name:'Image 4', value:null}, {name:'Image 5', value:null}];
+			input = [{name:'Image Array', value:null}];
 			output = [{name:'Image', value:null}];			
 			new Node(this.svg, { x:pt.x, y:pt.y, title:'Fit', input:input, output:output});			
 		}
