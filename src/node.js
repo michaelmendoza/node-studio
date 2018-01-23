@@ -1,5 +1,6 @@
 
 import ContextMenu from './context-menu.js';
+import Dropdown from './dropdown.js';
 import { event, line, mouse } from 'd3';
 import ImageMath from "./image-math.js";
 import Link from './link.js';
@@ -71,9 +72,12 @@ class Node {
 			})
 		
 		if(this.title == 'Image') {
-			this.createDropdown();
+			new NodeDropdown(this);
 			box.on("dragover", this.nodeDragOver.bind(this));
 			box.on("drop", this.nodeDrop.bind(this));			
+		} 
+		else if(this.title == 'Fit') {
+			new Dropdown(this, ['Linear Map', 'Nonlinear Map']);
 		}
 	}	
 
@@ -188,10 +192,6 @@ class Node {
 		output = new Port(output, index);
 		output.createOutputPort(this, index);
 		return output;
-	}
-
-	createDropdown() {
-		new NodeDropdown(this);
 	}
 
 	createImg(imgsrc) {

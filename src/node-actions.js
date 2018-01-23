@@ -32,8 +32,13 @@ class NodeActions {
 		var data = Array(5);
 		data = node.getInputNode(0).runNode().fileset;
 		var times = [30, 60, 90, 120, 150]; 
-		var dataOut = PixelMath.linearImageMap(times, data);
-		//var dataOut = PixelMath.nonlinearImageMap(times, data);
+
+		var modes = {
+			'Linear Map': () => { return PixelMath.linearImageMap(times, data); },
+			'Nonlinear Map': () => { return PixelMath.nonlinearImageMap(times, data); }
+		}
+		
+		var dataOut = modes[node.selectedMode]();
 		return dataOut;
 	}
 
