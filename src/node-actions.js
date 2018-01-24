@@ -31,13 +31,13 @@ class NodeActions {
 		var node = args.node;
 		var data = Array(5);
 		data = node.getInputNode(0).runNode().fileset;
-		var times = [30, 60, 90, 120, 150]; 
+		var times = [5e-3, 10e-3, 20e-3, 30e-3, 40e-3]; 
 
 		var modes = {
 			'Linear Map': () => { return PixelMath.linearImageMap(times, data); },
 			'Nonlinear Map': () => { return PixelMath.nonlinearImageMap(times, data); }
 		}
-		
+
 		var dataOut = modes[node.selectedMode]();
 		return dataOut;
 	}

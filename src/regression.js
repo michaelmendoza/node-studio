@@ -32,12 +32,14 @@ class linearRegression {
 		beta1 = yBar - beta2 * xBar;
 
 		// Return coefficents of regression
-		return [beta1, beta2];		
+		return [beta1, beta2];
 	}
 }
 
 var Model = {};
 Model.Exponential = {
+	name:'exponential',
+	b: [ 1, 1 ],
 	f: function(x, b) { return b[0] * Math.exp(b[1] * x); },
 	df: 
 	[ 
@@ -46,10 +48,23 @@ Model.Exponential = {
 	]
 }
 
-class NonLinearRegression { 
-	constructor() {
-		this.model = Model.Exponential;
-		this.b = [ 1, 1 ];
+Model.BiExponential = {
+	name:'biexponential',
+	b: [ 1, 1, 1, 1 ],	
+	f: function(x, b) { return b[0] * Math.exp(b[1] * x) + b[2] * Math.exp(b[3] * x); },
+	df: 
+	[ 
+		function(x, b) { return Math.exp(b[1] * x); },
+		function(x, b) { return (b[0] * x) * Math.exp(b[1] * x); },
+		function(x, b) { return Math.exp(b[3] * x); },
+		function(x, b) { return (b[2] * x) * Math.exp(b[3] * x); }		
+	]
+}
+
+class NonLinearRegression {
+	constructor(model) {
+		this.model = model;
+		this.b = this.model.b.map((a) => {return a}); // Copy default beta
 		this.f = this.model.f;
 		this.df = this.model.df;
 
@@ -60,20 +75,29 @@ class NonLinearRegression {
 		this.maxInterations = 100;
 	}
 
-	fit(x, y, model) {
-		this.model = model || this.model;
-		levenbergMarquardtAlgorithm(x,y);
-		return this.b;
+	fit(x, y) {;
+		if(this.isValidData(y))
+			this.LevenbergMarquardtAlgorithm(x,y);
+
+		return this.b;	
 	}
 
-	residuals(x, y, f, b) {
+	isValidData(y) {
+		//var checksum = y.reduce( (a, b) => { return a + b;} );
+		//var test = (checksum > 10) ? true : false;
+		//var test2 = !y.reduce(function(a, b){ return (a === b) ? a : NaN; });
+		//return test && test2;
+		return true;
+	}
+
+	Residuals(x, y, f, b) {
 		var R = Matrix.zeros(x.length, 1);
 		for(var i = 0; i < x.length; i++)
 			R[i][0] = y[i] - this.f(x[i], b);
 		return R;
 	}
 
-	jacobian(x) {
+	Jacobian(x) {
 		var Nr = x.length;
 		var Nc = this.b.length;
 		var J = Matrix.zeros(Nr, Nc);
@@ -83,20 +107,20 @@ class NonLinearRegression {
 		return J;
 	}
 
-	gaussNewtonAlgorithm(x, y) {
+	GaussNewtonAlgorithm(x, y) {
 		// Declare varibles
 		var J, Jt, R, dB;
 
 		// Init convergence varibles
 		var convergence = 1;
 		var S = [];
-		R = this.residuals(x, y, this.f, this.b);
+		R = this.Residuals(x, y, this.f, this.b);
 		S.push(R.norm());
 
 		// Interate
 		while(convergence > this.errorTolerance) {
 			// Calculate parameter delta
-			J = this.jacobian(x);
+			J = this.Jacobian(x);
 			Jt = J.transpose();
 			dB = Inverse(Jt.mmul(J));
 			dB = dB.mmul(Jt).mmul(R);
@@ -106,16 +130,16 @@ class NonLinearRegression {
 				this.b[i] = this.b[i] + dB[i][0];
 
 			// Calculate convergence
-			R = this.residuals(x, y, this.f, this.b);
+			R = this.Residuals(x, y, this.f, this.b);
 			S.push(R.norm());
 			var k = S.length - 1;
 			convergence = Math.abs((S[k] - S[k-1]) / S[k-1]);
 		}
 	}
 
-	levenbergMarquardtAlgorithm(x,y) { 
+	LevenbergMarquardtAlgorithm(x,y) { 
 		// Declare varibles
-		var J, Jt, JtJ, JtJdiag, R, R0, R1, R2, dB, dB0, dB1, dB2, b0, b1;
+		var J, Jt, JtJ, JtJdiag, R, R0, R1, R2, dB, dB0, dB1, dB2, b0, b1, b2;
 		var lambda, lambda0, v;
 		var SE, SE0, SE1, SE2;
 
@@ -125,7 +149,7 @@ class NonLinearRegression {
 		var interation = 1;
 		var convergence = 1;
 		var S = [];
-		R = this.residuals(x, y, this.f, this.b);
+		R = this.Residuals(x, y, this.f, this.b);
 		S.push(R.norm());
 
 		// Init damping parameters
@@ -138,7 +162,7 @@ class NonLinearRegression {
 				interation < this.maxInterations )
 		{
 			// Calculate parameter delta
-			J = this.jacobian(x);
+			J = this.Jacobian(x);
 			Jt = J.transpose();
 			JtJ = Jt.mmul(J);
 			JtJdiag = Matrix.mul(JtJ, Matrix.eye(JtJ.rows, JtJ.cols));
@@ -154,8 +178,8 @@ class NonLinearRegression {
 				b0[i] = this.b[i] + dB0[i][0];		
 				b1[i] = this.b[i] + dB1[i][0];	
 			}
-			R0 = this.residuals(x, y, this.f, b0);
-			R1 = this.residuals(x, y, this.f, b1);
+			R0 = this.Residuals(x, y, this.f, b0);
+			R1 = this.Residuals(x, y, this.f, b1);
 			SE0 = R0.norm();
 			SE1 = R1.norm();
 
@@ -175,6 +199,8 @@ class NonLinearRegression {
 			} 
 			else { // Search in steepest descent direction 
 				// Increase damping factor by a factor of v until a better MSE is found
+				dB2 = dB1;
+				R2 = R1;
 				SE2 = SE1;
 				while(SE2 > S[S.length - 1] && lambda < this.gradientMinDifference) {
 					lambda = lambda * v;
@@ -183,7 +209,7 @@ class NonLinearRegression {
 					b2 = Array(this.b.length);
 					for (var i = 0; i < this.b.length; i++)
 						b2[i] = this.b[i] + dB2[i][0];		
-					R2 = this.residuals(x, y, this.f, b2);
+					R2 = this.Residuals(x, y, this.f, b2);
 					SE2 = R2.norm();			
 				}
 
@@ -214,11 +240,9 @@ class NonLinearRegression {
 
 }
 
-
 class Regression {
-
 	constructor() {
-		//this.models = Models;
+		this.model = Model.Exponential;
 	}
 
 	linearLeastSquares(x, y) { 
@@ -226,11 +250,10 @@ class Regression {
 		return regression.linearLeastSquares(x, y);
 	}
 
-	nonLinearLeastSquares(x, y, model) {
-		var regression = new NonLinearRegression()
-		return regression.fit(x, y, model)
+	nonLinearLeastSquares(x, y) {
+		var regression = new NonLinearRegression(this.model)
+		return regression.fit(x, y)
 	}
-
-} 
+}
 
 export default new Regression();

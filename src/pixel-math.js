@@ -37,7 +37,7 @@ class PixelMath {
 			var beta = Regression.linearLeastSquares(x, pixels);
 			out[i] = - 1 / beta[1];
 			out[i] = isFinite(out[i]) ? out[i] : 0;    // If NAN or Infinity set to zero
-			out[i] = (out[i] <= 4096) ? out[i] : 4096; // Temp - Bound between 4096 - 0
+			out[i] = (out[i] <= 4096) ? out[i] : 0; //4096; // Temp - Bound between 4096 - 0
 			out[i] = (out[i] >= 0) ? out[i] : 0; 
 		} 
 
@@ -62,8 +62,10 @@ class PixelMath {
 			var beta = Regression.nonLinearLeastSquares(x, pixels);
 			out[i] = - 1 / beta[1];
 			out[i] = isFinite(out[i]) ? out[i] : 0; 	// If NAN or Infinity set to zero
-			out[i] = (out[i] <= 4096) ? out[i] : 4096; // Temp - Bound between 4096 - 0
-			out[i] = (out[i] >= 0) ? out[i] : 0;
+			out[i] = (out[i] <= 4096) ? out[i] : 0; //4096; // Temp - Bound between 4096 - 0 TODO: Set max map value
+			out[i] = (out[i] >= 0) ? out[i] : 0; 
+			//if(out[i] != 0)
+			//	console.log('Regress: ' + i + ' ' + pixels + ' ' + beta + ' ' + out[i]);			
 		} 
 		
 		var data0 = y[0];
