@@ -15,13 +15,13 @@ app.get('/build/bundle.js', function(req, res) {
 	res.sendFile(path.join(__dirname, '../build', 'bundle.js'));
 });
 
-/*
 // set up the RESTful API, handler methods are defined in api.js
 var api = require('./controllers/api.js');
 app.get('/api', api.list);
+app.get('/api/test', api.test)
 app.get('/api/create', api.create);
 app.get('/api/delete', api.delete);
-*/
+
 
 app.listen(port);
 console.log("App with Data listening on port " + port);

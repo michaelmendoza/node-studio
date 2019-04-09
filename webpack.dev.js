@@ -3,7 +3,7 @@ var path = require('path');
 var webpack = require('webpack');
  
 module.exports = {
-  entry: './src/test/graph/main.js',
+  entry: './src/test/test.jsx',
   output: { path: __dirname, filename: 'build/bundle.js' },
   module: {
     loaders: [

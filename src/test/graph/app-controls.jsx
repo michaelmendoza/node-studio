@@ -15,7 +15,7 @@ class AppControls extends React.Component {
 
 	render() {
 		return (
-			<section className='app-controls'>  
+			<section className='app-sidebar'>  
 				<div className="icon-button" onClick={this.handlePlayGraph}><i className="material-icons">play_arrow</i></div>
 				<div className="icon-button"><i className="material-icons">save</i></div>
 				<div className="icon-button"><i className="material-icons">folder_open</i></div>
