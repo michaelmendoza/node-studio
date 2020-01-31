@@ -1,4 +1,89 @@
 
+// Layout with flex-box
+
+.layout {
+  box-sizing: border-box;
+  display: -webkit-flex;
+  display: -moz-flex;
+  display: -ms-flexbox;
+  display: flex;
+}
+
 .layout-flexgrow {
   flex-grow: 1;
 }
+
+.layout-column {
+    @extend .layout;
+    -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-flex-direction: column;
+}
+
+.layout-row {
+    @extend .layout;
+    -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-flex-direction: row;
+}
+
+.layout-center {
+    @extend .layout;
+
+    -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.layout-vertical-center {
+    @extend .layout;
+
+    -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+.layout-horizontal-center {
+    @extend .layout;
+
+  -webkit-justify-content: center;
+  -ms-flex-pack: center;
+  justify-content: center;
+}
+
+.layout-wrap {
+    flex-wrap: wrap;
+}
+
+.flex { box-sizing: border-box; flex: 1; }
+$percents: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100;
+@each $percent in $percents {
+    .flex-#{$percent} { flex: 0 0 percentage($percent/100); }
+}
+
+/*
+// Example for row layout
+<div class="layout-row">
+    <div class="flex-20"> A </div>  // take 20% width
+    <div class="flex-10"> B </div>  // take 10% width
+    <div class="flex"> C </div>         // take leftover width
+    <div class="flex"> D </div>         // take leftover width and share with other flex
+</div>
+
+// Example for row layout
+<div class="layout-row">
+    <div class="flex"> A </div>         // take leftover width and share with other flex
+    <div class="flex-20"> B </div>  // take 20% width
+    <div class="flex-10"> C </div>  // take 10% width
+    <div class="flex"> D </div>         // take leftover width and share with other flex
+</div>
+
+// Example for row layout with centered content
+<div class="layout-center">
+  <div class="flex-20"> A </div>  
+  <div class="flex-10"> B </div>  
+</div>
+*/
