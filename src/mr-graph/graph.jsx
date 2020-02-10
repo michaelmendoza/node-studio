@@ -1,4 +1,5 @@
 import React, { useState } from 'react';
+import Draggable, {DraggableCore} from 'react-draggable';
 
 var NodeType = {
   IMAGE:0,
@@ -85,18 +86,28 @@ const NodeImage = (props) => <div className='node_image'>
     <Canvas></Canvas>
 </div>
 
-const Node = (props) => <div className='node'>
- <NodeTitle name={props.node.name}></NodeTitle>
- <NodeIO node={props.node}></NodeIO>
- <NodeImage></NodeImage>
-</div>
+class Node extends React.Component {
+    constructor(props) {
+        super(props);
+    }
 
+    render() {
+        return (<Draggable>
+            <div className='node'>
+            <NodeTitle name={ this.props.node.name }></NodeTitle>
+            <NodeIO node={ this.props.node }></NodeIO>
+            <NodeImage></NodeImage>
+            </div>
+        </Draggable>
+    );
+  } 
+}
 
 const Graph = () => { 
 
   return (
     <div className="node-blueprint">  
-      <Node node={new NodeData(NodeType.ADD)}></Node>
+        <Node node={new NodeData(NodeType.ADD)}></Node>
     </div>
   );
 } 

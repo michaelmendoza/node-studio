@@ -21,6 +21,8 @@
 }
 
 .node {
+  cursor: move;
+  position: absolute;
   font-family: Helvetica;
   background-color: $node-color;
   color: $node-text-color;
