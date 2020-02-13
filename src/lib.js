@@ -1,5 +1,5 @@
 
-console.log('GraphNode -', 'Version: 0.0.18', 'Date:Aug 1, 2017');
+console.log('ImageNodes -', 'Version: 0.0.22', 'Date:Feb 13, 2020');
 
 import Graph from './graph/graph';
 

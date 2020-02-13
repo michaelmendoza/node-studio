@@ -16,20 +16,13 @@ module.exports = {
 		'react',
 		'react-dom',
 		'dicom-parser',
-        'ml-matrix'
+    'ml-matrix'
 	],
   module: {
-    loaders: [
-    	{ test: /\.(jpg|png)$/, loader: 'url?limit=25000' },
-    	{ test: /\.scss$/, loader: "style!css!sass" },
-      {
-        test: /.jsx?$/,
-        loader: 'babel-loader',
-        exclude: /node_modules/,
-        query: {
-          presets: ['es2015', 'react']
-        }
-      }
+    rules: [
+      { test: /\.(js|jsx)$/, loader: 'babel-loader', exclude: /node_modules/ },
+      { test: /\.(jpg|png)$/, loader: 'url?limit=25000' },
+      { test: /\.(scss|css)$/, loader: "style-loader!css-loader!sass-loader" }
     ]
   },
 };
