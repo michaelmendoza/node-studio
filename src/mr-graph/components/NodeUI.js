@@ -1,37 +1,9 @@
-import React, { useState } from 'react';
-import Draggable, {DraggableCore} from 'react-draggable';
-
-var NodeType = {
-  IMAGE:0,
-  ADD:1,
-  MASK:2,
-  FIT:3
-}
-
-var NodeTypeList = {
-  [NodeType.ADD]: { name:'Add', input:['A', 'B'], output:['Out']},
-  [NodeType.IMAGE]: { name:'Image', input:[], output:['Out']},
-  [NodeType.MASK]: { name:'Mask', input:['In', 'Mask'], output:['Out']},
-  [NodeType.FIT]: { name:'Fit', input:['In'], output:['Out']}
-}
-
-class NodeData {
-  constructor(nodeType) {
-    var info = NodeTypeList[nodeType]
-    this.name = info.name;
-    this.input = info.input;
-    this.output = info.output;
-    this.image = null;
-  }
-}
-
-var NodesActiveDict = {
-  'node-add-0': null
-}
+import React from 'react';
+import Draggable from 'react-draggable';
 
 const NodeInputs = (props) => <div className="node_input flex-50"> 
   { 
-    props.node.input.map((item, index) => {
+    props.node.inputLabels.map((item, index) => {
       return <div key={index} className="node_io-item layout-row flex"> 
           <div className="node_io-point"></div> 
           <div className="node_io-text flex"> {item} </div>
@@ -42,7 +14,7 @@ const NodeInputs = (props) => <div className="node_input flex-50">
 
 const NodeOutput = (props) => <div className="node_output flex-50"> 
   { 
-    props.node.output.map((item, index) => {
+    props.node.outputLabels.map((item, index) => {
       return <div key={index} className="node_io-item layout-row flex"> 
           <div className="node_io-text flex"> {item} </div>
           <div className="node_io-point"></div> 
@@ -68,7 +40,6 @@ class Canvas extends React.Component {
     var img = new Image();
     img.onload = () => {
         ctx.drawImage(img, 0, 0);
-        console.log('test');
     }
     img.src = 'https://picsum.photos/200/200';
   }
@@ -86,31 +57,35 @@ const NodeImage = (props) => <div className='node_image'>
     <Canvas></Canvas>
 </div>
 
-class Node extends React.Component {
-    constructor(props) {
-        super(props);
-    }
+var nodeUICount = 0;
 
-    render() {
-        return (<Draggable>
-            <div className='node'>
-            <NodeTitle name={ this.props.node.name }></NodeTitle>
-            <NodeIO node={ this.props.node }></NodeIO>
-            <NodeImage></NodeImage>
-            </div>
-        </Draggable>
-    );
-  } 
+/** React component representing a Node in a computation graph. */
+const NodeUI = (props) => {
+
+  nodeUICount++;
+
+  const onControlledDrag = (e, position) => {
+    const {x, y} = position;
+    props.node.position.x = x;
+    props.node.position.y = y;
+  };
+
+  const onControlledDragStop = (e, position) => {
+    onControlledDrag(e, position);
+  };
+
+  return (<Draggable key={nodeUICount}
+      handle=".node_title"
+      position= { props.node.position } 
+      grid={[25, 25]}
+      onStop={onControlledDragStop}>
+      <div className='node'>
+      <NodeTitle name={ props.node.name }></NodeTitle>
+      <NodeIO node={ props.node }></NodeIO>
+      <NodeImage></NodeImage>
+      </div>
+    </Draggable>
+  );
 }
 
-const Graph = () => { 
-
-  return (
-    <div className="node-blueprint">  
-        <Node node={new NodeData(NodeType.ADD)}></Node>
-    </div>
-  );
-} 
-
-
-export default Graph;
+export default NodeUI;

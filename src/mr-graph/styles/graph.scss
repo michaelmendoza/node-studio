@@ -21,7 +21,6 @@
 }
 
 .node {
-  cursor: move;
   position: absolute;
   font-family: Helvetica;
   background-color: $node-color;
@@ -34,6 +33,7 @@
   box-shadow: $box-shadow-0;
 
   .node_title {
+    cursor: move;
     width: 100%;
     height: 40px;
     padding: 10px;

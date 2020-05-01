@@ -1,2 +1,2 @@
 
-export { default as Graph } from "./graph.jsx"
+export { default as Graph } from "./components/Graph"
