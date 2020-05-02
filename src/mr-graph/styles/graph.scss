@@ -1,6 +1,6 @@
 
 // https://leaverou.github.io/css3patterns/
-.node-blueprint {
+.node-graph {
     position:fixed;
     padding:0;
     margin:0;
@@ -10,7 +10,7 @@
 
     width: 100%;
     height: 100%;
-
+    
     background-color: #fff;
     background-image: linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px),
@@ -18,6 +18,11 @@
     linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px);
     background-size: 100px 100px, 100px 100px, 20px 20px, 20px 20px;
     background-position:-2px -2px, -2px -2px, -1px -1px, -1px -1px;
+}
+
+.node-links {
+  position: absolute;
+  pointer-events: none;
 }
 
 .node {
