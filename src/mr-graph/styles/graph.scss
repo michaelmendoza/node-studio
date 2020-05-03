@@ -10,7 +10,7 @@
 
     width: 100%;
     height: 100%;
-    
+
     background-color: #fff;
     background-image: linear-gradient(rgba(0,0,0,.1) 1px, transparent 1px),
     linear-gradient(90deg, rgba(0,0,0,.1) 1px, transparent 1px),
@@ -84,10 +84,6 @@
     margin-right: 6px;
   }
 
-  .node_input {
-    
-  }
-
   .node_output {
     text-align: right;
   }
@@ -96,5 +92,4 @@
     padding: 10px;
     background-color: $node-canvas-bg-color;
   }
-
 }

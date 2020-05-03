@@ -1,5 +1,6 @@
-import React from 'react';
+import React, { useContext } from 'react';
 import Draggable from 'react-draggable';
+import { GraphContext } from '../contexts/GraphContext';
 
 const NodeInputs = (props) => <div className="node_input flex-50"> 
   { 
@@ -62,22 +63,27 @@ var nodeUICount = 0;
 /** React component representing a Node in a computation graph. */
 const NodeUI = (props) => {
 
+  //const { drawLinks, setDrawLinks } = useContext(GraphContext);
+  
   nodeUICount++;
 
   const onControlledDrag = (e, position) => {
     const {x, y} = position;
     props.node.position.x = x;
     props.node.position.y = y;
+    //setDrawLinks(true);
   };
 
   const onControlledDragStop = (e, position) => {
     onControlledDrag(e, position);
+    //setDrawLinks(false);
   };
 
   return (<Draggable key={nodeUICount}
       handle=".node_title"
       position= { props.node.position } 
       grid={[25, 25]}
+      onDrag={onControlledDrag}
       onStop={onControlledDragStop}>
       <div className='node'>
       <NodeTitle name={ props.node.name }></NodeTitle>
