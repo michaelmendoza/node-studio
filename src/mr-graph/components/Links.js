@@ -1,55 +1,64 @@
-import React, { useState, useEffect, useContext } from 'react';
+import React, { useEffect, useContext } from 'react';
 import * as d3 from 'd3';
 import { GraphContext } from '../contexts/GraphContext';
 
-const Links = () => {
-    const { nodes, links, addLink, drawLinks, setDrawLinks } = useContext(GraphContext);
-    const handle = () => { setDrawLinks(!drawLinks)};
+const startOffset = { x:185, y:56 }
+const endOffset = { x:16, y:56 }
+const dyOffset = 18;
 
+const Links = () => {
+    const { nodes, links, addLink, setLinks, drawLinks } = useContext(GraphContext);
+
+    useEffect(() => { DrawLinks(); }, [drawLinks])
     useEffect(() => { console.log('Links', links)}, [links])
     useEffect(() => { console.log('Nodes', nodes); CreateLinks(); }, [nodes])
 
     /** Creates an svg with links between nodes in graph */
     const CreateLinks = () => {
-        var width = 800;
-        var height = 800;
+        var width = 2000;
+        var height = 2000;
         var svg = d3.select('.node-links').append("svg")
         svg.attr("width", width)
             .attr("height", height)	
-        
-        var startOffset = { x:185, y:56 }
-        var endOffset = { x:16, y:56 }
-        var dyOffset = 18;
-        
+                
         // Create a link for between each Input and Output connection in the nodes list
-        nodes.forEach( (node) => {
-            node.outputs.forEach( (output, i) => {
-                var j = output.inputs.indexOf(node); 
-                let p1 = { x:node.position.x + startOffset.x, y:node.position.y + startOffset.y + i * dyOffset };
-                let p2 = { x:output.position.x + endOffset.x, y:output.position.y + endOffset.y + j * dyOffset };
-                var link = CreateLink(p1, p2);
-                addLink(link);
+        nodes.forEach( (startNode) => {
+            startNode.outputs.forEach( (endNode, i) => {
+                CreateLink(startNode, endNode);
             })
         })
     }
-
+    
     /** Creates a single link  */
-    const CreateLink = (p1, p2) => {
-        var link = d3.select('.node-links svg').append("line")
-        link.attr("x1", p1.x)
-            .attr("y1", p1.y)
-            .attr("x2", p2.x)
-            .attr("y2", p2.y)
-            .attr("stroke-width", 2)
-            .attr("stroke", "#444444");
-        return link;
+    const CreateLink = (startNode, endNode) => {
+        var link = { 
+            svg:d3.select('.node-links svg').append("line"),
+            startNode:startNode,
+            endNode:endNode
+        };
+
+        DrawLink(link);
+        links.push(link);
+        setLinks(links);
     }
 
-    const RedrawLink = (link, p1, p2) => {
-        link.attr("x1", p1.x)
-            .attr("y1", p1.y)
-            .attr("x2", p2.x)
-            .attr("y2", p2.y);
+    const DrawLink = (link) => {
+        var startNode = link.startNode;
+        var endNode = link.endNode;
+        var i = startNode.outputs.indexOf(endNode);
+        var j = endNode.inputs.indexOf(startNode);
+        link.p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + i * dyOffset };
+        link.p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
+        link.svg.attr("x1", link.p1.x)
+                .attr("y1", link.p1.y)
+                .attr("x2", link.p2.x)
+                .attr("y2", link.p2.y)
+                .attr("stroke-width", 2)
+                .attr("stroke", "#444444");
+    }
+
+    const DrawLinks = () => {
+        links.forEach((link) => { DrawLink(link); })
     }
 
     return (

@@ -1,4 +1,3 @@
-import NodeUI from './NodeUI';
 
 export const NodeType = {
   IMAGE:'Image',
@@ -26,7 +25,6 @@ class NodeCompute {
     this.inputLabels = info.input;
     this.outputLabels = info.output;
     this.position = { x:x, y:y };
-    this.nodeUI = NodeUI({ node:this })
 
     // Properties for Node compute
     this.inputs = inputs;   // List input nodes

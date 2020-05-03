@@ -5,8 +5,6 @@ import GraphContextProvider from '../contexts/GraphContext';
 
 /** Computation Graph */
 const Graph = () => { 
-    // { drawLinks.toString() } <button onClick={handle}></button>  
-
     return (
       <div className="node-graph">  
         <GraphContextProvider>

@@ -1,10 +1,10 @@
 import React, { useEffect, useContext } from 'react';
 import { GraphContext } from '../contexts/GraphContext';
 import NodeCompute, {NodeType} from './NodeCompute';
+import NodeUI from './NodeUI';
 
 const Nodes = () => {
-    const { nodes, addNode, setNodes } = useContext(GraphContext);
-    //const [nodes, setNodes] = useState([]);
+    const { nodes, setNodes } = useContext(GraphContext);
 
     useEffect(() => {
         CreateGraph();
@@ -14,7 +14,8 @@ const Nodes = () => {
     const CreateNode = (nodeType, x , y) => {
       return (...inputs) => {
         let node = new NodeCompute({nodeType, x, y, inputs});
-        //addNode(node);
+        nodes.push(node);
+        setNodes(nodes);
         return node;
       }
     }
@@ -25,7 +26,6 @@ const Nodes = () => {
         var x2 = CreateNode(NodeType.IMAGE, 100, 400)()
         var a = CreateNode(NodeType.ADD, 400, 100)(x, x2);
         var d = CreateNode(NodeType.DISPLAY, 700, 100)(a)
-        setNodes([x, x2, a, d]);
     }
     
     /** Compute traversal order for nodes for a given node */
@@ -48,9 +48,10 @@ const Nodes = () => {
             nodes.forEach( (n) => n.compute() );
         })
     }
+
     return (
         <div className="nodes">  
-            { nodes.map( (d) => d.nodeUI ) }  
+            { nodes.map( (n, i) => <NodeUI key={i} node={n}></NodeUI> ) }  
         </div>
       );
 }

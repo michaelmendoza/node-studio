@@ -58,28 +58,24 @@ const NodeImage = (props) => <div className='node_image'>
     <Canvas></Canvas>
 </div>
 
-var nodeUICount = 0;
-
 /** React component representing a Node in a computation graph. */
 const NodeUI = (props) => {
 
-  //const { drawLinks, setDrawLinks } = useContext(GraphContext);
+  const { setDrawLinks } = useContext(GraphContext);
   
-  nodeUICount++;
-
   const onControlledDrag = (e, position) => {
     const {x, y} = position;
     props.node.position.x = x;
     props.node.position.y = y;
-    //setDrawLinks(true);
+    setDrawLinks();
   };
-
+  
   const onControlledDragStop = (e, position) => {
     onControlledDrag(e, position);
-    //setDrawLinks(false);
+    setDrawLinks();
   };
-
-  return (<Draggable key={nodeUICount}
+  
+  return (<Draggable
       handle=".node_title"
       position= { props.node.position } 
       grid={[25, 25]}
@@ -95,3 +91,37 @@ const NodeUI = (props) => {
 }
 
 export default NodeUI;
+
+/*
+const NodeUI = (props) => {
+
+  const { setDrawLinks } = useContext(GraphContext);
+  
+  nodeUICount++;
+
+  const onControlledDrag = (e, position) => {
+    const {x, y} = position;
+    props.node.position.x = x;
+    props.node.position.y = y;
+    //setDrawLinks(true);
+  };
+
+  const onControlledDragStop = (e, position) => {
+    onControlledDrag(e, position);
+    //setDrawLinks(false);
+  };
+  
+  return (<Draggable key={nodeUICount}
+      handle=".node_title"
+      position= { props.node.position } 
+      grid={[25, 25]}
+      onDrag={onControlledDrag}
+      onStop={onControlledDragStop}>
+      <div className='node'>
+      <NodeTitle name={ props.node.name }></NodeTitle>
+      <NodeIO node={ props.node }></NodeIO>
+      <NodeImage></NodeImage>
+      </div>
+    </Draggable>
+  );
+} */
