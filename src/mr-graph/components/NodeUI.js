@@ -2,6 +2,7 @@ import React, { useContext, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { GraphContext } from '../contexts/GraphContext';
 import { NodeType } from './NodeCompute';
+import nj from 'numjs';
 
 const NodeInputs = (props) => <div className="node_input flex-50"> 
   { 
@@ -65,35 +66,18 @@ class Canvas extends React.Component {
   }
 
   componentDidMount() {
-    this.drawMockImg();
+    this.props.node.drawMockImage(this.refs.canvas);
   }
 
-  componentDidUpdate() {
-    if(this.props.image != null)
-      this.drawImg();
-  }
-
-  drawMockImg() {
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
-
-    var img = new Image();
-    img.onload = () => {
-        ctx.drawImage(img, 0, 0);
+  componentDidUpdate(prevProps) {
+    if(this.props.node.nodeType == NodeType.IMAGE) {
+      if(this.props.image != null && this.props.image !== prevProps.image)
+        this.props.node.drawImage(this.refs.canvas);
     }
-    img.src = 'https://picsum.photos/200/200';
-  }
-
-  drawImg() {
-    console.log('Redraw');
-    const canvas = this.refs.canvas
-    const ctx = canvas.getContext("2d")
-
-    var img = new Image();
-    img.onload = () => {
-        ctx.drawImage(img, 0, 0);
+    else {
+      if(this.props.data != null && this.props.data !== prevProps.data)
+        this.props.node.drawDataToCanvas(this.refs.canvas);
     }
-    img.src = this.props.image;
   }
 
   render() {
@@ -106,15 +90,17 @@ class Canvas extends React.Component {
 }
 
 const NodeImage = (props) => <div className='node_image'> 
-    <Canvas image = { props.node.image }></Canvas>
+    <Canvas node = { props.node } image = { props.node.image } data = { props.node.data } ></Canvas>
 </div>
 
 /** React component representing a Node in a computation graph. */
 const NodeUI = (props) => {
   
-  const { setUpdateNodes, setUpdateLinks } = useContext(GraphContext);
+  const { setUpdateLinks, setUpdateNodes, setUpdateSession } = useContext(GraphContext);
   
-  useEffect(() => { props.node.update = setUpdateNodes }, [])
+  useEffect(() => { 
+    props.node.update = { nodes: setUpdateNodes, session:setUpdateSession }
+  }, [])
 
   const onControlledDrag = (e, position) => {
     const {x, y} = position;

@@ -12,6 +12,7 @@
     "dicom-parser": "1.7.4",
     "ml-matrix": "^5.3.0",
     "normalize.css": "^8.0.1",
+    "numjs": "file:../open-source/numjs",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
     "react-draggable": "^4.3.1"

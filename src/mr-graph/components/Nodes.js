@@ -4,10 +4,11 @@ import NodeCompute, {NodeType} from './NodeCompute';
 import NodeUI from './NodeUI';
 
 const Nodes = () => {
-    const { nodes, setNodes, updateNodes } = useContext(GraphContext);
+    const { nodes, setNodes, updateNodes, updateSession, setUpdateNodes } = useContext(GraphContext);
     
-    useEffect(() => {  CreateGraph(); RunSession(); }, [])
-    useEffect(() => { console.log('Update Nodes ...') }, [updateNodes])
+    useEffect(() => { CreateGraph(); }, [])
+    useEffect(() => { console.log('Update Nodes ...'); }, [updateNodes])
+    useEffect(() => { console.log('Update Session ...'); RunSession(); }, [updateSession])
     
     const CreateNode = (nodeType, x , y) => {
       return (...inputs) => {
@@ -21,7 +22,7 @@ const Nodes = () => {
     /** Create a template graph  */
     const CreateGraph = () => {
         var x = CreateNode(NodeType.IMAGE, 100, 100)()
-        var x2 = CreateNode(NodeType.IMAGE, 100, 400)()
+        var x2 = CreateNode(NodeType.IMAGE, 100, 450)()
         var a = CreateNode(NodeType.ADD, 400, 100)(x, x2);
         var d = CreateNode(NodeType.DISPLAY, 700, 100)(a)
     }
@@ -40,11 +41,13 @@ const Nodes = () => {
 
     /** Run a single session for the computation graph  */
     const RunSession = () => {
+        console.log("RunSession");
         const operation = nodes.filter( (n) => n.nodeType == NodeType.DISPLAY );
         operation.forEach( (op) => {
             let nodes = ComputeOrder(op)
             nodes.forEach( (n) => n.compute() );
         })
+        setUpdateNodes();
     }
 
     return (
