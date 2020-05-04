@@ -14,23 +14,23 @@
 }
 
 .layout-column {
-    @extend .layout;
-    -ms-flex-direction: column;
+  @extend .layout;
+  -ms-flex-direction: column;
   flex-direction: column;
   -webkit-flex-direction: column;
 }
 
 .layout-row {
-    @extend .layout;
-    -ms-flex-direction: row;
+  @extend .layout;
+  -ms-flex-direction: row;
   flex-direction: row;
   -webkit-flex-direction: row;
 }
 
 .layout-center {
-    @extend .layout;
+  @extend .layout;
 
-    -webkit-align-items: center;
+  -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
   -webkit-justify-content: center;
@@ -39,15 +39,15 @@
 }
 
 .layout-vertical-center {
-    @extend .layout;
+  @extend .layout;
 
-    -webkit-align-items: center;
+  -webkit-align-items: center;
   -ms-flex-align: center;
   align-items: center;
 }
 
 .layout-horizontal-center {
-    @extend .layout;
+  @extend .layout;
 
   -webkit-justify-content: center;
   -ms-flex-pack: center;
@@ -58,10 +58,18 @@
     flex-wrap: wrap;
 }
 
+.layout-space-around {
+  justify-content: space-around;
+}
+
+.layout-space-between {
+  justify-content: space-between;
+}
+
 .flex { box-sizing: border-box; flex: 1; }
 $percents: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100;
 @each $percent in $percents {
-    .flex-#{$percent} { flex: 0 0 percentage($percent/100); }
+  .flex-#{$percent} { flex: 0 0 percentage($percent/100); }
 }
 
 /*

@@ -88,6 +88,32 @@
     text-align: right;
   }
 
+  .node_props {
+    width: 100%;
+    padding: 0.6em;
+    text-align: right;
+    background-color: $node-canvas-bg-color;
+    border-style: solid;
+    border-bottom-color: $grey-border-color;
+    border-width: 0px 0px 1px 0px;
+    
+    input {
+      width: 100%;
+      font-size: 0.75em;
+    }
+
+    label {
+      font-size: 0.9em;
+    }
+
+    button {
+      font-size: 0.75em;
+      background-color: $white;
+      border-radius: 0.5em;
+      padding: 0.5em;
+    }
+  }
+
   .node_image {
     padding: 10px;
     background-color: $node-canvas-bg-color;

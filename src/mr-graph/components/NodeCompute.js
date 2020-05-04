@@ -32,6 +32,10 @@ class NodeCompute {
     this.image = null;
     this.data = 1;
     this.fn = info.fn;
+    
+    // Props UI Section
+    this.onLoad = () => { console.log('Loading ...')};
+    this.onFileInput = (e) => { console.log('File Input ...'); this.handleFileInput(e); }; 
 
     // Append this node to the list of outputs for each input 
     inputs.forEach( input => input.outputs.push(this) )
@@ -47,6 +51,17 @@ class NodeCompute {
     let debugString = this.data != null ? this.data.toString() : "";
     console.log(this.name + " :" + debugString);
   } 
+
+  handleFileInput(event) {
+    var file = event.target.files[0];
+    var reader = new FileReader();
+    var node = this;
+    reader.onload = function(e) {
+      node.image = e.target.result;
+      node.update();
+    };
+    reader.readAsDataURL(file);
+  }
 }
 
 export default NodeCompute;

@@ -4,12 +4,10 @@ import NodeCompute, {NodeType} from './NodeCompute';
 import NodeUI from './NodeUI';
 
 const Nodes = () => {
-    const { nodes, setNodes } = useContext(GraphContext);
-
-    useEffect(() => {
-        CreateGraph();
-        RunSession();
-    }, [])
+    const { nodes, setNodes, updateNodes } = useContext(GraphContext);
+    
+    useEffect(() => {  CreateGraph(); RunSession(); }, [])
+    useEffect(() => { console.log('Update Nodes ...') }, [updateNodes])
     
     const CreateNode = (nodeType, x , y) => {
       return (...inputs) => {

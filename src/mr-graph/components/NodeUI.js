@@ -1,6 +1,7 @@
-import React, { useContext } from 'react';
+import React, { useContext, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { GraphContext } from '../contexts/GraphContext';
+import { NodeType } from './NodeCompute';
 
 const NodeInputs = (props) => <div className="node_input flex-50"> 
   { 
@@ -31,10 +32,48 @@ const NodeIO = (props) => <div className="node_io layout-row flex" >
 
 const NodeTitle = (props) => <div className="node_title"> {props.name} </div>
 
-const NodeProps = (props) => <div> </div>
+const NodeProps = (props) => {
+  const FileInput = () => {
+    return (
+      <div className="layout-row layout-vertical-center layout-space-between flex"> 
+        <input type="file" onChange={props.node.onFileInput} />
+      </div>
+    )
+  }
+
+  const NodeButton = () => {
+    return (
+      <div className="layout-row layout-vertical-center layout-space-between flex"> 
+        <label>Load:</label> 
+        <button onClick={props.node.onLoad}> Select Image </button>
+      </div>
+    )
+  }
+  
+  const show = props.node.nodeType == NodeType.IMAGE;
+
+  return (
+    <div className="node_props"> 
+      { show ? <FileInput></FileInput> : "" }
+    </div>
+  )
+}
 
 class Canvas extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+
   componentDidMount() {
+    this.drawMockImg();
+  }
+  
+  componentDidUpdate() {
+    if(this.props.image != null)
+      this.drawImg();
+  }
+
+  drawMockImg() {
     const canvas = this.refs.canvas
     const ctx = canvas.getContext("2d")
 
@@ -43,6 +82,18 @@ class Canvas extends React.Component {
         ctx.drawImage(img, 0, 0);
     }
     img.src = 'https://picsum.photos/200/200';
+  }
+
+  drawImg() {
+    console.log('Redraw');
+    const canvas = this.refs.canvas
+    const ctx = canvas.getContext("2d")
+
+    var img = new Image();
+    img.onload = () => {
+        ctx.drawImage(img, 0, 0);
+    }
+    img.src = this.props.image;
   }
 
   render() {
@@ -55,21 +106,23 @@ class Canvas extends React.Component {
 }
 
 const NodeImage = (props) => <div className='node_image'> 
-    <Canvas></Canvas>
+    <Canvas image = { props.node.image }></Canvas>
 </div>
 
 /** React component representing a Node in a computation graph. */
 const NodeUI = (props) => {
-
-  const { setDrawLinks } = useContext(GraphContext);
   
+  const { setUpdateNodes, setDrawLinks } = useContext(GraphContext);
+  
+  useEffect(() => { props.node.update = setUpdateNodes }, [])
+
   const onControlledDrag = (e, position) => {
     const {x, y} = position;
     props.node.position.x = x;
     props.node.position.y = y;
     setDrawLinks();
   };
-  
+
   const onControlledDragStop = (e, position) => {
     onControlledDrag(e, position);
     setDrawLinks();
@@ -82,9 +135,10 @@ const NodeUI = (props) => {
       onDrag={onControlledDrag}
       onStop={onControlledDragStop}>
       <div className='node'>
-      <NodeTitle name={ props.node.name }></NodeTitle>
-      <NodeIO node={ props.node }></NodeIO>
-      <NodeImage></NodeImage>
+      <NodeTitle name = { props.node.name }></NodeTitle>
+      <NodeIO node = { props.node }></NodeIO>
+      <NodeProps node = { props.node }></NodeProps>
+      <NodeImage node = { props.node }></NodeImage>
       </div>
     </Draggable>
   );
