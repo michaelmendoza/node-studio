@@ -7,11 +7,11 @@ class GraphContextProvider extends Component {
     state = {
         nodes:[],
         links:[],
-        drawLinks:0,
+        updateLinks:0,
         updateNodes:0
     }
     
-    setDrawLinks = () => { this.setState({ drawLinks: this.state.drawLinks + 1 })}
+    setUpdateLinks = () => { this.setState({ updateLinks: this.state.updateLinks + 1 })}
     setUpdateNodes = () => { this.setState({ updateNodes:this.setState.updateNodes + 1 })}
     addNode = (node) => { this.setState({ nodes:[...this.state.nodes, node] })}
     setNodes = (nodes) => { this.setState({ nodes:nodes })}
@@ -21,7 +21,7 @@ class GraphContextProvider extends Component {
     render() {
         return (
             <GraphContext.Provider value={{...this.state, 
-                setDrawLinks:this.setDrawLinks,
+                setUpdateLinks:this.setUpdateLinks,
                 setUpdateNodes:this.setUpdateNodes,
                 addNode:this.addNode,
                 setNodes:this.setNodes,

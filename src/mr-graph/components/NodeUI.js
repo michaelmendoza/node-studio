@@ -67,7 +67,7 @@ class Canvas extends React.Component {
   componentDidMount() {
     this.drawMockImg();
   }
-  
+
   componentDidUpdate() {
     if(this.props.image != null)
       this.drawImg();
@@ -112,7 +112,7 @@ const NodeImage = (props) => <div className='node_image'>
 /** React component representing a Node in a computation graph. */
 const NodeUI = (props) => {
   
-  const { setUpdateNodes, setDrawLinks } = useContext(GraphContext);
+  const { setUpdateNodes, setUpdateLinks } = useContext(GraphContext);
   
   useEffect(() => { props.node.update = setUpdateNodes }, [])
 
@@ -120,12 +120,12 @@ const NodeUI = (props) => {
     const {x, y} = position;
     props.node.position.x = x;
     props.node.position.y = y;
-    setDrawLinks();
+    setUpdateLinks();
   };
 
   const onControlledDragStop = (e, position) => {
     onControlledDrag(e, position);
-    setDrawLinks();
+    setUpdateLinks();
   };
   
   return (<Draggable
@@ -149,7 +149,7 @@ export default NodeUI;
 /*
 const NodeUI = (props) => {
 
-  const { setDrawLinks } = useContext(GraphContext);
+  const { setUpdateLinks } = useContext(GraphContext);
   
   nodeUICount++;
 
@@ -157,12 +157,12 @@ const NodeUI = (props) => {
     const {x, y} = position;
     props.node.position.x = x;
     props.node.position.y = y;
-    //setDrawLinks(true);
+    //setUpdateLinks(true);
   };
 
   const onControlledDragStop = (e, position) => {
     onControlledDrag(e, position);
-    //setDrawLinks(false);
+    //setUpdateLinks(false);
   };
   
   return (<Draggable key={nodeUICount}

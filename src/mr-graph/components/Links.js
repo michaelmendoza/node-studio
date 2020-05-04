@@ -7,9 +7,9 @@ const endOffset = { x:16, y:56 }
 const dyOffset = 18;
 
 const Links = () => {
-    const { nodes, links, addLink, setLinks, drawLinks } = useContext(GraphContext);
+    const { nodes, links, addLink, setLinks, updateLinks } = useContext(GraphContext);
 
-    useEffect(() => { DrawLinks(); }, [drawLinks])
+    useEffect(() => { DrawLinks(); }, [updateLinks])
     useEffect(() => { console.log('Links', links)}, [links])
     useEffect(() => { console.log('Nodes', nodes); CreateLinks(); }, [nodes])
 
@@ -28,7 +28,7 @@ const Links = () => {
             })
         })
     }
-    
+
     /** Creates a single link  */
     const CreateLink = (startNode, endNode) => {
         var link = { 
