@@ -12,7 +12,7 @@ class AppControls extends React.Component {
 		AppStore.runGraph();
 		var query = AppStore.queryGraph();
 	}
-
+	
 	render() {
 		return (
 			<section className='app-sidebar'>  
