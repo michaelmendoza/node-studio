@@ -7,11 +7,11 @@ const endOffset = { x:16, y:56 }
 const dyOffset = 18;
 
 const Links = () => {
-    const { nodes, links, addLink, setLinks, updateLinks } = useContext(GraphContext);
+    const { nodes, links, addLink, setLinks, updateNodes, updateLinks } = useContext(GraphContext);
 
     useEffect(() => { DrawLinks(); }, [updateLinks])
     useEffect(() => { console.log('Links', links)}, [links])
-    useEffect(() => { console.log('Nodes', nodes); CreateLinks(); }, [nodes])
+    useEffect(() => { console.log('Nodes - CreateLinks', nodes); CreateLinks(); }, [updateNodes])
 
     /** Creates an svg with links between nodes in graph */
     const CreateLinks = () => {

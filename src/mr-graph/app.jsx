@@ -1,10 +1,19 @@
 import React from 'react';
 import { Graph } from '.';
+import GraphContextProvider from './contexts/GraphContext';
 
 const SideNavItem = (props) => {
+  const handleDragEnd = (e) => {
+    if (e.stopPropagation) {
+      e.stopPropagation(); // stops the browser from redirecting.
+    }
+    console.log("SideNav - DragEnd");
+    return false;
+  }
+  
   return (
     <div className="sidenav-item"> 
-      <div className="sidenav-icon">
+      <div className="sidenav-icon" draggable="true" onDragEnd={handleDragEnd}>
         <div> <i className="material-icons">{props.icon}</i> </div>
         <div> <label> {props.name} </label> </div>
       </div>
@@ -45,7 +54,9 @@ const App = () => (
       <Header></Header>
       <SideNav></SideNav>
       <MainView>
-        <Graph></Graph>    
+        <GraphContextProvider>
+          <Graph></Graph>   
+        </GraphContextProvider>
       </MainView>
     </section>
 );
