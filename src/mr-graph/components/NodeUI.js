@@ -64,9 +64,9 @@ class Canvas extends React.Component {
   constructor(props) {
     super(props);
   }
-
+  
   componentDidMount() {
-    this.props.node.drawMockImage(this.refs.canvas);
+    //this.props.node.drawMockImage(this.refs.canvas);
   }
 
   componentDidUpdate(prevProps) {

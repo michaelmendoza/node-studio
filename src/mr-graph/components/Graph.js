@@ -6,7 +6,7 @@ import GraphContextProvider from '../contexts/GraphContext';
 /** Computation Graph */
 const Graph = () => { 
     return (
-      <div className="node-graph">  
+      <div className="node-graph blueprint-dots">  
         <GraphContextProvider>
             <Nodes></Nodes> 
             <Links></Links>
