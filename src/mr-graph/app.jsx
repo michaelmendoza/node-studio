@@ -32,8 +32,17 @@ const MainView = (props) => {
   )
 }
 
+const Header = () => {
+  return (
+    <header className="header">
+      <h2> Image Graph </h2>
+    </header>
+  )
+}
+
 const App = () => (
     <section className='app'>  
+      <Header></Header>
       <SideNav></SideNav>
       <MainView>
         <Graph></Graph>    

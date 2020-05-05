@@ -1,9 +1,24 @@
 
+.header {
+	position:fixed;
+	left: 0;
+	right: 0;
+	height: 60px;
+	padding: 16px;
+	text-align: center;
+	box-shadow: rgba(51, 61, 78, 0.2) 0px 1px 2px 0px;
+	z-index: 2;
+
+	h2 {
+		margin: 0 0 0 0;
+	}
+}
+
 .sidenav {
 	font-family: Helvetica;
 
     position: fixed;
-    top: 0;
+    top: 60px;
     bottom: 0;
     left: 0;
 	width: 60px;
@@ -11,7 +26,7 @@
 	background-color: $light-grey;
 	z-index: 1;
 	box-shadow: $box-shadow-0;
-	
+
 	.sidenav-item {
 		position: relative;
 		cursor: pointer;
