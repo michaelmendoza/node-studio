@@ -1,0 +1,23 @@
+
+.context-menu {
+    position: absolute;
+    z-index: 10;
+
+    ul {
+        margin: 0;
+        padding: 0.5em 0;
+        width: 100px;
+        background-color: $white;
+    }
+    
+    li {
+        font-size: 1em;
+        margin: 0;
+        padding: 0.4em 0.8em;
+
+        &:hover {
+            color: $white;
+            background-color: $blue
+        }
+    }
+}
