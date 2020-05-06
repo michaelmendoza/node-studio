@@ -6,7 +6,7 @@ import NodeCompute, {NodeType} from './NodeCompute';
 
 /** Computation Graph */
 const Graph = () => { 
-  const { addNode, setNodes } = useContext(GraphContext);
+  const { createNodeType, addNode, setNodes } = useContext(GraphContext);
   useEffect(() => { CreateGraph(); }, [])
   
   /** Create a template graph  */
@@ -26,7 +26,8 @@ const Graph = () => {
   const handleDrop = e => {
     e.preventDefault();
     e.stopPropagation();
-    var node = CreateNode(NodeType.IMAGE, e.pageX - 60, e.pageY - 60)()
+    console.log(createNodeType);
+    var node = CreateNode(createNodeType, e.pageX - 60, e.pageY - 60)()
     addNode(node);
   };
 
