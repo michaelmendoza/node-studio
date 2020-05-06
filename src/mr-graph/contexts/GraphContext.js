@@ -13,11 +13,13 @@ class GraphContextProvider extends Component {
         updateSession:0,
         createNodeType: NodeType.IMAGE
     }
-
+    
     addNode = (node) => { this.setState({ nodes:[...this.state.nodes, node] })}
     setNodes = (nodes) => { this.setState({ nodes:nodes })}
+    deleteNode = (node) => { this.setState({ nodes: this.state.nodes.filter(n => n !== node)})} 
     addLink = (link) => { this.setState({ links:[...this.state.links, link] })}
     setLinks = (links) => { this.setState({ links:links })}
+    deletelink = (link) => { this.setState({ links: this.state.links.filter(l => l !== link)})} 
     setUpdateLinks = () => { this.setState({ updateLinks: this.state.updateLinks + 1 })}
     setUpdateNodes = () => { this.setState({ updateNodes: this.state.updateNodes + 1 }); console.log("UpdateNodes: ", this.state.updateNodes); }
     setUpdateSession = () => { this.setState({ updateSession: this.state.updateSession + 1 }); console.log("UpdateSession: ", this.state.updateSession); }
@@ -28,8 +30,10 @@ class GraphContextProvider extends Component {
             <GraphContext.Provider value={{...this.state, 
                 addNode:this.addNode,
                 setNodes:this.setNodes,
+                deleteNode:this.deleteNode,
                 addLink:this.addLink,
                 setLinks:this.setLinks,
+                deleteLink:this.deleteLink,
                 setUpdateLinks:this.setUpdateLinks,
                 setUpdateNodes:this.setUpdateNodes,
                 setUpdateSession:this.setUpdateSession,

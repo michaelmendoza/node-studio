@@ -114,54 +114,25 @@ const NodeUI = (props) => {
     setUpdateLinks();
   };
   
+  const handleContextMenu = e => {
+    event.preventDefault();
+    props.handleContextMenu(e, props.node);
+  }
+  
   return (<Draggable
       handle=".node_title"
       position= { props.node.position } 
       grid={[25, 25]}
       onDrag={onControlledDrag}
       onStop={onControlledDragStop}>
-      <div className='node'>
-      <NodeTitle name = { props.node.name }></NodeTitle>
-      <NodeIO node = { props.node }></NodeIO>
-      <NodeProps node = { props.node }></NodeProps>
-      <NodeImage node = { props.node }></NodeImage>
+      <div className='node' onContextMenu={handleContextMenu}>
+        <NodeTitle name = { props.node.name }></NodeTitle>
+        <NodeIO node = { props.node }></NodeIO>
+        <NodeProps node = { props.node }></NodeProps>
+        <NodeImage node = { props.node }></NodeImage>
       </div>
     </Draggable>
   );
 }
 
-export default NodeUI;
-
-/*
-const NodeUI = (props) => {
-
-  const { setUpdateLinks } = useContext(GraphContext);
-  
-  nodeUICount++;
-
-  const onControlledDrag = (e, position) => {
-    const {x, y} = position;
-    props.node.position.x = x;
-    props.node.position.y = y;
-    //setUpdateLinks(true);
-  };
-
-  const onControlledDragStop = (e, position) => {
-    onControlledDrag(e, position);
-    //setUpdateLinks(false);
-  };
-  
-  return (<Draggable key={nodeUICount}
-      handle=".node_title"
-      position= { props.node.position } 
-      grid={[25, 25]}
-      onDrag={onControlledDrag}
-      onStop={onControlledDragStop}>
-      <div className='node'>
-      <NodeTitle name={ props.node.name }></NodeTitle>
-      <NodeIO node={ props.node }></NodeIO>
-      <NodeImage></NodeImage>
-      </div>
-    </Draggable>
-  );
-} */
+export default NodeUI; 

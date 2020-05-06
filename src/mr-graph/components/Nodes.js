@@ -9,7 +9,7 @@ export const CreateNode = (nodeType, x , y) => {
     }
 }
 
-const Nodes = () => {
+const Nodes = (props) => {
     const { nodes, updateNodes, updateSession, setUpdateNodes } = useContext(GraphContext);
     
     useEffect(() => { console.log('Update Nodes ...'); }, [updateNodes])
@@ -37,10 +37,10 @@ const Nodes = () => {
         })
         setUpdateNodes();
     }
-
+    
     return (
         <div className="nodes">  
-            { nodes.map( (n, i) => <NodeUI key={i} node={n}></NodeUI> ) }  
+            { nodes.map( (n, i) => <NodeUI key={i} node={n} handleContextMenu={props.handleContextMenu}></NodeUI> ) }  
         </div>
       );
 }
