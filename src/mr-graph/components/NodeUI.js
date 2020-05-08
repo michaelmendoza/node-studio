@@ -34,13 +34,6 @@ const NodeIO = (props) => <div className="node_io layout-row flex" >
 const NodeTitle = (props) => <div className="node_title"> {props.name} </div>
 
 const NodeProps = (props) => {
-  const FileInput = () => {
-    return (
-      <div className="layout-row layout-vertical-center layout-space-between flex"> 
-        <input type="file" onChange={props.node.onFileInput} />
-      </div>
-    )
-  }
 
   const NodeButton = () => {
     return (
@@ -55,7 +48,7 @@ const NodeProps = (props) => {
 
   return (
     <div className="node_props"> 
-      { show ? <FileInput></FileInput> : "" }
+      { show ? <input type="file" onChange={props.node.onFileInput} /> : "" }
     </div>
   )
 }
