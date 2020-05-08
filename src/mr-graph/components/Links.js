@@ -6,21 +6,32 @@ const startOffset = { x:185, y:56 }
 const endOffset = { x:16, y:56 }
 const dyOffset = 18;
 
-const Links = () => {
+export const removeLink = (link) => {
+    link.svg.remove();
+}
+
+const Links = (props) => {
     const { nodes, links, addLink, setLinks, updateNodes, updateLinks } = useContext(GraphContext);
 
-    useEffect(() => { DrawLinks(); }, [updateLinks])
-    useEffect(() => { console.log('Links', links)}, [links])
+    useEffect(() => { console.log('Update links'); DrawLinks(); }, [updateLinks])
+    useEffect(() => { console.log('Links', links); }, [links])
     useEffect(() => { console.log('Nodes - CreateLinks', nodes); CreateLinks(); }, [updateNodes])
 
-    /** Creates an svg with links between nodes in graph */
-    const CreateLinks = () => {
+    const CreateSVG = () => {
         var width = 2000;
         var height = 2000;
         var svg = d3.select('.node-links').append("svg")
         svg.attr("width", width)
             .attr("height", height)	
-                
+        return svg;
+    }
+
+    /** Creates an svg with links between nodes in graph */
+    const CreateLinks = () => { 
+        if(d3.select('.node-links svg')[0] == null) {
+            CreateSVG();
+        }
+        
         // Create a link for between each Input and Output connection in the nodes list
         nodes.forEach( (startNode) => {
             startNode.outputs.forEach( (endNode, i) => {
@@ -36,6 +47,16 @@ const Links = () => {
             startNode:startNode,
             endNode:endNode
         };
+
+        link.svg.on('click', (e) => {
+            console.log('Link Click');
+        })
+
+        link.svg.on('contextmenu', () => {
+            console.log("Link Context");
+            event.preventDefault();
+            props.handleContextMenu(event, { node:null, link:link });
+		})
 
         DrawLink(link);
         links.push(link);

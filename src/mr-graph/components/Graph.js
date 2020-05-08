@@ -9,9 +9,11 @@ import ContextMenu from './ContextMenu';
 const Graph = () => { 
   const { createNodeType, addNode, setNodes } = useContext(GraphContext);
 
+  // State variables for context menu 
   const [visible, setVisible] = useState(false);
   const [position, setPosition] = useState( {x:0, y:0});
   const [activeNode, setActiveNode] = useState(null); 
+  const [activeLink, setActiveLink] = useState(null);
 
   useEffect(() => { CreateGraph(); }, [])
   
@@ -27,14 +29,27 @@ const Graph = () => {
   const handleClick = e => {
     setVisible(false);
   }
-
-  const handleContextMenu = (e, node) => {
+  
+  const handleContextMenu = (e, data) => { 
     event.preventDefault();
     setVisible(!visible);
     setPosition({x:e.pageX, y:e.pageY});
-    setActiveNode(node);
+    if(data) {
+      if(data.node !== null) {
+        setActiveNode(data.node);
+        setActiveLink(null);
+      }
+      if(data.link !== null) {
+        setActiveLink(data.link);
+        setActiveNode(null);
+      }
+    }
+    else {
+      setActiveNode(null);
+      setActiveLink(null);
+    }
   }
-
+  
   const handleDragOver = e => {
     e.preventDefault();
     e.stopPropagation();
@@ -53,12 +68,10 @@ const Graph = () => {
         onClick={handleClick}
         onDrop={e => handleDrop(e)}
         onDragOver={e => handleDragOver(e)}>  
-      <div className="graph-background blueprint-dots" 
-        onContextMenu={handleContextMenu}>
-      </div> 
-      <ContextMenu visible={visible} position={position} node={activeNode}></ContextMenu>
-      <Nodes handleContextMenu={handleContextMenu} ></Nodes> 
-      <Links></Links>
+      <div className="graph-background blueprint-dots" onContextMenu={handleContextMenu}></div> 
+      <ContextMenu visible={visible} position={position} node={activeNode} link={activeLink}></ContextMenu>
+      <Nodes handleContextMenu={handleContextMenu}></Nodes> 
+      <Links handleContextMenu={handleContextMenu}></Links>
     </div>
   );
 } 

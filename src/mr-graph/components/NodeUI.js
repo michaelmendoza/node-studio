@@ -114,9 +114,9 @@ const NodeUI = (props) => {
     setUpdateLinks();
   };
   
-  const handleContextMenu = e => {
+  const handleContextMenu = e => { 
     event.preventDefault();
-    props.handleContextMenu(e, props.node);
+    props.handleContextMenu(e, { node:props.node, link:null });
   }
   
   return (<Draggable
