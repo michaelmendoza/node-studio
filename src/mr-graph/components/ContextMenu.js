@@ -21,15 +21,16 @@ const ContextMenu = (props) => {
     ]
 
     const MenuItem = (option, i) => <li key={i} onClick={option.callback}> {option.name} </li>
-    
+
     const Menu = () => {
         const positionStyle = {left:props.position.x+'px', top:props.position.y+'px'};
         const nodeMenu = nodeOptions.map(MenuItem)
         const linkMenu = linkOptions.map(MenuItem)
         const graphMenu = graphOptions.map(MenuItem)
-        let menu = graphMenu;
-        menu =  props.node != null ?  nodeMenu : graphMenu;
-        menu = props.link != null ? linkMenu : menu;
+        
+        var menu = graphMenu;
+        if(props.node != null) menu = nodeMenu;
+        if(props.link != null) menu = linkMenu;
 
         return (
             <div className="context-menu" style={positionStyle}>

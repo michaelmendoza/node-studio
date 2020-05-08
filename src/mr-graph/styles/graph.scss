@@ -41,6 +41,10 @@
   svg *{
     pointer-events:auto;
   }
+
+  line {
+    cursor: pointer;
+  }
 }
 
 .node {

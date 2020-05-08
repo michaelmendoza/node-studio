@@ -8,6 +8,7 @@ const dyOffset = 18;
 
 export const removeLink = (link) => {
     link.svg.remove();
+    link.clickArea.remove();
 }
 
 const Links = (props) => {
@@ -47,12 +48,18 @@ const Links = (props) => {
             startNode:startNode,
             endNode:endNode
         };
-
+        link.clickArea = d3.select('.node-links svg').append("line");
+        
         link.svg.on('click', (e) => {
             console.log('Link Click');
         })
-        
+
         link.svg.on('contextmenu', () => {
+            event.preventDefault();
+            props.handleContextMenu(event, { node:null, link:link });
+		})
+
+        link.clickArea.on('contextmenu', () => {
             event.preventDefault();
             props.handleContextMenu(event, { node:null, link:link });
 		})
@@ -75,6 +82,13 @@ const Links = (props) => {
                 .attr("y2", link.p2.y)
                 .attr("stroke-width", 2)
                 .attr("stroke", "#444444");
+        link.clickArea.attr("x1", link.p1.x)
+                .attr("y1", link.p1.y)
+                .attr("x2", link.p2.x)
+                .attr("y2", link.p2.y)
+                .attr("stroke-width", 10)
+                .attr("stroke", "#444444")
+                .attr("opacity", 0)
     }
 
     const DrawLinks = () => {

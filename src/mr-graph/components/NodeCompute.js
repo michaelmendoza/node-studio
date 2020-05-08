@@ -41,7 +41,7 @@ class NodeCompute {
     // Append this node to the list of outputs for each input 
     inputs.forEach( input => input.outputs.push(this) )
   }
-
+  
   /** Compute */
   compute() {
     if(this.fn != null) {
