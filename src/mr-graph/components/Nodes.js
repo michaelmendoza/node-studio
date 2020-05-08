@@ -2,11 +2,26 @@ import React, { useEffect, useContext } from 'react';
 import { GraphContext } from '../contexts/GraphContext';
 import NodeCompute, {NodeType} from './NodeCompute';
 import NodeUI from './NodeUI';
+import { removeLink } from './Links';
 
 export const CreateNode = (nodeType, x , y) => {
     return (...inputs) => {
         return new NodeCompute({nodeType, x, y, inputs});
     }
+}
+
+export const removeNode = (node, nodes, links) => {
+    // Remove links connected to input node
+    links.forEach((link) => {
+        if(node == link.startNode) removeLink(link);
+        if(node == link.endNode) removeLink(link);
+    })
+
+    // Remove input/output connection to this node
+    nodes.forEach((_node) => {
+        _node.inputs.filter( n => n !== node )
+        _node.outputs.filter( n => n !== node )
+    })
 }
 
 const Nodes = (props) => {

@@ -26,7 +26,7 @@ const Links = (props) => {
             .attr("height", height)	
         return svg;
     }
-
+    
     /** Creates an svg with links between nodes in graph */
     const CreateLinks = () => { 
         if(d3.select('.node-links svg')[0] == null) {
@@ -49,7 +49,7 @@ const Links = (props) => {
             endNode:endNode
         };
         link.clickArea = d3.select('.node-links svg').append("line");
-        
+
         link.svg.on('click', (e) => {
             console.log('Link Click');
         })

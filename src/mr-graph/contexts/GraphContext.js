@@ -1,5 +1,5 @@
 import React, { Component, createContext } from 'react';
-import { CreateNode } from '../components/Nodes';
+import { CreateNode, removeNode } from '../components/Nodes';
 import { NodeType } from '../components/NodeCompute';
 import { removeLink } from '../components/Links';
 
@@ -15,11 +15,11 @@ class GraphContextProvider extends Component {
         updateSession:0,
         createNodeType: NodeType.IMAGE
     }
-    
+
     addNode = (node) => { this.setState({ nodes:[...this.state.nodes, node] })}
     createNode = (type, x, y) => { this.setState({ nodes:[...this.state.nodes, CreateNode(type, x, y)()] })}
     setNodes = (nodes) => { this.setState({ nodes:nodes })}
-    deleteNode = (node) => { this.setState({ nodes: this.state.nodes.filter(n => n !== node)})} 
+    deleteNode = (node) => { this.setState({ nodes: this.state.nodes.filter(n => n !== node)}); removeNode(node, this.state.nodes, this.state.links); } 
     addLink = (link) => { this.setState({ links:[...this.state.links, link] })}
     setLinks = (links) => { this.setState({ links:links })}
     deleteLink = (link) => { this.setState({ links: this.state.links.filter(l => l !== link)}); removeLink(link); } 
