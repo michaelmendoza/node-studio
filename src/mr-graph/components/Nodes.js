@@ -16,11 +16,11 @@ export const removeNode = (node, nodes, links) => {
         if(node == link.startNode) removeLink(link);
         if(node == link.endNode) removeLink(link);
     })
-
+    
     // Remove input/output connection to this node
     nodes.forEach((_node) => {
-        _node.inputs.filter( n => n !== node )
-        _node.outputs.filter( n => n !== node )
+        _node.inputs = _node.inputs.filter( n => n !== node )
+        _node.outputs = _node.outputs.filter( n => n !== node )
     })
 }
 
