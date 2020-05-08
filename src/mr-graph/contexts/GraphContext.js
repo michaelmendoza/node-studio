@@ -15,7 +15,7 @@ class GraphContextProvider extends Component {
         updateSession:0,
         createNodeType: NodeType.IMAGE
     }
-
+    
     addNode = (node) => { this.setState({ nodes:[...this.state.nodes, node] })}
     createNode = (type, x, y) => { this.setState({ nodes:[...this.state.nodes, CreateNode(type, x, y)()] })}
     setNodes = (nodes) => { this.setState({ nodes:nodes })}

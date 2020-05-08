@@ -51,9 +51,8 @@ const Links = (props) => {
         link.svg.on('click', (e) => {
             console.log('Link Click');
         })
-
+        
         link.svg.on('contextmenu', () => {
-            console.log("Link Context");
             event.preventDefault();
             props.handleContextMenu(event, { node:null, link:link });
 		})
