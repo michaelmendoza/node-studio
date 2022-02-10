@@ -1,4 +1,11 @@
 build
-node_modules
-src/lib
 dist
+src/lib
+
+node_modules
+
+__pycache__
+*.pyc
+.ipynb_checkpoints
+
+.vscode

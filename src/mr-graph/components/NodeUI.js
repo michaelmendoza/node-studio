@@ -2,7 +2,6 @@ import React, { useContext, useEffect } from 'react';
 import Draggable from 'react-draggable';
 import { GraphContext } from '../contexts/GraphContext';
 import { NodeType } from './NodeCompute';
-import nj from 'numjs';
 
 const NodeInputs = (props) => <div className="node_input flex-50"> 
   { 
