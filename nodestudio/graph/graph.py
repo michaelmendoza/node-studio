@@ -1,16 +1,29 @@
+import json
+import jsonpickle
+
+from graph.nodes import NodeProps, NodeInfo
+from graph.enums import NodeType
+from graph.node import Node
+from graph.link import Link
 
 class Graph:
     ''' Represents a computation graph '''
 
     def __init__(self):
         self.node_dict = {}
-        self.nodes = []
         self.links = []
 
     def __str__(self):
         node_dict =  '\n'.join([ f'{self.node_dict[node]}' for node in self.node_dict])
         links = '\n'.join([f'{str(link)}' for link in self.links])
         return f'Graph: \n nodes: \n{node_dict} \n links: \n{links}'
+
+    def getNodeList(self, nodeids):
+        nodes = []
+        for nodeid in nodeids:
+            node = self.getNode(nodeid)
+            nodes.append(node)
+        return nodes
 
     def getNode(self, nodeid):
         return self.node_dict[nodeid]
@@ -19,7 +32,6 @@ class Graph:
         ''' Adds node to graph '''
 
         self.node_dict[node.id] = node
-        self.nodes.append(node.id)
 
     def addLink(self, link):
         ''' Adds link to graph '''
@@ -45,7 +57,6 @@ class Graph:
             self.links.remove(link)
 
         del self.node_dict[node.id]
-        self.nodes.remove(node.id)
 
     def removeLink(self, link):
         ''' Removes link from graph '''
@@ -60,11 +71,35 @@ class Graph:
   
         self.links.remove(link)
 
-    def save():
-        pass
+    def save(self):
+        data = {
+            'nodes': [node.dict() for node in self.node_dict.values()],
+            'links': [link.dict() for link in self.links]
+        }
+        
+        json_string = jsonpickle.encode(data)
 
-    def load():
-        pass
+        with open('json_data.json', 'w') as outfile:
+            outfile.write(json_string)
 
+        return json_string
 
-graph = Graph()
+    def load(self, jsondata):
+        data = json.loads(jsondata)
+
+        # Transform Node class from node dict 
+        nodes = []
+        for node in data['nodes']:
+            type =  NodeType[node['props']['type']]
+            node['props']['type'] = type
+            node['props']['fn'] =  NodeInfo[type].dict()['fn']
+            props = NodeProps(**node['props'])
+
+            nodes.append(Node(props, [], node['id']))
+        self.node_dict = dict([(node.id, node) for node in nodes ])
+
+        self.links = [Link(link['startNode'], link['endNode'], link['id']) for link in data['links']]
+        for link in self.links:
+            link.setup_link()
+
+        return None

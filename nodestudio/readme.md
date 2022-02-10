@@ -11,3 +11,4 @@ Shader Graph
 requirements:
 
 pip install pydicom
+pip install jsonpickle

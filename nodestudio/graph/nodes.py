@@ -1,10 +1,9 @@
 from typing import Dict, List, Callable
 from pydantic import BaseModel
-from .enums import NodeType
-
-from ..process.file.file import read_file
-from ..process.fit import fit
-from ..process.mask import apply_mask
+from graph.enums import NodeType
+from process.file.file import read_file
+from process.fit import fit
+from process.mask import apply_mask
 
 class NodeProps(BaseModel):
     type: NodeType

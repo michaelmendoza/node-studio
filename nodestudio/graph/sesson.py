@@ -1,4 +1,4 @@
-from .graph import graph
+import graph
 
 class Session:
 
@@ -18,7 +18,7 @@ class Session:
 
         def recurse(node):
             for input in node.inputs:
-                input_node = graph.node_dict[input]
+                input_node = graph.current_graph.node_dict[input]
                 recurse(input_node)
             order.append(node)
 
