@@ -21,3 +21,7 @@ def read_dicom(filepath):
             data = np.concatenate((data, dataset.pixel_array[None,:]), axis=0)
             
     return data
+
+def read_rawdata():
+    pass
+

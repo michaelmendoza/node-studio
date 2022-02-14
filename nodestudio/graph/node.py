@@ -1,18 +1,14 @@
 import uuid
+import json
 from typing import List
 import graph
 from graph.link import Link
+from graph.enums import NodeType
 from graph.nodes import NodeInfo, NodeProps
 
 def create_node(type, props):  
     ''' Node creation factory '''
-
-    nodeInfo = NodeInfo[type].dict()                              # Retrive nodeinfo from type
-    def _lambda(*inputs): 
-        _props = NodeProps(** { **nodeInfo, **props })            # Combine nodeinfo and props
-        inputs = [input.id for input in inputs] if inputs else [] # Convert from list[Node] to list[nodeid]
-        return Node(_props, inputs)
-    return _lambda
+    Node.create(type, props)
 
 class Node:
     ''' Represents a Node for computation '''
@@ -65,3 +61,26 @@ class Node:
         input = graph.getNode(link.startNode)
         input.outputs.append(self.id)
 
+    def create(type, props):  
+        ''' Node creation factory '''
+
+        nodeInfo = NodeInfo[type].dict()                              # Retrive nodeinfo from type
+        def _lambda(*inputs): 
+            _props = NodeProps(** { **nodeInfo, **props })            # Combine nodeinfo and props
+            inputs = [input.id for input in inputs] if inputs else [] # Convert from list[Node] to list[nodeid]
+            return Node(_props, inputs)
+        return _lambda
+
+    def load(node_dict):
+        ''' Create node from node_dict saved data '''
+        type =  NodeType[node_dict['props']['type']]
+        node_dict['props']['type'] = type
+        node_dict['props']['fn'] =  NodeInfo[type].dict()['fn']
+        props = NodeProps(**node_dict['props'])
+        return Node(props, [], node_dict['id'])
+
+    def fromJson(json_string):
+        ''' Create node from json string saved data '''
+
+        node = json.loads(json_string)
+        return Node.load(node)

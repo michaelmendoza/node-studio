@@ -33,6 +33,9 @@ class Graph:
 
         self.node_dict[node.id] = node
 
+    def getLink(self, linkid):
+        return next(link for link in links if linkid == link.id)
+
     def addLink(self, link):
         ''' Adds link to graph '''
 
@@ -71,35 +74,32 @@ class Graph:
   
         self.links.remove(link)
 
-    def save(self):
+    def json(self):
+        ''' Converts graph into a json string '''
         data = {
             'nodes': [node.dict() for node in self.node_dict.values()],
             'links': [link.dict() for link in self.links]
         }
         
         json_string = jsonpickle.encode(data)
+        return json_string
 
-        with open('json_data.json', 'w') as outfile:
+    def save(self, file = 'graph_model_data.json' ):
+        ''' Saves graph to json file '''
+        json_string = self.json()
+        with open(file, 'w') as outfile:
             outfile.write(json_string)
-
         return json_string
 
     def load(self, jsondata):
+        ''' Loads graph from json_string '''
         data = json.loads(jsondata)
 
         # Transform Node class from node dict 
         nodes = []
         for node in data['nodes']:
-            type =  NodeType[node['props']['type']]
-            node['props']['type'] = type
-            node['props']['fn'] =  NodeInfo[type].dict()['fn']
-            props = NodeProps(**node['props'])
-
-            nodes.append(Node(props, [], node['id']))
+            nodes.append(Node.load(node))
         self.node_dict = dict([(node.id, node) for node in nodes ])
-
-        self.links = [Link(link['startNode'], link['endNode'], link['id']) for link in data['links']]
-        for link in self.links:
-            link.setup_link()
+        self.links = [Link.load(link) for link in data['links']]
 
         return None

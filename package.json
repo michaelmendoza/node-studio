@@ -4,10 +4,11 @@
   "private": false,
   "scripts": {
     "tests": "python nodestudio/test_runner.py",
+    "api": "cd nodestudio; uvicorn server:app --reload",
+    "start": "cd nodestudiojs; react-scripts start",
     "test": "webpack-dev-server",
     "build": "webpack --env prod --mode production",
-    "dev": "webpack-dev-server --env dev --open --mode development",
-    "backend": "cd server; uvicorn server:app --reload"
+    "dev": "webpack-dev-server --env dev --open --mode development"
   },
   "dependencies": {
     "d3": "^5.16.0",
@@ -18,7 +19,9 @@
     "numjs": "^0.16.1",
     "react": "^16.13.1",
     "react-dom": "^16.13.1",
-    "react-draggable": "^4.3.1"
+    "react-draggable": "^4.3.1",
+    "react-scripts": "^5.0.0",
+    "web-vitals": "^2.1.4"
   },
   "devDependencies": {
     "@babel/core": "^7.9.6",
