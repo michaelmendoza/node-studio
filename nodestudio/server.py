@@ -15,6 +15,11 @@ app.add_middleware(
     allow_headers=["*"],
 )
 
+@app.get("/")
+def read_root():
+    url_list = [{"path": route.path, "name": route.name} for route in app.routes]
+    return {"message": "Welcome Node Studio", "routes": url_list}
+
 app.include_router(routes.router)
 
 @app.middleware("http")

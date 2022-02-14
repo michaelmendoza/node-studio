@@ -35,6 +35,7 @@ class Node:
         return f"Node: {self.id} {self.props}"
 
     def dict(self):
+        ''' Returns dictionary representation of node. Used in saving node to json. '''
         props = self.props.dict()
         props['type'] = props['type'].name
         del props['fn']
@@ -61,8 +62,19 @@ class Node:
         input = graph.getNode(link.startNode)
         input.outputs.append(self.id)
 
+    def update(self, node_dict):
+        ''' Updates node properties. Currently only updates x, y, and args. '''
+        if node_dict['props']:
+            props =  node_dict['props']
+            if props['x']:
+                self.props.x = props['x']
+            if props['y']:
+                self.props.x = props['y']
+            if props['args']:
+                self.props.args = props['args']
+
     def create(type, props):  
-        ''' Node creation factory '''
+        ''' Node creation factory. Class function. '''
 
         nodeInfo = NodeInfo[type].dict()                              # Retrive nodeinfo from type
         def _lambda(*inputs): 
@@ -72,7 +84,7 @@ class Node:
         return _lambda
 
     def load(node_dict):
-        ''' Create node from node_dict saved data '''
+        ''' Create node from node_dict saved data. Class function. '''
         type =  NodeType[node_dict['props']['type']]
         node_dict['props']['type'] = type
         node_dict['props']['fn'] =  NodeInfo[type].dict()['fn']
@@ -80,7 +92,7 @@ class Node:
         return Node(props, [], node_dict['id'])
 
     def fromJson(json_string):
-        ''' Create node from json string saved data '''
+        ''' Create node from json string saved data. Class function. '''
 
         node = json.loads(json_string)
         return Node.load(node)

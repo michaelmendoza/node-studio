@@ -6,13 +6,9 @@ from api import controllers
 class GraphData(BaseModel):
     json_string: str
 
-router = APIRouter()
+router = APIRouter(prefix="/api")
 
-@router.get("/")
-def read_root():
-    return {"Welcome to ": "Node Studio"}
-
-@router.get("/api/graph")
+@router.get("/graph")
 async def get_graph():
     ''' Creates compuate graph '''
 
@@ -22,10 +18,9 @@ async def get_graph():
         print('Error: Graph unable to save to json string.', e)
         raise HTTPException(status_code=500, detail = {'message':"Error: Unable to get graph", 'error':str(e)} )
     else:
-        print('Graph saved to json string.')
         return { 'message': 'Retrieved graph data', 'data': data }
 
-@router.post("/api/graph")
+@router.post("/graph")
 async def create_graph(data: GraphData):
     ''' Creates compuate graph '''
 
@@ -35,7 +30,6 @@ async def create_graph(data: GraphData):
         print('Error: Graph unable to be created.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to create graph", 'error':str(e)} )
     else:
-        print('Graph created.')
         return { 'message': 'Created new graph', 'data': data }
 
 @router.post("/add_node")
@@ -47,13 +41,18 @@ async def add_node(data: GraphData):
         print('Error: Graph unable to add node.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to add node", 'error':str(e)} )
     else:
-        print('Graph created.')
         return { 'message': 'Add node to graph', 'data': data }
 
 @router.post("/update_node")
-async def update_node(data: Dict):
+async def update_node(data: GraphData):
     ''' Adds node to graph '''
-    pass
+    try:
+        data = controllers.update_node(data)
+    except Exception as e:
+        print('Error: Graph unable to update node.', e)
+        raise HTTPException(status_code=500, detail= {'message':"Error: Unable to update node", 'error':str(e)} )
+    else:
+        return { 'message': 'Updated node', 'data': data }
 
 @router.post("/remove_node")
 async def remove_node(node_id: int):
@@ -76,7 +75,6 @@ async def add_link(data: GraphData):
         print('Error: Graph unable to add link.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to add link", 'error':str(e)} )
     else:
-        print('Graph created.')
         return { 'message': 'Add link to graph', 'data': data }
 
 @router.post("/remove_link")
@@ -88,7 +86,6 @@ async def remove_link(link_id: int):
         print('Error: Graph unable to remove link.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to remove link", 'error':str(e)} )
     else:
-        print('Graph created.')
         return { 'message': 'Removed link from graph', 'data': data }
 
 @router.post("/session")
@@ -100,5 +97,4 @@ async def run_session(node_id: int):
         print('Error: Graph unable run session.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to add link", 'error':str(e)} )
     else:
-        print('Graph created.')
         return { 'message': 'Completed sesson', 'data': data }
