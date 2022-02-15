@@ -102,5 +102,4 @@ async def run_session(node_id: ID_Data):
         print('Error: Graph unable run session.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to add link", 'error':str(e)} )
     else:
-        
         return { 'message': 'Completed sesson', 'data': { 'encoded': encodedData, 'shape': data.shape, 'dtype': str(data.dtype), 'size': data.size } }

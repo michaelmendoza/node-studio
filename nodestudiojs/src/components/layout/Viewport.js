@@ -10,10 +10,9 @@ const Viewport = () => {
 
     const handleClick = async () => {
 
-        const encodedData = await apiTest();
-
         var start = new Date().getTime();
-        
+
+        const encodedData = await apiTest();        
         const dataset = decodeDataset(encodedData);
         const dataUri = DrawSlice2D(dataset, SliceType.XY, 0);
         setImg(dataUri);
