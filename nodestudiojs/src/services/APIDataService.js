@@ -9,6 +9,8 @@ const APIDataService = {
     getGraph: body => fetchAPI(`${dataUrl}/graph`, FetchTypes.GET),
 
     createGraph: body => fetchAPI(`${dataUrl}/graph`, FetchTypes.POST, body),
+
+    runSesson: body =>  fetchAPI(`${dataUrl}/session`, FetchTypes.POST, body),
 }
 
 export default APIDataService;

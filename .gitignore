@@ -9,3 +9,5 @@ __pycache__
 .ipynb_checkpoints
 
 .vscode
+
+graph_model_data.json

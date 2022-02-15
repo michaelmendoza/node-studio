@@ -26,12 +26,13 @@ class Link:
 
     def load(link_dict):
         ''' Create link from link_dict saved data'''
-        return Link(link_dict['startNode'], link_dict['endNode'], link_dict['id'])
+        link = Link(link_dict['startNode'], link_dict['endNode'], link_dict['id'])
+        link.setup_link()
+        return link
 
     def fromJson(json_string):
         ''' Create link from json string saved data'''
 
         link_dict = json.loads(json_string)
         link = Link.load(link_dict)
-        link.setup_link()
         return link

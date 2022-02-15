@@ -8,13 +8,13 @@ from graph.nodes import NodeInfo, NodeProps
 
 def create_node(type, props):  
     ''' Node creation factory '''
-    Node.create(type, props)
+    return Node.create(type, props)
 
 class Node:
     ''' Represents a Node for computation '''
 
-    def __init__(self, props: NodeProps, inputs: List, id: str = uuid.uuid1().hex):
-        self.id = id
+    def __init__(self, props: NodeProps, inputs: List, id: str = None):
+        self.id = uuid.uuid1().hex if id == None else id
         self.props = props    # Node properties
         self.inputs = inputs  # List input node ids
         self.outputs = []     # List of consumers i.e. nodes that recieve this node as an input
@@ -32,7 +32,7 @@ class Node:
         graph.current_graph.addNode(self)
 
     def __str__(self):
-        return f"Node: {self.id} {self.props}"
+        return f"Node: {self.id} {self.props} {self.inputs} {self.outputs}"
 
     def dict(self):
         ''' Returns dictionary representation of node. Used in saving node to json. '''
