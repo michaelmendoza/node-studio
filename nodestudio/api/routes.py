@@ -36,6 +36,18 @@ async def create_graph(data: JsonData):
     else:
         return { 'message': 'Created new graph', 'data': data }
 
+@router.get("/node")
+async def get_node(node_id: str, slice: str, index: int):
+    ''' Gets node data for given node_id '''
+
+    try:
+        data = controllers.get_node_data(node_id, slice, index)
+    except Exception as e:
+        print('Error: Unable to retreive node data.', e)
+        raise HTTPException(status_code=500, detail = {'message':"Error: Unable to get node data", 'error':str(e)} )
+    else:
+        return { 'message': 'Retrieved node data', 'data': data }
+
 @router.post("/add_node")
 async def add_node(data: JsonData):
     ''' Adds node to graph '''
@@ -97,9 +109,8 @@ async def run_session(node_id: ID_Data):
     ''' Adds node to graph '''
     try:
         data = controllers.run_session(node_id.id)
-        encodedData = base64.b64encode(data)
     except Exception as e:
         print('Error: Graph unable run session.', e)
         raise HTTPException(status_code=500, detail= {'message':"Error: Unable to add link", 'error':str(e)} )
     else:
-        return { 'message': 'Completed sesson', 'data': { 'encoded': encodedData, 'shape': data.shape, 'dtype': str(data.dtype), 'size': data.size } }
+        return { 'message': 'Completed sesson', 'data': { 'shape': data.shape, 'dtype': str(data.dtype), 'size': data.size } }

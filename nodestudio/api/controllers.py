@@ -1,4 +1,5 @@
 import json
+import base64
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
@@ -12,6 +13,21 @@ def create_graph(data):
     current_graph.load(data.json_string)
     json_string = current_graph.json()
     return json_string
+
+def get_node_data(node_id, slice, index):
+    node = current_graph.getNode(node_id)
+
+    if slice == 'xy':
+        value = node.value[index,:,:]
+    elif slice == 'xz':
+        value = node.value[:,index,:]
+    elif slice == 'yz':
+        value = node.value[:,:index]
+    else:
+        value = node.value
+    
+    encodedData = base64.b64encode(value)
+    return { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size }
 
 def add_node(data):
     node = Node.fromJson(data.json_string)
