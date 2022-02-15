@@ -8,7 +8,7 @@ export const SliceType = {
 export const DrawSlice2D = (data, sliceType = SliceType.XY, index = 0) => {
 
     const pixelArray = data.pixelArray;
-    const resolution = data.stats.stats.max;
+    const resolution = data.stats.max;
     const depth = data.shape[0];
     const height = data.shape[1];
     const width = data.shape[2];
