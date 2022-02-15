@@ -12,6 +12,7 @@ def read_dicom(filepath):
     ''' Reads dicom data and returns a 3d image dataset '''
 
     paths = glob.glob(filepath + '*.dcm')
+    paths = sorted(paths)
 
     dataset = pydicom.dcmread(paths[0])
     depth = len(paths)
@@ -20,6 +21,7 @@ def read_dicom(filepath):
 
     data = np.zeros((depth, height, width), dtype='uint16')
     for idx, path in enumerate(paths):
+        print(idx, path)
         dataset = pydicom.dcmread(path)
         data[idx,:,:] = dataset.pixel_array
             

@@ -1,3 +1,4 @@
+import time
 from graph import current_graph
 from graph.sesson import Session
 from graph.nodes import NodeType
@@ -25,9 +26,12 @@ def test2():
     path = '/Users/michael/projects/MRI/data/foot_data/'
     data = file.read_dicom(path)
     
-    #plt.imshow(data[0].pixel_array, cmap=plt.cm.bone)
-    plt.imshow(data[0,:,:], cmap=plt.cm.bone)
     plt.show()
+    for i in range(data.shape[0]):
+        print(i)
+        plt.imshow(data[i,:,:], cmap=plt.cm.bone)
+        plt.draw()
+        plt.pause(0.05)
 
 def test3():
     filepath = '/Users/michael/projects/MRI/data/foot_data/'

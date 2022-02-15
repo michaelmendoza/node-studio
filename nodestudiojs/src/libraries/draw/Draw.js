@@ -15,7 +15,7 @@ export const DrawImg = (data) => {
     let i = 0;
     for(let x = 0; x < width; x++)
         for(let y = 0; y < height; y++, i++)  {
-            const value = pixelArray[ y * width + x ] * 255 / resolution;
+            const value = pixelArray[ x * width + y ] * 255 / resolution;
             imageData.data[4*i] = value;
             imageData.data[4*i+1] = value;
             imageData.data[4*i+2] = value;

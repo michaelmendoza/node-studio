@@ -1,10 +1,10 @@
 
 import { apiTest } from '../../tests/api';
 import { useRef, useState, useEffect } from 'react';
-import { DrawImg, DrawSlice2D, SliceType } from '../../libraries/draw/Draw';
+import { DrawImg } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import APIDataService from '../../services/APIDataService';
-import { debounce, throttle } from '../../libraries/utils';
+import { throttle } from '../../libraries/utils';
 
 const Viewport = () => {
 
@@ -22,11 +22,11 @@ const Viewport = () => {
 
         setIdx((idx) => { 
             const maxIndex = 159
-            const indexMove = Math.round(event.wheelDelta / 50.0);
-            let newIndex = Math.min(idx + indexMove, maxIndex);
-            newIndex = Math.max(newIndex, 0);
+            const indexMove = event.wheelDelta > 0 ? 1 : -1;    // Update index
+            let newIndex = Math.min(idx + indexMove, maxIndex); // Bound by maxIndex
+            newIndex = Math.max(newIndex, 0);                   // Bound by minIndex i.e. 0
             console.log("Debug:MouseWheel", idx); 
-
+            
             throttle(async () => {
                 const encodedData = await APIDataService.getNode('4ce1c7c08a1211ec8516acde48001122', 'xy', newIndex);
                 const dataset = decodeDataset(encodedData);
