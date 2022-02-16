@@ -21,7 +21,6 @@ def read_dicom(filepath):
 
     data = np.zeros((depth, height, width), dtype='uint16')
     for idx, path in enumerate(paths):
-        print(idx, path)
         dataset = pydicom.dcmread(path)
         data[idx,:,:] = dataset.pixel_array
             

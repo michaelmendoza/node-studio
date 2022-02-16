@@ -1,4 +1,6 @@
 import time
+import numpy as np
+import base64
 from graph import current_graph
 from graph.sesson import Session
 from graph.nodes import NodeType
@@ -33,6 +35,58 @@ def test2():
         plt.draw()
         plt.pause(0.05)
 
+def test2a():
+    path = '/Users/michael/projects/MRI/data/foot_data/'
+    data = file.read_dicom(path)
+    
+    slice = 'yz'
+    if slice == 'xy':
+        length = data.shape[0]
+    elif slice == 'xz':
+        length = data.shape[1]
+    elif slice == 'yz':
+        length = data.shape[2]
+
+    plt.show()
+    for i in range(length):
+        if slice == 'xy':
+            value = data[i,:,:]
+        elif slice == 'xz':
+            value = data[:,i,:]
+            value = np.ascontiguousarray(value)
+        elif slice == 'yz':
+            value = data[:,:,i]
+            value = np.ascontiguousarray(value)
+        
+        #encodedData = base64.b64encode(value)
+
+        print(i)
+        plt.imshow(value, cmap=plt.cm.bone)
+        plt.draw()
+        plt.pause(0.05)
+
+def test2b():
+    x = np.linspace(0, 255, 256, dtype='uint16')
+    x = np.reshape(x, ( 16, 16))
+    plt.imshow(x)
+    plt.show()
+    print(x.dtype)
+    encodedData = base64.b64encode(x)
+    print(encodedData)
+    print(x.shape)
+    print(x.size)
+
+def test2c():
+    x = np.linspace(0, 255, 256, dtype='uint16')
+    x = np.reshape(x, ( 8, 32))
+    plt.imshow(x)
+    plt.show()
+    print(x.dtype)
+    encodedData = base64.b64encode(x)
+    print(encodedData)
+    print(x.shape)
+    print(x.size)
+
 def test3():
     filepath = '/Users/michael/projects/MRI/data/foot_data/'
     x = create_node(NodeType.FILE, {'x':100, 'y':100, 'args':{'filetype':'dicom', 'filepath':filepath}})()
@@ -62,3 +116,4 @@ def test4():
 
     plt.imshow(output[0,:,:], cmap=plt.cm.bone)
     plt.show()
+    

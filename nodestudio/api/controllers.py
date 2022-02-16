@@ -1,5 +1,6 @@
 import json
 import base64
+import numpy as np
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
@@ -21,8 +22,10 @@ def get_node_data(node_id, slice, index):
         value = node.value[index,:,:]
     elif slice == 'xz':
         value = node.value[:,index,:]
+        value = np.ascontiguousarray(value)
     elif slice == 'yz':
-        value = node.value[:,:index]
+        value = node.value[:,:,index]
+        value = np.ascontiguousarray(value)
     else:
         value = node.value
     

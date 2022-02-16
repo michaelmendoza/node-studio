@@ -1,0 +1,47 @@
+/** Layout with flex box */
+
+.layout-row {
+    display: flex;
+    flex-direction: row;
+}
+
+.layout-row-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.layout-column {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: column;
+}
+
+.layout-row-top-align {
+    display: flex;
+    align-items:flex-start;
+    justify-content: center;
+    flex-direction: row;
+}
+
+.layout-center {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.flex-wrap {
+    flex-wrap: wrap;
+}
+
+.flex { box-sizing: border-box; flex: 1; }
+$percents: 5, 10, 15, 20, 25, 30, 35, 40, 45, 50, 55, 60, 65, 70, 75, 80, 85, 90, 95, 100;
+@each $percent in $percents {
+    .flex-#{$percent} { flex: 0 0 percentage($percent/100); }
+}
+
+.layout-space-between {
+    justify-content:space-between
+}

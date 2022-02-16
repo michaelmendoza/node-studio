@@ -1,62 +1,61 @@
 
-import { apiTest } from '../../tests/api';
 import { useRef, useState, useEffect } from 'react';
 import { DrawImg } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import APIDataService from '../../services/APIDataService';
 import { throttle } from '../../libraries/utils';
+import Select from '../base/Select';
+import { encodeTest } from '../../tests/encode.test';
 
 const Viewport = () => {
 
-    const [_img, setImg] = useState();
-    const [ idx, setIdx ] = useState(0);
-
     const ref = useRef();
-    useEffect(() => {
-        ref.current.addEventListener('wheel', handleMouseWheel, { passive: false })
+    const [_img, setImg] = useState();
+    const [idx, setIdx] = useState(0);
+    const [slice, setSlice] = useState('xy');
+
+    useEffect(()=>{
+        setImg(encodeTest())
     }, [])
 
     const handleMouseWheel = (event) => {
         event.stopPropagation();
-		event.preventDefault();
 
         setIdx((idx) => { 
             const maxIndex = 159
-            const indexMove = event.wheelDelta > 0 ? 1 : -1;    // Update index
+            const indexMove = event.deltaY > 0 ? 1 : -1;    // Update index
             let newIndex = Math.min(idx + indexMove, maxIndex); // Bound by maxIndex
             newIndex = Math.max(newIndex, 0);                   // Bound by minIndex i.e. 0
             console.log("Debug:MouseWheel", idx); 
-            
-            throttle(async () => {
-                const encodedData = await APIDataService.getNode('4ce1c7c08a1211ec8516acde48001122', 'xy', newIndex);
-                const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset);
-                setImg(dataUri);
-            })
 
+            fetchData(slice, newIndex);
             return newIndex; 
         })
     }
 
-    const handleClick = async () => {
-
-        var start = new Date().getTime();
-
-        const sessionData = await apiTest();        
-
-        var end = new Date().getTime();
-        var time = end - start;
-
-        console.log(sessionData);
-        console.log('Computed in ' + (time / 1000.0));
+    const fetchData = (slice, index) => {
+        throttle(async () => {
+            const encodedData = await APIDataService.getNode('4ce1c7c08a1211ec8516acde48001122', slice, index);
+            const dataset = decodeDataset(encodedData);
+            const dataUri = DrawImg(dataset);
+            setImg(dataUri);
+        })
     }
 
+    const handleOptionUpdate = (option) => {
+        setSlice(option.value);
+        fetchData(option.value, idx)
+    }
+
+    const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
+
     return (        
-        <div className="viewport" ref={ref}>
+        <div className="viewport" ref={ref} onWheel={handleMouseWheel}>
             <div>
-                <button onClick={handleClick}> API Test </button>
                 <img src={_img} alt='test'/>
                 <div>{idx}</div>
+                {slice}
+                <Select options={options} onChange={handleOptionUpdate}></Select>
             </div>
         </div>
     )

@@ -1,0 +1,25 @@
+
+.select {
+    min-width: 100px;
+    position: relative;
+
+    .select-button {
+        color: #fefefe;
+        width: 100%;
+        margin: 0;
+    }
+
+    .select-options {
+        position: absolute;
+        left: 0;
+        right: 0;
+    }
+
+    .select-option {
+        width: 100%;
+
+        &:hover {
+            color: #fefefe;
+        }
+    }
+}
