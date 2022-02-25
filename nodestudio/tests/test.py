@@ -100,7 +100,7 @@ def test3():
 
     print(output.shape)
 
-    plt.imshow(output[0,:,:], cmap=plt.cm.bone)
+    plt.imshow(output[60,:,:], cmap=plt.cm.bone)
     plt.show()
 
 def test4():

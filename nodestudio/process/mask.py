@@ -1,6 +1,7 @@
 import numpy as np
 
 def create_mask(input, masktype, threshold):
+    ''' Create a mask for image processing based on input options. '''
     if masktype == 'circular':
         d = input.shape[0]
         h = input.shape[1]

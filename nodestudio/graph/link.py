@@ -16,7 +16,8 @@ class Link:
     def dict(self):
         return { 'id': self.id, 'startNode': self.startNode, 'endNode': self.endNode }
 
-    def setup_link(self):       
+    def setup_link(self):      
+        ''' Creates input/output references for link nodes.''' 
         endNode = graph.current_graph.getNode(self.endNode)
         startNode = graph.current_graph.getNode(self.startNode)
         

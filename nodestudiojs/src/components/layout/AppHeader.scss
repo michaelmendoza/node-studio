@@ -1,0 +1,69 @@
+
+@import '../../styles/base/variables.scss';
+
+.app-header {
+    width: 100%;
+    background-color: #ffffff;
+    padding: 0.25em 0;
+    box-shadow: $box-shadow;
+    z-index: 10;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-direction: row;
+    justify-content:space-between;
+
+    .logo {
+        width: 300px;
+        display: flex;
+        align-items: center;
+  
+        img {
+            width: 48px;
+        }
+  
+        label {
+            display: inline-block;
+            color:#282c34;
+            margin-bottom: 0.5em;
+            font-size: 24px;
+            font-weight: 200;
+            margin-left: 0.5em;
+        }
+    }
+}
+
+.header-login {
+    position: relative;
+    display: inline-block;
+  
+    .login-dropdown {
+        background-color: #fefefe;
+        position: absolute;  
+        width: 200px;
+        right: 0em;
+        top: 4em;
+        background-color: app-color('background');
+        border: 1px solid #81818155;
+        border-radius: 2px;
+        padding: 0.5em;
+        box-shadow: $box-shadow;
+  
+      button {
+        background-color: #fefefe;
+        width: 100%;
+        border-radius: 0;
+        display: block;
+        font-size: 16px;
+        font-weight: 300;
+        margin: 0;
+        text-align: left;
+        border: none;
+
+        &:hover, &:focus, &:active {
+            background: #efefef;
+        }
+      }
+    }
+  }

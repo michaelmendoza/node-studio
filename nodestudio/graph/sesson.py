@@ -3,6 +3,7 @@ import graph
 class Session:
 
     def run(operation):
+        ''' Run a compute session for an input operation '''
         print('Run Sesson')
 
         order = Session.compute_order(operation)
@@ -24,4 +25,3 @@ class Session:
 
         recurse(start_node)
         return order
-

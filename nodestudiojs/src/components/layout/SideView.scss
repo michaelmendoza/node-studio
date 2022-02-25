@@ -1,0 +1,26 @@
+@import '../../styles/base/variables.scss';
+
+.left-side-view {
+    background-color: darken($app-background-color, 2%);
+    
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    left: 0;
+    z-index: 9;
+
+    .side-view-container{
+        width: 100px;
+    }
+}
+
+.right-side-view {
+    background-color: darken($app-background-color, 2%);
+    
+    position: fixed;
+    top: 60px;
+    bottom: 0;
+    right: 0;
+    z-index: 9;
+}
+

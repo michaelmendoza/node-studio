@@ -1,44 +1,11 @@
 {
-  "name": "image-nodes",
-  "version": "0.0.22",
+  "name": "node-studio",
+  "version": "0.0.1",
   "private": false,
   "scripts": {
-    "tests": "python nodestudio/test_runner.py",
-    "api": "cd nodestudio; uvicorn server:app --reload",
     "start": "cd nodestudiojs; react-scripts start",
-    "test": "webpack-dev-server",
-    "build": "webpack --env prod --mode production",
-    "dev": "webpack-dev-server --env dev --open --mode development"
-  },
-  "dependencies": {
-    "d3": "^5.16.0",
-    "dicom-parser": "1.7.4",
-    "material-icons": "^0.3.1",
-    "ml-matrix": "^5.3.0",
-    "normalize.css": "^8.0.1",
-    "numjs": "^0.16.1",
-    "react": "^16.13.1",
-    "react-dom": "^16.13.1",
-    "react-draggable": "^4.3.1",
-    "react-scripts": "^5.0.0",
-    "web-vitals": "^2.1.4"
-  },
-  "devDependencies": {
-    "@babel/core": "^7.9.6",
-    "@babel/plugin-proposal-class-properties": "^7.8.3",
-    "@babel/preset-env": "^7.9.6",
-    "@babel/preset-react": "^7.9.4",
-    "babel-loader": "^8.1.0",
-    "css-loader": "^2.1.1",
-    "file-loader": "^2.0.0",
-    "html-webpack-plugin": "^3.2.0",
-    "node-sass": "^4.14.0",
-    "sass-loader": "^7.3.1",
-    "style-loader": "^0.23.1",
-    "url-loader": "^1.1.2",
-    "webpack": "^4.43.0",
-    "webpack-cli": "^3.3.11",
-    "webpack-dev-server": "^3.10.3"
+    "api": "cd nodestudio; uvicorn server:app --reload",
+    "tests": "python nodestudio/test_runner.py"
   },
   "description": "A library for visual programming of image-processing algorithms on dicom images",
   "main": "dist/ImageNodes.js",

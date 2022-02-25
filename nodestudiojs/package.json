@@ -3,8 +3,13 @@
   "version": "0.1.0",
   "private": true,
   "dependencies": {
+    "d3": "^7.3.0",
+    "material-design-icons": "^3.0.1",
+    "node-sass": "^7.0.1",
+    "normalize.css": "^8.0.1",
     "react": "^17.0.2",
     "react-dom": "^17.0.2",
+    "react-draggable": "^4.4.4",
     "react-scripts": "5.0.0",
     "web-vitals": "^2.1.4"
   },

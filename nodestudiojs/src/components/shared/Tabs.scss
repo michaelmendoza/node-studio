@@ -1,0 +1,27 @@
+@import '../../styles/base/variables.scss';
+
+.tabs {
+
+    .tabs-header {
+        padding: 0;
+        border-bottom: 1px solid #66666666;
+        padding: 0.5em 0.5em 1em 0.5em;
+        margin-bottom: 1em;
+        
+        button {
+            border: 1px solid transparent;
+            border-radius: 0;
+            padding: 0.25em 0.5em 0.25em 0.5em;
+            cursor: pointer;
+
+            &:hover, &:focus, &.active {
+                color: #E0E0E0;
+                border-bottom: 1px solid lighten($app-background-color, 20%);
+            }
+        }
+    }
+
+    .tabs-content {
+        padding: 1em;
+    }
+}

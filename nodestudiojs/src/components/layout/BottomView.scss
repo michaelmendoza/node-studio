@@ -1,0 +1,34 @@
+@import '../../styles/base/variables.scss';
+
+.bottom-view {
+    background-color: lighten($app-background-color, 10%);
+    position: fixed;
+    bottom: 0;
+    right: 0;
+    left: 0;
+    z-index: 8;
+
+    .bottom-view-container{
+        height: 100px;
+    }
+
+    .bottom-view-nav {
+        text-align: left;
+        padding: 1em 1em 1em 6em;
+        font-weight: 400;
+        font-size: 0.8em;
+        border-bottom: 1px solid lighten($app-background-color, 20%);
+
+        .nav-item {
+            border-bottom: 1px solid lighten($app-background-color, 20%);
+            padding: 0 0 0.25em 0;
+            cursor: pointer;
+        }
+    }
+}
+
+.node-console {
+    padding: 1em 1em 1em 7em;
+    font-weight: 200;
+    font-size: 0.7em
+}
