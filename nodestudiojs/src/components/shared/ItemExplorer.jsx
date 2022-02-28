@@ -44,8 +44,20 @@ const ItemExplorer = ({show, item}) => {
 
 const ItemView = ({item}) => {
 
+    const handleDragStart = (e) => {
+        e.dataTransfer.setData('text/plain', item.type);
+        
+        //e.currentTarget
+        //.style
+        //.backgroundColor = 'yellow';
+    }
+
+    const handleDragEnd = (e) => {
+        console.log(e);
+    }
+
     return (
-        <div className='node-item-view layout-row'>
+        <div className='node-item-view layout-row' draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <div>
                 <img src='https://via.placeholder.com/36' alt='node item'/>
             </div>

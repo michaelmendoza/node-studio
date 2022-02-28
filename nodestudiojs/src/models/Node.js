@@ -1,20 +1,32 @@
 
+import { getNodeFromType } from './NodeList';
+const Nodes = {
+    'FILE': { type: 'FILE', inputs:[], outputs:['Out'], options:['filetype', 'filepath']} 
+}
+
 class Node {
 
     constructor(node) {
-        this.id = node.id;              // UUID for node
+        this.id = node.id;                              // UUID for node
         this.position = {};
-        this.position.x = node.position.x || 0; // X position of node
-        this.position.y = node.position.y || 0; // Y position of node
-        this.name = node.name || 'test';        // NodeType
-        this.inputs = node.input || ['In'];     // Input Labels
-        this.outputs = node.output || ['Out'];  // Output Labels
-        this.options = node.options || [];      // Options Labels
-        this.argsDict = node.args || {};        // Argument Dict for Node compute
+        this.position.x = node.position?.x || 0;        // X position of node
+        this.position.y = node.position?.y || 0;        // Y position of node
+        this.type = node.type || 'Test';
+        this.name = node.name || 'Test';                // NodeType
+        this.inputs = node.input || [];                 // Input Labels
+        this.outputs = node.output || [];               // Output Labels
+        this.options = node.options || [];              // Options Labels
+        this.argsDict = node.args || {};                // Argument Dict for Node compute
     }
 
     static load_json(json_string) {
 
+    }
+
+    static create(type, position = { x: 50, y:50 }) {
+        const nodeDict = getNodeFromType(type);
+        const node = new Node( { ...nodeDict, position } );
+        return node;
     }
 
 }

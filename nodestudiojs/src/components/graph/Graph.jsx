@@ -9,16 +9,7 @@ const Graph = ({onNodeMove}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
 
     useEffect(() => {
-        const node = new NodeModel({
-            id: 0,
-            position: {
-                x: 50, y:50
-            },
-            name: 'test',
-            inputs: ['In'],
-            outputs: ['Out']
-        })
-        
+        const node = NodeModel.create('FILE');
         dispatch({ type: ActionTypes.ADD_NODE, node });
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, []);
