@@ -32,7 +32,7 @@ const SideNav = () => {
             }
             <div className='layout-column'>
                 {
-                    items.map((item) => <NavItem item={item} onClick={handleClickNav}></NavItem>)
+                    items.map((item) => <NavItem key={item.name} item={item} onClick={handleClickNav}></NavItem>)
                 }
             </div>
         </div>

@@ -4,6 +4,7 @@ import './App.scss';
 import Viewport from './components/layout/Viewport';
 import LoadGraph from './components/shared/LoadGraph';
 import CenterView from './components/layout/CenterView';
+import GraphView from './components/layout/GraphView';
 import SideView, { SideViewPositions } from './components/layout/SideView';
 import BottomView from './components/layout/BottomView';
 import AppHeader from './components/layout/AppHeader';
@@ -18,7 +19,9 @@ function App() {
             <AppState.AppStateProvider>
                 <AppHeader></AppHeader>
                 <section>
-                    <CenterView></CenterView>
+                    <CenterView>
+                        <GraphView></GraphView>
+                    </CenterView>
                     <SideView position={SideViewPositions.LEFT}>
                         <SideNav></SideNav>
                     </SideView>

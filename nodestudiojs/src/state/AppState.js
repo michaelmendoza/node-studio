@@ -5,10 +5,12 @@ import { AppReducers } from './AppReducers';
  * Inital state for AppState 
  */
 const initialState  = { 
-    sidenav: { show: false, current: 'plugins'},
+    sidenav: null,
 
     nodes: [],
-    links: []
+    links: [],
+    
+    currentNode: null
 };
 
 /**

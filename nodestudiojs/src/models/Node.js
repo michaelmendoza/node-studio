@@ -1,13 +1,10 @@
 
 import { getNodeFromType } from './NodeList';
-const Nodes = {
-    'FILE': { type: 'FILE', inputs:[], outputs:['Out'], options:['filetype', 'filepath']} 
-}
 
 class Node {
 
     constructor(node) {
-        this.id = node.id;                              // UUID for node
+        this.id = node.id || crypto.randomUUID();       // UUID for node
         this.position = {};
         this.position.x = node.position?.x || 0;        // X position of node
         this.position.y = node.position?.y || 0;        // Y position of node

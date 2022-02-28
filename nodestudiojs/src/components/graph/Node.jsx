@@ -1,7 +1,8 @@
-import React from 'react';
-import Draggable from 'react-draggable';
-
 import './Node.scss';
+import React, { useContext } from 'react';
+import Draggable from 'react-draggable';
+import { ActionTypes } from '../../state/AppReducers';
+import AppState from '../../state/AppState';
 
 /**
  * Component for node input ports
@@ -60,7 +61,9 @@ const NodeProps = ({props}) => {
  * Node Component representing a Node in a computation graph
  */
 const Node = ({node, onNodeMove, onContextMenu}) => {
-
+    const {dispatch} = useContext(AppState.AppContext);
+    const nodeRef = React.useRef(null);
+    
     const onStart = () => {
         onNodeMove(true);
     }
@@ -80,15 +83,20 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
         //setUpdateLinks();
       };
 
+
+    const handleClick = () => {
+        dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
+    }
+
     const handleContextMenu = e => { 
         e.preventDefault();
         //handleContextMenu(e, { node:node, link:null });
     }
 
     return (
-        <Draggable handle=".node_title" position={node?.position} grid={[25, 25]} onStart={onStart} onDrag={onControlledDrag} onStop={onControlledDragStop}>
-            <div>
-                <div className='node' onContextMenu={handleContextMenu}>
+        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[25, 25]} onStart={onStart} onDrag={onControlledDrag} onStop={onControlledDragStop}>
+            <div ref={nodeRef}>
+                <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle {...node}></NodeTitle>
                     <NodeIO {...node} ></NodeIO>
                     <NodeProps {...node}></NodeProps>
