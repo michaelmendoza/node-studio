@@ -77,12 +77,6 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
         dispatch({ type: ActionTypes.UPDATE_NODE, node });
       };
     
-      const onControlledDragStop = (e, position) => {
-        onControlledDrag(e, position);
-        onNodeMove(false);
-      };
-
-
     const handleClick = () => {
         dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
     }
@@ -92,7 +86,7 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
     }
 
     return (
-        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} onStop={onControlledDragStop}>
+        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} >
             <div ref={nodeRef}>
                 <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle {...node}></NodeTitle>

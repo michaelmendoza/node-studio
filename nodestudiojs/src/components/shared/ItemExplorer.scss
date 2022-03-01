@@ -3,7 +3,7 @@
 .item-explorer {
     background-color: darken($app-background-color, 2%);
 
-    display: none;
+    display: block;
     width: 200px;
     position: absolute;
     top: 0px;
@@ -18,10 +18,6 @@
         margin: 0.25em 0 0.5em 0;
         font-weight: 200;
         text-transform: capitalize;
-    }
-
-    &.show {
-        display: block;
     }
 
     .search {

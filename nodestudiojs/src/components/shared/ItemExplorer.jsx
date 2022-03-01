@@ -5,7 +5,7 @@ import { ActionTypes } from '../../state/AppReducers';
 import NodeList from '../../models/NodeList';
 import { load, savedProjectList } from '../../db/Saved';
 
-const ItemExplorer = ({show, item}) => {
+const ItemExplorer = ({item}) => {
 
     const itemType = item.name;
     const [search, setSearch] = useState('')
@@ -30,9 +30,9 @@ const ItemExplorer = ({show, item}) => {
     }
 
     const filteredItems = filterBySearch(getItems(), search)
-    return (<div className={'item-explorer ' + (show ? 'show':'')}>
+    return (<div className='item-explorer'>
         { 
-            show ? <div>
+            <div>
                 <h2> {item.name} </h2>
                 <div className='search'>
                     <input type="text" name="node_search" placeholder={'Search'} value={search} onChange={handleSearchChange}/>
@@ -42,7 +42,7 @@ const ItemExplorer = ({show, item}) => {
                         filteredItems.map((item) => <ItemView key={item.name} type={itemType} item={item}></ItemView>)
                     }
                 </div>
-            </div> : null
+            </div>
         }
         </div>
     )
@@ -68,6 +68,7 @@ const ProjectItemView = ({item}) => {
     const handleClick =  async () => {
         const graphData = await load(item.json_string);
         dispatch({ type:ActionTypes.INIT_GRAPH, nodes:graphData.nodes, links:graphData.links });
+        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
     }
 
     return (
@@ -80,13 +81,18 @@ const ProjectItemView = ({item}) => {
 }
 
 const PluginItemView = ({item}) => {
+    const {dispatch} = useContext(AppState.AppContext);
 
     const handleDragStart = (e) => {
         e.dataTransfer.setData('text/plain', item.type);
     }
 
+    const handleDragEnd = (e) => {
+        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
+    }
+
     return (
-        <div className='explorer-item-view plugin-item layout-row' draggable="true" onDragStart={handleDragStart}>
+        <div className='explorer-item-view plugin-item layout-row' draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
             <div>
                 <img src='https://via.placeholder.com/36' alt='node item'/>
             </div>

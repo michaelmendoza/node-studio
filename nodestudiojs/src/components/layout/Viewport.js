@@ -41,7 +41,7 @@ const Viewport = () => {
             setImg(dataUri);
         })
     }
-
+    
     const handleOptionUpdate = (option) => {
         setSlice(option.value);
         fetchData(option.value, idx)

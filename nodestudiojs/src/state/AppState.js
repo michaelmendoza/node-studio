@@ -5,12 +5,11 @@ import { AppReducers } from './AppReducers';
  * Inital state for AppState 
  */
 const initialState  = { 
-    sidenav: null,
-
     nodes: {},
     links: [],
     
-    currentNode: null
+    currentNode: null,
+    sideNav: { show: false }
 };
 
 /**
