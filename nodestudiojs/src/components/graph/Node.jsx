@@ -35,9 +35,9 @@ const NodeOutput = ({outputs}) => <div className="node_output flex-50">
 /**
  * Contains Input and Output ports IU
  */
-const NodeIO = ({inputs, outputs}) => <div className="node_io layout-row flex" > 
-    <NodeInputs inputs={inputs}></NodeInputs>
-    <NodeOutput outputs={outputs}></NodeOutput>
+const NodeIO = ({inputLabels, outputLabels}) => <div className="node_io layout-row flex" > 
+    <NodeInputs inputs={inputLabels}></NodeInputs>
+    <NodeOutput outputs={outputLabels}></NodeOutput>
 </div>
 
 /**
@@ -66,6 +66,7 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
     
     const onStart = () => {
         onNodeMove(true);
+        dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
     }
 
     const onControlledDrag = (e, position) => {
@@ -73,14 +74,12 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
         const {x, y} = position;
         node.position.x = x;
         node.position.y = y;
-        console.log(node);
-        //setUpdateLinks();
+        dispatch({ type: ActionTypes.UPDATE_NODE, node });
       };
     
       const onControlledDragStop = (e, position) => {
         onControlledDrag(e, position);
         onNodeMove(false);
-        //setUpdateLinks();
       };
 
 
@@ -90,11 +89,10 @@ const Node = ({node, onNodeMove, onContextMenu}) => {
 
     const handleContextMenu = e => { 
         e.preventDefault();
-        //handleContextMenu(e, { node:node, link:null });
     }
 
     return (
-        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[25, 25]} onStart={onStart} onDrag={onControlledDrag} onStop={onControlledDragStop}>
+        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} onStop={onControlledDragStop}>
             <div ref={nodeRef}>
                 <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle {...node}></NodeTitle>

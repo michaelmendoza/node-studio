@@ -1,61 +1,44 @@
-import React, { useEffect, useContext } from 'react';
+import './LinksSVG.scss';
+import React, { useContext } from 'react';
 import AppState from '../../state/AppState';
-import * as d3 from 'd3';
 
-const startOffset = { x:185, y:56 }
-const endOffset = { x:16, y:56 }
-const dyOffset = 18;
+const scale = 0.75;
+const startOffset = { x:184 * scale, y:57 * scale }
+const endOffset = { x:16 * scale, y:57 * scale}
+const dyOffset = 18 * scale;
 
-const LinksSVG = ({handleContextMenu}) => {
-    const {state, dispatch} = useContext(AppState.AppContext);
+const LinksSVG = ({handleContextMenu, width = 800, height = 800}) => {
+    const {state} = useContext(AppState.AppContext);
 
-    const createSVG = ({width = 800, height = 800}) => {
-        if (d3.select('.node-links svg')[0] == null) {
-            var svg = d3.select('.node-links').append("svg")
-            svg.attr("width", width).attr("height", height)	
-        }
-
-        state.links.forEach(link => createLinkSVG(link));
-    }
-
-    const createLinkSVG = (link) => {
-        const linkSVG = {
-            link: link,
-            svg: d3.select('.node-links svg').append("line"),
-            clickArea: d3.select('.node-links svg').append("line")
-        }
-
-        link.svg.on('click', (e) => {
-            console.log('Link Click');
-        })
-
-        drawLink(link);
-    }
-
-    const drawLink = (link) => {
+    const renderLink = (link) => {
         const startNodeID = link.startNode;
         const startNode = state.nodes[startNodeID];
         const endNodeID = link.endNode;
         const endNode = state.nodes[endNodeID];
 
-        var i = startNode.outputs.indexOf(endNodeID);
-        var j = endNode.inputs.indexOf(startNodeID);
-        link.p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + i * dyOffset };
-        link.p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
-        link.svg.attr("x1", link.p1.x)
-                .attr("y1", link.p1.y)
-                .attr("x2", link.p2.x)
-                .attr("y2", link.p2.y)
-                .attr("stroke-width", 5)
-                .attr("stroke", "#444444");
-    }
+        const i = startNode.outputs.indexOf(endNodeID);
+        const j = endNode.inputs.indexOf(startNodeID);
+        const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + i * dyOffset };
+        const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
 
-    const drawLinks = () => {
-        state.links.forEach(link => drawLink(link));
+        return (
+            <g className={link.id}>
+                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={"#FEFEFE"} stroke-linejoin={"round"} stroke-opacity="0.5"></line>
+                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={1} stroke={"#444444"} stroke-linejoin={"round"}></line>
+                <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
+                <circle cx={p2.x} cy={p2.y} r="3" fill={"#444444"}></circle>
+            </g>
+        )
     }
 
     return (
-        <div className="links-hook"></div>
+        <div className="links-svg">
+            <svg height={height} width={width}>
+            {
+                state.links.map(link => renderLink(link))
+            }
+            </svg>
+        </div>
     )
 }
 

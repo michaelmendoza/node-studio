@@ -10,8 +10,10 @@ class Node {
         this.position.y = node.position?.y || 0;        // Y position of node
         this.type = node.type || 'Test';
         this.name = node.name || 'Test';                // NodeType
-        this.inputs = node.input || [];                 // Input Labels
-        this.outputs = node.output || [];               // Output Labels
+        this.inputs = node.inputs || [];                      // Input NodeIDs
+        this.inputLabels = node.inputLabels || [];      // Input Labels
+        this.outputs = node.outputs || [];                    // Output NodeIDs
+        this.outputLabels = node.outputLabels || [];    // Output Labels
         this.options = node.options || [];              // Options Labels
         this.argsDict = node.args || {};                // Argument Dict for Node compute
     }
@@ -26,11 +28,14 @@ class Node {
     static factory(nodeData) {
         const node = {}
         node.id = nodeData.id;
+        node.inputs = nodeData.inputs;
+        node.outputs = nodeData.outputs;
+
         node.position = { x: nodeData.props.x, y: nodeData.props.y }
         node.type = nodeData.props.type;
         node.name = nodeData.props.name;
-        node.input = nodeData.props.input;
-        node.output = nodeData.props.output;
+        node.inputLabels = nodeData.props.input;
+        node.outputLabels = nodeData.props.output;
         node.options = nodeData.props.options;
         node.args = nodeData.props.args;
         return new Node(node);

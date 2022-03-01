@@ -39,7 +39,7 @@ class Node:
         props = self.props.dict()
         props['type'] = props['type'].name
         del props['fn']
-        return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'output': self.outputs }
+        return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'outputs': self.outputs }
 
     def compute(self):
         print(f'Compute: {self.props}')

@@ -10,8 +10,10 @@ const BottomView = () => {
                     <div className='nav-item'> Console </div>
                 </div>
 
-                <div style={{ height:'65px', overflow: 'scroll' }}>
-                    <NodeConsole></NodeConsole>
+                <div style={{overflow:'hidden'}} >
+                    <div style={{ height:'58px', 'overflow-y': 'scroll' }}>
+                        <NodeConsole></NodeConsole>
+                    </div>
                 </div>
             </div>
         </div>

@@ -1,0 +1,15 @@
+.links-svg {
+    position: absolute;
+    pointer-events: none;
+
+    svg {
+        pointer-events:none;
+    }
+    svg *{
+        pointer-events:auto;
+    }
+
+    line {
+        cursor: pointer;
+    }
+}

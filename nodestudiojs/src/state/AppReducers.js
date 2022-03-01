@@ -7,6 +7,7 @@ export const ActionTypes = {
 }
 
 export const AppReducers = (state, action) => {
+    let nodes;
 
     switch(action.type) {
         // Graph actions
@@ -15,9 +16,9 @@ export const AppReducers = (state, action) => {
         
         // Node actions
         case ActionTypes.ADD_NODE:
-            const id = action.node.id;
-            const nodes = {...state.nodes };
-            nodes[id] = action.node;
+        case ActionTypes.UPDATE_NODE:
+            nodes = {...state.nodes };
+            nodes[action.node.id] = action.node;
             return { ...state, nodes:nodes }
 
         // Active Node actions
