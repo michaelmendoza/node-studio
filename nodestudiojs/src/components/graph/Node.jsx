@@ -10,7 +10,7 @@ import AppState from '../../state/AppState';
 const NodeInputs = ({inputs}) => <div className="node_input flex-50"> 
     { 
         inputs.map((item, index) => {
-            return <div key={index} className="node_io-item layout-row flex"> 
+            return <div key={index} className="node_io-item layout-row-center flex"> 
                 <div className="node_io-point"></div> 
                 <div className="node_io-text flex"> {item} </div>
             </div>
@@ -24,7 +24,7 @@ const NodeInputs = ({inputs}) => <div className="node_input flex-50">
 const NodeOutput = ({outputs}) => <div className="node_output flex-50"> 
     {
         outputs.map((item, index) => {
-            return <div key={index} className="node_io-item layout-row flex"> 
+            return <div key={index} className="node_io-item layout-row-center flex"> 
                 <div className="node_io-text flex"> {item} </div>
                 <div className="node_io-point"></div> 
             </div>

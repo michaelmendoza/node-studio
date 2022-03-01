@@ -1,13 +1,19 @@
 import './ItemExplorer.scss';
-import { useState } from 'react';
+import { useState, useContext } from 'react';
+import AppState from '../../state/AppState';
+import { ActionTypes } from '../../state/AppReducers';
 import NodeList from '../../models/NodeList';
+import { load, savedProjectList } from '../../db/Saved';
 
 const ItemExplorer = ({show, item}) => {
 
+    const itemType = item.name;
     const [search, setSearch] = useState('')
 
     const getItems = () => {
-        if(item.name === 'plugins')
+        if(itemType === 'projects')
+            return savedProjectList;
+        if(itemType === 'plugins')
             return NodeList;
         else 
             return []
@@ -33,7 +39,7 @@ const ItemExplorer = ({show, item}) => {
                 </div>
                 <div className='items-list'>
                     {
-                        filteredItems.map((item) => <ItemView key={item.name} item={item}></ItemView>)
+                        filteredItems.map((item) => <ItemView key={item.name} type={itemType} item={item}></ItemView>)
                     }
                 </div>
             </div> : null
@@ -42,22 +48,45 @@ const ItemExplorer = ({show, item}) => {
     )
 }
 
-const ItemView = ({item}) => {
-
-    const handleDragStart = (e) => {
-        e.dataTransfer.setData('text/plain', item.type);
-        
-        //e.currentTarget
-        //.style
-        //.backgroundColor = 'yellow';
+const ItemView = ({type, item}) => {
+    const getItem = () => {
+        if (type === 'projects')
+            return <ProjectItemView item={item}></ProjectItemView>
+        if (type === 'plugins')
+            return <PluginItemView item={item}></PluginItemView>
     }
 
-    const handleDragEnd = (e) => {
-        console.log(e);
+    return getItem();
+}
+
+const ProjectItemView = ({item}) => {
+
+    const { dispatch } = useContext(AppState.AppContext);
+
+    const updatedAt = (new Date(item.updatedAt)).toLocaleString()
+    
+    const handleClick =  async () => {
+        const graphData = await load(item.json_string);
+        dispatch({ type:ActionTypes.INIT_GRAPH, nodes:graphData.nodes, links:graphData.links });
     }
 
     return (
-        <div className='node-item-view layout-row' draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
+        <div className='explorer-item-view project-item' onClick={handleClick}>
+            <h4> { item.name } </h4>
+            <label> { item.description } </label>
+            <label> Updated: { updatedAt } </label>
+        </div>
+    )
+}
+
+const PluginItemView = ({item}) => {
+
+    const handleDragStart = (e) => {
+        e.dataTransfer.setData('text/plain', item.type);
+    }
+
+    return (
+        <div className='explorer-item-view plugin-item layout-row' draggable="true" onDragStart={handleDragStart}>
             <div>
                 <img src='https://via.placeholder.com/36' alt='node item'/>
             </div>

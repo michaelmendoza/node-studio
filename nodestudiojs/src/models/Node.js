@@ -16,16 +16,24 @@ class Node {
         this.argsDict = node.args || {};                // Argument Dict for Node compute
     }
 
-    static load_json(json_string) {
-
-    }
-
     static create(type, position = { x: 50, y:50 }) {
         const nodeDict = getNodeFromType(type);
         const node = new Node( { ...nodeDict, position } );
         return node;
     }
 
+    static factory(nodeData) {
+        const node = {}
+        node.id = nodeData.id;
+        node.position = { x: nodeData.props.x, y: nodeData.props.y }
+        node.type = nodeData.props.type;
+        node.name = nodeData.props.name;
+        node.input = nodeData.props.input;
+        node.output = nodeData.props.output;
+        node.options = nodeData.props.options;
+        node.args = nodeData.props.args;
+        return new Node(node);
+    }
 }
 
 export default Node;

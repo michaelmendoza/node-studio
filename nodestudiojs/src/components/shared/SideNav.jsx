@@ -21,7 +21,9 @@ const SideNav = () => {
     ];
 
     const handleClickNav = (e, navItem) => {
-        setShow(!show);
+        if(navItem.name === item.name) {
+            setShow(!show);
+        }
         setItem(navItem);
     }
 

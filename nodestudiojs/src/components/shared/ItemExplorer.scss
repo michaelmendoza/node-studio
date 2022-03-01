@@ -30,13 +30,23 @@
 
 }
 
-.node-item-view {
+.explorer-item-view {
     background-color: darken($app-background-color, 4%);
 
     margin: 0.5em;
     padding: 0.5em;
     text-align: left;
     text-transform: capitalize;
+
+    &.project-item {
+        cursor: pointer;
+        label { cursor: pointer; }
+    }
+
+    &.plugin-item {
+        cursor: grab;
+        label { cursor: pointer; }
+    }
 
     img {
         width: 36px;
@@ -55,7 +65,7 @@
         font-weight: 200;
         font-size: 0.75em;
     }
-
+    
     .description {
         margin-left: 0.5em;
     }
