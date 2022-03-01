@@ -1,6 +1,6 @@
 import './GraphView.scss';
 import { useState, useContext } from 'react';
-import Graph from '../graph/Graph';
+import Graph from './Graph';
 import Node from '../../models/Node';
 import AppState from '../../state/AppState';
 import { ActionTypes } from '../../state/AppReducers';

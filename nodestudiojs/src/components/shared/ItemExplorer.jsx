@@ -68,7 +68,7 @@ const ProjectItemView = ({item}) => {
     const handleClick =  async () => {
         const graphData = await load(item.json_string);
         dispatch({ type:ActionTypes.INIT_GRAPH, nodes:graphData.nodes, links:graphData.links });
-        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
+        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false })
     }
 
     return (

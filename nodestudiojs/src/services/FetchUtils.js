@@ -1,3 +1,4 @@
+import * as Logger from './LoggingService';
 
 export const FetchTypes = {
     'POST': 'POST',
@@ -17,13 +18,13 @@ export const handleMiddleware = (response) => {
     const p = new Promise(resolve => resolve(response));
 
     return p.then(handleErrors)
-        .then(data => { console.log(data); return data.data; })
-        .catch(error => console.log(error));
+        .then(data => { Logger.log(data); return data.data; })
+        .catch(error => Logger.log(error));
 }
 
 export const handleErrors = (response) => {
     if (!response.ok) {
-        console.log(response);
+        Logger.log(response);
         //throw Error(response.statusText);
     }
     return response.json();

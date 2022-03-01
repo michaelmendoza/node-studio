@@ -22,9 +22,9 @@ const LinksSVG = ({handleContextMenu, width = 800, height = 800}) => {
         const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
 
         return (
-            <g className={link.id}>
-                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={"#FEFEFE"} stroke-linejoin={"round"} stroke-opacity="0.5"></line>
-                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={1} stroke={"#444444"} stroke-linejoin={"round"}></line>
+            <g key={link.id} className={link.id}>
+                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={"#FEFEFE"} strokeLinejoin={"round"} strokeOpacity="0.5"></line>
+                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={1} stroke={"#444444"} strokeLinejoin={"round"}></line>
                 <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
                 <circle cx={p2.x} cy={p2.y} r="3" fill={"#444444"}></circle>
             </g>

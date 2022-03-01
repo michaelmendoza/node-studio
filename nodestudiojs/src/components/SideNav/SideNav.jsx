@@ -1,8 +1,9 @@
 import './SideNav.scss';
 import { useState, useContext } from 'react';
 import AppState from '../../state/AppState';
-import ItemExplorer from './ItemExplorer';
+import ItemExplorer from '../shared/ItemExplorer';
 import { ActionTypes } from '../../state/AppReducers';
+import APIDataService from '../../services/APIDataService';
 
 export const NavItemList = [
     { name: 'files', icon:'library_add'}, 
@@ -29,9 +30,7 @@ const SideNav = () => {
     
     return (
         <div className='side-nav'>
-                
-            { state.sideNav.show && activeNav.name === 'run' ? <div className='item-explorer'> <h2> {activeNav.name} </h2> <button> Run and Debug </button>  </div> : null }
-            { state.sideNav.show && activeNav.name !== 'run' ?  <ItemExplorer item={activeNav}></ItemExplorer>: null }
+            <SidePanel activeNav={activeNav}></SidePanel>
             
             <div className='layout-column'>
                 {
@@ -47,6 +46,36 @@ const NavItem = ({item, onClick}) => {
         <div key={item.name} className='nav-item' onClick={(e) => onClick(e, item)}> 
             <i className="material-icons">{item.icon}</i> 
             <label> {item.name} </label> 
+        </div>
+    )
+}
+
+const SidePanel = ({activeNav}) => {
+    const {state} = useContext(AppState.AppContext);
+
+    const handleRunGraph = async () => {
+        const nodesToRun = []
+        Object.values(state.nodes).forEach(node => {
+            if (node.type === 'DISPLAY') {
+                nodesToRun.push(node);
+            }
+        });
+
+        for(let i = 0; i < nodesToRun.length; i++) {
+            const result = await APIDataService.runSesson({id: nodesToRun[i].id});
+            console.log( 'Compute Complete', result);
+        }
+    }
+
+    const render = () => {
+        if (activeNav.name === 'run') return  <div className='panel-run'> <h2> {activeNav.name} </h2> <button onClick={handleRunGraph}> Run and Debug </button>  </div>
+        if (activeNav.name === 'share') return  <div className='panel-share'> <h2> {activeNav.name} </h2> <div> Share with people and groups </div> <button> Copy Link </button>  </div>
+        else return <ItemExplorer item={activeNav}></ItemExplorer>
+    }
+
+    return (
+        <div className='side-panel'>
+            { state.sideNav.show ? render() : null }
         </div>
     )
 }

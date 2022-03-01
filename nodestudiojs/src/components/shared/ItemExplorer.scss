@@ -1,29 +1,15 @@
 @import '../../styles/base/variables.scss';
 
 .item-explorer {
-    background-color: darken($app-background-color, 2%);
-
-    display: block;
-    width: 200px;
-    position: absolute;
-    top: 0px;
-    left: 50px;
     padding: 0.5em;
-
+    
     input {
         color: #AAAAAA;
-    }
-
-    h2 {
-        margin: 0.25em 0 0.5em 0;
-        font-weight: 200;
-        text-transform: capitalize;
     }
 
     .search {
         padding: 0.5em 0.5em;
     }
-
 }
 
 .explorer-item-view {

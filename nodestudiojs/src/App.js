@@ -1,17 +1,16 @@
 import 'normalize.css';
 import './styles/app.scss';
 import './App.scss';
-import Viewport from './components/layout/Viewport';
-import LoadGraph from './components/shared/LoadGraph';
+import AppState from './state/AppState';
 import CenterView from './components/layout/CenterView';
-import GraphView from './components/layout/GraphView';
+import GraphView from './components/graph/GraphView';
 import SideView, { SideViewPositions } from './components/layout/SideView';
 import BottomView from './components/layout/BottomView';
 import AppHeader from './components/layout/AppHeader';
-import SideNav from './components/shared/SideNav';
+import SideNav from './components/SideNav';
 import Tabs from './components/shared/Tabs';
+import Console from './components/Console';
 import NodeInspector from './components/shared/NodeInspector';
-import AppState from './state/AppState';
 
 function App() {
     return (
@@ -31,7 +30,9 @@ function App() {
                             <div> Info </div>
                         </Tabs>
                     </SideView>
-                    <BottomView></BottomView>
+                    <BottomView>
+                        <Console></Console>
+                    </BottomView>
                 </section>
             </AppState.AppStateProvider>
         </div>
