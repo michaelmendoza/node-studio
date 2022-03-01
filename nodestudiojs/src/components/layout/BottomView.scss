@@ -4,8 +4,8 @@
     background-color: lighten($app-background-color, 10%);
     position: fixed;
     bottom: 0;
-    right: 0;
-    left: 0;
+    right:11.8em;
+    left:3.75em;
     z-index: 8;
 
     .bottom-view-container{
@@ -14,7 +14,7 @@
 
     .bottom-view-nav {
         text-align: left;
-        padding: 1em 1em 1em 6em;
+        padding: 1em 1em 1em 1.8em;
         font-weight: 400;
         font-size: 0.8em;
         border-bottom: 1px solid lighten($app-background-color, 20%);
@@ -28,7 +28,7 @@
 }
 
 .node-console {
-    padding: 1em 1em 1em 7em;
+    padding: 2em;
     font-weight: 200;
     font-size: 0.7em
 }

@@ -22,6 +22,7 @@ class Node {
         return node;
     }
 
+    /** Creates Node from nodeData with data structure outlined in nodestudio (python) */
     static factory(nodeData) {
         const node = {}
         node.id = nodeData.id;
