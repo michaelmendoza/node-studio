@@ -1,5 +1,5 @@
 import './Console.scss';
-import { useContext } from 'react';
+import { useContext, useEffect, useState, useRef } from 'react';
 import AppState from '../../state/AppState';
 import Tabs from '../shared/Tabs';
 import * as Logger from '../../services/LoggingService';
@@ -9,7 +9,7 @@ const Console = () => {
         <Tabs className='console' tabnames={['Console', 'Debug', 'Logs']}>
             <TerminalConsole></TerminalConsole>
             <DebugConsole></DebugConsole>
-            <LogConsole></LogConsole>
+            <LogConsole logCount={window.logger}></LogConsole>
         </Tabs>
     )
 }
@@ -34,8 +34,6 @@ const DebugConsole = () => {
 }
 
 const TerminalConsole = () => {
-    const {state} = useContext(AppState.AppContext);
-
     const consoleText = '% _';
 
     return (
@@ -45,7 +43,15 @@ const TerminalConsole = () => {
     )
 }
 
-const LogConsole = () => {
+const LogConsole = ({logCount}) => {
+    const logPollInterval = 100;
+    // eslint-disable-next-line no-unused-vars
+    const [timer, setTimer] = useState(0);
+
+    useEffect(() => {
+        setInterval( () => setTimer(c => c+1), logPollInterval)
+    }, []);
+
     const logs = Logger.getLogs();
 
     return (

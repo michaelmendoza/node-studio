@@ -15,6 +15,6 @@ export const savedProjectList = [{ name: 'Test Project', description:'A test pro
 
 export const load = async (json_string) => {
     await APIDataService.createGraph({json_string:json_string});
-    const data = await APIDataService.getGraph();
+    //const data = await APIDataService.getGraph();
     return Graph.readJson(json_string);
 }
