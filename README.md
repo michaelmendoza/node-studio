@@ -10,9 +10,13 @@ Backend python server code located in nodestudio
 ##
 
 To run locally frontend: ( From project root directory )
-
-``` 
+- Add third party packages
+```
 cd nodestudiojs 
+npm install
+```
+- To run frontend react server
+``` 
 npm start
 ```
 
