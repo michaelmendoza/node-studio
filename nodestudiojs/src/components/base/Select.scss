@@ -1,25 +1,32 @@
+@import '../../styles/base/variables.scss';
 
 .select {
     min-width: 100px;
     position: relative;
 
     .select-button {
-        color: #fefefe;
+        background-color: lighten($app-background-color, 10%);
+        color: #FEFEFE;
         width: 100%;
         margin: 0;
     }
-
+    
     .select-options {
+        background-color: lighten($app-background-color, 10%);
         position: absolute;
         left: 0;
         right: 0;
+        z-index: 10;
     }
 
     .select-option {
         width: 100%;
+        color: #FEFEFE;
+        border: 1px solid transparent;
 
         &:hover {
-            color: #fefefe;
+            color: #FFFFFF;
+            border: 1px solid #FEFEFE;
         }
     }
 }

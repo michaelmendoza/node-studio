@@ -1,0 +1,82 @@
+@import '../../styles/base/variables.scss';
+
+$slider-color: $blue;
+$slider-track-active: $blue;
+$slider-track-color: #B0B0B0;
+$slider-width: 15px;
+$slider-height: 15px;
+
+@mixin track($type) {
+	width: 100%;
+	height: 5px;
+	cursor: pointer;
+	background: $slider-track-color;
+	border-radius: 25px;
+	border: 0px solid #000101;
+	
+	@if($type == 'ie') {
+	  border-color: transparent;
+	  color: transparent;
+	}
+}
+
+@mixin track-active {
+	background: $slider-track-active;
+}
+
+@mixin thumb($type) {
+	box-shadow: 2px 2px 1px rgba(0, 0, 49, 0.25), 0px 0px 2px rgba(0, 0, 75, 0.25);
+	border: 0px solid #ffffff;
+	height: $slider-height;
+	width: $slider-width;
+	border-radius: 25px;
+	background: $slider-color;
+	cursor: pointer;
+	-webkit-appearance: none;
+	margin-top: -$slider-height / 2 + 2;
+	
+	@if($type == 'ie') {
+		box-shadow: none;
+		height: 5px;
+		margin-top: 0;
+	}
+}
+
+@mixin thumb-active {
+	background: lighten($slider-color, 5%);
+	height: $slider-height + 5;
+	width: $slider-width + 5;	  
+	margin-top: -$slider-height / 2;	
+} 
+
+.slider {
+	label {
+		font-weight: 200;
+		font-size: 0.6em;
+	}
+}
+
+.slider-input {
+	position: relative;
+	top:2px;
+	margin-right: 6px;
+	margin-left: 6px;
+
+	input[type=range] {
+	  -webkit-appearance: none;
+	  width: 100%;
+	  
+		&::-webkit-slider-runnable-track { @include track('chrome'); }
+		&::-moz-range-track { @include track('firefox'); }
+		&::-ms-track { @include track('ie'); }
+		&::-webkit-slider-thumb { @include thumb('chrome'); }
+		&::-moz-range-thumb { @include thumb('firefox'); }
+		&::-ms-thumb { @include thumb('ie'); }
+	}
+
+	input[type=range]:focus {
+	  outline: none;
+	  &::-webkit-slider-thumb { @include thumb-active(); }
+	  &::-webkit-slider-runnable-track { @include track-active(); }
+	}
+}

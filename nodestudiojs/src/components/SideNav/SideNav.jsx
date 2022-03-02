@@ -51,7 +51,7 @@ const NavItem = ({item, onClick}) => {
 }
 
 const SidePanel = ({activeNav}) => {
-    const {state} = useContext(AppState.AppContext);
+    const {state, dispatch} = useContext(AppState.AppContext);
 
     const handleRunGraph = async () => {
         const nodesToRun = []
@@ -62,8 +62,9 @@ const SidePanel = ({activeNav}) => {
         });
 
         for(let i = 0; i < nodesToRun.length; i++) {
-            const result = await APIDataService.runSesson({id: nodesToRun[i].id});
-            console.log( 'Compute Complete', result);
+            const node = nodesToRun[i];
+            await APIDataService.runSesson({id: node.id});
+            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node.id, update:true});
         }
     }
 

@@ -3,8 +3,9 @@ export const ActionTypes = {
     'INIT_GRAPH': 0,
     'ADD_NODE': 1,
     'UPDATE_NODE': 2,
-    'SET_CURRENT_NODE': 3,
-    'SET_SIDENAV_SHOW': 4
+    'UPDATE_SESSION': 3,
+    'SET_CURRENT_NODE': 4,
+    'SET_SIDENAV_SHOW': 5
 }
 
 export const AppReducers = (state, action) => {
@@ -20,7 +21,13 @@ export const AppReducers = (state, action) => {
         case ActionTypes.UPDATE_NODE:
             nodes = {...state.nodes };
             nodes[action.node.id] = action.node;
-            return { ...state, nodes:nodes }
+            return { ...state, nodes };
+
+        // Session actions
+        case ActionTypes.UPDATE_SESSION:
+            const sessions = { ...state.sessions };
+            sessions[action.nodeID] = action.update;
+            return { ...state, sessions};
 
         // Active Node actions
         case ActionTypes.SET_CURRENT_NODE:
@@ -28,7 +35,7 @@ export const AppReducers = (state, action) => {
 
         // SideNav actions
         case ActionTypes.SET_SIDENAV_SHOW:
-            return { ...state, sideNav: { ...state.sideNav, show: action.show }}
+            return { ...state, sideNav: { ...state.sideNav, show: action.show }};
 
         default:
             return state;

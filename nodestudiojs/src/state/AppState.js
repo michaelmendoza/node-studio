@@ -7,7 +7,8 @@ import { AppReducers } from './AppReducers';
 const initialState  = { 
     nodes: {},
     links: [],
-    
+    sessions: {},
+
     currentNode: null,
     sideNav: { show: false }
 };

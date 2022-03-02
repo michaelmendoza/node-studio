@@ -3,6 +3,7 @@ import React, { useContext } from 'react';
 import Draggable from 'react-draggable';
 import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
+import ImageView from './ImageView';
 
 /**
  * Component for node input ports
@@ -48,11 +49,13 @@ const NodeTitle = ({name}) => <div className="node_title"> {name} </div>
 /**
  * Node Property Options
  */
-const NodeProps = ({props}) => {
+const NodeProps = ({id, type}) => {
 
   return (
     <div className="node_props"> 
-
+        {
+            type === 'DISPLAY' ? <ImageView nodeID={id}></ImageView> : null
+        }
     </div>
   )
 }
