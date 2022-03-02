@@ -45,11 +45,13 @@ const TerminalConsole = () => {
 
 const LogConsole = ({logCount}) => {
     const logPollInterval = 100;
+    const timerIdRef = useRef(0);
     // eslint-disable-next-line no-unused-vars
     const [timer, setTimer] = useState(0);
 
     useEffect(() => {
-        setInterval( () => setTimer(c => c+1), logPollInterval)
+        timerIdRef.current = setInterval( () => setTimer(c => c+1), logPollInterval)
+        return () => clearInterval(timerIdRef.current);
     }, []);
 
     const logs = Logger.getLogs();
