@@ -1,6 +1,6 @@
 import { fetchAPI, FetchTypes } from "./FetchUtils";
 
-const dataUrl = 'http://localhost:8000/api';
+export const dataUrl = 'http://localhost:8000/api';
 
 const APIDataService = {
 

@@ -18,8 +18,8 @@ export const handleMiddleware = (response) => {
     const p = new Promise(resolve => resolve(response));
 
     return p.then(handleErrors)
-        .then(data => { Logger.log(data); return data.data; })
-        .catch(error => Logger.log(error));
+        .then(data => { Logger.log(response.url, data); return data.data; })
+        .catch(error => Logger.log(response.url, error));
 }
 
 export const handleErrors = (response) => {

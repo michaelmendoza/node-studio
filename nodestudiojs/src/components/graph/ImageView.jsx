@@ -24,10 +24,12 @@ const ImageView = ({nodeID}) => {
     const fetchData = (slice, index) => {
         throttle(async () => {
             const encodedData = await APIDataService.getNode(nodeID, slice, index);
-            const dataset = decodeDataset(encodedData);
-            const dataUri = DrawImg(dataset);
-            setImageData(dataUri);
-            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
+            if(encodedData) {
+                const dataset = decodeDataset(encodedData);
+                const dataUri = DrawImg(dataset);
+                setImageData(dataUri);
+                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
+            }
         })
     }
 
@@ -46,7 +48,7 @@ const ImageView = ({nodeID}) => {
     }
 
     const updateSliceMax = (slice) => {
-        const shape = [160, 640, 640]; // TODO: Make not hard coded
+        const shape = [160, 640, 640]; // TODO: Make not hard coded -> Adjust backend
         if (slice === 'xy') {
             setSliceMax(shape[0])
             if (index > shape[0]) 
