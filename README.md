@@ -25,6 +25,7 @@ To run locally backend api server: ( From project root directory )
 - Setup conda enviroment 
 ```
 conda env create -f nodestudio/environment.yml
+conda activate nodestudio
 ```
 - Run to API server
 ```
