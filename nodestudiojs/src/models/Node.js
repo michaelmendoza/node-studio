@@ -20,6 +20,7 @@ class Node {
 
     static create(type, position = { x: 50, y:50 }) {
         const nodeDict = getNodeFromType(type);
+        if(nodeDict === undefined) return;
         const node = new Node( { ...nodeDict, position } );
         return node;
     }

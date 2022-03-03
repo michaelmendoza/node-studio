@@ -1,7 +1,7 @@
 @import '../../styles/base/variables.scss';
 
 $slider-color: $blue;
-$slider-track-active: $blue;
+$slider-track-active: mix($blue, #B0B0B0, 25%);
 $slider-track-color: #B0B0B0;
 $slider-width: 15px;
 $slider-height: 15px;

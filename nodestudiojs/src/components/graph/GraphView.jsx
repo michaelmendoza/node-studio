@@ -14,13 +14,9 @@ const GraphView = () => {
     const [scale, setScale] = useState(1);
     const [moveView, setMoveView] = useState(false);
 
-    const handleMouseDown = () => {
-        setMoveView(true);
-    }
+    const handleMouseDown = () => { setMoveView(true); }
 
-    const handleMouseUp = () => {
-        setMoveView(false);
-    }
+    const handleMouseUp = () => { setMoveView(false); }
 
     const handleMouseMove = (e) => {
         if(moveView & allowGraphMove.current) {
@@ -28,17 +24,13 @@ const GraphView = () => {
         }
     }
 
-    const handleZoomIn = () => {
-        setScale(scale + 0.1);
-    }
+    const handleMouseLeave = () => { setMoveView(false); }
 
-    const handleZoomOut = () => {
-        setScale(scale - 0.1);
-    }
+    const handleZoomIn = () => { setScale(scale + 0.1); }
 
-    const handleFulLScreen = () => {
-        setScale(1);
-    }
+    const handleZoomOut = () => { setScale(scale - 0.1); }
+
+    const handleFulLScreen = () => { setScale(1); }
 
     const handleDrop = (e) => {
         const data = e.dataTransfer.getData('text');
@@ -48,7 +40,7 @@ const GraphView = () => {
         console.log(data, x, y);
 
         const node = Node.create(data, {x, y});
-        dispatch({ type: ActionTypes.ADD_NODE, node });
+        if (node) dispatch({ type: ActionTypes.ADD_NODE, node });
     }
 
     const handleDragOver = (e) => {
@@ -70,7 +62,8 @@ const GraphView = () => {
         <div className='graph-view'                 
             onMouseDown={handleMouseDown} 
             onMouseUp={handleMouseUp} 
-            onMouseMove={handleMouseMove}>
+            onMouseMove={handleMouseMove}
+            onMouseLeave={handleMouseLeave}>
             <span className='graph-view-controls layout-column' >
                 <button onClick={handleZoomIn}><i className="material-icons">add</i></button>
                 <button onClick={handleZoomOut}><i className="material-icons">remove</i></button>
