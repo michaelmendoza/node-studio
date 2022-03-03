@@ -1,4 +1,4 @@
-name: mri
+name: nodestudio
 channels:
   - defaults
 dependencies:
@@ -191,4 +191,4 @@ dependencies:
     - werkzeug==1.0.1
     - wrapt==1.12.1
     - zipp==3.7.0
-prefix: /Users/michael/opt/miniconda3/envs/mri
+prefix: /Users/michael/opt/miniconda3/envs/nodestudio
