@@ -63,12 +63,11 @@ const NodeProps = ({id, type}) => {
 /**
  * Node Component representing a Node in a computation graph
  */
-const Node = ({node, onNodeMove, onContextMenu}) => {
+const Node = ({node, onContextMenu}) => {
     const {dispatch} = useContext(AppState.AppContext);
     const nodeRef = React.useRef(null);
     
     const onStart = () => {
-        onNodeMove(true);
         dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
     }
 

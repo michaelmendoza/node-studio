@@ -8,6 +8,11 @@
       width: 800px;
       height: 800px;
       position: relative;
+
+      .graph-view-drag-target {
+         width: 100%;
+         height: 100%;
+      }
    }
 
    .graph-view-controls {

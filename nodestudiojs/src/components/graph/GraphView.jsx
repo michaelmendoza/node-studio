@@ -1,5 +1,5 @@
 import './GraphView.scss';
-import { useState, useContext } from 'react';
+import { useState, useContext, useRef } from 'react';
 import Graph from './Graph';
 import Node from '../../models/Node';
 import AppState from '../../state/AppState';
@@ -7,12 +7,12 @@ import { ActionTypes } from '../../state/AppReducers';
 
 const GraphView = () => {
     const {dispatch} = useContext(AppState.AppContext);
+    const allowGraphMove = useRef(true);
 
     const sensitivity = 0.5;
     const [position, setPosition] = useState({ x:0, y:0 });
     const [scale, setScale] = useState(1);
     const [moveView, setMoveView] = useState(false);
-    const [nodeMove, setNodeMove] = useState(false);
 
     const handleMouseDown = () => {
         setMoveView(true);
@@ -23,7 +23,7 @@ const GraphView = () => {
     }
 
     const handleMouseMove = (e) => {
-        if(moveView & !nodeMove) {
+        if(moveView & allowGraphMove.current) {
             setPosition({x:position.x + sensitivity * e.movementX, y:position.y + sensitivity * e.movementY});
         }
     }
@@ -56,6 +56,14 @@ const GraphView = () => {
         e.preventDefault();
     }
 
+    const handleMouseHover = (e)=> {
+        // Set allow graph move only if over the drag-target for the graph view
+        if(e.target.className === 'graph-view-drag-target')
+            allowGraphMove.current = true;
+        else 
+            allowGraphMove.current = false;
+    }
+
     const x = String(position.x) + 'px';
     const y = String(position.y) + 'px';
     return (
@@ -70,8 +78,8 @@ const GraphView = () => {
             </span>
 
             <div className='graph-view-container blueprint-dots' style={{ left:x, top:y, transform: `scale(${scale}` }}>                
-                <div style={{width:'100%', height:'100%'}} onDrop={handleDrop} onDragOver={handleDragOver}>
-                    <Graph onNodeMove={setNodeMove}></Graph>
+                <div className='graph-view-drag-target' onDrop={handleDrop} onDragOver={handleDragOver} onMouseMove={handleMouseHover}>
+                    <Graph></Graph>
                 </div>
             </div>
         </div>
