@@ -5,7 +5,7 @@ import './Select.scss';
 const Select = ({options, onChange, placeholder='Select ...'}) => {
     const [show, setShow] = useState(false);
     const [value, setValue] = useState(undefined);
-    const onBlur = () => { setTimeout(() => { setShow(false) }, 100)}
+    const onBlur = () => { setTimeout(() => { setShow(false) }, 250)}
 
     const handleClick = () => {
         setShow(!show)
@@ -14,6 +14,7 @@ const Select = ({options, onChange, placeholder='Select ...'}) => {
     const handleOptionSelect = (option) => {
         setValue(option);
         onChange(option);
+        setShow(false);
     }
 
     return (

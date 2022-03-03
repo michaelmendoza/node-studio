@@ -36,7 +36,7 @@ const ImageView = ({nodeID}) => {
     const handleOptionUpdate = (option) => {
         setSlice(option.value);
         if (state.sessions[nodeID] !== undefined) {
-            updateSliceMax(option.value);
+            const index = updateSliceMax(option.value);
             fetchData(option.value, index);
         }
     }
@@ -49,21 +49,20 @@ const ImageView = ({nodeID}) => {
 
     const updateSliceMax = (slice) => {
         const shape = [160, 640, 640]; // TODO: Make not hard coded -> Adjust backend
-        if (slice === 'xy') {
-            setSliceMax(shape[0])
-            if (index > shape[0]) 
-                setIndex(shape[0]-1)
+        let maxIndex;
+        if (slice === 'xy')
+            maxIndex = shape[0];
+        if (slice === 'xz')
+            maxIndex = shape[1];
+        if (slice === 'yz')
+            maxIndex = shape[2];
+        setSliceMax(maxIndex);
+
+        if (index > maxIndex) {
+            setIndex(maxIndex-1);
+            return maxIndex-1;
         }
-        if (slice === 'xz') {
-            setSliceMax(shape[1])
-            if (index > shape[1]) 
-                setIndex(shape[1]-1)
-        }
-        if (slice === 'yz') {
-            setSliceMax(shape[2])
-            if (index > shape[2]) 
-                setIndex(shape[2]-1)
-        }
+        return index;
     }
 
     const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
