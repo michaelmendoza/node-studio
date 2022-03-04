@@ -7,10 +7,11 @@ import { ActionTypes } from '../../state/AppReducers';
 
 const GraphView = () => {
     const {dispatch} = useContext(AppState.AppContext);
+    const graphViewRef = useRef(null);
     const allowGraphMove = useRef(true);
-
     const sensitivity = 0.5;
-    const [position, setPosition] = useState({ x:0, y:0 });
+    const [offset, setOffset] = useState({ x:0, y:0 });         // Offset Position for moving GraphView
+    const [position, setPosition] = useState({ x:0, y:0 });     // Mouse Position in GraphView
     const [scale, setScale] = useState(1);
     const [moveView, setMoveView] = useState(false);
 
@@ -19,8 +20,10 @@ const GraphView = () => {
     const handleMouseUp = () => { setMoveView(false); }
 
     const handleMouseMove = (e) => {
+        var rect = graphViewRef.current.getBoundingClientRect();
+        setPosition({ x:(e.pageX - rect.left)/ scale, y:(e.pageY - rect.top) / scale});
         if(moveView & allowGraphMove.current) {
-            setPosition({x:position.x + sensitivity * e.movementX, y:position.y + sensitivity * e.movementY});
+            setOffset({x:offset.x + sensitivity * e.movementX, y:offset.y + sensitivity * e.movementY});
         }
     }
 
@@ -56,10 +59,14 @@ const GraphView = () => {
             allowGraphMove.current = false;
     }
 
-    const x = String(position.x) + 'px';
-    const y = String(position.y) + 'px';
+    const handleContextMenu = e => { 
+        e.preventDefault();
+    }
+
+    const x = String(offset.x) + 'px';
+    const y = String(offset.y) + 'px';
     return (
-        <div className='graph-view'                 
+        <div className='graph-view'    
             onMouseDown={handleMouseDown} 
             onMouseUp={handleMouseUp} 
             onMouseMove={handleMouseMove}
@@ -71,8 +78,8 @@ const GraphView = () => {
             </span>
 
             <div className='graph-view-container blueprint-dots' style={{ left:x, top:y, transform: `scale(${scale}` }}>                
-                <div className='graph-view-drag-target' onDrop={handleDrop} onDragOver={handleDragOver} onMouseMove={handleMouseHover}>
-                    <Graph></Graph>
+                <div className='graph-view-drag-target' ref={graphViewRef} onDrop={handleDrop} onDragOver={handleDragOver} onMouseMove={handleMouseHover} onContextMenu={handleContextMenu}>
+                    <Graph position={position}></Graph>
                 </div>
             </div>
         </div>

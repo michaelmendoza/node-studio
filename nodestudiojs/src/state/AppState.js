@@ -9,7 +9,7 @@ const initialState  = {
     links: [],
     sessions: {},
 
-    currentNode: null,
+    activeElement: null,
     sideNav: { show: false }
 };
 

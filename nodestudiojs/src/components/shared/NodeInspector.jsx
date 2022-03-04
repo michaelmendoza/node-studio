@@ -9,7 +9,7 @@ const NodeInspector = () => {
         <div className='node-inspector'> 
             <div>
                 {
-                    JSON.stringify(state.currentNode, null,'\t')
+                    JSON.stringify(state.activeElement, null,'\t')
                 }
             </div>
         </div>

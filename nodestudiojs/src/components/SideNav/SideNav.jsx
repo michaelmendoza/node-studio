@@ -65,6 +65,7 @@ const SidePanel = ({activeNav}) => {
             const node = nodesToRun[i];
             await APIDataService.runSesson({id: node.id});
             dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node.id, update:true});
+            dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false })
         }
     }
 
