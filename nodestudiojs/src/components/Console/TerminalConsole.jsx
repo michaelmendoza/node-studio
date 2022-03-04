@@ -1,14 +1,16 @@
 import './TerminalConsole.scss';
 import { useState, useRef } from 'react';
+import APIEmulator from '../../services/APIEmulator';
 
 const TerminalOutput = ({history}) => {
     return (
         <div className='terminal-output'>
-            <div>
-                {
-                    history.map((x, i) => <div key={i}>  <span className='terminal-prompt-symbol'> $ </span> {x}</div>)
-                }
-            </div>
+            {
+                history.map((x, i) => <div className='output-item' key={i}>  
+                    <div className='output-cmd'> <span className='terminal-prompt-symbol'> $ </span> {x.cmd} </div>
+                    <div className='otuput-message'> {x.message} </div>
+                </div>)
+            }
         </div>
     )
 }
@@ -32,6 +34,7 @@ const TerminalInput = ({value, onChange, onSubmit, onKeyDown, inputRef}) => {
 
 const TerminalConsole = () => {
     const inputRef = useRef(null);
+    const emulator = useRef({ isBusy: false });
 
     const [history, setHistory] = useState([]);
     const [historyIndex, setHistoryIndex] = useState(0);
@@ -41,21 +44,46 @@ const TerminalConsole = () => {
         inputRef.current.focus();
     }
 
-    const handleSubmit = (e) => {
+    const handleSubmit = async (e) => {
         e.stopPropagation();
         e.preventDefault();
-        history.push(input)
-        setHistory([...history]);
-        setHistoryIndex(history.length - 1);
-        setInput('');
+        
+        // Only allow updates if emulator isn't busy
+        if(emulator.current.isBusy) return;
+
+        // Clear command - Doesn't need emulator
+        if(input.split()[0] === 'clear') {
+            setHistory([]);
+            setInput('');
+            inputRef.current.focus();
+            return;
+        }
+
+        // Create cmd, set emulator to busy and run emulator 
+        const cmd = { cmd:input, message:'' };
+        emulator.current.isBusy = true;
+        APIEmulator.run(cmd.cmd).then((data) => {
+            // Set emulator to not busy, and update history and inputs 
+            emulator.current.isBusy = false;
+            cmd.message = data;
+
+            history.push(cmd);
+            setHistory([...history]);
+            setHistoryIndex(history.length - 1);
+            setInput('');
+            inputRef.current.focus();
+        })
+
         inputRef.current.focus();
     }
 
     const handleInputChange = (e) => {
+        if(emulator.current.isBusy) return;
         setInput(e.target.value);
     }
 
     const handleKeyDown = (e) => {
+        if(emulator.current.isBusy) return;
 
         let newIndex;
         switch (e.key) {
