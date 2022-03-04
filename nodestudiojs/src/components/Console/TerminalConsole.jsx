@@ -90,7 +90,7 @@ const TerminalConsole = () => {
             case 'ArrowUp':
                 e.stopPropagation();
                 e.preventDefault();
-                setInput(history[historyIndex]);
+                setInput(history[historyIndex].cmd);
                 newIndex = historyIndex - 1 < 0 ? 0 : historyIndex - 1;
                 setHistoryIndex(newIndex);
                 break;

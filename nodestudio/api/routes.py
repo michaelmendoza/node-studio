@@ -47,35 +47,35 @@ async def get_node(node_id: str, slice: str, index: int):
     data = controllers.get_node_data(node_id, slice, index)
     return { 'message': 'Retrieved node data', 'data': data }
 
-@router.post("/add_node")
+@router.post("/node/add")
 @handle_exception
 async def add_node(data: JsonData):
     ''' Adds node to graph '''
     data = controllers.add_node(data)
     return { 'message': 'Add node to graph', 'data': data }
 
-@router.post("/update_node")
+@router.post("/node/update")
 @handle_exception
 async def update_node(data: JsonData):
     ''' Adds node to graph '''
     data = controllers.update_node(data)
     return { 'message': 'Updated node', 'data': data }
 
-@router.post("/remove_node")
+@router.post("/node/delete")
 @handle_exception
 async def remove_node(node_id: ID_Data):
     ''' Removes node to graph '''
     data = controllers.delete_node(node_id.id)
     return { 'message': 'Removed node from graph', 'data': data }
 
-@router.post("/add_link")
+@router.post("/link/add")
 @handle_exception
 async def add_link(data: JsonData):
     ''' Adds link to graph '''
     data = controllers.add_link(data)
     return { 'message': 'Add link to graph', 'data': data }
 
-@router.post("/remove_link")
+@router.post("/link/delete")
 @handle_exception
 async def remove_link(link_id: ID_Data):
     ''' Remove link to graph '''
