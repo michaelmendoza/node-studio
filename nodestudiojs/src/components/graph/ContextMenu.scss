@@ -1,0 +1,38 @@
+@import '../../styles/base/variables.scss';
+
+.context-menu {
+    position: absolute;
+    z-index: 10;
+
+    ul {
+        margin: 0;
+        padding: 0.5em 0;
+        width: 100px;
+        background-color: lighten($app-background-color, 10%);
+        border-radius: 4px;
+        box-shadow: $box-shadow;
+        list-style-type: none;
+    }
+
+    li {
+        font-size: 1em;
+        margin: 0;
+        padding: 0.4em 0.8em;
+        cursor: pointer;
+        
+        &:hover {
+            color: $white;
+            background-color: $blue
+        }
+    }
+
+    .context-menu-off {
+        position: fixed;
+        top:0;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        background-color: #22222266
+;
+    }
+}

@@ -1,14 +1,15 @@
 import './LinksSVG.scss';
 import React, { useContext } from 'react';
 import AppState from '../../state/AppState';
+import { ActionTypes } from '../../state/AppReducers';
 
 const scale = 0.75;
 const startOffset = { x:184 * scale, y:57 * scale }
 const endOffset = { x:16 * scale, y:57 * scale}
 const dyOffset = 18 * scale;
 
-const LinksSVG = ({handleContextMenu, width = 800, height = 800}) => {
-    const {state} = useContext(AppState.AppContext);
+const LinksSVG = ({onContextMenu, width = 800, height = 800}) => {
+    const {state, dispatch} = useContext(AppState.AppContext);
 
     const renderLink = (link) => {
         const startNodeID = link.startNode;
@@ -21,8 +22,17 @@ const LinksSVG = ({handleContextMenu, width = 800, height = 800}) => {
         const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + i * dyOffset };
         const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
 
+        const handleClick = () => {
+            dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:link });
+        }
+
+        const handleContextMenu = e => { 
+            e.preventDefault();
+            onContextMenu(e, true, link);
+        }
+
         return (
-            <g key={link.id} className={link.id}>
+            <g key={link.id} className={link.id} onClick={handleClick} onContextMenu={handleContextMenu}>
                 <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={"#FEFEFE"} strokeLinejoin={"round"} strokeOpacity="0.5"></line>
                 <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={1} stroke={"#444444"} strokeLinejoin={"round"}></line>
                 <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>

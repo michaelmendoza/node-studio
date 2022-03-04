@@ -68,7 +68,7 @@ const Node = ({node, onContextMenu}) => {
     const nodeRef = React.useRef(null);
     
     const onStart = () => {
-        dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
+        dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });
     }
 
     const onControlledDrag = (e, position) => {
@@ -80,11 +80,12 @@ const Node = ({node, onContextMenu}) => {
       };
     
     const handleClick = () => {
-        dispatch({ type: ActionTypes.SET_CURRENT_NODE, node });
+        dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });
     }
 
     const handleContextMenu = e => { 
         e.preventDefault();
+        onContextMenu(e, true, node);
     }
 
     return (
