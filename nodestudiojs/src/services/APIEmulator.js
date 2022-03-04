@@ -6,7 +6,7 @@ const APIEmulator = {
         const substrings = cmd_string.split(' ');
         const cmd = substrings[0];
         const arg = substrings[1];
-        
+
         switch(cmd) {
             case '':
                 return '';
@@ -15,9 +15,11 @@ const APIEmulator = {
             case 'graph':
                 return await APIDataService.getGraph();
             case 'delete_link':
-                return await APIDataService.deleteLink(arg);
+                await APIDataService.deleteLink(arg);
+                return '';
             case 'delete_node':
-                return await APIDataService.deleteNode(arg);
+                await APIDataService.deleteNode(arg);
+                return '';
             case 'timeout':
                 return await new Promise(resolve => setTimeout(() => resolve('timeout'), 1000));
             default:
