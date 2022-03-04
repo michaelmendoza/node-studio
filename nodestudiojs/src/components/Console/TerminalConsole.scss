@@ -1,0 +1,33 @@
+
+.terminal-console {
+    font-weight: 200;
+    font-size: 0.6em;
+    padding-right: 0.5em;
+
+    height: 50px;
+    overflow-y: auto;
+    text-align: left;
+
+    .terminal-prompt-symbol {
+        margin-right: 0.25em;
+    }
+}
+
+.terminal-output {
+    color: #EEEEEE;
+}
+
+.terminal-input {
+    color: #FEFEFE;
+    font-weight: 400;
+    
+    input { 
+        flex: 1;
+        border: 0;
+        outline: none;
+        padding: 0;
+        box-sizing: border-box;
+        background-color: transparent;
+        color: #FEFEFE;
+    }
+}
