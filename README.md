@@ -23,7 +23,8 @@ npm start
 To run locally backend api server: ( From project root directory )
 
 - Setup conda enviroment 
-- 
+
+You have two options to either create a new conda environment and install each package with pip
 ```
 conda create -n nodestudio python=3.8 
 conda activate nodestudio
