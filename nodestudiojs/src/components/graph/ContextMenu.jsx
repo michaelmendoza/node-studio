@@ -8,11 +8,11 @@ const ContextMenu = ({position, show, setShow, data}) => {
     const {dispatch} = useContext(AppContext);
 
     const nodeOptions = [
-        { name:'Delete', callback:() => { dispatch({type: ActionTypes.DELETE_NODE, node:data }); setShow(false); }},
+        { name:'Delete', callback:() => { dispatch({type: ActionTypes.DELETE_NODE, nodeID:data.id }); setShow(false); }},
     ]
     
     const linkOptions = [
-        { name:'Delete', callback:() => { dispatch({type: ActionTypes.DELETE_LINK, link:data }); setShow(false); }}
+        { name:'Delete', callback:() => { dispatch({type: ActionTypes.DELETE_LINK, linkID:data.id }); setShow(false); }}
     ]
 
     const MenuItem = (option, i) => <li key={i} onMouseDown={option.callback}> {option.name} </li>

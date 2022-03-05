@@ -1,5 +1,6 @@
 import './TerminalConsole.scss';
-import { useState, useRef } from 'react';
+import { useState, useRef, useContext } from 'react';
+import { ActionTypes, AppContext } from '../../state';
 import APIEmulator from '../../services/APIEmulator';
 
 const TerminalOutput = ({history}) => {
@@ -33,6 +34,8 @@ const TerminalInput = ({value, onChange, onSubmit, onKeyDown, inputRef}) => {
 }
 
 const TerminalConsole = () => {
+    const {dispatch} = useContext(AppContext);
+
     const inputRef = useRef(null);
     const emulator = useRef({ isBusy: false });
 
@@ -62,7 +65,7 @@ const TerminalConsole = () => {
         // Create cmd, set emulator to busy and run emulator 
         const cmd = { cmd:input, message:'' };
         emulator.current.isBusy = true;
-        APIEmulator.run(cmd.cmd).then((data) => {
+        APIEmulator.run(cmd.cmd, dispatch).then((data) => {
             // Set emulator to not busy, and update history and inputs 
             emulator.current.isBusy = false;
             cmd.message = data;

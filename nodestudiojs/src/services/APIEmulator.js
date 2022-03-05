@@ -1,7 +1,8 @@
+import { ActionTypes } from "../state";
 import APIDataService from "./APIDataService";
 
 const APIEmulator = {
-    run: async (cmd_string) => {
+    run: async (cmd_string, dispatch) => {
         console.log('emulator run');
         const substrings = cmd_string.split(' ');
         const cmd = substrings[0];
@@ -15,10 +16,10 @@ const APIEmulator = {
             case 'graph':
                 return await APIDataService.getGraph();
             case 'delete_link':
-                await APIDataService.deleteLink(arg);
+                dispatch({type: ActionTypes.DELETE_LINK, linkID: arg})
                 return '';
             case 'delete_node':
-                await APIDataService.deleteNode(arg);
+                dispatch({type: ActionTypes.DELETE_NODE, nodeID: arg})
                 return '';
             case 'timeout':
                 return await new Promise(resolve => setTimeout(() => resolve('timeout'), 1000));
