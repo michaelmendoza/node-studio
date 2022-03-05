@@ -34,7 +34,7 @@ class Graph:
         self.node_dict[node.id] = node
 
     def getLink(self, linkid):
-        return next(link for link in links if linkid == link.id)
+        return next(link for link in self.links if linkid == link.id)
 
     def addLink(self, link):
         ''' Adds link to graph '''

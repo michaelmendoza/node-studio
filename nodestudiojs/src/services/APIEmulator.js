@@ -3,7 +3,6 @@ import APIDataService from "./APIDataService";
 
 const APIEmulator = {
     run: async (cmd_string, dispatch) => {
-        console.log('emulator run');
         const substrings = cmd_string.split(' ');
         const cmd = substrings[0];
         const arg = substrings[1];
