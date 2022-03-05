@@ -1,14 +1,13 @@
 
-# Possible Names
-Node Studio
+# Local Pyton enviroment
 
-# Simlar products
-Datablocks
-Shader Graph
+Make sure you have [miniconda](https://docs.conda.io/en/latest/miniconda.html) installed.
 
+Run the following to create a new python environemnt with required libaries.
 
-
-requirements:
-
-pip install pydicom
-pip install jsonpickle
+```
+conda create -n nodestudio python=3.8 
+conda activate nodestudio
+pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
+pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm pycairo jupyterlab 
+```
