@@ -1,3 +1,4 @@
+import APIDataService from "../services/APIDataService";
 
 let counter = 0;
 const count = () => counter++;
@@ -18,6 +19,23 @@ export const AppReducers = (state, action) => {
     let nodes, links;
 
     switch(action.type) {
+        // Node actions
+        case ActionTypes.ADD_NODE:
+            break;
+        case ActionTypes.UPDATE_NODE:
+            break;
+        case ActionTypes.DELETE_NODE:
+            APIDataService.deleteNode(action.nodeID);
+            break;
+
+        // Link actions
+        case ActionTypes.DELETE_LINK:
+            APIDataService.deleteLink(action.linkID);
+            break;
+        default:
+    }
+
+    switch(action.type) {
         // Graph actions
         case ActionTypes.INIT_GRAPH:
             return { ...state, nodes: action.nodes, links: action.links}
@@ -30,9 +48,9 @@ export const AppReducers = (state, action) => {
             return { ...state, nodes };
         case ActionTypes.DELETE_NODE:
             nodes = { ...state.nodes };
-            nodes[action.node.id] = undefined;
+            nodes[action.nodeID] = undefined;
             links = [ ...state.links];
-            const bad_links = links.filter(l => l.startNode === action.node.id || l.endNode === action.node.id); 
+            const bad_links = links.filter(l => l.startNode === action.nodeID || l.endNode === action.nodeID); 
             const bad_links_match = (link) => bad_links.reduce((prev, current) => prev || link.id === current.id, false)
             links = links.filter(link => !bad_links_match(link));
             return { ...state, nodes, links };
@@ -40,7 +58,7 @@ export const AppReducers = (state, action) => {
         // Link actions
         case ActionTypes.DELETE_LINK:
             links = [ ...state.links ];
-            links = links.filter(l => l !== action.link);
+            links = links.filter(l => l.id !== action.linkID);
             return { ...state, links }; 
 
         // Session actions

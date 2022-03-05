@@ -3,6 +3,7 @@ import { useContext, useEffect, useState, useRef } from 'react';
 import AppState from '../../state/AppState';
 import Tabs from '../shared/Tabs';
 import * as Logger from '../../services/LoggingService';
+import TerminalConsole from './TerminalConsole';
 
 const Console = () => {
     return (
@@ -29,16 +30,6 @@ const DebugConsole = () => {
             {
                 linkText 
             }
-        </div>
-    )
-}
-
-const TerminalConsole = () => {
-    const consoleText = '% _';
-
-    return (
-        <div className='console-view text-align-left'>
-            { consoleText }
         </div>
     )
 }
