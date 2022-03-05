@@ -26,6 +26,13 @@ def handle_exception(func):
 
 router = APIRouter(prefix="/api")
 
+@router.get("/nodelist")
+@handle_exception
+async def get_graph():
+    ''' Retrieves the list of available nodes '''
+    data = controllers.get_nodelist()
+    return { 'message': 'Retrieved nodelist', 'data': data }
+
 @router.get("/graph")
 @handle_exception
 async def get_graph():

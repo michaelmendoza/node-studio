@@ -1,10 +1,15 @@
 import json
 import base64
+import jsonpickle
 import numpy as np
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
+from graph.nodes import NodeInfo
 from graph.sesson import Session
+
+def get_nodelist():
+    return jsonpickle.encode(NodeInfo)
 
 def get_graph():
     json_string = current_graph.json()
