@@ -28,7 +28,7 @@ To run locally backend api server: ( From project root directory )
 conda create -n nodestudio python=3.8 
 conda activate nodestudio
 pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
-pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm pycairo jupyterlab 
+pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab 
 ```
 
 or use the yml file for the environment configuration
