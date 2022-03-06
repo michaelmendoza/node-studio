@@ -1,33 +1,42 @@
-from typing import Dict, List, Callable
+from typing import Dict, List, Callable, Optional, Union, Any
 from pydantic import BaseModel
 from graph.enums import NodeType
 from process.file.file import read_file
 from process.fit import fit
 from process.mask import apply_mask
+class NodeNumberOption(BaseModel):
+    name: str
+    range: List[int] = None
+
+class NodeSelectOption(BaseModel):
+    name: str
+    select: List[str] = []
+    default: None
 
 class NodeProps(BaseModel):
     type: NodeType
-    x: int = 0
-    y: int = 0
+    name: str
+    description: str = ''
     input: List[str] = []
     output: List[str] = []
-    options: List[str] = []
+    options: List[Union[str, Any]] = []
     fn: Callable = lambda x:x
-    args: Dict = {}
+    args: Dict = {},
+    
 
 NodeInfo = {
     # Variable Nodes
-    NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, output=['value'], options=['value']),
+     NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', description='A basic variable', output=['value'], options=['value']),
 
     # Input Nodes
-    NodeType.FILE: NodeProps(type=NodeType.FILE, output=['out'], options=['filetype', 'filepath'], fn=read_file),
+    NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', description='File input', output=['out'], options=[{'name':'filetype', 'select':['dcm','dat']}, 'filepath'], fn=read_file),
 
     # Computer Nodes
-    NodeType.ADD: NodeProps(type=NodeType.ADD, input=['a','b'], output=['out'], fn=lambda a, b: a + b),
-    NodeType.MULT: NodeProps(type=NodeType.MULT, input=['a','b'], output=['out'], fn=lambda a, b: a * b),
-    NodeType.MASK: NodeProps(type=NodeType.MASK, input=['a'], output=['out'], options=['masktype'], fn=apply_mask), 
-    NodeType.FIT: NodeProps(type=NodeType.FIT, input=['a'], output=['out'], fn=fit),
+    NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', description='Adder', input=['a','b'], output=['out'], fn=lambda a, b: a + b),
+    NodeType.MULT: NodeProps(type=NodeType.MULT, name='Mult', description='Multiplier', input=['a','b'], output=['out'], fn=lambda a, b: a * b),
+    NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', description='Mask generator', input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
+    NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], output=['out'], fn=fit),
 
     # Output Nodes
-    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, input=['a']) 
+    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['a']) 
 }

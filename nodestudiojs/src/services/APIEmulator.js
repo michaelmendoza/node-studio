@@ -6,12 +6,15 @@ const APIEmulator = {
         const substrings = cmd_string.split(' ');
         const cmd = substrings[0];
         const arg = substrings[1];
-
+        let data;
         switch(cmd) {
             case '':
                 return '';
             case 'man':
-                return `Allowed commands: clear, graph, delete_link, delete_node`;
+                return `Allowed commands: clear, nodelist, graph, delete_link, delete_node`;
+            case 'nodelist':
+                data = await APIDataService.getNodeList();
+                return JSON.stringify(data);
             case 'graph':
                 return await APIDataService.getGraph();
             case 'delete_link':

@@ -1,9 +1,11 @@
 import './Node.scss';
-import React, { useContext } from 'react';
+import React, { useContext, useState } from 'react';
 import Draggable from 'react-draggable';
 import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
 import ImageView from './ImageView';
+import Select from '../base/Select';
+import TextInput from '../base/TextInput';
 
 /**
  * Component for node input ports
@@ -46,18 +48,53 @@ const NodeIO = ({inputLabels, outputLabels}) => <div className="node_io layout-r
  */
 const NodeTitle = ({name}) => <div className="node_title"> {name} </div>
 
+const FileProps = ({nodeID}) => {
+    const {state, dispatch} = useContext(AppState.AppContext);
+    const [filetype, setFiletype] = useState();
+    const [filepath, setFilepath] = useState(state.nodes[nodeID]?.argsDict?.filepath);
+
+    const handleFilepathChange = (e) => {
+        setFilepath(e.target.value);
+
+        const node = { ...state.nodes[nodeID] };
+        node.argsDict.filepath = e.target.value;
+        dispatch({type: ActionTypes.UPDATE_NODE, node });
+    }
+
+    const handleOptionUpdate = (option) => {
+        setFiletype(option);
+        
+        const node = { ...state.nodes[nodeID] };
+        node.argsDict.filetype = option.value;
+        dispatch({type: ActionTypes.UPDATE_NODE, node });
+    }
+
+    const options = [{label:'Dicom (.dcm)', value:'dcm'}, {label:'Raw Data (.dat)', value:'dat'}]
+
+    return (
+        <div>
+            <Select options={options} placeholder={'Select FileType'} onChange={handleOptionUpdate}></Select>
+            <TextInput name='filepath' placeholder='Enter filepath' value={filepath} onChange={handleFilepathChange}></TextInput>
+        </div>
+    )
+}
+
 /**
  * Node Property Options
  */
 const NodeProps = ({id, type}) => {
 
-  return (
+    return (
     <div className="node_props"> 
+        {
+            type === 'FILE' ? <FileProps nodeID={id}></FileProps> : null
+        }
+
         {
             type === 'DISPLAY' ? <ImageView nodeID={id}></ImageView> : null
         }
     </div>
-  )
+    )
 }
 
 /**
@@ -66,7 +103,8 @@ const NodeProps = ({id, type}) => {
 const Node = ({node, onContextMenu}) => {
     const {dispatch} = useContext(AppState.AppContext);
     const nodeRef = React.useRef(null);
-    
+    const [position, setPosition] = useState({ x:node.position.x, y:node.position.y })
+
     const onStart = () => {
         dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });
     }
@@ -76,6 +114,7 @@ const Node = ({node, onContextMenu}) => {
         const {x, y} = position;
         node.position.x = x;
         node.position.y = y;
+        setPosition(position)
         dispatch({ type: ActionTypes.UPDATE_NODE, node });
       };
     
@@ -89,7 +128,7 @@ const Node = ({node, onContextMenu}) => {
     }
 
     return (
-        <Draggable nodeRef={nodeRef} handle=".node_title" position={node?.position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} >
+        <Draggable nodeRef={nodeRef} handle=".node_title" position={position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} >
             <div ref={nodeRef}>
                 <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle {...node}></NodeTitle>

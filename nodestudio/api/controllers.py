@@ -9,8 +9,9 @@ from graph.nodes import NodeInfo
 from graph.sesson import Session
 
 def get_nodelist():
-    return jsonpickle.encode(NodeInfo)
-
+    data = NodeInfo
+    return data
+    
 def get_graph():
     json_string = current_graph.json()
     return json_string

@@ -6,20 +6,19 @@ from graph.link import Link
 from graph.enums import NodeType
 from graph.nodes import NodeInfo, NodeProps
 
-def create_node(type, props):  
-    ''' Node creation factory '''
-    return Node.create(type, props)
+class NodeInitProps(NodeProps):
+    x: int = 0
+    y: int = 0
 
 class Node:
     ''' Represents a Node for computation '''
 
-    def __init__(self, props: NodeProps, inputs: List, id: str = None):
+    def __init__(self, props: NodeInitProps, inputs: List, id: str = None):
         self.id = uuid.uuid1().hex if id == None else id
         self.props = props    # Node properties
         self.inputs = inputs  # List input node ids
         self.outputs = []     # List of consumers i.e. nodes that recieve this node as an input
         self.value = None
-        self.fn = None
 
         # Add links to all input nodes
         inputs = graph.current_graph.getNodeList(inputs)
@@ -96,3 +95,7 @@ class Node:
 
         node = json.loads(json_string)
         return Node.load(node)
+
+def create_node(type, props):  
+    ''' Node creation factory '''
+    return Node.create(type, props)

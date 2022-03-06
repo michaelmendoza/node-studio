@@ -10,6 +10,8 @@ const APIDataService = {
 
     createGraph: body => fetchAPI(`${dataUrl}/graph`, FetchTypes.POST, body),
 
+    getNodeList: () => fetchAPI(`${dataUrl}/nodelist`, FetchTypes.GET),
+
     getNode: (node_id, slice, index) => fetchAPI(`${dataUrl}/node?node_id=${node_id}&slice=${slice}&index=${index}`, FetchTypes.GET),
 
     deleteNode: (node_id) => fetchAPI(`${dataUrl}/node/delete`, FetchTypes.POST, { id:node_id }),

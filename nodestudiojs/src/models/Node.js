@@ -10,9 +10,9 @@ class Node {
         this.position.y = node.position?.y || 0;        // Y position of node
         this.type = node.type || 'Test';
         this.name = node.name || 'Test';                // NodeType
-        this.inputs = node.inputs || [];                      // Input NodeIDs
+        this.inputs = node.inputs || [];                // Input NodeIDs
         this.inputLabels = node.inputLabels || [];      // Input Labels
-        this.outputs = node.outputs || [];                    // Output NodeIDs
+        this.outputs = node.outputs || [];              // Output NodeIDs
         this.outputLabels = node.outputLabels || [];    // Output Labels
         this.options = node.options || [];              // Options Labels
         this.argsDict = node.args || {};                // Argument Dict for Node compute

@@ -19,7 +19,7 @@ const Select = ({options, onChange, placeholder='Select ...'}) => {
 
     return (
         <div className='select'>
-            <button className='select-button' onClick={handleClick} onBlur={onBlur}> { value ? value.value : placeholder } </button>
+            <button className='select-button' onClick={handleClick} onBlur={onBlur}> { value ? value.label : placeholder } </button>
             {
                 show ? <div className='layout-column select-options'>
                     { options.map((option)=><button className='select-option' key={option.label} onClick={(e)=>handleOptionSelect(option)}>{option.label}</button>)}

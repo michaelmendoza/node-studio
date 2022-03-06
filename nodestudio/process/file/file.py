@@ -3,7 +3,7 @@ import pydicom
 import numpy as np
 
 def read_file(filetype, filepath):
-    if filetype == 'dicom' :
+    if filetype == 'dicom' or filetype == 'dcm':
         return read_dicom(filepath)
     else:
         return None

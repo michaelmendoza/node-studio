@@ -2,16 +2,16 @@ from enum import Enum
 
 class NodeType(Enum):
     # Variable Nodes
-    VARIABLE = 'Variable'
+    VARIABLE = 'VARIABLE'
 
     # Input Nodes
-    FILE = 'File'
+    FILE = 'FILE'
 
     # Computer Nodes
-    ADD = 'Add'
-    MULT = 'Multiply'
-    MASK = 'Mask'
-    FIT = 'Fit'
+    ADD = 'ADD'
+    MULT = 'MULT'
+    MASK = 'MASK'
+    FIT = 'FIT'
     
     # Output Nodes
-    DISPLAY = 'Display'
+    DISPLAY = 'DISPLAY'
