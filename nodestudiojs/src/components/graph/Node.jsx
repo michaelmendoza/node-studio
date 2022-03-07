@@ -59,7 +59,7 @@ const FileProps = ({nodeID}) => {
 
         const node = { ...state.nodes[nodeID] };
         node.argsDict.filepath = e.target.value;
-        dispatch({type: ActionTypes.UPDATE_NODE, node });
+        dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
     }
 
     const handleOptionUpdate = (option) => {
@@ -67,7 +67,7 @@ const FileProps = ({nodeID}) => {
         
         const node = { ...state.nodes[nodeID] };
         node.argsDict.filetype = option.value;
-        dispatch({type: ActionTypes.UPDATE_NODE, node });
+        dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
     }
 
     const options = [{label:'Dicom (.dcm)', value:'dcm'}, {label:'Raw Data (.dat)', value:'dat'}]
@@ -108,7 +108,7 @@ const NodeProps = ({id, type, options, argsDict}) => {
                             const handleOptionChange = (select) => {
                                 const node = { ...state.nodes[id] };
                                 node.argsDict[option.name] = select.value;
-                                dispatch({type: ActionTypes.UPDATE_NODE, node });
+                                dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
                             }
                             return <Select key={index} options={select} onChange={handleOptionChange}></Select>
                         }
@@ -126,7 +126,7 @@ const NodeProps = ({id, type, options, argsDict}) => {
  * Node Component representing a Node in a computation graph
  */
 const Node = ({node, onContextMenu}) => {
-    const {dispatch} = useContext(AppState.AppContext);
+    const {state, dispatch} = useContext(AppState.AppContext);
     const nodeRef = React.useRef(null);
     const [position, setPosition] = useState({ x:node.position.x, y:node.position.y })
 
@@ -140,9 +140,13 @@ const Node = ({node, onContextMenu}) => {
         node.position.x = x;
         node.position.y = y;
         setPosition(position)
-        dispatch({ type: ActionTypes.UPDATE_NODE, node });
+        dispatch({ type: ActionTypes.UPDATE_NODE, node, updateAPI:false });
       };
     
+    const onStop = () => {
+        dispatch({ type: ActionTypes.UPDATE_NODE, node: state.nodes[node.id], updateAPI:true });
+    }
+
     const handleClick = () => {
         dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });
     }
@@ -153,7 +157,7 @@ const Node = ({node, onContextMenu}) => {
     }
 
     return (
-        <Draggable nodeRef={nodeRef} handle=".node_title" position={position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} >
+        <Draggable nodeRef={nodeRef} handle=".node_title" position={position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} onStop={onStop}>
             <div ref={nodeRef}>
                 <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle {...node}></NodeTitle>

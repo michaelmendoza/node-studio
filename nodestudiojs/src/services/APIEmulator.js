@@ -18,10 +18,10 @@ const APIEmulator = {
             case 'graph':
                 return await APIDataService.getGraph();
             case 'delete_link':
-                dispatch({type: ActionTypes.DELETE_LINK, linkID: arg})
+                dispatch({ type: ActionTypes.DELETE_LINK, linkID: arg, updateAPI:true })
                 return '';
             case 'delete_node':
-                dispatch({type: ActionTypes.DELETE_NODE, nodeID: arg})
+                dispatch({ type: ActionTypes.DELETE_NODE, nodeID: arg, updateAPI:true })
                 return '';
             case 'timeout':
                 return await new Promise(resolve => setTimeout(() => resolve('timeout'), 1000));

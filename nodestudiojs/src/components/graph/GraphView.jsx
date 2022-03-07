@@ -43,7 +43,7 @@ const GraphView = () => {
         console.log(data, x, y);
 
         const node = Node.create(data, {x, y});
-        if (node) dispatch({ type: ActionTypes.ADD_NODE, node });
+        if (node) dispatch({ type: ActionTypes.ADD_NODE, node, updateAPI:true });
     }
 
     const handleDragOver = (e) => {
