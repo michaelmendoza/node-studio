@@ -6,6 +6,7 @@ import AppState from '../../state/AppState';
 import ImageView from './ImageView';
 import Select from '../base/Select';
 import TextInput from '../base/TextInput';
+import { isString } from '../../libraries/utils';
 
 /**
  * Component for node input ports
@@ -82,7 +83,8 @@ const FileProps = ({nodeID}) => {
 /**
  * Node Property Options
  */
-const NodeProps = ({id, type}) => {
+const NodeProps = ({id, type, options, argsDict}) => {
+    const {state, dispatch} = useContext(AppState.AppContext);
 
     return (
     <div className="node_props"> 
@@ -93,9 +95,32 @@ const NodeProps = ({id, type}) => {
         {
             type === 'DISPLAY' ? <ImageView nodeID={id}></ImageView> : null
         }
+
+        {
+            !(type === 'FILE' || type === 'DISPLAY') ? <div>
+                {
+                    options.map((option) => {
+                        if(isString(option)) {
+                            return <TextInput name={option}></TextInput>
+                        }
+                        else {
+                            const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }))
+                            const handleOptionChange = (select) => {
+                                const node = { ...state.nodes[id] };
+                                node.argsDict[option.name] = select.value;
+                                dispatch({type: ActionTypes.UPDATE_NODE, node });
+                            }
+                            return <Select options={select} onChange={handleOptionChange}></Select>
+                        }
+                    })
+                }
+            </div> : null
+        }
     </div>
     )
 }
+
+
 
 /**
  * Node Component representing a Node in a computation graph

@@ -16,3 +16,7 @@ export const debounce = (f, debounceTime = 100) => {
         f();
     }, debounceTime);
 };
+
+export const isString = (x) => {
+    return Object.prototype.toString.call(x) === "[object String]"
+} 
