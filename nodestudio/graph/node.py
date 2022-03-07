@@ -1,24 +1,28 @@
 import uuid
 import json
 from typing import List
+
+from pydantic import BaseModel
 import graph
 from graph.link import Link
 from graph.enums import NodeType
 from graph.nodes import NodeInfo, NodeProps
+from graph.interfaces import NodeData
 
-class NodeInitProps(NodeProps):
+class NodeStyles(BaseModel):
     x: int = 0
     y: int = 0
-
 class Node:
     ''' Represents a Node for computation '''
 
-    def __init__(self, props: NodeInitProps, inputs: List, id: str = None):
+    def __init__(self, props: NodeProps, inputs: List = [], outputs: List = [], styles: NodeStyles = NodeStyles(), args = {}, id: str = None):
         self.id = uuid.uuid1().hex if id == None else id
-        self.props = props    # Node properties
-        self.inputs = inputs  # List input node ids
-        self.outputs = []     # List of consumers i.e. nodes that recieve this node as an input
-        self.value = None
+        self.props = props          # Node immutable properties (Designated in NodeInfo)
+        self.inputs = inputs        # List input node ids
+        self.outputs = outputs      # List of consumers i.e. nodes that recieve this node as an input
+        self.styles = styles        # Node UI styles
+        self.args = args            # Function args
+        self.value = None           # Cached compute result
 
         # Add links to all input nodes
         inputs = graph.current_graph.getNodeList(inputs)
@@ -31,20 +35,21 @@ class Node:
         graph.current_graph.addNode(self)
 
     def __str__(self):
-        return f"Node: {self.id} {self.props} {self.inputs} {self.outputs}"
+        return f"Node: {self.id} {self.props} {self.inputs} {self.outputs} {self.styles} {self.args}"
 
     def dict(self):
         ''' Returns dictionary representation of node. Used in saving node to json. '''
         props = self.props.dict()
+        styles = self.styles.dict()
         props['type'] = props['type'].name
         del props['fn']
-        return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'outputs': self.outputs }
+        return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'outputs': self.outputs, 'styles': styles, 'args': self.args }
 
     def compute(self):
         print(f'Compute: {self.props}')
 
         if self.props.fn:
-            args = self.props.args
+            args = self.args
             inputs = graph.current_graph.getNodeList(self.inputs)
             values = [input.value for input in inputs]
             self.value = self.props.fn(*values, **args)
@@ -61,34 +66,33 @@ class Node:
         input = graph.getNode(link.startNode)
         input.outputs.append(self.id)
 
-    def update(self, node_dict):
-        ''' Updates node properties. Currently only updates x, y, and args. '''
-        if node_dict['props']:
-            props =  node_dict['props']
-            if props['x']:
-                self.props.x = props['x']
-            if props['y']:
-                self.props.x = props['y']
-            if props['args']:
-                self.props.args = props['args']
+    def update(self, node_data):
+        ''' Updates node properties. Currently only updates x, y, and args. '''            
+        if node_data.styles:
+            self.styles = NodeStyles(**node_data.styles)
+        if node_data.args:
+            self.args = node_data.args
 
     def create(type, props):  
         ''' Node creation factory. Class function. '''
 
         nodeInfo = NodeInfo[type].dict()                              # Retrive nodeinfo from type
+        styles = NodeStyles({ 'x':props['x'], 'y':props['y']})
+
         def _lambda(*inputs): 
             _props = NodeProps(** { **nodeInfo, **props })            # Combine nodeinfo and props
             inputs = [input.id for input in inputs] if inputs else [] # Convert from list[Node] to list[nodeid]
-            return Node(_props, inputs)
+            return Node(_props, inputs = inputs, outputs = [], styles = styles)
         return _lambda
 
-    def load(node_dict):
+    def load(node_data):
         ''' Create node from node_dict saved data. Class function. '''
-        type =  NodeType[node_dict['props']['type']]
-        node_dict['props']['type'] = type
-        node_dict['props']['fn'] =  NodeInfo[type].dict()['fn']
-        props = NodeProps(**node_dict['props'])
-        return Node(props, [], node_dict['id'])
+        node_data = NodeData(**node_data)
+        type =  NodeType[node_data.props['type']]
+        props = NodeInfo[type]
+        styles = NodeStyles(**node_data.styles)
+        args = node_data.args
+        return Node(props, inputs=[], outputs=[], styles=styles, args=args, id=node_data.id)
 
     def fromJson(json_string):
         ''' Create node from json string saved data. Class function. '''

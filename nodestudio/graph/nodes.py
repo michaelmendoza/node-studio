@@ -21,8 +21,7 @@ class NodeProps(BaseModel):
     output: List[str] = []
     options: List[Union[str, Any]] = []
     fn: Callable = lambda x:x
-    args: Dict = {}
-    
+
 NodeInfo = {
     # Variable Nodes
      NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', description='A basic variable', output=['value'], options=['value']),

@@ -18,6 +18,17 @@ class Node {
         this.argsDict = node.args || {};                             // Argument Dict for Node compute
     }
 
+    static export(node) {
+        return {
+            id: node.id, 
+            props: { type: node.type },
+            inputs: node.inputs,
+            outputs: node.outputs,
+            styles: { x: node.position.x, y: node.position.y },
+            args: node.argsDict
+        }
+    }
+
     static create(type, position = { x: 50, y:50 }) {
         const nodeDict = getNodeFromType(type);
         if(nodeDict === undefined) return;
@@ -31,14 +42,14 @@ class Node {
         node.id = nodeData.id;
         node.inputs = nodeData.inputs;
         node.outputs = nodeData.outputs;
+        node.args = nodeData.args;
 
-        node.position = { x: nodeData.props.x, y: nodeData.props.y }
+        node.position = { x: nodeData.styles.x, y: nodeData.styles.y }
         node.type = nodeData.props.type;
         node.name = nodeData.props.name;
         node.inputLabels = nodeData.props.input;
         node.outputLabels = nodeData.props.output;
         node.options = nodeData.props.options;
-        node.args = nodeData.props.args;
         return new Node(node);
     }
 }

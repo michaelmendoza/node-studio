@@ -99,9 +99,9 @@ const NodeProps = ({id, type, options, argsDict}) => {
         {
             !(type === 'FILE' || type === 'DISPLAY') ? <div>
                 {
-                    options.map((option) => {
+                    options.map((option, index) => {
                         if(isString(option)) {
-                            return <TextInput name={option}></TextInput>
+                            return <TextInput key={index} name={option}></TextInput>
                         }
                         else {
                             const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }))
@@ -110,7 +110,7 @@ const NodeProps = ({id, type, options, argsDict}) => {
                                 node.argsDict[option.name] = select.value;
                                 dispatch({type: ActionTypes.UPDATE_NODE, node });
                             }
-                            return <Select options={select} onChange={handleOptionChange}></Select>
+                            return <Select key={index} options={select} onChange={handleOptionChange}></Select>
                         }
                     })
                 }
