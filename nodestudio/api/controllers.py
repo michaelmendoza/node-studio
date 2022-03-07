@@ -1,11 +1,15 @@
-import json
 import base64
 import numpy as np
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
+from graph.nodes import NodeInfo, NodeProps
 from graph.sesson import Session
 
+def get_nodelist():
+    data = NodeInfo
+    return data
+    
 def get_graph():
     json_string = current_graph.json()
     return json_string
@@ -33,14 +37,12 @@ def get_node_data(node_id, slice, index):
     return { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size }
 
 def add_node(data):
-    node = Node.fromJson(data.json_string)
-    current_graph.addNode(node)
+    node = Node.load(data)
     return node.dict()
 
 def update_node(data):
-    node_dict = json.loads(data.json_string)
-    node : Node = current_graph.getNode(node_dict['id'])
-    node.update(node_dict)
+    node : Node = current_graph.getNode(data.id)
+    node.update(data)
     return node.dict()
 
 def delete_node(node_id):  

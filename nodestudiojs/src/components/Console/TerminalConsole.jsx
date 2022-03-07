@@ -1,6 +1,6 @@
 import './TerminalConsole.scss';
 import { useState, useRef, useContext } from 'react';
-import { ActionTypes, AppContext } from '../../state';
+import { AppContext } from '../../state';
 import APIEmulator from '../../services/APIEmulator';
 
 const TerminalOutput = ({history}) => {

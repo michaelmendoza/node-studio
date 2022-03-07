@@ -1,6 +1,7 @@
 import 'normalize.css';
 import './styles/app.scss';
 import './App.scss';
+import { useEffect } from 'react';
 import AppState from './state/AppState';
 import CenterView from './components/layout/CenterView';
 import GraphView from './components/graph/GraphView';
@@ -11,8 +12,13 @@ import SideNav from './components/SideNav';
 import Tabs from './components/shared/Tabs';
 import Console from './components/Console';
 import NodeInspector from './components/shared/NodeInspector';
+import NodeList from './models/NodeList';
 
 function App() {
+    useEffect(() => {
+        NodeList.fetch();
+    }, [])
+
     return (
         <div className="App">
             <AppState.AppStateProvider>

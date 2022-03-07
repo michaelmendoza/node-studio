@@ -1,15 +1,7 @@
-import base64
 from functools import wraps
-from typing import Dict
-from pydantic import BaseModel
 from fastapi import APIRouter, HTTPException
 from api import controllers
-
-class JsonData(BaseModel):
-    json_string: str
-
-class ID_Data(BaseModel):
-    id:str
+from graph.interfaces import JsonData, ID_Data, NodeData
 
 def handle_exception(func):
     @wraps(func)
@@ -25,6 +17,13 @@ def handle_exception(func):
     return wrapper
 
 router = APIRouter(prefix="/api")
+
+@router.get("/nodelist")
+@handle_exception
+async def get_graph():
+    ''' Retrieves the list of available nodes '''
+    data = controllers.get_nodelist()
+    return { 'message': 'Retrieved nodelist', 'data': data }
 
 @router.get("/graph")
 @handle_exception
@@ -49,14 +48,14 @@ async def get_node(node_id: str, slice: str, index: int):
 
 @router.post("/node/add")
 @handle_exception
-async def add_node(data: JsonData):
+async def add_node(data: NodeData):
     ''' Adds node to graph '''
     data = controllers.add_node(data)
     return { 'message': 'Add node to graph', 'data': data }
 
 @router.post("/node/update")
 @handle_exception
-async def update_node(data: JsonData):
+async def update_node(data: NodeData):
     ''' Adds node to graph '''
     data = controllers.update_node(data)
     return { 'message': 'Updated node', 'data': data }

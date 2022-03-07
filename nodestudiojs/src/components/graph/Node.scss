@@ -80,21 +80,29 @@ $node-canvas-bg-color: #e6e6e6;
     .node_props {
       width: 100%;
       padding: 0.6em;
-      text-align: right;
+      text-align: left;
       background-color: $node-canvas-bg-color;
       border-style: solid;
       border-bottom-color: $grey-border-color;
       border-width: 0px 0px 1px 0px;
       
       input {
+        background-color: lighten($app-background-color, 80%);
         width: 100%;
         font-size: 0.75em;
       }
   
       label {
-        font-size: 0.9em;
+        font-size: 0.75em;
+        font-weight: 200;
+        text-transform: capitalize;
       }
-  
+
+      [type=file] {
+        margin-top: 1em;
+        margin-bottom: 0.5em;
+      }
+
       button {
         font-size: 0.75em;
         padding: 0.5em;

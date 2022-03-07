@@ -1,3 +1,4 @@
+import Node from "../models/Node";
 import APIDataService from "../services/APIDataService";
 
 let counter = 0;
@@ -21,8 +22,10 @@ export const AppReducers = (state, action) => {
     switch(action.type) {
         // Node actions
         case ActionTypes.ADD_NODE:
+            APIDataService.addNode(Node.export(action.node));
             break;
         case ActionTypes.UPDATE_NODE:
+            APIDataService.updateNode(Node.export(action.node));
             break;
         case ActionTypes.DELETE_NODE:
             APIDataService.deleteNode(action.nodeID);

@@ -14,7 +14,7 @@ const ItemExplorer = ({item}) => {
         if(itemType === 'projects')
             return savedProjectList;
         if(itemType === 'plugins')
-            return NodeList;
+            return NodeList.getList();
         else 
             return []
     }

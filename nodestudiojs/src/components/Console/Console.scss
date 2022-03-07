@@ -49,28 +49,3 @@
     border-radius: 10px;
     box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
 }
-
-.terminal-console {
-    .terminal-prompt-symbol {
-        margin-right: 0.25em;
-    }
-}
-
-.terminal-output {
-    color: #EEEEEE;
-}
-
-.terminal-input {
-    color: #FEFEFE;
-    font-weight: 400;
-    
-    input { 
-        flex: 1;
-        border: 0;
-        outline: none;
-        padding: 0;
-        box-sizing: border-box;
-        background-color: transparent;
-        color: #FEFEFE;
-    }
-}
