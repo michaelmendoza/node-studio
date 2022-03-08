@@ -12,6 +12,7 @@ export const ActionTypes = {
     'ADD_LINK': count(),
     'DELETE_LINK': count(),
     'UPDATE_SESSION': count(),
+    'SET_MOUSESTATE': count(),
     'SET_ACTIVE_ELEMENT': count(),
     'SET_SIDENAV_SHOW': count()
 }
@@ -33,6 +34,9 @@ export const AppReducers = (state, action) => {
                 break;
     
             // Link actions
+            case ActionTypes.ADD_LINK:
+                APIDataService.addLink(action.link);
+                break;
             case ActionTypes.DELETE_LINK:
                 APIDataService.deleteLink(action.linkID);
                 break;
@@ -61,6 +65,10 @@ export const AppReducers = (state, action) => {
             return { ...state, nodes, links };
         
         // Link actions
+        case ActionTypes.ADD_LINK:
+            links = [...state.links];
+            links.push(action.link);
+            return { ...state, links };
         case ActionTypes.DELETE_LINK:
             links = [ ...state.links ];
             links = links.filter(l => l.id !== action.linkID);
@@ -72,6 +80,10 @@ export const AppReducers = (state, action) => {
             sessions[action.nodeID] = action.update;
             return { ...state, sessions};
 
+        // MouseState actions
+        case ActionTypes.SET_MOUSESTATE:
+            return { ...state, mouseState: action.mouseState }    
+        
         // Active Node actions
         case ActionTypes.SET_ACTIVE_ELEMENT:
             return { ...state, activeElement: action.activeElement};

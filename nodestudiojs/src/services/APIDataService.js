@@ -20,6 +20,8 @@ const APIDataService = {
 
     deleteNode: (node_id) => fetchAPI(`${dataUrl}/node/delete`, FetchTypes.POST, { id:node_id }),
 
+    addLink: (link) => fetchAPI(`${dataUrl}/link/add`, FetchTypes.POST, link),
+
     deleteLink: (link_id) => fetchAPI(`${dataUrl}/link/delete`, FetchTypes.POST, { id:link_id }),
 
     runSesson: body =>  fetchAPI(`${dataUrl}/session`, FetchTypes.POST, body),

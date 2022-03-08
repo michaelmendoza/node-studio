@@ -22,7 +22,7 @@ const Graph = ({position: mousePosition}) => {
             {
                 Object.values(state.nodes).map((node) => node ? <Node key={node.id} node={node} onContextMenu={handleContextMenu}></Node> : null)
             }
-            <LinksSVG onContextMenu={handleContextMenu}></LinksSVG>
+            <LinksSVG position={mousePosition} onContextMenu={handleContextMenu}></LinksSVG>
         </div>
     )
 }

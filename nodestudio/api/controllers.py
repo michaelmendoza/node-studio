@@ -37,7 +37,7 @@ def get_node_data(node_id, slice, index):
     return { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size }
 
 def add_node(data):
-    node = Node.load(data)
+    node = Node.load(data.dict())
     return node.dict()
 
 def update_node(data):

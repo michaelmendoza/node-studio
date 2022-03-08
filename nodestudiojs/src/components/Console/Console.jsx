@@ -19,9 +19,13 @@ const DebugConsole = () => {
     const {state} = useContext(AppState.AppContext);
     const nodesText = JSON.stringify(state.nodes, null,'\t').split(/\r?\n/);
     const linkText = JSON.stringify(state.links, null,'\t').split(/\r?\n/);
+    const activeElement = JSON.stringify(state.activeElement, null,'\t').split(/\r?\n/);
+    const sideNav = JSON.stringify(state.sideNav, null,'\t').split(/\r?\n/);
 
     return (
         <div className='console-view text-align-left'>
+            <div> MouseState: { state.mouseState } </div>
+            
             <div> Nodes: </div>
             {
                 nodesText
@@ -29,6 +33,14 @@ const DebugConsole = () => {
             <div> Links: </div>
             {
                 linkText 
+            }
+            <div> ActiveElement: </div>
+            {
+                activeElement
+            }
+            <div> SideNav </div> 
+            {
+                sideNav
             }
         </div>
     )
