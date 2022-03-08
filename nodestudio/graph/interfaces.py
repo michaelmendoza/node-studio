@@ -9,6 +9,13 @@ class NodeData(BaseModel):
     styles: Any
     args: Any
 
+class LinkData(BaseModel):
+    id: str
+    startNode: str
+    startPort: int
+    endNode: str
+    endPort: int
+
 class JsonData(BaseModel):
     json_string: str
 

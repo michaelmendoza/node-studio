@@ -1,5 +1,6 @@
 import React, { createContext, useReducer, useContext } from 'react';
 import { AppReducers } from './AppReducers';
+import MouseStates from './MouseStates';
 
 /**
  * Inital state for AppState 
@@ -9,7 +10,8 @@ const initialState  = {
     links: [],
     sessions: {},
 
-    activeElement: null,
+    mouseState: MouseStates.NORMAL,
+    activeElement: null, // can be Node or Link
     sideNav: { show: false }
 };
 

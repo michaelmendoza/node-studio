@@ -11,12 +11,15 @@ const APIEmulator = {
             case '':
                 return '';
             case 'man':
-                return `Allowed commands: clear, nodelist, graph, delete_link, delete_node`;
+                return `Allowed commands: clear, nodelist, graph, reset_graph, delete_link, delete_node`;
             case 'nodelist':
                 data = await APIDataService.getNodeList();
                 return JSON.stringify(data);
             case 'graph':
                 return await APIDataService.getGraph();
+            case 'reset_graph':
+                dispatch({ type: ActionTypes.RESET_GRAPH, updateAPI:true })
+                return 'Action: Graph reset';
             case 'delete_link':
                 dispatch({ type: ActionTypes.DELETE_LINK, linkID: arg, updateAPI:true })
                 return '';

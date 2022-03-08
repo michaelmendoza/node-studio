@@ -7,8 +7,8 @@ const json_string = `{"nodes": [
         {"id": "4ce1c7c08a1211ec8516acde48001122", "props": {"type": "DISPLAY", "name": "Display", "input": ["a"], "output": [], "options": []}, "inputs": ["4ce1c07c8a1211ec8516acde48001122"], "outputs": [], "styles": {"x": 450, "y": 50}, "args": {}}
     ], 
     "links": [
-        {"id": "4ce1c3068a1211ec8516acde48001122", "startNode": "4ce1b6d68a1211ec8516acde48001122", "endNode": "4ce1c07c8a1211ec8516acde48001122"}, 
-        {"id": "4ce1c89c8a1211ec8516acde48001122", "startNode": "4ce1c07c8a1211ec8516acde48001122", "endNode": "4ce1c7c08a1211ec8516acde48001122"}
+        {"id": "4ce1c3068a1211ec8516acde48001122", "startNode": "4ce1b6d68a1211ec8516acde48001122", "startPort": 0, "endNode": "4ce1c07c8a1211ec8516acde48001122", "endPort": 0}, 
+        {"id": "4ce1c89c8a1211ec8516acde48001122", "startNode": "4ce1c07c8a1211ec8516acde48001122", "startPort": 0, "endNode": "4ce1c7c08a1211ec8516acde48001122", "endPort": 0}
     ]}`;
     
 export const savedProjectList = [{ name: 'Test Project', description:'A test project description', updatedAt: (new Date()).getTime(), json_string }];
