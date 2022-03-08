@@ -15,6 +15,10 @@ class Graph:
         links = '\n'.join([f'{str(link)}' for link in self.links])
         return f'Graph: \n nodes: \n{node_dict} \n links: \n{links}'
 
+    def reset(self):
+        self.node_dict = {}
+        self.links = []
+
     def getNodeList(self, nodeids):
         nodes = []
         for nodeid in nodeids:

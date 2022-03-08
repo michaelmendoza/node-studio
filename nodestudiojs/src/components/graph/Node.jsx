@@ -7,6 +7,7 @@ import ImageView from './ImageView';
 import Select from '../base/Select';
 import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
+import MouseStates from '../../state/MouseStates';
 
 /**
  * Component for node input ports
@@ -25,16 +26,20 @@ const NodeInputs = ({inputs}) => <div className="node_input flex-50">
 /**
  *  Component for node output ports
  */
-const NodeOutput = ({outputs}) => <div className="node_output flex-50"> 
-    {
-        outputs.map((item, index) => {
-            return <div key={index} className="node_io-item layout-row-center flex"> 
-                <div className="node_io-text flex"> {item} </div>
-                <div className="node_io-point"></div> 
-            </div>
-        }) 
-    }
-</div>
+const NodeOutput = ({outputs}) => {
+    return (
+        <div className="node_output flex-50"> 
+            {
+                outputs.map((item, index) => {
+                    return <div key={index} className="node_io-item layout-row-center flex"> 
+                        <div className="node_io-text flex"> {item} </div>
+                        <div className="node_io-point"></div> 
+                    </div>
+                }) 
+            }
+        </div>
+    )
+} 
 
 /**
  * Contains Input and Output ports IU
@@ -132,6 +137,7 @@ const Node = ({node, onContextMenu}) => {
 
     const onStart = () => {
         dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });
+        dispatch({ type: ActionTypes.SET_MOUSESTATE, mouseState:MouseStates.DRAG_NODE })
     }
 
     const onControlledDrag = (e, position) => {
@@ -145,6 +151,7 @@ const Node = ({node, onContextMenu}) => {
     
     const onStop = () => {
         dispatch({ type: ActionTypes.UPDATE_NODE, node: state.nodes[node.id], updateAPI:true });
+        dispatch({ type: ActionTypes.SET_MOUSESTATE, mouseState:MouseStates.NORMAL })
     }
 
     const handleClick = () => {
