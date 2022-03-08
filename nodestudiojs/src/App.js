@@ -1,8 +1,10 @@
 import 'normalize.css';
 import './styles/app.scss';
 import './App.scss';
-import { useEffect } from 'react';
+import React, { useContext, useEffect } from 'react';
+import { ActionTypes, AppContext } from './state';
 import AppState from './state/AppState';
+import APIDataService from './services/APIDataService';
 import CenterView from './components/layout/CenterView';
 import GraphView from './components/graph/GraphView';
 import SideView, { SideViewPositions } from './components/layout/SideView';
@@ -13,33 +15,53 @@ import Tabs from './components/shared/Tabs';
 import Console from './components/Console';
 import NodeInspector from './components/shared/NodeInspector';
 import NodeList from './models/NodeList';
+import Graph from './models/Graph';
 
-function App() {
+const AppComponents = () => {
+    const {dispatch} = useContext(AppContext);
+
     useEffect(() => {
         NodeList.fetch();
+        
+        const fetch = async () => {
+            const json_string = await APIDataService.getGraph();
+            const graphData = Graph.readJson(json_string);
+            dispatch({ type:ActionTypes.INIT_GRAPH, nodes:graphData.nodes, links:graphData.links });
+        }
+        fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
+
+    return (
+        <div className='app-components'>
+            <AppHeader></AppHeader>
+            <section>
+                <CenterView>
+                    <GraphView></GraphView>
+                </CenterView>
+                <SideView position={SideViewPositions.LEFT}>
+                    <SideNav></SideNav>
+                </SideView>
+                <SideView position={SideViewPositions.RIGHT}>
+                    <Tabs tabnames={['Inspector', 'Info']}>
+                        <NodeInspector></NodeInspector>
+                        <div> Info </div>
+                    </Tabs>
+                </SideView>
+                <BottomView>
+                    <Console></Console>
+                </BottomView>
+            </section>
+        </div>
+    );
+}
+
+function App() {
 
     return (
         <div className="App">
             <AppState.AppStateProvider>
-                <AppHeader></AppHeader>
-                <section>
-                    <CenterView>
-                        <GraphView></GraphView>
-                    </CenterView>
-                    <SideView position={SideViewPositions.LEFT}>
-                        <SideNav></SideNav>
-                    </SideView>
-                    <SideView position={SideViewPositions.RIGHT}>
-                        <Tabs tabnames={['Inspector', 'Info']}>
-                            <NodeInspector></NodeInspector>
-                            <div> Info </div>
-                        </Tabs>
-                    </SideView>
-                    <BottomView>
-                        <Console></Console>
-                    </BottomView>
-                </section>
+                <AppComponents></AppComponents>
             </AppState.AppStateProvider>
         </div>
     );

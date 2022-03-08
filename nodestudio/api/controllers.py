@@ -5,6 +5,7 @@ from graph.link import Link
 from graph.node import Node
 from graph.nodes import NodeInfo, NodeProps
 from graph.sesson import Session
+from graph.interfaces import LinkData
 
 def get_nodelist():
     data = NodeInfo
@@ -18,6 +19,10 @@ def create_graph(data):
     current_graph.load(data.json_string)
     json_string = current_graph.json()
     return json_string
+
+def reset_graph():
+    current_graph.reset()
+    return current_graph.json()
 
 def get_node_data(node_id, slice, index):
     node = current_graph.getNode(node_id)
@@ -50,8 +55,8 @@ def delete_node(node_id):
     current_graph.removeNode(node)
     return node.dict()
 
-def add_link(data):
-    link = Link.fromJson(data.json_string)
+def add_link(data: LinkData):
+    link = Link(data.startNode, data.startPort, data.endNode, data.endPort, id=data.id)
     current_graph.addLink(link)
     return link.dict()
 

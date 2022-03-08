@@ -20,10 +20,8 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
         const endNodeID = link.endNode;
         const endNode = state.nodes[endNodeID];
 
-        const i = startNode.outputs.indexOf(endNodeID);
-        const j = endNode.inputs.indexOf(startNodeID);
-        const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + i * dyOffset };
-        const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + j * dyOffset };
+        const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + link.startPort * dyOffset };
+        const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + link.endPort * dyOffset };
 
         const handleClick = () => {
             dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:link });
@@ -46,8 +44,8 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
 
     const renderPorts = (node) => {
 
-        const outputPorts = node.outputLabels.map((x, i) => ({ x: node.position.x + startOffset.x, y: node.position.y + startOffset.y + i * dyOffset, node }));
-        const inputPorts = node.inputLabels.map((x, i) => ({ x: node.position.x + endOffset.x, y: node.position.y + endOffset.y + i * dyOffset, node }));
+        const outputPorts = node?.outputLabels.map((x, i) => ({ x: node.position.x + startOffset.x, y: node.position.y + startOffset.y + i * dyOffset, node }));
+        const inputPorts = node?.inputLabels.map((x, i) => ({ x: node.position.x + endOffset.x, y: node.position.y + endOffset.y + i * dyOffset, node }));
 
         const handleMouseDown = (e, type, index) => {
             setPort({ node, type, index });
@@ -58,18 +56,18 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
             console.log(type, index);
 
             if(port.type === 'output') {
-                const link = new Link({ startNode:port.node.id, endNode:endNode.id });
-                dispatch({ type: ActionTypes.ADD_LINK, link });
+                const link = new Link({ startNode:port.node.id, startPort:port.index, endNode:endNode.id, endPort:index });
+                dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
             }
         }
 
         return (
             <g key={node.id} className={'node-' + node.id}>
                 { 
-                    outputPorts.map((p, i) => <circle key={i} className='output-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'output', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'output', i)}></circle> )
+                    outputPorts?.map((p, i) => <circle key={i} className='output-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'output', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'output', i)}></circle> )
                 }
                 {
-                    inputPorts.map((p, i) => <circle key={i} className='input-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'input', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'input', i)}></circle> )
+                    inputPorts?.map((p, i) => <circle key={i} className='input-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'input', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'input', i)}></circle> )
                 }
             </g>
         )
@@ -93,7 +91,7 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
         <div className="links-svg">
             <svg height={height} width={width}>
             {
-                Object.values(state.nodes).map(node => renderPorts(node))
+                Object.values(state.nodes).map(node => node ? renderPorts(node) : null)
             }
             {
                 state.links.map(link => renderLink(link))

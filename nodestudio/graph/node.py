@@ -26,9 +26,9 @@ class Node:
 
         # Add links to all input nodes
         inputs = graph.current_graph.getNodeList(inputs)
-        for input in inputs:
+        for index, input in enumerate(inputs):
             input.outputs.append(self.id)
-            link = Link(input.id, self.id)
+            link = Link(input.id, 0, self.id, index)
             graph.current_graph.addLink(link)
         
         # Add node to graph

@@ -6,6 +6,7 @@ const count = () => counter++;
 
 export const ActionTypes = {
     'INIT_GRAPH': count(),
+    'RESET_GRAPH': count(),
     'ADD_NODE': count(),
     'UPDATE_NODE': count(),
     'DELETE_NODE': count(),
@@ -22,6 +23,11 @@ export const AppReducers = (state, action) => {
 
     if(action.updateAPI === true) {
         switch(action.type) {
+            // Graph actions
+            case ActionTypes.RESET_GRAPH:
+                APIDataService.resetGraph();
+                break;
+
             // Node actions
             case ActionTypes.ADD_NODE:
                 APIDataService.addNode(Node.export(action.node));
@@ -48,7 +54,9 @@ export const AppReducers = (state, action) => {
         // Graph actions
         case ActionTypes.INIT_GRAPH:
             return { ...state, nodes: action.nodes, links: action.links}
-        
+        case ActionTypes.RESET_GRAPH:
+            return { ...state, nodes: {}, links: [], sessions: {}}        
+
         // Node actions
         case ActionTypes.ADD_NODE:
         case ActionTypes.UPDATE_NODE:

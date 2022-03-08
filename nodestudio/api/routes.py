@@ -1,7 +1,7 @@
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
-from graph.interfaces import JsonData, ID_Data, NodeData
+from graph.interfaces import JsonData, ID_Data, NodeData, LinkData
 
 def handle_exception(func):
     @wraps(func)
@@ -39,6 +39,13 @@ async def create_graph(data: JsonData):
     data = controllers.create_graph(data)
     return { 'message': 'Created new graph', 'data': data }
 
+@router.get("/graph/reset")
+@handle_exception
+async def reset_graph():
+    ''' Creates compuate graph '''
+    data = controllers.reset_graph()
+    return { 'message': 'Reset graph', 'data': data }
+
 @router.get("/node")
 @handle_exception
 async def get_node(node_id: str, slice: str, index: int):
@@ -69,7 +76,7 @@ async def remove_node(data: ID_Data):
 
 @router.post("/link/add")
 @handle_exception
-async def add_link(data: JsonData):
+async def add_link(data: LinkData):
     ''' Adds link to graph '''
     data = controllers.add_link(data)
     return { 'message': 'Add link to graph', 'data': data }
