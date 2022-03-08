@@ -12,6 +12,7 @@ class NodeType(Enum):
     MULT = 'MULT'
     MASK = 'MASK'
     FIT = 'FIT'
+    RSOS = 'RSOS'
     
     # Output Nodes
     DISPLAY = 'DISPLAY'

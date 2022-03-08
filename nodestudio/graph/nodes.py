@@ -4,6 +4,9 @@ from graph.enums import NodeType
 from process.file.file import read_file
 from process.fit import fit
 from process.mask import apply_mask
+from process.RSOS import root_sum_of_squares
+
+
 class NodeNumberOption(BaseModel):
     name: str
     range: List[int] = None
@@ -34,6 +37,7 @@ NodeInfo = {
     NodeType.MULT: NodeProps(type=NodeType.MULT, name='Mult', description='Multiplier', input=['a','b'], output=['out'], fn=lambda a, b: a * b),
     NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', description='Mask generator', input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], output=['out'], fn=fit),
+    NodeType.RSOS: NodeProps(type=NodeType.RSOS, name='RSOS', description='Root sum of squares',input=['a','b'], output = ['out'], fn=root_sum_of_squares),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['a']) 
