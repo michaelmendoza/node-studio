@@ -5,6 +5,8 @@ from process.file.file import read_file
 from process.fit import fit
 from process.mask import apply_mask
 from process.RSOS import root_sum_of_squares
+from process.mock import mock_2d_data
+from process.T2_map import qDESS_T2
 
 
 class NodeNumberOption(BaseModel):
@@ -31,7 +33,7 @@ NodeInfo = {
 
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', description='File input', output=['out'], options=[{'name':'filetype', 'select':['dcm','dat']}, 'filepath'], fn=read_file),
-    
+    NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", description='Mock data generator', output=['out'], options=[{'name':'datapattern', 'select':['linear gradient','radial']}], fn=mock_2d_data),
 
     # Computer Nodes
     NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', description='Adder', input=['a','b'], output=['out'], fn=lambda a, b: a + b),
@@ -39,6 +41,7 @@ NodeInfo = {
     NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', description='Mask generator', input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], output=['out'], fn=fit),
     NodeType.RSOS: NodeProps(type=NodeType.RSOS, name='RSOS', description='Root sum of squares',input=['a','b'], output = ['out'], fn=root_sum_of_squares),
+    NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', description='T2 mapping from qDESS', input=['a'], output=['out'], fn=qDESS_T2),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['a']) 

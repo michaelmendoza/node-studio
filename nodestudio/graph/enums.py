@@ -14,6 +14,7 @@ class NodeType(Enum):
     MASK = 'MASK'
     FIT = 'FIT'
     RSOS = 'RSOS'
+    T2_qDESS = 'T2_qDESS'
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
