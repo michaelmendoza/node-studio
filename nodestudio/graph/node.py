@@ -77,7 +77,7 @@ class Node:
         ''' Node creation factory. Class function. '''
 
         nodeInfo = NodeInfo[type].dict()                              # Retrive nodeinfo from type
-        styles = NodeStyles({ 'x':props['x'], 'y':props['y']})
+        styles = NodeStyles(**{ 'x':props['x'], 'y':props['y']})
 
         def _lambda(*inputs): 
             _props = NodeProps(** { **nodeInfo, **props })            # Combine nodeinfo and props

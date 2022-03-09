@@ -5,7 +5,8 @@ class NodeType(Enum):
     VARIABLE = 'VARIABLE'
 
     # Input Nodes
-    FILE = 'FILE'
+    FILE = 'FILE',
+    FILE_RAWDATA = 'READ_RAWDATA'
 
     # Computer Nodes
     ADD = 'ADD'
