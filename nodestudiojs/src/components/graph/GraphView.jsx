@@ -27,7 +27,7 @@ const GraphView = () => {
 
     const handleMouseMove = (e) => {
         var rect = graphViewRef.current.getBoundingClientRect();
-        setPosition({ x:(e.pageX - rect.left)/ scale, y:(e.pageY - rect.top) / scale});
+        setPosition({ x: Math.round((e.pageX - rect.left)/ scale), y: Math.round((e.pageY - rect.top) / scale) });
         if(state.mouseState === MouseStates.DRAG_GRAPH) {
             setOffset({x:offset.x + sensitivity * e.movementX, y:offset.y + sensitivity * e.movementY});
         }
@@ -46,9 +46,8 @@ const GraphView = () => {
     const handleDrop = (e) => {
         const data = e.dataTransfer.getData('text');
         var rect = e.target.getBoundingClientRect();
-        var x = (e.clientX - rect.left) / scale; //x position within the element.
-        var y = (e.clientY - rect.top) / scale;  //y position within the element.
-        console.log(data, x, y);
+        var x = Math.round((e.clientX - rect.left) / scale); //x position within the element.
+        var y = Math.round((e.clientY - rect.top) / scale);  //y position within the element.
 
         const node = Node.create(data, {x, y});
         if (node) dispatch({ type: ActionTypes.ADD_NODE, node, updateAPI:true });

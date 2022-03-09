@@ -19,6 +19,8 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
         const startNode = state.nodes[startNodeID];
         const endNodeID = link.endNode;
         const endNode = state.nodes[endNodeID];
+ 
+        if (startNode === undefined || endNode === undefined) return null
 
         const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + link.startPort * dyOffset };
         const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + link.endPort * dyOffset };

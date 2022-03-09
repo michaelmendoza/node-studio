@@ -54,33 +54,70 @@ const NodeIO = ({inputLabels, outputLabels}) => <div className="node_io layout-r
  */
 const NodeTitle = ({name}) => <div className="node_title"> {name} </div>
 
-const FileProps = ({nodeID}) => {
+const NodePropsOptions = ({id, options, argsDict}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
-    const [filetype, setFiletype] = useState();
-    const [filepath, setFilepath] = useState(state.nodes[nodeID]?.argsDict?.filepath);
 
-    const handleFilepathChange = (e) => {
-        setFilepath(e.target.value);
+    const renderTextInput = ({option, index}) =>  {
+        const value = argsDict[option];
 
-        const node = { ...state.nodes[nodeID] };
-        node.argsDict.filepath = e.target.value;
-        dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
+        const handleTextChange = (e) => {
+            const node = { ...state.nodes[id] };
+            node.argsDict.filepath = e.target.value;
+            dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
+        }
+
+        return <TextInput key={index} name={option} value={value} onChange={handleTextChange}></TextInput>
     }
 
-    const handleOptionUpdate = (option) => {
-        setFiletype(option);
-        
-        const node = { ...state.nodes[nodeID] };
-        node.argsDict.filetype = option.value;
-        dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
+    const renderOptionInput = ({option, index}) => {
+        const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }))
+
+        const handleOptionChange = (select) => {
+            const node = { ...state.nodes[id] };
+            node.argsDict[option.name] = select.value;
+            dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+        }
+
+        return (
+            <div key={index}>
+                <label>{option.name}</label>
+                <Select options={select} onChange={handleOptionChange}></Select>
+            </div>
+        )
     }
 
-    const options = [{label:'Dicom (.dcm)', value:'dcm'}, {label:'Raw Data (.dat)', value:'dat'}]
+    const renderBooleanInput = ({option, index}) => {
+        const checked = option.name in argsDict ? argsDict[option.name] : false;
+
+        const handleChange = (e) => {
+            const node = { ...state.nodes[id] };
+            node.argsDict[option.name] = option.name in argsDict ? !argsDict[option.name] : true;
+            dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+        }
+
+        return (
+            <div key={index} className='layout-row-center layout-space-between'>
+                <label>{option.name}</label>
+                <input type="checkbox" style={{ width:'25px' }} defaultChecked={checked} onClick={handleChange}></input>
+            </div>
+        )
+    }
 
     return (
         <div>
-            <Select options={options} placeholder={'Select FileType'} onChange={handleOptionUpdate}></Select>
-            <TextInput name='filepath' placeholder='Enter filepath' value={filepath} onChange={handleFilepathChange}></TextInput>
+            {
+                options.map((option, index) => {
+                    if(isString(option)) {
+                        return renderTextInput({option, index});
+                    }
+                    else if('select' in option) {
+                        return renderOptionInput({option, index});
+                    }
+                    else {
+                        return renderBooleanInput({option, index});
+                    }
+                })
+            }
         </div>
     )
 }
@@ -89,43 +126,19 @@ const FileProps = ({nodeID}) => {
  * Node Property Options
  */
 const NodeProps = ({id, type, options, argsDict}) => {
-    const {state, dispatch} = useContext(AppState.AppContext);
 
     return (
     <div className="node_props"> 
-        {
-            type === 'FILE' ? <FileProps nodeID={id}></FileProps> : null
-        }
-
         {
             type === 'DISPLAY' ? <ImageView nodeID={id}></ImageView> : null
         }
 
         {
-            !(type === 'FILE' || type === 'DISPLAY') ? <div>
-                {
-                    options.map((option, index) => {
-                        if(isString(option)) {
-                            return <TextInput key={index} name={option}></TextInput>
-                        }
-                        else {
-                            const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }))
-                            const handleOptionChange = (select) => {
-                                const node = { ...state.nodes[id] };
-                                node.argsDict[option.name] = select.value;
-                                dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
-                            }
-                            return <Select key={index} options={select} onChange={handleOptionChange}></Select>
-                        }
-                    })
-                }
-            </div> : null
+            !(type === 'DISPLAY') ? <NodePropsOptions id={id} options={options} argsDict={argsDict}></NodePropsOptions> : null
         }
     </div>
     )
 }
-
-
 
 /**
  * Node Component representing a Node in a computation graph
@@ -143,8 +156,8 @@ const Node = ({node, onContextMenu}) => {
     const onControlledDrag = (e, position) => {
         e.preventDefault();
         const {x, y} = position;
-        node.position.x = x;
-        node.position.y = y;
+        node.position.x = Math.round(x);
+        node.position.y = Math.round(y);
         setPosition(position)
         dispatch({ type: ActionTypes.UPDATE_NODE, node, updateAPI:false });
       };

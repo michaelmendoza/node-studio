@@ -6,7 +6,7 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
-    FILE_RAWDATA = 'READ_RAWDATA'
+    FILE_RAWDATA = 'FILE_RAWDATA'
 
     # Computer Nodes
     ADD = 'ADD'
