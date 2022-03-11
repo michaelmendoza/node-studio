@@ -13,7 +13,7 @@ class NodeType(Enum):
     MULT = 'MULT'
     MASK = 'MASK'
     FIT = 'FIT'
-    RSOS = 'RSOS'
+    SOS = 'SOS'
     T2_qDESS = 'T2_qDESS'
     
     # Output Nodes
