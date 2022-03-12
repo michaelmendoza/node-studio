@@ -5,7 +5,7 @@ def mock_2d_data(pattern):
     ydim = 50
     data = np.zeros((ydim,xdim))
 
-    if pattern == 'linear gradient':
+    if pattern == 'linear':
         line = np.linspace(0,xdim-1,num=xdim)
         for j in range(ydim-1):
             data[j,:] = line
@@ -15,7 +15,7 @@ def mock_2d_data(pattern):
             for i in range(xdim-1):
                 data[j,i] = ((j+1-ydim/2)**2+(i+1-xdim/2)**2)**0.5
 
-    return np.reshape(data,(1,data.shape[0],data.shape[1]))
+    return np.reshape(1,data,(data.shape[0],data.shape[1]))
 
 
     

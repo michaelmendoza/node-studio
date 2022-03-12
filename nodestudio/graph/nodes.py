@@ -33,7 +33,7 @@ NodeInfo = {
 
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', description='File input', output=['out'], options=[{'name':'filetype', 'select':['dcm','dat']}, 'filepath'], fn=read_file),
-    NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", description='Mock data generator', output=['out'], options=[{'name':'datapattern', 'select':['linear gradient','radial']}], fn=mock_2d_data),
+    NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", description='Mock data generator', output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
 
     # Computer Nodes
     NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', description='Adder', input=['a','b'], output=['out'], fn=lambda a, b: a + b),

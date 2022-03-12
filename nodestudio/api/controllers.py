@@ -57,6 +57,7 @@ def delete_node(node_id):
 
 def add_link(data: LinkData):
     link = Link(data.startNode, data.startPort, data.endNode, data.endPort, id=data.id)
+    link.setup_link()
     current_graph.addLink(link)
     return link.dict()
 
