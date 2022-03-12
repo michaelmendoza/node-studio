@@ -181,3 +181,23 @@ def test6():
 
     plt.imshow(np.abs(data[0]))
     plt.show()
+
+    mdata = np.abs(data)
+    min = np.min(mdata)
+    max = np.max(mdata)
+    mean = np.average(mdata)
+    std = np.std(mdata)
+
+    scaled_data = (mdata - min) / (max - min)
+    resolution = 4096
+    data_int = np.floor(scaled_data * resolution).astype(int)
+    histogram = np.histogram(data_int, 4096)
+
+    print('min', min, 'max' ,max, 'mean', mean, 'std', std)
+    print(histogram)
+    
+    plt.plot(histogram[0])
+    plt.show()
+
+    print('data', data.dtype)
+    print('idata', data_int.dtype)

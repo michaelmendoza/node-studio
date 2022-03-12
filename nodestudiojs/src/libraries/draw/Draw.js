@@ -16,10 +16,10 @@ export const DrawImg = (data) => {
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
             const value = pixelArray[ y * width + x ] * 255 / resolution;
-            imageData.data[4*i] = value;
-            imageData.data[4*i+1] = value;
-            imageData.data[4*i+2] = value;
-            imageData.data[4*i+3] = 255;
+            imageData.data[4*i] = value;    // R
+            imageData.data[4*i+1] = value;  // G
+            imageData.data[4*i+2] = value;  // B
+            imageData.data[4*i+3] = 255;    // Alpha (transparent)
         }
     
     context.putImageData(imageData, 0, 0);

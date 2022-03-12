@@ -66,7 +66,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
             dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
         }
 
-        return <TextInput key={index} name={option} value={value} onChange={handleTextChange}></TextInput>
+        return <TextInput key={index} name={option.replace(/_/g," ")} value={value} onChange={handleTextChange}></TextInput>
     }
 
     const renderOptionInput = ({option, index}) => {
@@ -80,7 +80,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
 
         return (
             <div key={index}>
-                <label>{option.name}</label>
+                <label>{option.name.replace(/_/g," ")}</label>
                 <Select options={select} onChange={handleOptionChange}></Select>
             </div>
         )
@@ -97,7 +97,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
 
         return (
             <div key={index} className='layout-row-center layout-space-between'>
-                <label>{option.name}</label>
+                <label>{option.name.replace(/_/g," ")}</label>
                 <input type="checkbox" style={{ width:'25px' }} defaultChecked={checked} onClick={handleChange}></input>
             </div>
         )

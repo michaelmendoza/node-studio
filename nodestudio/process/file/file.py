@@ -27,8 +27,8 @@ def read_dicom(filepath):
             
     return data
 
-def read_rawdata(filename, useFFT, avg_coil, avg_averages, avg_phase_cycles):
-    twixObj = mapvbvd.mapVBVD(filename)
+def read_rawdata(filepath, datatype, avg_coils, avg_averages, avg_phase_cycles):
+    twixObj = mapvbvd.mapVBVD(filepath)
     sqzDims = twixObj.image.sqzDims    
     twixObj.image.squeeze = True
 
@@ -38,23 +38,25 @@ def read_rawdata(filename, useFFT, avg_coil, avg_averages, avg_phase_cycles):
     data = np.moveaxis(data, linIndex, 0)
     sqzDims.insert(0, sqzDims.pop(linIndex))
 
-    if avg_coil:
+    if avg_coils and 'Cha' in sqzDims:
         chaIndex = sqzDims.index('Cha')
-        reduced_data = np.mean(data, axis=chaIndex)
+        data = np.mean(data, axis=chaIndex)
         sqzDims.pop(chaIndex)
 
-    if avg_averages:
+    if avg_averages and 'Ave' in sqzDims:
         aveIndex = sqzDims.index('Ave')
-        reduced_data = np.mean(reduced_data, axis=aveIndex)
+        data = np.mean(data, axis=aveIndex)
         sqzDims.pop(aveIndex)
 
-    if avg_phase_cycles:
+    if avg_phase_cycles and 'Rep' in sqzDims:
         repIndex = sqzDims.index('Rep')
-        reduced_data = np.mean(reduced_data, axis=repIndex)
+        data = np.mean(data, axis=repIndex)
         sqzDims.pop(repIndex)
 
-    if useFFT:
+    if datatype == 'image':
         data = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(data, axes=(0, 1)), axes=(0, 1)), axes=(0, 1))
+    else: # datatype is kspace
+        pass
 
     if 'Sli' in sqzDims:
         sliceIndex = sqzDims.index('Sli')

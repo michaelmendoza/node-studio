@@ -1,6 +1,7 @@
 from typing import Dict, List, Callable, Optional, Union, Any
 from pydantic import BaseModel
 from graph.enums import NodeType
+from process.display import process_int_data, process_complex_data
 from process.file.file import read_file, read_rawdata
 from process.fit import fit
 from process.mask import apply_mask
@@ -31,7 +32,7 @@ NodeInfo = {
 
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', description='File input', output=['out'], options=[{'name':'filetype', 'select':['dcm','dat']}, 'filepath'], fn=read_file),
-    NodeType.FILE_RAWDATA: NodeProps(type=NodeType.FILE_RAWDATA, name='File: Raw Data', description='Reads .dat file', output=['out'], options=['filepath', {'name':'datatype', 'select':['image','kspace']}, {'name':'avg coils', 'flag': True }, {'name':'avg averages', 'flag': True }, {'name':'avg phase cycles', 'flag': True }], fn=read_rawdata),
+    NodeType.FILE_RAWDATA: NodeProps(type=NodeType.FILE_RAWDATA, name='File: Raw Data', description='Reads .dat file', output=['out'], options=['filepath', {'name':'datatype', 'select':['image','kspace']}, {'name':'avg_coils', 'flag': True }, {'name':'avg_averages', 'flag': True }, {'name':'avg_phase_cycles', 'flag': True }], fn=read_rawdata),
     
     # Computer Nodes
     NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', description='Adder', input=['a','b'], output=['out'], fn=lambda a, b: a + b),
@@ -40,5 +41,6 @@ NodeInfo = {
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], output=['out'], fn=fit),
 
     # Output Nodes
-    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['a']) 
+    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['In']),
+    NodeType.CDISPLAY: NodeProps(type=NodeType.CDISPLAY, name='Display (Complex Numbers)', description='Displays complex data as an image', input=['In'], options=[{'name':'datatype', 'select':['mag','phase','real','imag']}], fn=process_complex_data)
 }

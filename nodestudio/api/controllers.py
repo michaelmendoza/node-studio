@@ -29,6 +29,7 @@ def get_node_data(node_id, slice, index):
 
     if slice == 'xy':
         value = node.value[index,:,:]
+        value = np.ascontiguousarray(value)
     elif slice == 'xz':
         value = node.value[:,index,:]
         value = np.ascontiguousarray(value)
@@ -38,6 +39,9 @@ def get_node_data(node_id, slice, index):
     else:
         value = node.value
     
+    if np.iscomplexobj(value):
+        value = np.abs(value)
+
     encodedData = base64.b64encode(value)
     return { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size }
 
@@ -57,6 +61,7 @@ def delete_node(node_id):
 
 def add_link(data: LinkData):
     link = Link(data.startNode, data.startPort, data.endNode, data.endPort, id=data.id)
+    link.setup_link()
     current_graph.addLink(link)
     return link.dict()
 

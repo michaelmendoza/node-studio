@@ -8,5 +8,5 @@ from tests import test
 #test.test2c()
 #test.test3()
 #test.test4()
-test.test5()
-#test.test6()
+#test.test5()
+test.test6()

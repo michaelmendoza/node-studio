@@ -16,3 +16,4 @@ class NodeType(Enum):
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
+    CDISPLAY = 'CDISPLAY'
