@@ -1,6 +1,13 @@
 import numpy as np
 
-def sum_of_squares(input1,input2):
-    if isinstance(input1, np.ndarray) & isinstance(input2, np.ndarray):
-        result = input1**2+input2**2
+def sum_of_squares(a,b):
+    if isinstance(a, np.ndarray) & isinstance(b, np.ndarray):
+        result = a**2+b**2
+
+        min = np.min(result)
+        max = np.max(result)
+        resolution = 4096
+        result = (result - min) * resolution / (max - min)
+        result = np.floor(result * resolution).astype('uint16')
+
         return result
