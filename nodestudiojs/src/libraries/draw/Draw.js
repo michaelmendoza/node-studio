@@ -35,7 +35,7 @@ export const DrawImg = (data) => {
     canvas.height = height;
     const imageData = context.getImageData(0, 0, width, height);
 
-    // B/W
+    // // B/W
     // let i = 0;
     // for(let y = 0; y < height; y++)
     //     for(let x = 0; x < width; x++, i++) {
@@ -46,7 +46,7 @@ export const DrawImg = (data) => {
     //         imageData.data[4*i+3] = 255;
     //     }
 
-    // RGB colormap
+    //Jet colormap
     let i = 0;
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
