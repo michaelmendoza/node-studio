@@ -33,8 +33,8 @@ def process_uint16_data(data):
 def process_and_scale_data(data):
     # Processes stats and scales data to fit data into a uint16
 
-    min = float(np.min(data))
-    max = float(np.max(data))
+    min = float(np.nanmin(data))
+    max = float(np.nanmax(data))
     mean = np.average(data)
     std = np.std(data)
 

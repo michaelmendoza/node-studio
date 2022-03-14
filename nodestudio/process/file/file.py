@@ -2,12 +2,33 @@ import glob
 import pydicom
 import numpy as np
 import mapvbvd
+from pathlib import Path
 
 def read_file(filetype, filepath):
     if filetype == 'dicom' or filetype == 'dcm':
         return read_dicom(filepath)
+    #------for testing------
+    elif filetype == 'test':
+        return filepath
+    #------for testing------
     else:
         return None
+
+# def read_testfile(filepath):
+#     # paths = glob.glob(filepath + '*.IMA')
+#     # paths = sorted(paths)
+
+#     # dataset = pydicom.dcmread(paths[0])
+#     # depth = len(paths)
+#     # height = dataset.pixel_array.shape[0]
+#     # width = dataset.pixel_array.shape[1]
+
+#     # data = np.zeros((depth, height, width), dtype='uint16')
+#     # for idx, path in enumerate(paths):
+#     #     dataset = pydicom.dcmread(path)
+#     #     data[idx,:,:] = dataset.pixel_array
+            
+#     return data
 
 def read_dicom(filepath):
     ''' Reads dicom data and returns a 3d image dataset '''
