@@ -1,7 +1,7 @@
 from typing import Dict, List, Callable, Optional, Union, Any
 from pydantic import BaseModel
 from graph.enums import NodeType
-from process.display import process_int_data, process_complex_data
+from process.display import process_uint_data, process_complex_data
 from process.file.file import read_file, read_rawdata
 from process.fit import fit
 from process.mask import apply_mask
@@ -41,6 +41,6 @@ NodeInfo = {
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], output=['out'], fn=fit),
 
     # Output Nodes
-    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['In']),
+    NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', description='Displays data as an image', input=['In'], fn=process_uint_data),
     NodeType.CDISPLAY: NodeProps(type=NodeType.CDISPLAY, name='Display (Complex Numbers)', description='Displays complex data as an image', input=['In'], options=[{'name':'datatype', 'select':['mag','phase','real','imag']}], fn=process_complex_data)
 }

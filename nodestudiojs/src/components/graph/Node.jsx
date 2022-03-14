@@ -130,11 +130,11 @@ const NodeProps = ({id, type, options, argsDict}) => {
     return (
     <div className="node_props"> 
         {
-            type === 'DISPLAY' ? <ImageView nodeID={id}></ImageView> : null
+            type === 'DISPLAY' || type === 'CDISPLAY' ? <ImageView nodeID={id}></ImageView> : null
         }
 
         {
-            !(type === 'DISPLAY') ? <NodePropsOptions id={id} options={options} argsDict={argsDict}></NodePropsOptions> : null
+            <NodePropsOptions id={id} options={options} argsDict={argsDict}></NodePropsOptions>
         }
     </div>
     )

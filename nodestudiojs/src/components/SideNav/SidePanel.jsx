@@ -41,7 +41,7 @@ const PanelRun = () => {
     const handleRunGraph = async () => {
         const nodesToRun = []
         Object.values(state.nodes).forEach(node => {
-            if (node.type === 'DISPLAY') {
+            if (node.type === 'DISPLAY' || node.type === 'CDISPLAY') {
                 nodesToRun.push(node);
             }
         });

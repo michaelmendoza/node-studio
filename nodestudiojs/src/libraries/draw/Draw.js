@@ -2,7 +2,7 @@
 export const DrawImg = (data) => {
 
     const pixelArray = data.pixelArray;
-    const resolution = data.stats.max;
+    const resolution = data.isScaled ? data.resolution : data.max;
     const height = data.shape[0];
     const width = data.shape[1];
 
