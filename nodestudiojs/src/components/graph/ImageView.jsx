@@ -16,6 +16,7 @@ const ImageView = ({nodeID}) => {
     const [slice, setSlice] = useState('xy');
     const [sliceMax, setSliceMax] = useState(100);
     const [index, setIndex] = useState(0);
+    const [shape, setShape] = useState([160, 640, 640]);
 
     useEffect(() => {
         if (state.sessions[nodeID]) fetchData(slice, index);
@@ -28,6 +29,8 @@ const ImageView = ({nodeID}) => {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset);
                 setImageData(dataUri);
+                setShape(dataset.fullshape);
+                updateSliceMax(slice);
                 dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
         })
@@ -48,7 +51,6 @@ const ImageView = ({nodeID}) => {
     }
 
     const updateSliceMax = (slice) => {
-        const shape = [160, 640, 640]; // TODO: Make not hard coded -> Adjust backend
         let maxIndex;
         if (slice === 'xy')
             maxIndex = shape[0];

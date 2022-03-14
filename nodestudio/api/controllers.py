@@ -27,19 +27,29 @@ def reset_graph():
 def get_node_data(node_id, slice, index):
     node = current_graph.getNode(node_id)
 
+    if 'data' not in node.value:
+        return ''
+
     if slice == 'xy':
-        value = node.value[index,:,:]
+        value = node.value['data'][index,:,:]
+        value = np.ascontiguousarray(value)
     elif slice == 'xz':
-        value = node.value[:,index,:]
+        value = node.value['data'][:,index,:]
         value = np.ascontiguousarray(value)
     elif slice == 'yz':
-        value = node.value[:,:,index]
+        value = node.value['data'][:,:,index]
         value = np.ascontiguousarray(value)
     else:
-        value = node.value
+        value = node.value['data']
     
     encodedData = base64.b64encode(value)
-    return { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size }
+
+    output = { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size,
+        'slice': slice, 'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
+        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'],
+    }
+
+    return output
 
 def add_node(data):
     node = Node.load(data.dict())
@@ -57,6 +67,7 @@ def delete_node(node_id):
 
 def add_link(data: LinkData):
     link = Link(data.startNode, data.startPort, data.endNode, data.endPort, id=data.id)
+    link.setup_link()
     current_graph.addLink(link)
     return link.dict()
 

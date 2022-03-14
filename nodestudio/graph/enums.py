@@ -6,6 +6,7 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
+    FILE_RAWDATA = 'FILE_RAWDATA'
 
     # Computer Nodes
     ADD = 'ADD'
@@ -15,3 +16,4 @@ class NodeType(Enum):
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
+    CDISPLAY = 'CDISPLAY'
