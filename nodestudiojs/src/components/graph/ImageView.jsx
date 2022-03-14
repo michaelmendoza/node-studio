@@ -9,6 +9,7 @@ import AppState from '../../state/AppState';
 import DefaultImg from '../../images/default_image_icon.png';
 import Select from '../base/Select';
 import Slider from '../base/Slider';
+import Modal from '../base/Modal';
 
 const ImageView = ({nodeID}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
@@ -17,6 +18,7 @@ const ImageView = ({nodeID}) => {
     const [sliceMax, setSliceMax] = useState(100);
     const [index, setIndex] = useState(0);
     const [shape, setShape] = useState([160, 640, 640]);
+    const [showModal, setShowModal] = useState(false)
 
     useEffect(() => {
         if (state.sessions[nodeID]) fetchData(slice, index);
@@ -67,13 +69,23 @@ const ImageView = ({nodeID}) => {
         return index;
     }
 
+    const handleShowModal = () => {
+        setShowModal(true)
+    }
+
     const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
 
     return (
-        <div className="image-view">
+        <div className="image-view" onDoubleClick={handleShowModal}>
             <img src={imageData} alt='viewport'/>
             <Select options={options} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
+
+            <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
+                <div className='text-align-center'>
+                    <img src={imageData} alt='viewport'/>
+                </div>
+            </Modal>
         </div>
     )
 }

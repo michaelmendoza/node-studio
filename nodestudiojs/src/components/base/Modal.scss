@@ -1,0 +1,68 @@
+@import '../../styles/base/variables.scss';
+
+$modal-background: #FEFEFE;
+$modal-color: #222222;
+
+.modal {
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    z-index: 100;
+
+    .modal-backdrop {
+        position: fixed;
+        top:0;
+        bottom: 0;
+        left:0;
+        right:0;
+        z-index: 100;
+        background-color: #66666666;
+    }
+
+    .modal-container {
+        min-width: 600px;
+        max-height: 80vh;
+        z-index: 101;
+        overflow: auto;
+    }
+
+    .modal-header {
+        background-color: $app-accent-color;
+        color: $modal-background;
+        padding: 0.5em 0.5em 0.5em 2em;
+        text-align: left;
+
+        h2 {
+            font-size: 1.75em;
+            margin: 0;
+        }
+
+        .button-icon {
+            color: darken($modal-background, 10%);
+
+            &:hover, &:focus, &:active {
+                color: lighten($modal-color, 10%)
+              }
+        }
+    }
+
+    .modal-content {
+        background-color: $modal-background;
+        padding: 2em;
+    }
+
+    .modal-children {
+       
+    }
+
+    .modal-buttons {
+        margin: auto;
+        text-align: right;
+
+        button {
+            margin: 0 0.5em;
+        }
+    }
+}
