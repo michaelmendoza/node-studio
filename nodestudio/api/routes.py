@@ -93,4 +93,4 @@ async def remove_link(data: ID_Data):
 async def run_session(data: ID_Data):
     ''' Adds node to graph '''
     data = controllers.run_session(data.id)
-    return { 'message': 'Completed sesson', 'data': { 'shape': data.shape, 'dtype': str(data.dtype), 'size': data.size } }
+    return { 'message': 'Completed sesson', 'data': { 'shape': data['data'].shape, 'dtype': str(data['data'].dtype), 'size': data['data'].size } }

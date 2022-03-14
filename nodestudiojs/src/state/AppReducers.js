@@ -66,6 +66,7 @@ export const AppReducers = (state, action) => {
         case ActionTypes.DELETE_NODE:
             nodes = { ...state.nodes };
             nodes[action.nodeID] = undefined;
+            delete nodes[action.nodeID];
             links = [ ...state.links];
             const bad_links = links.filter(l => l.startNode === action.nodeID || l.endNode === action.nodeID); 
             const bad_links_match = (link) => bad_links.reduce((prev, current) => prev || link.id === current.id, false)

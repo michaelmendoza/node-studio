@@ -42,9 +42,6 @@ def get_node_data(node_id, slice, index):
     else:
         value = node.value['data']
     
-    if np.iscomplexobj(value):
-        value = np.abs(value)
-
     encodedData = base64.b64encode(value)
 
     output = { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size,
