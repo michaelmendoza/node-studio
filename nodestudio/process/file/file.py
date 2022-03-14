@@ -1,6 +1,7 @@
 import glob
 import pydicom
 import numpy as np
+import mapvbvd
 
 def read_file(filetype, filepath):
     if filetype == 'dicom' or filetype == 'dcm':
@@ -26,5 +27,43 @@ def read_dicom(filepath):
             
     return data
 
-def read_rawdata():
-    pass
+def read_rawdata(filepath, datatype, avg_coils, avg_averages, avg_phase_cycles):
+    twixObj = mapvbvd.mapVBVD(filepath)
+    sqzDims = twixObj.image.sqzDims    
+    twixObj.image.squeeze = True
+
+    data = twixObj.image['']
+    # Move Lin be first index
+    linIndex = sqzDims.index('Lin')
+    data = np.moveaxis(data, linIndex, 0)
+    sqzDims.insert(0, sqzDims.pop(linIndex))
+
+    if avg_coils and 'Cha' in sqzDims:
+        chaIndex = sqzDims.index('Cha')
+        data = np.mean(data, axis=chaIndex)
+        sqzDims.pop(chaIndex)
+
+    if avg_averages and 'Ave' in sqzDims:
+        aveIndex = sqzDims.index('Ave')
+        data = np.mean(data, axis=aveIndex)
+        sqzDims.pop(aveIndex)
+
+    if avg_phase_cycles and 'Rep' in sqzDims:
+        repIndex = sqzDims.index('Rep')
+        data = np.mean(data, axis=repIndex)
+        sqzDims.pop(repIndex)
+
+    if datatype == 'image':
+        data = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(data, axes=(0, 1)), axes=(0, 1)), axes=(0, 1))
+    else: # datatype is kspace
+        pass
+
+    if 'Sli' in sqzDims:
+        sliceIndex = sqzDims.index('Sli')
+        data = np.moveaxis(data, sliceIndex, 0)
+        sqzDims.insert(0, sqzDims.pop(sliceIndex))
+    else:
+        # Make 2d dataset into 3d dataset with one slice
+        data = np.expand_dims(data, axis=0)
+
+    return data

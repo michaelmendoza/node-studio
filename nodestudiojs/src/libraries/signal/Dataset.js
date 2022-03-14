@@ -7,9 +7,7 @@ export const decodeDataset = (encodedData) => {
     const pixelArray = base64ToPixelArray(encodedData.encoded);
     const histogram = createHistogram(pixelArray);
     const stats = generateStats(histogram);
-    const dataset = { pixelArray, histogram, stats };
-    dataset.shape = encodedData.shape;
-    dataset.size = encodedData.size;
-
+    
+    const dataset = { ...encodedData, pixelArray, histogram, stats };
     return dataset
 }

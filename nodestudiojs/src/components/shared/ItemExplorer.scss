@@ -2,13 +2,18 @@
 
 .item-explorer {
     padding: 0.5em;
-    
+
     input {
         color: #AAAAAA;
     }
 
     .search {
         padding: 0.5em 0.5em;
+    }
+
+    .items-list {
+        max-height: 52.5vh;
+        overflow: auto;
     }
 }
 

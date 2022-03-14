@@ -16,7 +16,7 @@ def mock_2d_data(pattern):
             for i in range(xdim-1):
                 data[j,i] = ((j+1-ydim/2)**2+(i+1-xdim/2)**2)**0.5
 
-    data = reformat(data)
+    # data = reformat(data)
     # data = np.reshape(data,(1,data.shape[0],data.shape[1]))
 
     # min = np.min(data)

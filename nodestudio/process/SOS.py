@@ -7,10 +7,10 @@ def sum_of_squares(a,b):
 
         #result = reformat(result)
 
-        min = np.min(result)
-        max = np.max(result)
-        resolution = 4096
-        result = (result - min) * resolution / (max - min)
-        result = np.floor(result).astype('uint16')
+        # min = np.min(result)
+        # max = np.max(result)
+        # resolution = 4096
+        # result = (result - min) * resolution / (max - min)
+        # result = np.floor(result).astype('uint16')
 
         return result

@@ -96,6 +96,7 @@ $node-canvas-bg-color: #e6e6e6;
         font-size: 0.75em;
         font-weight: 200;
         text-transform: capitalize;
+        margin: 0.5em 0 0.5em 0;
       }
 
       [type=file] {
@@ -106,6 +107,10 @@ $node-canvas-bg-color: #e6e6e6;
       button {
         font-size: 0.75em;
         padding: 0.5em;
+      }
+
+      .select {
+        margin-bottom: 0.5em;
       }
     }
   

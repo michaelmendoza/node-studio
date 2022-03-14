@@ -7,6 +7,7 @@ class NodeType(Enum):
     # Input Nodes
     FILE = 'FILE'
     MOCK = 'MOCK'
+    FILE_RAWDATA = 'FILE_RAWDATA'
 
     # Computer Nodes
     ADD = 'ADD'
@@ -18,3 +19,4 @@ class NodeType(Enum):
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
+    CDISPLAY = 'CDISPLAY'

@@ -7,6 +7,7 @@ from graph.nodes import NodeType
 from graph.node import create_node
 from process.file import file
 import matplotlib.pyplot as plt
+import mapvbvd
 
 def test():
     a = create_node(NodeType.FILE, {'x':100, 'y':100})()
@@ -117,3 +118,86 @@ def test4():
     plt.imshow(output[0,:,:], cmap=plt.cm.bone)
     plt.show()
     
+def test5():
+    filename = '/Users/michael/projects/MRI/data/gasp/20190827_GASP_INVIVO_BRAIN_HIP/meas_MID299_TRUFI_TE3_FID49324.dat'
+    twixObj = mapvbvd.mapVBVD(filename) 
+    fullSize = twixObj.image.fullSize
+    sqzDims = twixObj.image.sqzDims
+    print(sqzDims)
+
+    twixObj.image.squeeze = True
+    data = twixObj.image['']
+
+    linIndex = sqzDims.index('Lin')
+    data = np.moveaxis(data, linIndex, 0)
+    sqzDims.insert(0, sqzDims.pop(linIndex))
+    print(data.shape, sqzDims)
+
+    chaIndex = sqzDims.index('Cha')
+    reduced_data = np.mean(data, axis=chaIndex)
+    sqzDims.pop(chaIndex)
+
+    aveIndex = sqzDims.index('Ave')
+    reduced_data = np.mean(reduced_data, axis=aveIndex)
+    sqzDims.pop(aveIndex)
+
+    repIndex = sqzDims.index('Rep')
+    reduced_data = np.mean(reduced_data, axis=repIndex)
+    sqzDims.pop(repIndex)
+    print(reduced_data.shape, sqzDims)
+
+    plt.imshow(np.abs(reduced_data))
+    plt.show()
+
+    image_data = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(reduced_data, axes=(0, 1)), axes=(0, 1)), axes=(0, 1))
+    plt.imshow(np.abs(image_data))
+    plt.show()
+
+def test6():
+    filename = '/Users/michael/projects/MRI/data/10182017_WholeBodyFat/meas_MID469_Ax___Abdomen_gre_te523_FID3465.dat'
+    twixObj = mapvbvd.mapVBVD(filename) 
+    fullSize = twixObj.image.fullSize
+    sqzDims = twixObj.image.sqzDims
+    print(sqzDims)
+
+    twixObj.image.squeeze = True
+    data = twixObj.image['']
+    
+    linIndex = sqzDims.index('Lin')
+    data = np.moveaxis(data, linIndex, 0)
+    sqzDims.insert(0, sqzDims.pop(linIndex))
+    print(data.shape, sqzDims)
+
+    aveIndex = sqzDims.index('Ave')
+    data = np.mean(data, axis=aveIndex)
+    sqzDims.pop(aveIndex)
+
+    data = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(data, axes=(0, 1)), axes=(0, 1)), axes=(0, 1))
+
+    sliceIndex = sqzDims.index('Sli')
+    data = np.moveaxis(data, sliceIndex, 0)
+    sqzDims.insert(0, sqzDims.pop(sliceIndex))
+    print(data.shape, sqzDims)
+
+    plt.imshow(np.abs(data[0]))
+    plt.show()
+
+    mdata = np.abs(data)
+    min = np.min(mdata)
+    max = np.max(mdata)
+    mean = np.average(mdata)
+    std = np.std(mdata)
+
+    scaled_data = (mdata - min) / (max - min)
+    resolution = 4096
+    data_int = np.floor(scaled_data * resolution).astype(int)
+    histogram = np.histogram(data_int, 4096)
+
+    print('min', min, 'max' ,max, 'mean', mean, 'std', std)
+    print(histogram)
+    
+    plt.plot(histogram[0])
+    plt.show()
+
+    print('data', data.dtype)
+    print('idata', data_int.dtype)
