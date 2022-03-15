@@ -6,7 +6,6 @@ function getColor(vin,colormap){
             color[i] = vin * 255;
         }
     }
-
     else if(colormap == 'jet'){
         //reference: http://paulbourke.net/miscellaneous/colourspace/
         if(vin < 0.25){
@@ -25,6 +24,11 @@ function getColor(vin,colormap){
             color[0] = 255;
             color[1] = 255 + 4 * (0.75 - vin) * 255;
             color[2] = 0;
+        }
+    }
+    else {
+        for(let i = 0; i < 3; i++){
+            color[i] = vin * 255;
         }
     }
     return color;
@@ -47,9 +51,10 @@ export const DrawImg = (data, colormap) => {
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
             const value = pixelArray[ y * width + x ] / resolution;
-            imageData.data[4*i] = getColor(value,colormap)[0];
-            imageData.data[4*i+1] = getColor(value,colormap)[1];
-            imageData.data[4*i+2] = getColor(value,colormap)[2];
+            const colorValues = getColor(value, colormap);
+            imageData.data[4*i] = colorValues[0];
+            imageData.data[4*i+1] = colorValues[1];
+            imageData.data[4*i+2] = colorValues[2];
             imageData.data[4*i+3] = 255;
         }
 
