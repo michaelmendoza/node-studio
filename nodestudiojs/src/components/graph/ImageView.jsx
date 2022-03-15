@@ -20,17 +20,18 @@ const ImageView = ({nodeID}) => {
     const [shape, setShape] = useState([160, 640, 640]);
     const [showModal, setShowModal] = useState(false);
     const [dataset, setDataset] = useState(null);
+    const [colormap,setColormap] = useState('bw');
 
     useEffect(() => {
-        if (state.sessions[nodeID]) fetchData(slice, index);
+        if (state.sessions[nodeID]) fetchData(slice, index, colormap);
     }, [state.sessions])
 
-    const fetchData = (slice, index) => {
+    const fetchData = (slice, index, colormap) => {
         throttle(async () => {
             const encodedData = await APIDataService.getNode(nodeID, slice, index);
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset);
+                const dataUri = DrawImg(dataset, colormap);
                 setDataset(dataset);
                 setImageData(dataUri);
                 setShape(dataset.fullshape);
@@ -44,14 +45,14 @@ const ImageView = ({nodeID}) => {
         setSlice(option.value);
         if (state.sessions[nodeID] !== undefined) {
             const index = updateSliceMax(option.value);
-            fetchData(option.value, index);
+            fetchData(option.value, index, colormap);
         }
     }
 
     const handleIndexUpdate = (value) => {
         setIndex(value);
         if (state.sessions[nodeID] !== undefined)
-            fetchData(slice, value) ;
+            fetchData(slice, value, colormap) ;
     }
 
     const updateSliceMax = (slice) => {
@@ -70,6 +71,12 @@ const ImageView = ({nodeID}) => {
         }
         return index;
     }
+    const handleColormapChange = (option) =>{
+        setColormap(option.value);
+        if (state.sessions[nodeID] !== undefined) {
+            fetchData(slice,index,option.value);
+        }
+    }
 
     const handleShowModal = () => {
         setShowModal(true)
@@ -77,11 +84,13 @@ const ImageView = ({nodeID}) => {
 
 
     const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
+    const colmap_options = [{label:'B/W', value:'bw'}, {label:'Jet', value:'jet'}]
 
     return (
         <div className="image-view" onDoubleClick={handleShowModal}>
             <img src={imageData} alt='viewport'/>
             <Select options={options} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
+            <Select options={colmap_options} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
             <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal}></ImageViewModal>
         </div>
