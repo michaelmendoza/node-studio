@@ -6,6 +6,7 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
+    MOCK = 'MOCK'
     FILE_RAWDATA = 'FILE_RAWDATA'
 
     # Computer Nodes
@@ -13,6 +14,8 @@ class NodeType(Enum):
     MULT = 'MULT'
     MASK = 'MASK'
     FIT = 'FIT'
+    SOS = 'SOS'
+    T2_qDESS = 'T2_qDESS'
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
