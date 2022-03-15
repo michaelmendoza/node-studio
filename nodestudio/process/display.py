@@ -41,7 +41,8 @@ def process_and_scale_data(data):
     resolution = 4096
     data_int = np.floor(scaled_data * resolution).astype('uint16')
     histogram = np.histogram(data_int, 128)
-
+    #-----------------calculations with nan?---------------
+    #data_int[np.isnan(data_int)] = 4097 # change colormap too
     return { 'data': data_int, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_complex_data(data, datatype = 'mag'):
