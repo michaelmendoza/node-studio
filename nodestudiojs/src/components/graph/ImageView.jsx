@@ -92,21 +92,37 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
 
     const imgRef = useRef(null);
     const [position, setPosition] = useState({ x:0, y:0 })
+    const [styles, setStyles] = useState({});
 
+    useEffect(() => {
+        updateStyles();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [showModal])
+        
     const handleMouseMove = (e) => {
         if(dataset === null) return;
 
         var rect = imgRef.current.getBoundingClientRect();
-        let width = imgRef.current.clientWidth
-        let height = imgRef.current.clientHeight;
-        let x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
-        let y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
+        const width = imgRef.current.clientWidth
+        const height = imgRef.current.clientHeight;
+        const x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
+        const y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
         setPosition({ x, y });
     }
 
     const getImageValue = () => {
         if(dataset === null) return;
         return getImgPixelValue(dataset, position.x, position.y)
+    }
+
+    const updateStyles = () => {
+        if ( imageData === DefaultImg || imgRef.current === null )
+            return { height: '64px'} ;
+
+        const width = imgRef.current.clientWidth
+        const height = imgRef.current.clientHeight;
+
+        setStyles(width > height ? { width: '60vw' } : { height: '60vh' });
     }
 
     return (
@@ -116,7 +132,7 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
                 <div> value: { getImageValue() } </div>
             </div>
             <div className='text-align-center'>
-                <img src={imageData} alt='viewport' ref={imgRef} style={{ height: imageData === DefaultImg ? '64px' : '60vh' }} onMouseMove={handleMouseMove}/>
+                <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
         </Modal>
     )
