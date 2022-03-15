@@ -13,6 +13,8 @@ const ItemExplorer = ({item}) => {
     const getItems = () => {
         if(itemType === 'projects')
             return savedProjectList;
+        if(itemType === 'examples')
+            return savedProjectList;
         if(itemType === 'plugins')
             return NodeList.getList();
         else 
@@ -51,6 +53,8 @@ const ItemExplorer = ({item}) => {
 const ItemView = ({type, item}) => {
     const getItem = () => {
         if (type === 'projects')
+            return <ProjectItemView item={item}></ProjectItemView>
+        if (type === 'examples')
             return <ProjectItemView item={item}></ProjectItemView>
         if (type === 'plugins')
             return <PluginItemView item={item}></PluginItemView>
