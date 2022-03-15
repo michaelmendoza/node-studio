@@ -51,15 +51,10 @@ def qDESS_T2(filePath,tissue):
     for index,f in enumerate (dirs):
         image = dcm.read_file(f).pixel_array
         images[index,:,:] = image
-    #dess = np.zeros([height,width,int(depth/2),2])
     dess = np.zeros([int(depth/2),height,width,2])
-    #dess[:,:,:,0] = images[:,:,0:int(depth/2)]
     dess[:,:,:,0] = images[0:int(depth/2),:,:]
-    #dess[:,:,:,1] = images[:,:,int(depth/2):]
     dess[:,:,:,1] = images[int(depth/2):,:,:]
-    #mask = np.ones([height,width,int(depth/2)])
     mask = np.ones([int(depth/2),height,width])
-    #ratio = np.zeros([height, width, int(depth/2)])
     ratio = np.zeros([int(depth/2),height, width])
     ratio = mask*dess[:,:,:,1]/dess[:,:,:,0]
     t2map = (-2000*(TR-TE)/(log(abs(ratio)/k)+c1))

@@ -19,8 +19,8 @@ def process_data(data):
 def process_uint16_data(data):
     # Processes stats and histogram for unsigned integer data 
     
-    min = int(np.min(data))
-    max = int(np.max(data))
+    min = int(np.nanmin(data))
+    max = int(np.nanmax(data))
     mean = np.average(data)
     std = np.std(data)
 
@@ -31,19 +31,24 @@ def process_uint16_data(data):
 
 def process_and_scale_data(data):
     # Processes stats and scales data to fit data into a uint16
+    output = data
+
+    #set up specifically for t2 mapping
+    #output[output == 0] = np.NaN
 
     min = float(np.nanmin(data))
     max = float(np.nanmax(data))
-    mean = np.average(data)
-    std = np.std(data)
+    mean = np.nanmean(data)
+    std = np.nanstd(data)
 
-    scaled_data = (data - min) / (max - min)
     resolution = 4096
-    data_int = np.floor(scaled_data * resolution).astype('uint16')
-    histogram = np.histogram(data_int, 128)
-    #-----------------calculations with nan?---------------
-    #data_int[np.isnan(data_int)] = 4097 # change colormap too
-    return { 'data': data_int, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    output[~np.isnan(output)] = (output[~np.isnan(output)] - min) * resolution / (max - min)
+    output = np.floor(output).astype('uint16')
+    histogram = np.histogram(output[~np.isnan(output)], 128)
+
+    #output[np.isnan(output)] = 4097
+
+    return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_complex_data(data, datatype = 'mag'):
     # Process complex128 numpy data 
@@ -60,3 +65,5 @@ def process_complex_data(data, datatype = 'mag'):
         mdata = np.abs(data)
     
     return process_and_scale_data(mdata)
+
+

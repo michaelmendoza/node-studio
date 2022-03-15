@@ -6,9 +6,13 @@ function getColor(vin,colormap){
             color[i] = vin * 255;
         }
     }
-    else if(colormap == 'jet'){
-        //reference: http://paulbourke.net/miscellaneous/colourspace/
-        if(vin < 0.25){
+    else if(colormap == 'jet' || colormap == 'jet_t2'){
+        if(vin == 0 && colormap == 'jet_t2'){
+            color[0] = 0;
+            color[1] = 0;
+            color[2] = 0;
+        }
+        else if(vin < 0.25){
             color[0] = 0;
             color[1] = 4 * vin * 255;
             color[2] = 255;
