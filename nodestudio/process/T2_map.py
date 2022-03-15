@@ -4,8 +4,6 @@ from pathlib import Path
 import pydicom as dcm
 import math
 from numpy import sqrt, sin, cos, pi, exp, log
-from ipywidgets import interact, interactive, fixed, interact_manual
-import ipywidgets as widgets
 
 def qDESS_T2(filePath,tissue):
     

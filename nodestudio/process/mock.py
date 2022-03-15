@@ -1,5 +1,4 @@
 import numpy as np
-#from process.reformat import reformat
 
 def mock_2d_data(pattern):
     xdim = 50

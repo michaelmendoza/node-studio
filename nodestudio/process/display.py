@@ -2,18 +2,17 @@ import numpy as np
 
 # Processes data for use by display node. Automatically, detects dtype and complex data.
 def process_data(data):
-    output = data
 
     # Check if complex data
     if np.iscomplexobj(data):
-        output = process_complex_data(output)
+        output = process_complex_data(data)
 
     # Check if integer data (uint16 - produced by dicoms)
     if data.dtype == 'uint16':
-        output = process_uint16_data(output)
+        output = process_uint16_data(data)
 
     else:
-        output = process_and_scale_data(output)
+        output = process_and_scale_data(data)
     
     return output
 
