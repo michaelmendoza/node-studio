@@ -27,6 +27,7 @@ def qDESS_T2(filePath,tissue):
     
     data = Path(filePath)
     dirs = list(data.glob('**/*.IMA'))
+    dirs = np.sort(dirs)
     
     file0 = dcm.read_file(dirs[0]) 
     f = file0.pixel_array

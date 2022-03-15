@@ -33,9 +33,6 @@ def process_and_scale_data(data):
     # Processes stats and scales data to fit data into a uint16
     output = data
 
-    #set up specifically for t2 mapping
-    #output[output == 0] = np.NaN
-
     min = float(np.nanmin(data))
     max = float(np.nanmax(data))
     mean = np.nanmean(data)
@@ -45,8 +42,6 @@ def process_and_scale_data(data):
     output[~np.isnan(output)] = (output[~np.isnan(output)] - min) * resolution / (max - min)
     output = np.floor(output).astype('uint16')
     histogram = np.histogram(output[~np.isnan(output)], 128)
-
-    #output[np.isnan(output)] = 4097
 
     return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
