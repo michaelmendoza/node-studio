@@ -1,6 +1,6 @@
 import './ImageView.scss';
-import { useState, useEffect, useContext } from 'react';
-import { DrawImg } from '../../libraries/draw/Draw';
+import { useState, useEffect, useContext, useRef } from 'react';
+import { DrawImg, getImgPixelValue } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import { throttle } from '../../libraries/utils';
 import APIDataService from '../../services/APIDataService';
@@ -18,7 +18,8 @@ const ImageView = ({nodeID}) => {
     const [sliceMax, setSliceMax] = useState(100);
     const [index, setIndex] = useState(0);
     const [shape, setShape] = useState([160, 640, 640]);
-    const [showModal, setShowModal] = useState(false)
+    const [showModal, setShowModal] = useState(false);
+    const [dataset, setDataset] = useState(null);
 
     useEffect(() => {
         if (state.sessions[nodeID]) fetchData(slice, index);
@@ -30,6 +31,7 @@ const ImageView = ({nodeID}) => {
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset);
+                setDataset(dataset);
                 setImageData(dataUri);
                 setShape(dataset.fullshape);
                 updateSliceMax(slice);
@@ -73,6 +75,7 @@ const ImageView = ({nodeID}) => {
         setShowModal(true)
     }
 
+
     const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
 
     return (
@@ -80,13 +83,42 @@ const ImageView = ({nodeID}) => {
             <img src={imageData} alt='viewport'/>
             <Select options={options} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
-
-            <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
-                <div className='text-align-center'>
-                    <img src={imageData} alt='viewport'/>
-                </div>
-            </Modal>
+            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal}></ImageViewModal>
         </div>
+    )
+}
+
+const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
+
+    const imgRef = useRef(null);
+    const [position, setPosition] = useState({ x:0, y:0 })
+
+    const handleMouseMove = (e) => {
+        if(dataset === null) return;
+
+        var rect = imgRef.current.getBoundingClientRect();
+        let width = imgRef.current.clientWidth
+        let height = imgRef.current.clientHeight;
+        let x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
+        let y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
+        setPosition({ x, y });
+    }
+
+    const getImageValue = () => {
+        if(dataset === null) return;
+        return getImgPixelValue(dataset, position.x, position.y)
+    }
+
+    return (
+        <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
+            <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
+                <div> x: { position.x }, y:{ position.y } </div>
+                <div> value: { getImageValue() } </div>
+            </div>
+            <div className='text-align-center'>
+                <img src={imageData} alt='viewport' ref={imgRef} style={{ height: imageData === DefaultImg ? '64px' : '60vh' }} onMouseMove={handleMouseMove}/>
+            </div>
+        </Modal>
     )
 }
 
