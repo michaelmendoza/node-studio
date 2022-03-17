@@ -21,8 +21,8 @@ def process_uint16_data(data):
     
     min = int(np.nanmin(data))
     max = int(np.nanmax(data))
-    mean = np.average(data)
-    std = np.std(data)
+    mean = np.nanmean(data)
+    std = np.nanstd(data)
 
     resolution = 4096
     histogram = np.histogram(data, 128)
@@ -39,9 +39,10 @@ def process_and_scale_data(data):
     std = np.nanstd(data)
 
     resolution = 4096
-    output[~np.isnan(output)] = (output[~np.isnan(output)] - min) * resolution / (max - min)
+    output = (output - min) * resolution / (max - min)
+    output[np.isnan(output)] = 8192 #replace nans
     output = np.floor(output).astype('uint16')
-    histogram = np.histogram(output[~np.isnan(output)], 128)
+    histogram = np.histogram(output[output !=8192], 128) #exclude values assigned to exceptions
 
     return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 

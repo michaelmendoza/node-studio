@@ -61,9 +61,8 @@ def qDESS_T2(filePath,tissue):
     t2map = (-2000*(TR-TE)/(log(abs(ratio)/k)+c1))
     
     #------HARDED CODED, CHANGE LATER------
-    t2map[np.isnan(t2map)] = 0
-    t2map[t2map <= 0] = 0
-    t2map[t2map > 100] = 0
+    t2map[t2map <= 0] = np.nan
+    t2map[t2map > 100] = np.nan
     #------HARDED CODED, CHANGE LATER------
     
     return t2map

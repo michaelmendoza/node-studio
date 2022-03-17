@@ -84,7 +84,7 @@ const ImageView = ({nodeID}) => {
 
 
     const options = [{label:'xy', value:'xy'}, {label:'xz', value:'xz'}, {label:'yz', value:'yz'}]
-    const colmap_options = [{label:'B/W', value:'bw'}, {label:'Jet', value:'jet'},{label:'Jet for T2 Mapping',value:'jet_t2'}]
+    const colmap_options = [{label:'B/W', value:'bw'}, {label:'Jet', value:'jet'}]
 
     return (
         <div className="image-view" onDoubleClick={handleShowModal}>

@@ -6,13 +6,8 @@ function getColor(vin,colormap){
             color[i] = vin * 255;
         }
     }
-    else if(colormap == 'jet' || colormap == 'jet_t2'){
-        if(vin == 0 && colormap == 'jet_t2'){
-            color[0] = 0;
-            color[1] = 0;
-            color[2] = 0;
-        }
-        else if(vin < 0.25){
+    else if(colormap == 'jet'){
+        if(vin < 0.25){
             color[0] = 0;
             color[1] = 4 * vin * 255;
             color[2] = 255;
@@ -24,16 +19,18 @@ function getColor(vin,colormap){
             color[0] = 4 * (vin - 0.5) * 255;
             color[1] = 255;
             color[2] = 0;
-        }else {
+        }else if (vin < 1){
             color[0] = 255;
             color[1] = 255 + 4 * (0.75 - vin) * 255;
             color[2] = 0;
+        }else if (vin == 2){ //the NaN case
+            for(let i = 0; i < 3; i++)
+            color[i] = 35;
         }
     }
     else {
-        for(let i = 0; i < 3; i++){
-            color[i] = vin * 255;
-        }
+        for(let i = 0; i < 3; i++)
+        color[i] = vin * 255;
     }
     return color;
 }
