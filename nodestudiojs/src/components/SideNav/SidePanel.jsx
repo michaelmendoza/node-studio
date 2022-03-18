@@ -10,9 +10,12 @@ const SidePanel = ({activeNav}) => {
 
     const render = () => {
         if (activeNav.name === 'files') return <PanelFiles></PanelFiles>
+        if (activeNav.name === 'projects') return <PanelProjects navItem={activeNav}></PanelProjects>        
+        if (activeNav.name === 'examples') return <PanelExamples navItem={activeNav}></PanelExamples>
         if (activeNav.name === 'run') return <PanelRun></PanelRun>
+        if (activeNav.name === 'plugins') return <PanelPlugins navItem={activeNav}></PanelPlugins>
         if (activeNav.name === 'share') return  <PanelShare></PanelShare>
-        else return <ItemExplorer item={activeNav}></ItemExplorer>
+        else return null
     }
 
     return (
@@ -31,6 +34,29 @@ const PanelFiles = () => {
         <div className='panel-files'>
             <h2> Files </h2>
             <input type="file" multiple onChange={handleOnLoad}/>
+        </div>
+    )
+}
+
+const PanelProjects = ({navItem}) => {
+    const handleSave = () => {
+        
+    }
+
+    return (
+        <div className='sidepanel-panel'>
+            <h2> Projects </h2>
+            <button onClick={handleSave}> Save Project </button>  
+            <ItemExplorer item={navItem}></ItemExplorer>
+        </div>
+    )
+}
+
+const PanelExamples = ({navItem}) => {
+    return (
+        <div className='sidepanel-panel'>
+            <h2> Examples </h2>
+            <ItemExplorer item={navItem}></ItemExplorer>
         </div>
     )
 }
@@ -58,6 +84,15 @@ const PanelRun = () => {
         <div className='panel-run'> 
             <h2> Run </h2> 
             <button onClick={handleRunGraph}> Run and Debug </button>  
+        </div>
+    )
+}
+
+const PanelPlugins = ({navItem}) => {
+    return (
+        <div className='sidepanel-panel'>
+            <h2> Plugins </h2>
+            <ItemExplorer item={navItem}></ItemExplorer>
         </div>
     )
 }

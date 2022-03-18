@@ -35,7 +35,6 @@ const ItemExplorer = ({item}) => {
     return (<div className='item-explorer'>
         { 
             <div>
-                <h2> {item.name} </h2>
                 <div className='search'>
                     <input type="text" name="node_search" placeholder={'Search'} value={search} onChange={handleSearchChange}/>
                 </div>

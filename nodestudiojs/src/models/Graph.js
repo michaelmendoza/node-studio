@@ -3,6 +3,13 @@ import Link from './Link';
 
 class Graph {
 
+    constructor() {
+        this.id = null;
+        this.nodes = {}
+        this.links = []
+        this.sessions = {}
+    }
+
     static readJson(json_string) {
         const graphData = JSON.parse(json_string);
        
@@ -17,6 +24,19 @@ class Graph {
         })
 
         return { nodes: nodeDict, links };
+    }
+
+    static exportJson(graph) {
+        
+    }
+
+    static save(graph) {
+        localStorage.setItem('graph', graph);
+
+    }
+
+    static load() {
+        return localStorage.getItem('graph');
     }
 
 }
