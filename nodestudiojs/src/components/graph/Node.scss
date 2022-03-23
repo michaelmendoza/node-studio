@@ -20,8 +20,12 @@ $node-canvas-bg-color: #e6e6e6;
     display: flex;
     flex-wrap: wrap;
     border-radius: 4px; 
-    box-shadow: $box-shadow;
+    box-shadow: 0 0 0 1px rgba(225,225,225,0.5);
   
+    &:hover {
+      box-shadow: 0 0 0 1px rgba(225,225,225,0.9);
+    }
+
     .node_title {
       cursor: move;
       width: 100%;
@@ -36,6 +40,8 @@ $node-canvas-bg-color: #e6e6e6;
       border-width: 0px 0px 1px 0px;
       text-align: center;
       vertical-align: middle;
+      border-top-left-radius: 4px; 
+      border-top-right-radius: 4px;
     }
   
     .node_io {

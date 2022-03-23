@@ -3,11 +3,15 @@ import Link from './Link';
 
 class Graph {
 
-    constructor() {
-        this.id = null;
-        this.nodes = {}
-        this.links = []
-        this.sessions = {}
+    constructor(graph = {}) {
+        this.id = graph.id || crypto.randomUUID();
+        this.name = graph.name || this.id;
+        this.description = graph.description || '';
+        this.updatedAt = (new Date()).getTime();
+
+        this.nodes = graph.nodes || {}
+        this.links = graph.links || []
+        this.sessions = graph.sessions || {}
     }
 
     static readJson(json_string) {
@@ -27,16 +31,10 @@ class Graph {
     }
 
     static exportJson(graph) {
-        
-    }
-
-    static save(graph) {
-        localStorage.setItem('graph', graph);
-
-    }
-
-    static load() {
-        return localStorage.getItem('graph');
+        const nodes = Object.values(graph.nodes).map((node) => Node.export(node));
+        const links = graph.links;
+        const output = JSON.stringify({ nodes, links });
+        return output;
     }
 
 }

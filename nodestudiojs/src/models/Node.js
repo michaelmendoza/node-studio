@@ -19,7 +19,7 @@ class Node {
     }
 
     static export(node) {
-        return {
+        const data = {
             id: node.id, 
             props: { type: node.type },
             inputs: node.inputs,
@@ -27,6 +27,7 @@ class Node {
             styles: { x: node.position.x, y: node.position.y },
             args: node.argsDict
         }
+        return data;
     }
 
     static create(type, position = { x: 50, y:50 }) {
