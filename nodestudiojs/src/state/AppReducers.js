@@ -1,11 +1,13 @@
 import Node from "../models/Node";
 import APIDataService from "../services/APIDataService";
+import Graph from '../models/Graph';
 
 let counter = 0;
 const count = () => counter++;
 
 export const ActionTypes = {
     'INIT_GRAPH': count(),
+    'LOAD_GRAPH': count(),
     'RESET_GRAPH': count(),
     'ADD_NODE': count(),
     'UPDATE_NODE': count(),
@@ -24,6 +26,10 @@ export const AppReducers = (state, action) => {
     if(action.updateAPI === true) {
         switch(action.type) {
             // Graph actions
+            case ActionTypes.LOAD_GRAPH:
+                const json_string = Graph.exportJson(action.graph);
+                APIDataService.createGraph({json_string})
+                break;
             case ActionTypes.RESET_GRAPH:
                 APIDataService.resetGraph();
                 break;
@@ -53,7 +59,8 @@ export const AppReducers = (state, action) => {
     switch(action.type) {
         // Graph actions
         case ActionTypes.INIT_GRAPH:
-            return { ...state, nodes: action.nodes, links: action.links}
+        case ActionTypes.LOAD_GRAPH:
+            return { ...state, nodes: action.graph.nodes, links: action.graph.links}
         case ActionTypes.RESET_GRAPH:
             return { ...state, nodes: {}, links: [], sessions: {}}        
 

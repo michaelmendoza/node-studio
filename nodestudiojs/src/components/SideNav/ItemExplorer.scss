@@ -15,6 +15,28 @@
         max-height: 52.5vh;
         overflow: auto;
     }
+
+    .button-icon {
+        position: absolute;
+        right: 0;
+        top: 0;
+        color: darken(#FEFEFE, 10%);
+        background-color: transparent;
+        padding: 0.5em;
+        margin: 0;
+        border: 1px solid transparent;
+        font-size: 0.5em;
+        z-index: 1;
+
+        &:hover, &:focus, &:active {
+            color: lighten(#FEFEFE, 10%);
+            background-color: lighten(#282c34, 10%);
+        }
+
+        i {
+            font-size: 2em;
+        }
+    }
 }
 
 .explorer-item-view {
@@ -28,6 +50,7 @@
     &.project-item {
         cursor: pointer;
         label { cursor: pointer; }
+        position: relative;
     }
 
     &.plugin-item {

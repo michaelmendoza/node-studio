@@ -7,6 +7,7 @@ import SidePanel from './SidePanel';
 export const NavItemList = [
     { name: 'files', icon:'library_add'}, 
     { name: 'projects', icon:'folder_open'},
+    { name: 'examples', icon:'folder_open'},
     { name: 'run', icon:'play_arrow'},
     { name: 'plugins', icon:'extension'},
     { name: 'share', icon:'share'}

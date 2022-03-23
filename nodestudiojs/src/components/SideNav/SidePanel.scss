@@ -32,6 +32,10 @@
         }
     }
 
+    .sidepanel-panel {
+        padding: 1em;
+    }
+
     .panel-files {
         padding: 1em;
     }
@@ -46,6 +50,29 @@
         padding-bottom: 1em;
         div {
             margin-bottom: 1em;
+        }
+    }
+}
+
+.project-save-modal {
+
+    button {
+        margin-top: 1em;
+        margin-bottom: 1em;
+        background-color: #2196F3;
+        color: #FEFEFE;
+        border: 1px solid #44444466;
+
+        &:hover {
+            border: 1px solid #FEFEFE;
+        }
+    }
+
+    .text-input {
+        color: #FEFEFE;
+
+        input {
+            color: #FEFEFE;
         }
     }
 }

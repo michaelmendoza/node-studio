@@ -26,7 +26,7 @@ const AppComponents = () => {
         const fetch = async () => {
             const json_string = await APIDataService.getGraph();
             const graphData = Graph.readJson(json_string);
-            dispatch({ type:ActionTypes.INIT_GRAPH, nodes:graphData.nodes, links:graphData.links });
+            dispatch({ type:ActionTypes.INIT_GRAPH, graph:graphData });
         }
         fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
