@@ -8,11 +8,30 @@ import Link from '../../models/Link';
 const scale = 0.75;
 const startOffset = { x:184 * scale, y:57 * scale }
 const endOffset = { x:16 * scale, y:57 * scale}
-const dyOffset = 18 * scale;
+const dyOffset = 34 * scale;
 
-const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
+const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
+
+    const [radius, setRadius] = useState(5);
+    const [fill, setFill] = useState("#FEFEFE");
+    const [stroke, setStroke] = useState("#444444");
+
+    const handleMouseEnter = () => { setRadius(6); setStroke("#000000"); }
+
+    const handleMouseLeave = () => { setRadius(5); setStroke("#444444");}
+
+    return (
+        <g className='port' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 
+                            onMouseDown={(e) => handleMouseDown(e, type, index)} onMouseUp={(e) => handleMouseUp(e, port.node, type, index)}>
+            <circle className='port-circle' cx={port.x} cy={port.y} r={radius} fill={fill} stroke={stroke}></circle> 
+            <rect className='port-clickbox' x={port.x - 14} y={port.y - 13} width="26" height="26" opacity="0%"></rect> 
+        </g>
+    )
+}
+
+const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
-    const [port, setPort] = useState({ node: null, type:'output', index:0 });
+    const [activePort, setActivePort] = useState({ node: null, type:'output', index:0 });
 
     const renderLink = (link) => {
         const startNodeID = link.startNode;
@@ -50,15 +69,15 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
         const inputPorts = node?.inputLabels.map((x, i) => ({ x: node.position.x + endOffset.x, y: node.position.y + endOffset.y + i * dyOffset, node }));
 
         const handleMouseDown = (e, type, index) => {
-            setPort({ node, type, index });
+            setActivePort({ node, type, index });
             dispatch({ type: ActionTypes.SET_MOUSESTATE, mouseState:MouseStates.CREATE_LINK })
         }
 
         const handleMouseUp = (e, endNode, type, index) => {
             console.log(type, index);
 
-            if(port.type === 'output') {
-                const link = new Link({ startNode:port.node.id, startPort:port.index, endNode:endNode.id, endPort:index });
+            if(activePort.type === 'output') {
+                const link = new Link({ startNode:activePort.node.id, startPort:activePort.index, endNode:endNode.id, endPort:index });
                 dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
             }
         }
@@ -66,18 +85,18 @@ const LinksSVG = ({position, onContextMenu, width = 800, height = 800}) => {
         return (
             <g key={node.id} className={'node-' + node.id}>
                 { 
-                    outputPorts?.map((p, i) => <circle key={i} className='output-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'output', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'output', i)}></circle> )
+                    outputPorts?.map((p, i) => <Port key={i} port={p} index={i} type={'output'} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp}></Port> )
                 }
                 {
-                    inputPorts?.map((p, i) => <circle key={i} className='input-port' cx={p.x} cy={p.y} r="5" fill={"#FEFEFE"} stroke={"#444444"} onMouseDown={(e) => handleMouseDown(e, 'input', i)} onMouseUp={(e) => handleMouseUp(e, p.node, 'input', i)}></circle> )
+                    inputPorts?.map((p, i) => <Port key={i} port={p} index={i} type={'input'} handleMouseDown={handleMouseDown} handleMouseUp={handleMouseUp}></Port>)
                 }
             </g>
         )
     }
 
     const renderNewLine = () => {
-        const p1 = port.type === 'output' ? { x: port.node.position.x + startOffset.x, y: port.node.position.y + startOffset.y + port.index * dyOffset } :
-                                            { x: port.node.position.x + endOffset.x, y: port.node.position.y + endOffset.y + port.index * dyOffset }
+        const p1 = activePort.type === 'output' ? { x: activePort.node.position.x + startOffset.x, y: activePort.node.position.y + startOffset.y + activePort.index * dyOffset } :
+                                            { x: activePort.node.position.x + endOffset.x, y: activePort.node.position.y + endOffset.y + activePort.index * dyOffset }
         const p2 = { x: position.x, y: position.y }
 
         return (
