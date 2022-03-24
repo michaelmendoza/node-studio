@@ -29,7 +29,8 @@ You have two options to either create a new conda environment and install each p
 conda create -n nodestudio python=3.8 
 conda activate nodestudio
 pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
-pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab 
+pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab
+npm install react-markdown
 ```
 
 or use the yml file for the environment configuration
