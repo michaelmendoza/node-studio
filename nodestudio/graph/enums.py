@@ -40,7 +40,12 @@ class NodeDetail(Enum):
     MULT = '''MULT detail'''
     MASK = '''MASK detail'''
     FIT = '''FIT detail'''
-    SOS = '''SOS detail'''
+    SOS = '''# Title
+    The equation
+    $$
+    SOS = a^2 + b^2 
+    $$
+    '''
     T2_qDESS = '''T2_qDESS detail'''
     
     # Output Nodes

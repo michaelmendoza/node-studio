@@ -26,6 +26,9 @@
   },
   "homepage": "https://github.com/michaelmendoza/image-nodes#readme",
   "dependencies": {
-    "react-markdown": "^8.0.1"
+    "react-katex": "^2.0.2",
+    "react-markdown": "^8.0.1",
+    "rehype-katex": "^6.0.2",
+    "remark-math": "^5.1.1"
   }
 }
