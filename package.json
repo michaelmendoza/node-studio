@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "start": "cd nodestudiojs; react-scripts start",
+    "start": "cd nodestudiojs && npm start",
     "api": "cd nodestudio; uvicorn server:app --reload",
     "tests": "python nodestudio/test_runner.py"
   },
