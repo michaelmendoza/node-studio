@@ -6,7 +6,7 @@
     "start": "cd nodestudiojs && npm start",
     "api": "cd nodestudio; uvicorn server:app --reload",
     "tests": "python nodestudio/test_runner.py",
-    "build": "cd nodestudiojs && npm install"
+    "build": "pip install -r requirements.txt; cd nodestudiojs && npm install"
   },
   "description": "A library for visual programming of image-processing algorithms on dicom images",
   "main": "dist/ImageNodes.js",
