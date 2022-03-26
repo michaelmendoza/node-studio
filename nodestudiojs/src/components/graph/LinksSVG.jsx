@@ -57,10 +57,12 @@ const Link = ({link, onContextMenu}) => {
         onContextMenu(e, true, link);
     }
 
+    // Note: To figureout svg path: https://sean.brunnock.com/SVG/SVGPathGenerator/
+
     return (
         <g key={link.id} className={'link-' + link.id} onClick={handleClick} onContextMenu={handleContextMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
-            <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={line.stroke0} strokeLinejoin={"round"} strokeOpacity={line.opacity0}></line>
-            <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={2} stroke={line.stroke1} strokeLinejoin={"round"} strokeOpacity={line.opacity1}></line>
+            <path d={`M${p1.x},${p1.y} C${(p2.x+p1.x)/2},${p1.y} ${(p2.x+p1.x)/2},${p2.y} ${p2.x},${p2.y}`} strokeWidth={4} stroke={line.stroke0} strokeLinejoin={"round"} strokeOpacity={line.opacity0} fillOpacity="0"/>
+            <path d={`M${p1.x},${p1.y} C${(p2.x+p1.x)/2},${p1.y} ${(p2.x+p1.x)/2},${p2.y} ${p2.x},${p2.y}`} strokeWidth={2} stroke={line.stroke1} strokeLinejoin={"round"} strokeOpacity={line.opacity1} fillOpacity="0"/>
             <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
             <circle cx={p2.x} cy={p2.y} r="3" fill={"#444444"}></circle>
         </g>
