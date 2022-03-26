@@ -3,7 +3,7 @@ import React, { useContext, useState } from 'react';
 import AppState from '../../state/AppState';
 import { ActionTypes } from '../../state/AppReducers';
 import MouseStates from '../../state/MouseStates';
-import Link from '../../models/Link';
+import LinkModel from '../../models/Link';
 
 const scale = 0.75;
 const startOffset = { x:184 * scale, y:57 * scale }
@@ -18,7 +18,7 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
 
     const handleMouseEnter = () => { setRadius(6); setStroke("#000000"); }
 
-    const handleMouseLeave = () => { setRadius(5); setStroke("#444444");}
+    const handleMouseLeave = () => { setRadius(5); setStroke("#444444"); }
 
     return (
         <g className='port' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 
@@ -29,39 +29,47 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
     )
 }
 
+const Link = ({link, onContextMenu}) => {
+    const {state, dispatch} = useContext(AppState.AppContext);
+
+    const [line, setLine] = useState({ stroke0:"#222222", stroke1:"#FEFEFE", opacity0:"0.4", opacity1:"1.0" });
+
+    const startNodeID = link.startNode;
+    const startNode = state.nodes[startNodeID];
+    const endNodeID = link.endNode;
+    const endNode = state.nodes[endNodeID];
+
+    if (startNode === undefined || endNode === undefined) return null
+
+    const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + link.startPort * dyOffset };
+    const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + link.endPort * dyOffset };
+
+    const handleClick = () => {
+        dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:link });
+    }
+
+    const handleMouseEnter = () => { setLine({...line, opacity0:"0.8", stroke0:"#222222", stroke1:"#EEEEEE", opacity1:"0.8"}); }
+
+    const handleMouseLeave = () => { setLine({...line, opacity0:"0.4", stroke0:"#222222", stroke1:"#FEFEFE", opacity1:"1.0"}); }
+
+    const handleContextMenu = e => { 
+        e.preventDefault();
+        onContextMenu(e, true, link);
+    }
+
+    return (
+        <g key={link.id} className={'link-' + link.id} onClick={handleClick} onContextMenu={handleContextMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+            <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={line.stroke0} strokeLinejoin={"round"} strokeOpacity={line.opacity0}></line>
+            <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={2} stroke={line.stroke1} strokeLinejoin={"round"} strokeOpacity={line.opacity1}></line>
+            <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
+            <circle cx={p2.x} cy={p2.y} r="3" fill={"#444444"}></circle>
+        </g>
+    )
+}
+
 const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const [activePort, setActivePort] = useState({ node: null, type:'output', index:0 });
-
-    const renderLink = (link) => {
-        const startNodeID = link.startNode;
-        const startNode = state.nodes[startNodeID];
-        const endNodeID = link.endNode;
-        const endNode = state.nodes[endNodeID];
- 
-        if (startNode === undefined || endNode === undefined) return null
-
-        const p1 = { x:startNode.position.x + startOffset.x, y:startNode.position.y + startOffset.y + link.startPort * dyOffset };
-        const p2 = { x:endNode.position.x + endOffset.x, y:endNode.position.y + endOffset.y + link.endPort * dyOffset };
-
-        const handleClick = () => {
-            dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:link });
-        }
-
-        const handleContextMenu = e => { 
-            e.preventDefault();
-            onContextMenu(e, true, link);
-        }
-
-        return (
-            <g key={link.id} className={'link-' + link.id} onClick={handleClick} onContextMenu={handleContextMenu}>
-                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={4} stroke={"#FEFEFE"} strokeLinejoin={"round"} strokeOpacity="0.5"></line>
-                <line x1={p1.x} y1={p1.y} x2={p2.x} y2={p2.y} strokeWidth={1} stroke={"#444444"} strokeLinejoin={"round"}></line>
-                <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
-                <circle cx={p2.x} cy={p2.y} r="3" fill={"#444444"}></circle>
-            </g>
-        )
-    }
 
     const renderPorts = (node) => {
 
@@ -77,7 +85,7 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
             console.log(type, index);
 
             if(activePort.type === 'output') {
-                const link = new Link({ startNode:activePort.node.id, startPort:activePort.index, endNode:endNode.id, endPort:index });
+                const link = new LinkModel({ startNode:activePort.node.id, startPort:activePort.index, endNode:endNode.id, endPort:index });
                 dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
             }
         }
@@ -115,7 +123,7 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
                 Object.values(state.nodes).map(node => node ? renderPorts(node) : null)
             }
             {
-                state.links.map(link => renderLink(link))
+                state.links.map(link => <Link link={link} onContextMenu={onContextMenu}></Link>)
             }
             {
                 state.mouseState === MouseStates.CREATE_LINK ? renderNewLine() : null

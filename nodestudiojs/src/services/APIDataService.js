@@ -1,6 +1,5 @@
 import { fetchAPI, FetchTypes } from "./FetchUtils";
 
-console.log(process.env);
 export const dataUrl = process.env.REACT_APP_API_URL || 'http://localhost:8000/api';
 
 const APIDataService = {
