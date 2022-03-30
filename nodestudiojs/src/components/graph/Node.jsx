@@ -8,6 +8,7 @@ import Select from '../base/Select';
 import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
 import MouseStates from '../../state/MouseStates';
+import MaskGenerator from '../Generators/MaskGenerator';
 
 /**
  * Component for node input ports
@@ -131,6 +132,10 @@ const NodeProps = ({id, type, options, argsDict}) => {
     <div className="node_props"> 
         {
             type === 'DISPLAY' || type === 'CDISPLAY' ? <ImageView nodeID={id}></ImageView> : null
+        }
+
+        {
+            type === 'MASK_GENERATOR' ? <MaskGenerator></MaskGenerator> : null
         }
 
         {

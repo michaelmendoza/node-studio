@@ -8,6 +8,7 @@ class NodeType(Enum):
     FILE = 'FILE'
     MOCK = 'MOCK'
     FILE_RAWDATA = 'FILE_RAWDATA'
+    MASK_GENERATOR = 'MASK_GENERATOR'
 
     # Computer Nodes
     ADD = 'ADD'
