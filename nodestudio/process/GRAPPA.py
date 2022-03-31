@@ -29,7 +29,7 @@ def GRAPPArecon(data, R = 2, width = 5, height = 4):
 
     ACS_index = np.nonzero(ACS_lut)
     ACS_length = np.size(ACS_index)
-    data  = GRAPPA(height, width, coil, R, ACS_length, phase,frequency)
+    data  = GRAPPA(height,width, coil, R, ACS_length, phase,frequency)
     inMatrix = np.zeros([data._num_train, data._kernelsize], dtype = complex)
     outMatrix = np.zeros([data._num_train, data._num_target], dtype = complex)
 
@@ -60,7 +60,8 @@ def GRAPPArecon(data, R = 2, width = 5, height = 4):
     mergeIndex = np.where(np.sum(np.abs(data_R[:,:,0]), axis=1)!=0)[0]
     imageK[mergeIndex, :, :] = data_R[mergeIndex, :, :]
     
-#     images  = np.zeros([phase, frequency, coil], dtype = complex)
-#     for i in range(coil):
-#             images[:,:,i] = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(imageK[:,:,i])))
-    return imageK
+    images  = np.zeros([phase, frequency, coil], dtype = complex)
+    for i in range(coil):
+            images[:,:,i] = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(imageK[:,:,i])))
+            
+    return images
