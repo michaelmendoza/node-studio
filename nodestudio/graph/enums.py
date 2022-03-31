@@ -16,6 +16,8 @@ class NodeType(Enum):
     FIT = 'FIT'
     SOS = 'SOS'
     T2_qDESS = 'T2_qDESS'
+    GRAPPA = 'GRAPPA'
+    UNDERSAMPLE = 'UNDERSAMPLE'
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -40,13 +42,15 @@ class NodeDetail(Enum):
     MULT = '''MULT detail'''
     MASK = '''MASK detail'''
     FIT = '''FIT detail'''
-    SOS = '''# Title
-    The equation
+    SOS = '''any string
     $$
-    SOS = a^2 + b^2 
+    SOS = a^2 + b^2
     $$
+    So it's still a bit buggy - only a certain combo is allowed hmmm...
     '''
     T2_qDESS = '''T2_qDESS detail'''
+    GRAPPA = '''GRAPPA detail'''
+    UNDERSAMPLE = '''UNDERSAMPLE detail'''
     
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
