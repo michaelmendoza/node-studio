@@ -3,18 +3,22 @@ import numpy as np
 # Processes data for use by display node. Automatically, detects dtype and complex data.
 def process_data(data):
 
+    # Reshape data into 3D if in 2d
+    if len(data.shape) == 2:
+        data = np.reshape(data,(1,data.shape[0],data.shape[1]))
+
     # Check if complex data
     if np.iscomplexobj(data):
-        output = process_complex_data(data)
-
+        data = process_complex_data(data,'mag')
+    
     # Check if integer data (uint16 - produced by dicoms)
-    if data.dtype == 'uint16':
-        output = process_uint16_data(data)
+    elif data.dtype == 'uint16':
+        data = process_uint16_data(data)
 
     else:
-        output = process_and_scale_data(data)
-    
-    return output
+        data = process_and_scale_data(data)
+        
+    return data
 
 def process_uint16_data(data):
     # Processes stats and histogram for unsigned integer data 

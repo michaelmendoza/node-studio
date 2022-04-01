@@ -1,14 +1,13 @@
 import numpy as np
 
 def undersample(data, type, undersampling_ratio, height= 5):
+    undersampling_ratio = int(undersampling_ratio)
     if(type=='GRAPPA'):
-        #------reshape data, HARD CODED------
-        data = np.reshape(data,(256,256,32))
-        #------reshape data, HARD CODED------
-
+        if(len(data.shape) == 4):
+            data = np.reshape(data, (data.shape[1],data.shape[2],data.shape[3]))
         [phase, frequency, coil] = data.shape
         mask = np.zeros([phase, frequency, coil])
-        ACS = 2 * undersampling_ratio*(height-1)  # assume the minimum
+        ACS = 2 * undersampling_ratio *(height-1)  # assume the minimum
         start = np.floor((phase - ACS)/2)
         end = start + ACS
         for i in range(phase):

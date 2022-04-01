@@ -15,6 +15,7 @@ class NodeType(Enum):
     MASK = 'MASK'
     FIT = 'FIT'
     SOS = 'SOS'
+    CSOS = 'CSOS'
     T2_qDESS = 'T2_qDESS'
     GRAPPA = 'GRAPPA'
     UNDERSAMPLE = 'UNDERSAMPLE'
@@ -48,6 +49,7 @@ class NodeDetail(Enum):
     $$
     So it's still a bit buggy - only a certain combo is allowed hmmm...
     '''
+    CSOS = '''CSOS detail'''
     T2_qDESS = '''T2_qDESS detail'''
     GRAPPA = '''GRAPPA detail'''
     UNDERSAMPLE = '''UNDERSAMPLE detail'''

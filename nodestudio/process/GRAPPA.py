@@ -19,9 +19,9 @@ class GRAPPA:
 
 def GRAPPArecon(data, R = 2, width = 5, height = 4):    
     data_R = data
-    [phase, frequency, coil] = data.shape
+    [phase, frequency, coil] = data_R.shape
     ACS_lut = np.arange(phase)*0
-    
+
     # check for ACS lines, for every iteration, check previous, current and next. 
     for i in range(1,phase-1):
         if np.all(data_R[i-1,:,0]!=0) and np.all(data_R[i,:,0]!=0) and np.all(data_R[i+1,:,0]!=0):
@@ -59,9 +59,9 @@ def GRAPPArecon(data, R = 2, width = 5, height = 4):
             imageK[fill_yidx, x, :] = np.matmul(kernel, w).reshape(1,R-1,coil,order= 'F')
     mergeIndex = np.where(np.sum(np.abs(data_R[:,:,0]), axis=1)!=0)[0]
     imageK[mergeIndex, :, :] = data_R[mergeIndex, :, :]
-    
+
     images  = np.zeros([phase, frequency, coil], dtype = complex)
     for i in range(coil):
             images[:,:,i] = np.fft.fftshift(np.fft.ifft2(np.fft.fftshift(imageK[:,:,i])))
-            
+
     return images
