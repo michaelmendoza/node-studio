@@ -26,11 +26,5 @@
   "bugs": {
     "url": "https://github.com/michaelmendoza/image-nodes/issues"
   },
-  "homepage": "https://github.com/michaelmendoza/image-nodes#readme",
-  "dependencies": {
-    "react-katex": "^2.0.2",
-    "react-markdown": "^8.0.1",
-    "rehype-katex": "^6.0.2",
-    "remark-math": "^5.1.1"
-  }
+  "homepage": "https://github.com/michaelmendoza/image-nodes#readme"
 }

@@ -1,6 +1,6 @@
 import numpy as np
 
-def undersample(type, data, undersampling_ratio, height= 5):
+def undersample(data, type, undersampling_ratio, height= 5):
     if(type=='GRAPPA'):
         #------reshape data, HARD CODED------
         data = np.reshape(data,(256,256,32))
