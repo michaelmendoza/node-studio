@@ -5,7 +5,7 @@ from process.display import process_data, process_complex_data
 from process.file.file import read_file, read_rawdata
 from process.fit import fit
 from process.mask import apply_mask
-from process.SOS import sum_of_squares, complex_sum_of_squares
+from process.SOS import sum_of_squares, complex_root_sum_of_squares
 from process.mock import mock_2d_data
 from process.T2_map import qDESS_T2
 from process.GRAPPA import GRAPPArecon
@@ -52,7 +52,7 @@ NodeInfo = {
     NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', description='Mask generator', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', description='Linear Fit', input=['a'], detail=NodeDetail.FIT, output=['out'], fn=fit),
     NodeType.SOS: NodeProps(type=NodeType.SOS, name='SOS', description='Sum of squares',input=['a','b'], detail=NodeDetail.SOS, output = ['out'], fn=sum_of_squares),
-    NodeType.CSOS: NodeProps(type=NodeType.CSOS, name='Complex SOS', description='Complex sum of squares',input=['a'], detail=NodeDetail.CSOS, output = ['out'], fn=complex_sum_of_squares),
+    NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
     NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
     NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA Reconstruction', description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['a'], output=['out'], fn=GRAPPArecon),
     NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA']},'undersampling_ratio'], fn=undersample), 
