@@ -10,10 +10,9 @@ Backend python server code located in nodestudio
 ##
 
 To run locally frontend: ( From project root directory )
-- Add third party packages
+- Setup nodejs third party packages (uses npm install)
 ```
-cd nodestudiojs 
-npm install
+npm run build
 ```
 - To run frontend react server
 ``` 
@@ -24,20 +23,30 @@ To run locally backend api server: ( From project root directory )
 
 - Setup conda enviroment 
 
-You have two options to either create a new conda environment and install each package with pip
-```
-conda create -n nodestudio python=3.8 
-conda activate nodestudio
-pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
-pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab 
-```
+You have two options: 
 
-or use the yml file for the environment configuration
+1. Create a new conda environment from scatch 
+> ```
+> conda create -n nodestudio python=3.8 
+> conda activate nodestudio
+> ```
+> Then install packages with pip using requirements file 
+> ```
+> pip install -r requirements.txt
+> ```
+> or by individual package
+> ```
+> pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
+> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab
+> ```
 
-```
-conda env create -f nodestudio/environment.yml
-conda activate nodestudio
-```
+2. Use the yml file to setup the conda environment with required packages
+
+> ```
+> conda env create -f nodestudio/environment.yml
+> conda activate nodestudio
+> ```
+
 - Run to API server
 ```
 npm run api

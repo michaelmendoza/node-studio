@@ -45,7 +45,7 @@ $node-canvas-bg-color: #e6e6e6;
     }
   
     .node_io {
-      padding: 10px;
+      padding: 0 10px;
       font-size: 12px;
   
       border-style: solid;
@@ -54,7 +54,7 @@ $node-canvas-bg-color: #e6e6e6;
     }
   
     .node_io-item {
-      margin-bottom: 6px;
+      padding: 10px 0;
   
       &:last-child {
           margin-bottom: 0px;
