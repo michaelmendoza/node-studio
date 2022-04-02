@@ -18,7 +18,9 @@ class NodeType(Enum):
     CRSOS = 'CRSOS'
     T2_qDESS = 'T2_qDESS'
     GRAPPA = 'GRAPPA'
+    SENSE = 'SENSE'
     UNDERSAMPLE = 'UNDERSAMPLE'
+    SENSITIVITY_MAP = 'SENSITIVITY_MAP'
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -52,7 +54,9 @@ class NodeDetail(Enum):
     CRSOS = '''CRSOS detail'''
     T2_qDESS = '''T2_qDESS detail'''
     GRAPPA = '''GRAPPA detail'''
+    SENSE = '''SENSE detail'''
     UNDERSAMPLE = '''UNDERSAMPLE detail'''
+    SENSITIVITY_MAP = '''SENSITIVITY_MAP detail'''
     
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
