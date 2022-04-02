@@ -11,11 +11,10 @@ import SideView, { SideViewPositions } from './components/layout/SideView';
 import BottomView from './components/layout/BottomView';
 import AppHeader from './components/layout/AppHeader';
 import SideNav from './components/SideNav';
-import Tabs from './components/shared/Tabs';
 import Console from './components/Console';
-import NodeInspector from './components/shared/NodeInspector';
 import NodeList from './models/NodeList';
 import Graph from './models/Graph';
+import SideInspector from './components/SideInspector';
 
 const AppComponents = () => {
     const {dispatch} = useContext(AppContext);
@@ -43,10 +42,7 @@ const AppComponents = () => {
                     <SideNav></SideNav>
                 </SideView>
                 <SideView position={SideViewPositions.RIGHT}>
-                    <Tabs tabnames={['Inspector', 'Info']}>
-                        <NodeInspector></NodeInspector>
-                        <div> Info </div>
-                    </Tabs>
+                    <SideInspector></SideInspector>
                 </SideView>
                 <BottomView>
                     <Console></Console>
