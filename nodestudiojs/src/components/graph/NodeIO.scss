@@ -1,0 +1,48 @@
+@import '../../styles/base/variables.scss';
+
+// Node Colors
+$grey-border-color: #B7B7B7;
+$node-color: #fefefe;
+$node-text-color: #222222;
+$node-header-color: #2196F3;
+$node-header-text-color: #ffffff;
+$node-canvas-bg-color: #e6e6e6;
+
+.node_io {
+    padding: 0 10px;
+    font-size: 12px;
+
+    border-style: solid;
+    border-bottom-color: $grey-border-color;
+    border-width: 0px 0px 1px 0px;
+  
+    .node_io-item {
+        padding: 10px 0;
+
+        &:last-child {
+            margin-bottom: 0px;
+        }
+    } 
+  
+    .node_io-point {
+        width: 12px;
+        height: 12px;
+        border-radius: 100px;
+        border-style: solid;
+        border-bottom-color: $grey-border-color;
+        border-width: 1px;
+    }
+  
+    .node_io-text {
+        margin-left: 6px;
+        margin-right: 6px;
+    }
+  
+    .node_output {
+        text-align: right;
+    }
+  
+    .node_input {
+        text-align: left;
+    }
+}
