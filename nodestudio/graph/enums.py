@@ -6,8 +6,8 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
-    MOCK = 'MOCK'
     FILE_RAWDATA = 'FILE_RAWDATA'
+    MOCK = 'MOCK'
     MASK_GENERATOR = 'MASK_GENERATOR'
 
     # Computer Nodes
@@ -38,8 +38,9 @@ class NodeDetail(Enum):
     Supports:
     - Dicoms
     '''
-    MOCK = '''MOCK detail'''
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
+    MOCK = '''MOCK detail'''
+    MASK_GENERATOR = 'MASK_GENERATOR detail'
 
     # Computer Nodes
     ADD = '''ADD detail'''

@@ -2,9 +2,9 @@
 import { useState } from 'react';
 import './Select.scss';
 
-const Select = ({options, onChange, placeholder='Select ...'}) => {
+const Select = ({options, value=undefined, onChange, placeholder='Select ...', className=''}) => {
     const [show, setShow] = useState(false);
-    const [value, setValue] = useState(undefined);
+    const [_value, setValue] = useState(value);
     const onBlur = () => { setTimeout(() => { setShow(false) }, 250)}
 
     const handleClick = () => {
@@ -18,8 +18,8 @@ const Select = ({options, onChange, placeholder='Select ...'}) => {
     }
 
     return (
-        <div className='select'>
-            <button className='select-button' onClick={handleClick} onBlur={onBlur}> { value ? value.label : placeholder } </button>
+        <div className={'select ' + className }>
+            <button className='select-button' onClick={handleClick} onBlur={onBlur}> { _value ? _value.label : placeholder } </button>
             {
                 show ? <div className='layout-column select-options'>
                     { options.map((option)=><button className='select-option' key={option.label} onClick={(e)=>handleOptionSelect(option)}>{option.label}</button>)}
