@@ -60,7 +60,7 @@ const Link = ({link, onContextMenu}) => {
     // Note: To figureout svg path: https://sean.brunnock.com/SVG/SVGPathGenerator/
 
     return (
-        <g key={link.id} className={'link-' + link.id} onClick={handleClick} onContextMenu={handleContextMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
+        <g className={'link-' + link.id} onClick={handleClick} onContextMenu={handleContextMenu} onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave}>
             <path d={`M${p1.x},${p1.y} C${(p2.x+p1.x)/2},${p1.y} ${(p2.x+p1.x)/2},${p2.y} ${p2.x},${p2.y}`} strokeWidth={4} stroke={line.stroke0} strokeLinejoin={"round"} strokeOpacity={line.opacity0} fillOpacity="0"/>
             <path d={`M${p1.x},${p1.y} C${(p2.x+p1.x)/2},${p1.y} ${(p2.x+p1.x)/2},${p2.y} ${p2.x},${p2.y}`} strokeWidth={2} stroke={line.stroke1} strokeLinejoin={"round"} strokeOpacity={line.opacity1} fillOpacity="0"/>
             <circle cx={p1.x} cy={p1.y} r="3" fill={"#444444"}></circle>
@@ -125,7 +125,7 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
                 Object.values(state.nodes).map(node => node ? renderPorts(node) : null)
             }
             {
-                state.links.map(link => <Link link={link} onContextMenu={onContextMenu}></Link>)
+                state.links.map(link => <Link key={link.id} link={link} onContextMenu={onContextMenu}></Link>)
             }
             {
                 state.mouseState === MouseStates.CREATE_LINK ? renderNewLine() : null

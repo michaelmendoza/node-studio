@@ -70,7 +70,9 @@ const NodePropsOptions = ({id, options, argsDict}) => {
     }
 
     const renderOptionInput = ({option, index}) => {
-        const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }))
+        const v = argsDict[option.name];
+        const value = v ? { label:v[0].toUpperCase() + v.substring(1), value:v } : undefined;
+        const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }));
 
         const handleOptionChange = (select) => {
             const node = { ...state.nodes[id] };
@@ -81,7 +83,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
         return (
             <div key={index}>
                 <label>{option.name.replace(/_/g," ")}</label>
-                <Select options={select} onChange={handleOptionChange}></Select>
+                <Select options={select} value={value} onChange={handleOptionChange}></Select>
             </div>
         )
     }
