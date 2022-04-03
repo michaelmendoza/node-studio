@@ -63,7 +63,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
 
         const handleTextChange = (e) => {
             const node = { ...state.nodes[id] };
-            node.argsDict.filepath = e.target.value;
+            node.argsDict[option] = e.target.value;
             dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
         }
 
