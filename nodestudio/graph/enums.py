@@ -6,8 +6,8 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
-    MOCK = 'MOCK'
     FILE_RAWDATA = 'FILE_RAWDATA'
+    MOCK = 'MOCK'
 
     # Computer Nodes
     ADD = 'ADD'
