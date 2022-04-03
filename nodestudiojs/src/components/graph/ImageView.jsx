@@ -89,7 +89,9 @@ const ImageView = ({nodeID}) => {
     return (
         <div className="image-view" onDoubleClick={handleShowModal}>
             <img src={imageData} alt='viewport'/>
+            <label>Slice</label>
             <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
+            <label>Colormap</label>
             <Select options={colmap_options} value={colormap} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
             <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal}></ImageViewModal>
