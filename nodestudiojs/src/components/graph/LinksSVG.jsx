@@ -16,9 +16,9 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
     const [fill, setFill] = useState('#FEFEFE');
     const [stroke, setStroke] = useState('#444444');
 
-    const handleMouseEnter = () => { setRadius(6); setStroke('#000000'); }
+    const handleMouseEnter = () => { setRadius(6); setFill('#FEFEFE'); setStroke('#000000'); }
 
-    const handleMouseLeave = () => { setRadius(5); setStroke('#444444'); }
+    const handleMouseLeave = () => { setRadius(5); setFill('#FEFEFE'); setStroke('#444444'); }
 
     return (
         <g className='port' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 

@@ -7,6 +7,9 @@ import Select from '../base/Select';
 import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
 
+/**
+ * Node Property Options
+ */
 const NodePropsOptions = ({id, options, argsDict}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
 
@@ -21,6 +24,7 @@ const NodePropsOptions = ({id, options, argsDict}) => {
                 dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
             }
         });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const renderTextInput = ({option, index}) =>  {

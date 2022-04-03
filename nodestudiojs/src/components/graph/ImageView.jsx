@@ -24,6 +24,7 @@ const ImageView = ({nodeID}) => {
 
     useEffect(() => {
         if (state.sessions[nodeID]) fetchData(slice.value, index, colormap.value);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [state.sessions])
 
     const fetchData = (slice, index, colormap) => {
