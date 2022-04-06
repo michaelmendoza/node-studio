@@ -10,6 +10,7 @@ import DefaultImg from '../../images/default_image_icon.png';
 import Select from '../base/Select';
 import Slider from '../base/Slider';
 import Modal from '../base/Modal';
+import Planes from '../base/components/Planes';
 
 const ImageView = ({nodeID}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
@@ -94,6 +95,7 @@ const ImageView = ({nodeID}) => {
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
             <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal}></ImageViewModal>
         </div>
+        
     )
 }
 
@@ -143,6 +145,7 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
             <div className='text-align-center'>
                 <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
+            <Planes></Planes>   
         </Modal>
     )
 }

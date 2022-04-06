@@ -75,4 +75,20 @@ $modal-color: #FEFEFE;
             margin: 0 0.5em;
         }
     }
+
+    .wrapper {
+        display: grid;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: 0.5fr 1fr;
+        gap: 50px;
+      }
+      
+      .box1 {
+        grid-column: 2;
+      }
+
+      .h2{
+    color : white;
+    }
+
 }

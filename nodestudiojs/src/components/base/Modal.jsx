@@ -1,5 +1,6 @@
 import './Modal.scss';
 import ReactDOM from 'react-dom';
+import Planes from './components/Planes';
 
 const Modal = ({children, title = 'Modal Header', open, onClose}) => {
 
@@ -14,8 +15,9 @@ const Modal = ({children, title = 'Modal Header', open, onClose}) => {
                     </div>
                     <div className='modal-content'> 
                         <div className='modal-children'>
-                            {children}      
-                        </div>      
+                            {children}     
+                        </div> 
+                           
                     </div>
                 </div>
             </div> : null}

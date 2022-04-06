@@ -1,0 +1,69 @@
+.viewer-3d {
+    position: relative;
+}
+
+
+.drag-handle-viewable-h-yellow {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    top: 0;
+    left:0;
+    background-color: #e7d52d;
+
+}
+
+.drag-handle-viewable-h-green {
+    position: absolute;
+    width: 100%;
+    height: 2px;
+    top: 0;
+    left:0;
+    background-color: #0f881f;
+
+}
+
+.drag-handle-dragable-h {
+    position: relative;
+    width: 100%;
+    top: -10px;
+    height: 2px;
+    background-color: #0000aa00;
+
+}
+
+
+.drag-handle-viewable-v-purple {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left:0;
+    background-color: #6d0368;
+
+}
+
+.drag-handle-viewable-v-green {
+    position: absolute;
+    width: 2px;
+    height: 100%;
+    top: 0;
+    left:0;
+    background-color: #0f881f;
+
+}
+
+.drag-handle-dragable-v {
+    position: relative;
+    width: 2px;
+    left: -10px;
+    height: 100%;
+    background-color: #0000aa00;
+
+}
+
+.viewer-continer {
+    width: 0px;
+    height: 0px;
+    background-color: #EEEEEE;
+}
