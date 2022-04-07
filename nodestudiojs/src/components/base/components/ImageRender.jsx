@@ -1,16 +1,19 @@
-import { useRef, useState } from 'react';
+import { useRef, useEffect,useContext, useState } from 'react';
 import APIDataService from '../../../services/APIDataService';
 import { DrawImg } from '../../../libraries/draw/Draw';
 import { decodeDataset } from '../../../libraries/signal/Dataset';
 import { throttle } from '../../../libraries/utils';
+import { ActionTypes } from '../../../state/AppReducers';
+import AppState from '../../../state/AppState';
+import DefaultImg from  '../../../images/default_image_icon.png';
+
 
 const ImageRender = ({slice,index,colormap,nodeID}) => {
-
     const {state, dispatch} = useContext(AppState.AppContext);
     const [imageData, setImageData] = useState(DefaultImg);
     // const [slice, setSlice] = useState('xy');
     const [sliceMax, setSliceMax] = useState(100);
-    // const [index, setIndex] = useState(0);
+    const [setIndex] = useState(0);
     const [shape, setShape] = useState([160, 640, 640]);
     //const [showModal, setShowModal] = useState(false);
     const [dataset, setDataset] = useState(null);
@@ -67,7 +70,6 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
 
     return (
         <img src={imageData} alt='viewport' ></img>
-
     )
 
 }

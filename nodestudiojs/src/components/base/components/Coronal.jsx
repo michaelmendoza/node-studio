@@ -1,6 +1,6 @@
 import { useRef, useState } from 'react';
 import './viewer3d.scss';
-import ImageRender from './imagerender';
+import ImageRender from './ImageRender';
 
 const Coronal = ({position, setPosition, picturesize,nodeID}) => {
   const viewerRef = useRef(null);
@@ -43,7 +43,7 @@ const Coronal = ({position, setPosition, picturesize,nodeID}) => {
   return (
 
     <div className='viewer-3d'>
-        <ImageRender slice={'xz'} index={position.y/picturesize.y} colormap={'bw'} nodeID={nodeID}></ImageRender>
+        
         <div className='viewer-continer' style={{ width : picturesize.x , height : picturesize.z }} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
           <div className='drag-handle-viewable-h-yellow' style={{ top:position.z, width: picturesize.x}} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
             <div className='drag-handle-dragable-h'></div>
@@ -51,6 +51,7 @@ const Coronal = ({position, setPosition, picturesize,nodeID}) => {
           <div className='drag-handle-viewable-v-purple' style={{ left:position.x }} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
             <div className='drag-handle-dragable-v'></div>
           </div>  
+          <ImageRender slice={'xz'} index={position.y/picturesize.y} colormap={'bw'} nodeID={nodeID}></ImageRender>
         </div>
       
     </div>
