@@ -20,7 +20,7 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
     //const [colormap,setColormap] = useState('bw');
     
     useEffect(() => {
-        if (state.sessions[nodeID]) fetchData(slice, index, colormap);
+        fetchData(slice, index, colormap);
     }, [state.sessions,slice,index,colormap])
     
     const fetchData = (slice, index, colormap) => {
@@ -30,18 +30,18 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
                 setShape(encodedData.fullshape);
                 updateSliceMax(slice);               
             }
-            if (slice='xz'){
-                var new_index = index*encodedData.fullshape[1];
-            }
             if (slice='xy'){
-                var new_index = index*encodedData.fullshape[2];
+                var new_index = Math.floor(index*encodedData.fullshape[0]);
+            }
+            if (slice='xz'){
+                var new_index = Math.floor(index*encodedData.fullshape[1]);
             }
             if (slice='yz'){
-                var new_index = index*encodedData.fullshape[0];
+                var new_index = Math.floor(index*encodedData.fullshape[2]);
             }
             const encodedData2 = await APIDataService.getNode(nodeID, slice, new_index);
             if(encodedData2) {
-                const dataset = decodeDataset(encodedData);
+                const dataset = decodeDataset(encodedData2);
                 const dataUri = DrawImg(dataset, colormap);
                 setDataset(dataset);
                 setImageData(dataUri);
@@ -69,7 +69,7 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
     }
 
     return (
-        <img src={imageData} alt='viewport' ></img>
+        <img src={imageData} alt='viewport' style = {{width : '100%', height : '100%'}}></img>
     )
 
 }

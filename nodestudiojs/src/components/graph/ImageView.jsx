@@ -93,13 +93,13 @@ const ImageView = ({nodeID}) => {
             <Select options={options} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Select options={colmap_options} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
-            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal}></ImageViewModal>
+            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal} nodeID={nodeID}></ImageViewModal>
         </div>
         
     )
 }
 
-const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
+const ImageViewModal = ({dataset, imageData, showModal, setShowModal,nodeID}) => {
 
     const imgRef = useRef(null);
     const [position, setPosition] = useState({ x:0, y:0 })
@@ -145,7 +145,7 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal}) => {
             <div className='text-align-center'>
                 <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
-            <Planes></Planes>   
+            <Planes nodeID={nodeID} dataset = {dataset}></Planes>   
         </Modal>
     )
 }

@@ -4,10 +4,10 @@ import Coronal from './Coronal';
 import Sagittal from './Sagittal';
 
 
-const Planes = () =>{
-    var pic_x = 300;
-    var pic_y = 200;
-    var pic_z = 200;
+const Planes = ({nodeID, dataset}) =>{
+    var pic_x = dataset.fullshape[2];
+    var pic_y = dataset.fullshape[1];
+    var pic_z = dataset.fullshape[0];
     var ratio = 1;
     var maxImgDim = 0;
     if (pic_x >= pic_y&&pic_x >= pic_z){
@@ -30,15 +30,15 @@ const Planes = () =>{
       <div className = 'wrapper'>
         <h2>Transverse</h2>
         <h2>Coronal</h2>
-        <h2 >Saggital</h2>
+        <h2>Saggital</h2>
         <div>
-          <Transverse position = {position} setPosition = {setPosition} picturesize = {picturesize}></Transverse> 
+          <Transverse position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Transverse> 
         </div>
         <div>
-          <Coronal position = {position} setPosition = {setPosition} picturesize = {picturesize} setPicsize = {setPicsize}></Coronal>
+          <Coronal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Coronal>
         </div>
         <div>
-          <Sagittal position = {position} setPosition = {setPosition} picturesize = {picturesize}></Sagittal>
+          <Sagittal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Sagittal>
         </div>
         <div className='box1'>
         ({(position.x/picturesize.x).toFixed(2)}, {(position.y/picturesize.y).toFixed(2)}, {(position.z/picturesize.z).toFixed(2)})
