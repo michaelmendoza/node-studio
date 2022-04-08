@@ -30,13 +30,13 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
                 setShape(encodedData.fullshape);
                 updateSliceMax(slice);               
             }
-            if (slice='xy'){
+            if (slice=='xy'){
                 var new_index = Math.floor(index*encodedData.fullshape[0]);
             }
-            if (slice='xz'){
+            if (slice=='xz'){
                 var new_index = Math.floor(index*encodedData.fullshape[1]);
             }
-            if (slice='yz'){
+            if (slice=='yz'){
                 var new_index = Math.floor(index*encodedData.fullshape[2]);
             }
             const encodedData2 = await APIDataService.getNode(nodeID, slice, new_index);

@@ -47,7 +47,7 @@ const Transverse = ({position, setPosition, picturesize,nodeID}) => {
     <div className='viewer-3d'>
 
         <div className='viewer-continer' style={{ width: picturesize.x, height: picturesize.y}} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-          <ImageRender slice={'yz'} index={position.z/picturesize.z} colormap={'bw'} nodeID={nodeID}></ImageRender>
+          <ImageRender slice={'xy'} index={position.z/picturesize.z} colormap={'bw'} nodeID={nodeID}></ImageRender>
           <div className='drag-handle-viewable-h-green' style={{ top:position.y, width: picturesize.x}} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
             <div className='drag-handle-dragable-h'></div>
           </div>  
