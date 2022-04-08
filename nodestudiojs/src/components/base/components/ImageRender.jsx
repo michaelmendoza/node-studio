@@ -1,6 +1,6 @@
 import { useRef, useEffect,useContext, useState } from 'react';
 import APIDataService from '../../../services/APIDataService';
-import { DrawImg } from '../../../libraries/draw/Draw';
+import { DrawImg,getImgPixelValue } from '../../../libraries/draw/Draw';
 import { decodeDataset } from '../../../libraries/signal/Dataset';
 import { throttle } from '../../../libraries/utils';
 import { ActionTypes } from '../../../state/AppReducers';
@@ -8,7 +8,7 @@ import AppState from '../../../state/AppState';
 import DefaultImg from  '../../../images/default_image_icon.png';
 
 
-const ImageRender = ({slice,index,colormap,nodeID}) => {
+const ImageRender = ({slice,index,colormap,nodeID,position,intensity, setIntensity}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const [imageData, setImageData] = useState(DefaultImg);
     // const [slice, setSlice] = useState('xy');
@@ -43,6 +43,11 @@ const ImageRender = ({slice,index,colormap,nodeID}) => {
             if(encodedData2) {
                 const dataset = decodeDataset(encodedData2);
                 const dataUri = DrawImg(dataset, colormap);
+                if(slice=='xz'){
+                    setIntensity(getImgPixelValue(dataset,Math.floor(position.x),Math.floor(position.z)));
+                }
+                
+                
                 setDataset(dataset);
                 setImageData(dataUri);
                 dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});

@@ -93,16 +93,16 @@ const ImageView = ({nodeID}) => {
             <Select options={options} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Select options={colmap_options} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
-            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal} nodeID={nodeID}></ImageViewModal>
+            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal} nodeID={nodeID} colMap = {colormap}></ImageViewModal>
         </div>
         
     )
 }
 
-const ImageViewModal = ({dataset, imageData, showModal, setShowModal,nodeID}) => {
-
+const ImageViewModal = ({dataset, imageData, showModal, setShowModal, nodeID, colMap}) => {
+    const [intensity, setIntensity] = useState(0)
     const imgRef = useRef(null);
-    const [position, setPosition] = useState({ x:0, y:0 })
+    const [position, setPosition] = useState({ x:0, y:0})
     const [styles, setStyles] = useState({});
 
     useEffect(() => {
@@ -145,7 +145,10 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal,nodeID}) =>
             <div className='text-align-center'>
                 <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
-            <Planes nodeID={nodeID} dataset = {dataset}></Planes>   
+            <Planes nodeID={nodeID} dataset = {dataset} colMap = {colMap} intensity={intensity} setIntensity={setIntensity}></Planes>   
+            <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
+                <div> value: { intensity } </div>
+            </div>
         </Modal>
     )
 }

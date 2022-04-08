@@ -4,10 +4,18 @@ import Coronal from './Coronal';
 import Sagittal from './Sagittal';
 
 
-const Planes = ({nodeID, dataset}) =>{
-    var pic_x = dataset.fullshape[2];
-    var pic_y = dataset.fullshape[1];
-    var pic_z = dataset.fullshape[0];
+const Planes = ({nodeID, dataset, colMap, intensity, setIntensity}) =>{
+  
+    var pic_x = 200;
+    var pic_y = 200;
+    var pic_z = 200;
+
+    if(dataset!=null){
+      pic_x = dataset.fullshape[2];
+      pic_y = dataset.fullshape[1];
+      pic_z = dataset.fullshape[0];
+    }
+
     var ratio = 1;
     var maxImgDim = 0;
     if (pic_x >= pic_y&&pic_x >= pic_z){
@@ -32,13 +40,13 @@ const Planes = ({nodeID, dataset}) =>{
         <h2>Coronal</h2>
         <h2>Saggital</h2>
         <div>
-          <Transverse position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Transverse> 
+          <Transverse position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}></Transverse> 
         </div>
         <div>
-          <Coronal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Coronal>
+          <Coronal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity}></Coronal>
         </div>
         <div>
-          <Sagittal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID}></Sagittal>
+          <Sagittal position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} ></Sagittal>
         </div>
         <div className='box1'>
         ({(position.x/picturesize.x).toFixed(2)}, {(position.y/picturesize.y).toFixed(2)}, {(position.z/picturesize.z).toFixed(2)})

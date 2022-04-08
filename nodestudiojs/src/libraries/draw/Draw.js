@@ -68,7 +68,9 @@ export const DrawImg = (data, colormap) => {
 export const getImgPixelValue = (data, x, y) => {
     const height = data.shape[0];
     const width = data.shape[1];
+    
     if (x < 0 || x > width) return null;
     if (y < 0 || y > height) return null;
+
     return data.pixelArray[ y * width + x ];
 }
