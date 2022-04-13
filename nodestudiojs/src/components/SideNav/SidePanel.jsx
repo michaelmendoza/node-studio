@@ -113,7 +113,9 @@ const PanelRun = () => {
     const handleRunGraph = async () => {
         const nodesToRun = []
         Object.values(state.nodes).forEach(node => {
-            if (node.type === 'DISPLAY' || node.type === 'CDISPLAY') {
+
+            const found = node.props.tags.find((x) => x === 'input' || x === 'generator');
+            if (found) {
                 nodesToRun.push(node);
             }
         });

@@ -53,6 +53,13 @@ async def get_node(node_id: str, slice: str, index: int):
     data = controllers.get_node_data(node_id, slice, index)
     return { 'message': 'Retrieved node data', 'data': data }
 
+@router.get("/node_metadata")
+@handle_exception
+async def get_node_metadata(node_id: str):
+    ''' Gets node metadata for given node_id '''
+    data = controllers.get_node_metadata(node_id)
+    return { 'message': 'Retrieved node data', 'data': data }
+
 @router.post("/node/add")
 @handle_exception
 async def add_node(data: NodeData):

@@ -1,11 +1,30 @@
 .mask-generator-view {
+
+    min-width: 600px;
+
     img {
         user-select: none;
         image-rendering: pixelated;
     }
 
     .position-output {
+        min-width: 100px;
         color: #E0E0E066;
-        margin-bottom: 1em;
+        margin: 1em 0;
+        text-align: right;
+    }
+
+    .button-icon {
+        color: darken(#FEFEFE, 10%);
+        padding: 1em;
+
+        &:hover, &:focus, &:active {
+            color: lighten(#FEFEFE, 10%);
+            background-color: lighten(#282c34, 10%);
+        }
+
+        i {
+            font-size: 2em;
+        }
     }
 }

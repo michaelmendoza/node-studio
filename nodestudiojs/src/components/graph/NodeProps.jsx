@@ -11,7 +11,7 @@ import MaskGenerator from '../Generators/MaskGenerator';
 /**
  * Node Property Options
  */
-const NodePropsOptions = ({id, options, argsDict}) => {
+const NodePropsOptions = ({id, options, args}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
 
     useEffect(() => {
@@ -19,9 +19,9 @@ const NodePropsOptions = ({id, options, argsDict}) => {
         options.forEach((option, index) => {
             const hasFlag = option.flag;
             if(hasFlag) {
-                const checked = option.name in argsDict ? argsDict[option.name] : option.flag;
-                const node = { ...state.nodes[id] };
-                node.argsDict[option.name] = checked;
+                const checked = option.name in args ? args[option.name] : option.flag;
+                const node = state.nodes[id].copy();
+                node.args[option.name] = checked;
                 dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
             }
         });
@@ -29,11 +29,11 @@ const NodePropsOptions = ({id, options, argsDict}) => {
     }, [])
 
     const renderTextInput = ({option, index}) =>  {
-        const value = argsDict[option];
+        const value = args[option];
 
         const handleTextChange = (e) => {
-            const node = { ...state.nodes[id] };
-            node.argsDict[option] = e.target.value;
+            const node = state.nodes[id].copy();
+            node.args[option] = e.target.value;
             dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
         }
 
@@ -41,13 +41,13 @@ const NodePropsOptions = ({id, options, argsDict}) => {
     }
 
     const renderOptionInput = ({option, index}) => {
-        const v = argsDict[option.name];
+        const v = args[option.name];
         const value = v ? { label:v[0].toUpperCase() + v.substring(1), value:v } : undefined;
         const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }));
 
         const handleOptionChange = (select) => {
-            const node = { ...state.nodes[id] };
-            node.argsDict[option.name] = select.value;
+            const node = state.nodes[id].copy();
+            node.args[option.name] = select.value;
             dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
         }
 
@@ -61,11 +61,11 @@ const NodePropsOptions = ({id, options, argsDict}) => {
 
     const renderBooleanInput = ({option, index}) => {
         const defaultValue = option.flag;
-        const checked = option.name in argsDict ? argsDict[option.name] : defaultValue;
+        const checked = option.name in args ? args[option.name] : defaultValue;
 
         const handleChange = (e) => {
-            const node = { ...state.nodes[id] };
-            node.argsDict[option.name] = option.name in argsDict ? !argsDict[option.name] : true;
+            const node = state.nodes[id].copy();
+            node.args[option.name] = option.name in args ? !args[option.name] : true;
             dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
         }
 
@@ -99,20 +99,20 @@ const NodePropsOptions = ({id, options, argsDict}) => {
 /**
  * Node Property Options
  */
-const NodeProps = ({id, type, options, argsDict}) => {
+const NodeProps = ({node}) => {
 
     return (
     <div className="node_props"> 
         {
-            type === 'DISPLAY' || type === 'CDISPLAY' ? <ImageView nodeID={id}></ImageView> : null
+            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView nodeID={node.id}></ImageView> : null
         }
 
         {
-            type === 'MASK_GENERATOR' ? <MaskGenerator></MaskGenerator> : null
+            node.type === 'MASK_GENERATOR' ? <MaskGenerator nodeID={node.id}></MaskGenerator> : null
         }
 
         {
-            <NodePropsOptions id={id} options={options} argsDict={argsDict}></NodePropsOptions>
+            <NodePropsOptions id={node.id} options={node.options} args={node.args}></NodePropsOptions>
         }
     </div>
     )

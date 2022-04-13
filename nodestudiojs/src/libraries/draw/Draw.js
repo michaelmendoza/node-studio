@@ -1,12 +1,12 @@
 function getColor(vin,colormap){
     const color = [];
 
-    if(colormap == 'bw'){
+    if(colormap === 'bw'){
         for(let i = 0; i < 3; i++){
             color[i] = vin * 255;
         }
     }
-    else if(colormap == 'jet'){
+    else if(colormap === 'jet'){
         if(vin < 0.25){
             color[0] = 0;
             color[1] = 4 * vin * 255;

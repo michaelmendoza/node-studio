@@ -51,6 +51,18 @@ def get_node_data(node_id, slice, index):
 
     return output
 
+def get_node_metadata(node_id):
+    node = current_graph.getNode(node_id)
+
+    if 'data' not in node.value:
+        return {}
+    
+    output = {  
+        'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
+        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'],
+    }   
+    return output
+
 def add_node(data):
     node = Node.load(data.dict())
     return node.dict()
