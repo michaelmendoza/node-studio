@@ -1,17 +1,27 @@
+import time
 import graph
 
 class Session:
 
-    def run(operation):
+    def run(operations):
         ''' Run a compute session for an input operation '''
         print('Run Sesson')
 
-        order = Session.compute_order(operation)
-        for node in order:
-            node.compute()
+        start = time.time()
+
+        computed = []
+        for operation in operations:
+            node = graph.current_graph.getNode(operation)
+            order = Session.compute_order(node)
+            for node in order:
+                if node.id not in computed:
+                    node.compute()
+                    computed.append(node.id)
+
+        process_time = (time.time() - start) * 1000     # Processed time in ms
 
         print('Sesson Complete')
-        return operation.value
+        return { 'time': round(time.time() * 1000), 'process_time': process_time, 'nodes_computed': [ node for node in computed ] }
 
     def compute_order(start_node):
         ''' Compute traversal order for nodes for a given node '''

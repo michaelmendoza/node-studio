@@ -87,7 +87,6 @@ def delete_link(link_id):
     link = current_graph.getLink(link_id)
     current_graph.removeLink(link)
 
-def run_session(node_id):
-    node : Node = current_graph.getNode(node_id)
-    Session.run(node)
-    return node.value
+def run_session(node_ids):
+    session_metadata = Session.run(node_ids)
+    return session_metadata

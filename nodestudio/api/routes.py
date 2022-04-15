@@ -1,4 +1,5 @@
 import traceback
+from typing import List
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
@@ -11,7 +12,7 @@ def handle_exception(func):
             data = await func(*args, **kwargs)
         except Exception as e:
             error_message = str(traceback.format_exc())
-            print(traceback.format_exc())
+            print(error_message)
             raise HTTPException(status_code=500, detail = {'message':"Error", 'error':error_message} )
         else:
             return data
@@ -99,7 +100,7 @@ async def remove_link(data: ID_Data):
 
 @router.post("/session")
 @handle_exception
-async def run_session(data: ID_Data):
+async def run_session(data: List[str]):
     ''' Adds node to graph '''
-    data = controllers.run_session(data.id)
-    return { 'message': 'Completed sesson', 'data': { 'shape': data['data'].shape, 'dtype': str(data['data'].dtype), 'size': data['data'].size } }
+    data = controllers.run_session(data)
+    return { 'message': 'Completed sesson', 'data': data }
