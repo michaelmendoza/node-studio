@@ -114,7 +114,7 @@ const PanelRun = () => {
         const nodesToRun = []
         Object.values(state.nodes).forEach(node => {
 
-            const found = node.props.tags.find((x) => x === 'input' || x === 'generator');
+            const found = node.props.tags.find((x) => x === 'output' || x === 'generator');
             if (found) {
                 nodesToRun.push(node);
             }

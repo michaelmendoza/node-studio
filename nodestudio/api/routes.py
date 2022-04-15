@@ -1,3 +1,4 @@
+import traceback
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
@@ -9,8 +10,9 @@ def handle_exception(func):
         try:
             data = await func(*args, **kwargs)
         except Exception as e:
-            print('Error:', e)
-            raise HTTPException(status_code=500, detail = {'message':"Error", 'error':str(e)} )
+            error_message = str(traceback.format_exc())
+            print(traceback.format_exc())
+            raise HTTPException(status_code=500, detail = {'message':"Error", 'error':error_message} )
         else:
             return data
 
