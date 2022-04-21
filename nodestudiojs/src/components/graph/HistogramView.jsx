@@ -16,7 +16,7 @@ const HistogramView = ({nodeID}) => {
     const fetchData = async () => {
         const metadata = await APIDataService.getNodeMetadata(nodeID);
         console.log(metadata);
-        setData(metadata);
+        if(metadata) setData(metadata);
     }
 
     return (

@@ -72,7 +72,7 @@ const Link = ({link, onContextMenu}) => {
 const NewLink = ({activePort, position}) => {
     const p1 = activePort.type === 'output' ? { x: activePort.node.position.x + startOffset.x, y: activePort.node.position.y + startOffset.y + activePort.index * dyOffset } :
                                         { x: activePort.node.position.x + endOffset.x, y: activePort.node.position.y + endOffset.y + activePort.index * dyOffset }
-    const p2 = { x: position.x, y: position.y }
+    const p2 = { x: position.x - 4, y: position.y }
     const line = { stroke0:'#222222', stroke1:'#FEFEFE', opacity0:'0.4', opacity1:'1.0' };
 
     return (
@@ -123,13 +123,13 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
         <div className='links-svg'>
             <svg height={height} width={width}>
             {
+                state.mouseState === MouseStates.CREATE_LINK ? <NewLink activePort={activePort} position={position}></NewLink> : null
+            }
+            {
                 Object.values(state.nodes).map(node => node ? renderPorts(node) : null)
             }
             {
                 state.links.map(link => <Link key={link.id} link={link} onContextMenu={onContextMenu}></Link>)
-            }
-            {
-                state.mouseState === MouseStates.CREATE_LINK ? <NewLink activePort={activePort} position={position}></NewLink> : null
             }
             </svg>
         </div>
