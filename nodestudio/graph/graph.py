@@ -2,6 +2,7 @@ import json
 import jsonpickle
 from graph.node import Node
 from graph.link import Link
+from graph.nodes import NodeInfo
 
 class Graph:
     ''' Represents a computation graph '''
@@ -27,7 +28,9 @@ class Graph:
         return nodes
 
     def getNode(self, nodeid):
-        return self.node_dict[nodeid]
+        node = self.node_dict[nodeid]
+        node.props = NodeInfo[node.props.type] # Replace with NodeInfo (enforces backend node structure)
+        return node
 
     def addNode(self, node):
         ''' Adds node to graph '''

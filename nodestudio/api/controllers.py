@@ -46,7 +46,7 @@ def get_node_data(node_id, slice, index):
 
     output = { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size,
         'slice': slice, 'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
-        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'],
+        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'], 'histogram': node.value['histogram']
     }
 
     return output
@@ -59,7 +59,7 @@ def get_node_metadata(node_id):
     
     output = {  
         'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
-        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'],
+        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'], 'histogram': node.value['histogram']
     }   
     return output
 

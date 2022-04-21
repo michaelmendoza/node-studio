@@ -7,6 +7,7 @@ import Select from '../base/Select';
 import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
 import MaskGenerator from '../Generators/MaskGenerator';
+import HistogramView from './HistogramView';
 
 /**
  * Node Property Options
@@ -109,6 +110,10 @@ const NodeProps = ({node}) => {
 
         {
             node.type === 'MASK_GENERATOR' ? <MaskGenerator nodeID={node.id}></MaskGenerator> : null
+        }
+
+        {
+            node.type === 'HISTOGRAM' ? <HistogramView nodeID={node.id}></HistogramView> : null
         }
 
         {

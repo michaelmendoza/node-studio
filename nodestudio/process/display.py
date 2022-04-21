@@ -29,7 +29,7 @@ def process_uint16_data(data):
     std = np.nanstd(data)
 
     resolution = 4096
-    histogram = np.histogram(data, 128)
+    histogram = generate_histogram(data)
 
     return { 'data':data, 'isScaled': False,'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
@@ -46,7 +46,7 @@ def process_and_scale_data(data):
     output = (output - min) * resolution / (max - min)
     output[np.isnan(output)] = 8192 #replace nans
     output = np.floor(output).astype('uint16')
-    histogram = np.histogram(output[output !=8192], 128) #exclude values assigned to exceptions
+    histogram = generate_histogram(output[output !=8192])
 
     return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
@@ -66,4 +66,8 @@ def process_complex_data(data, datatype = 'mag'):
     
     return process_and_scale_data(mdata)
 
-
+def generate_histogram(data, bins = 16):
+    histogram = np.histogram(data, bins) 
+    histogram = [histogram[0].tolist(), histogram[1].tolist()]
+    histogram = [{ 'y': histogram[0][x], 'x0': histogram[1][x], 'x1': histogram[1][x+1] } for x in range(len(histogram[0]))]
+    return histogram
