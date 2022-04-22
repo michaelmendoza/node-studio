@@ -60,7 +60,7 @@ const ItemCategoryList = ({filteredItems, itemType, callback}) => {
     return (
         <div>
             {
-                itemsByTag.tags.map((tag) => <ItemCategoryGroup tag={tag} itemsByTag={itemsByTag} itemType={itemType} callback={callback}></ItemCategoryGroup>) 
+                itemsByTag.tags.map((tag) => <ItemCategoryGroup key={tag} tag={tag} itemsByTag={itemsByTag} itemType={itemType} callback={callback}></ItemCategoryGroup>) 
             }
         </div>
     );
