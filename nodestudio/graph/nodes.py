@@ -3,7 +3,7 @@ from typing import Dict, List, Callable, Optional, Union, Any
 # from matplotlib.pyplot import get
 from pydantic import BaseModel
 from graph.enums import NodeType, NodeDetail
-from process.display import process_data, process_complex_data
+from process.display import process_data, process_complex_data, process_2channel_data
 from process.file.file import read_file, read_rawdata
 from process.fit import fit
 from process.mask import apply_mask, apply_threshold_mask
@@ -58,7 +58,6 @@ NodeInfo = {
     # Compute Nodes
     NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', tags=['compute'], description='Adder', detail=NodeDetail.ADD, input=['a','b'], output=['out'], fn=lambda a, b: a + b),
     NodeType.MULT: NodeProps(type=NodeType.MULT, name='Mult', tags=['compute'], description='Multiplier', detail=NodeDetail.MULT, input=['a','b'], output=['out'], fn=lambda a, b: a * b),
-    NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['compute'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
     NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', tags=['compute'], description='Linear Fit', input=['a'], detail=NodeDetail.FIT, output=['out'], fn=fit),
     NodeType.SOS: NodeProps(type=NodeType.SOS, name='SOS', tags=['compute'], description='Sum of squares',input=['a','b'], detail=NodeDetail.SOS, output = ['out'], fn=sum_of_squares),
     NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
@@ -71,6 +70,6 @@ NodeInfo = {
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
     NodeType.CDISPLAY: NodeProps(type=NodeType.CDISPLAY, name='Display (Complex)', tags=['output'], description='Displays complex data as an image', detail=NodeDetail.CDISPLAY, input=['In'], options=[{'name':'datatype', 'select':['mag','phase','real','imag']}], fn=process_complex_data),
-    NodeType.LAYER_DISPLAY: NodeProps(type=NodeType.LAYER_DISPLAY, name='Layer Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.LAYER_DISPLAY, input=['In'], fn=process_data),
+    NodeType.LAYER_DISPLAY: NodeProps(type=NodeType.LAYER_DISPLAY, name='Layer Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.LAYER_DISPLAY, input=['Layer 1', 'Layer 2'], fn=process_2channel_data),
     NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_data),
 }

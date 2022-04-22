@@ -20,7 +20,8 @@ const ItemExplorer = ({itemType, items = [], callback}) => {
         return items.filter((item) => item.name.toUpperCase().indexOf(search) > -1);
     }
 
-    const filteredItems = filterBySearch(items, search)
+    const filteredItems = filterBySearch(items, search);
+
     return (<div className='item-explorer'>
         { 
             <div>
@@ -29,11 +30,54 @@ const ItemExplorer = ({itemType, items = [], callback}) => {
                 </div>
                 <div className='items-list'>
                     {
-                        filteredItems.map((item) => <ItemView key={item.name} type={itemType} item={item} callback={callback}></ItemView>)
+                        itemType === 'plugins' ? <ItemCategoryList filteredItems={filteredItems} itemType={itemType} callback={callback}></ItemCategoryList> : null
+                    }
+                    {
+                        itemType !== 'plugins' ? filteredItems.map((item) => <ItemView key={item.name} type={itemType} item={item} callback={callback}></ItemView>) : null
                     }
                 </div>
             </div>
         }
+        </div>
+    )
+}
+
+const ItemCategoryList = ({filteredItems, itemType, callback}) => {
+
+    const categorizeItems = () => {
+        const tags = Object.keys(filteredItems.reduce((p, c) => { 
+            c.tags.forEach((tag) => p[tag] = tag)
+            return p }, 
+        {}));
+        const itemsByTag = {};
+        tags.forEach((tag) => itemsByTag[tag] = []);
+        filteredItems.forEach((item) => itemsByTag[item.tags[0]].push(item));
+        return { items:itemsByTag, tags };
+    }
+
+    const itemsByTag = categorizeItems();
+
+    return (
+        <div>
+            {
+                itemsByTag.tags.map((tag) => <ItemCategoryGroup tag={tag} itemsByTag={itemsByTag} itemType={itemType} callback={callback}></ItemCategoryGroup>) 
+            }
+        </div>
+    );
+}
+
+const ItemCategoryGroup = ({tag, itemsByTag, itemType, callback}) => {
+    const [show, setShow] = useState(false);
+
+    return (
+        <div>
+            <div className='plugin-tag-label layout-row-center layout-space-between' onClick={() => setShow(!show)}>
+                <label>{tag}</label> 
+                    <i className='material-icons'> { show ? 'arrow_drop_up' : 'arrow_drop_down'}</i> 
+            </div>
+            {
+                show ? itemsByTag.items[tag].map((item) => <ItemView key={item.name} type={itemType} item={item} callback={callback}></ItemView>) : null
+            }
         </div>
     )
 }

@@ -20,6 +20,10 @@ def process_data(data):
         
     return data
 
+def process_2channel_data(data0, data1):
+    # Process data with 2 data channels
+    return [process_data(data0), process_data(data1)]
+
 def process_uint16_data(data):
     # Processes stats and histogram for unsigned integer data 
     
