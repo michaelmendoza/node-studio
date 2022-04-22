@@ -2,7 +2,12 @@
 
 .side-nav {
     position: relative;
-    margin-top: 1em;
+    padding-top: 1em;
+    height: 100%;
+
+    .side-nav-container {
+        height: 100%;
+    }
 
     .nav-item {
         margin: 0.5em;

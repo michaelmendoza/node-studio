@@ -32,10 +32,14 @@ const SideNav = () => {
         <div className='side-nav'>
             <SidePanel activeNav={activeNav}></SidePanel>
             
-            <div className='layout-column'>
-                {
-                    NavItemList.map((item) => <NavItem key={item.name} item={item} onClick={handleClickNav}></NavItem>)
-                }
+            <div className='side-nav-container layout-column layout-space-between'>
+                <div>
+                    {
+                        NavItemList.map((item) => <NavItem key={item.name} item={item} onClick={handleClickNav}></NavItem>)
+                    }
+                </div>
+                <div className='flex'></div>
+                <ResetNavItem></ResetNavItem>
             </div>
         </div>
     )
@@ -46,6 +50,21 @@ const NavItem = ({item, onClick}) => {
         <div key={item.name} className='nav-item' onClick={(e) => onClick(e, item)}> 
             <i className="material-icons">{item.icon}</i> 
             <label> {item.name} </label> 
+        </div>
+    )
+}
+
+const ResetNavItem = () => {
+    const {dispatch} = useContext(AppState.AppContext);
+
+    const handleClick = () => {
+        dispatch({ type: ActionTypes.RESET_GRAPH, updateAPI:true })
+    }
+
+    return (
+        <div className='nav-item' onClick={handleClick}>
+            <div> <i className='material-icons'>refresh</i></div>
+            <label> reset </label> 
         </div>
     )
 }
