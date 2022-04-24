@@ -35,7 +35,7 @@ def process_uint16_data(data):
     resolution = 4096
     histogram = generate_histogram(data)
 
-    return { 'data':data, 'isScaled': False,'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    return { 'data':data, 'dtype': str(data.dtype), 'fullshape': data.shape, 'isScaled': False,'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_and_scale_data(data):
     # Processes stats and scales data to fit data into a uint16
@@ -52,7 +52,7 @@ def process_and_scale_data(data):
     output = np.floor(output).astype('uint16')
     histogram = generate_histogram(output[output !=8192])
 
-    return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    return { 'data': output, 'dtype': str(data.dtype), 'fullshape': data.shape, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_complex_data(data, datatype = 'mag'):
     # Process complex128 numpy data 

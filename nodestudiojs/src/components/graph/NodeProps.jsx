@@ -8,6 +8,7 @@ import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
 import MaskGenerator from '../Generators/MaskGenerator';
 import HistogramView from './HistogramView';
+import ImageLayerView from './ImageLayerView';
 
 /**
  * Node Property Options
@@ -106,6 +107,10 @@ const NodeProps = ({node}) => {
     <div className="node_props"> 
         {
             node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView nodeID={node.id}></ImageView> : null
+        }
+
+        {
+            node.type === 'LAYER_DISPLAY' ? <ImageLayerView nodeID={node.id}></ImageLayerView> : null
         }
 
         {

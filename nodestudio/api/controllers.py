@@ -27,40 +27,54 @@ def reset_graph():
 def get_node_data(node_id, slice, index):
     node = current_graph.getNode(node_id)
 
-    if 'data' not in node.value:
-        return ''
+    if isinstance(node.value, list):
+        output = []
+        for datum in node.value:
+            output.append(process_and_encode_dataslice(datum, slice, index))
+    else:
+        output = process_and_encode_dataslice(node.value, slice, index)
+    return output
+
+def process_and_encode_dataslice(data, slice, index):
+    if 'data' not in data:
+        return {}
 
     if slice == 'xy':
-        value = node.value['data'][index,:,:]
-        value = np.ascontiguousarray(value)
+        value = data['data'][index,:,:]
     elif slice == 'xz':
-        value = node.value['data'][:,index,:]
-        value = np.ascontiguousarray(value)
+        value = data['data'][:,index,:]
     elif slice == 'yz':
-        value = node.value['data'][:,:,index]
-        value = np.ascontiguousarray(value)
+        value = data['data'][:,:,index]
     else:
-        value = node.value['data']
+        value = data['data']
     
+    value = np.ascontiguousarray(value)
     encodedData = base64.b64encode(value)
-
-    output = { 'encoded': encodedData, 'shape': value.shape, 'dtype': str(value.dtype), 'size': value.size,
-        'slice': slice, 'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
-        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'], 'histogram': node.value['histogram']
-    }
-
+    
+    output = data.copy()
+    del output["data"]
+    output['encoded'] = encodedData
+    output['shape'] = value.shape
+    output['slice'] = slice
     return output
 
 def get_node_metadata(node_id):
     node = current_graph.getNode(node_id)
+    
+    if isinstance(node.value, list):
+        output = []
+        for datum in node.value:
+            output.append(process_metadata(datum))
+    else:
+        output = process_metadata(node.value)
+    return output
 
-    if 'data' not in node.value:
+def process_metadata(data):
+    if 'data' not in data:
         return {}
     
-    output = {  
-        'fullshape': node.value['data'].shape, 'resolution': node.value['resolution'], 'isScaled': node.value['isScaled'],
-        'min': node.value['min'], 'max': node.value['max'], 'mean': node.value['mean'], 'std': node.value['std'], 'histogram': node.value['histogram']
-    }   
+    output = data.copy()
+    del output["data"]
     return output
 
 def add_node(data):

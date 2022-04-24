@@ -99,7 +99,7 @@ const ProjectItemView = ({item, callback}) => {
 
     const { dispatch } = useContext(AppState.AppContext);
     
-    const handleClick =  async () => {    
+    const handleClick =  async () => { 
         dispatch({ type:ActionTypes.LOAD_GRAPH, graph:item, updateAPI: true });
         dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
     }

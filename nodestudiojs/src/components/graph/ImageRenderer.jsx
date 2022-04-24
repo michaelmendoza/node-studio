@@ -1,6 +1,6 @@
 import { useEffect,useContext, useState } from 'react';
 import APIDataService from '../../services/APIDataService';
-import { DrawImg } from '../../libraries/draw/Draw';
+import { DrawImg, DrawLayers } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import { throttle } from '../../libraries/utils';
 import { ActionTypes } from '../../state/AppReducers';
@@ -14,11 +14,12 @@ const ImageRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex
     useEffect(() => {
         fetchData(slice, index, colormap);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sessions, slice, index, colormap]);
+    }, [state.sessions, slice, index]);
     
     const fetchData = (slice, index, colormap) => {
         throttle(async () => {
-            const metadata = await APIDataService.getNodeMetadata(nodeID);
+            let metadata = await APIDataService.getNodeMetadata(nodeID);
+            if(Array.isArray(metadata)) metadata = metadata[0];
             const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice];
 
             // Select index and enforce valid indices 
@@ -32,8 +33,19 @@ const ImageRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex
                 index = index > metadata.fullshape[shapeIndex] ? metadata.fullshape[shapeIndex] : index
             }
 
-            const encodedData = await APIDataService.getNode(nodeID, slice, index);
-            if(encodedData) {
+            let encodedData = await APIDataService.getNode(nodeID, slice, index);
+            if(!encodedData) return;
+
+            if(Array.isArray(encodedData)) {
+                const layers = encodedData.map((datum, i) => ({
+                   data:decodeDataset(datum), colormap: i === 0 ? 'bw' : 'jet', threshold: i === 0 ? undefined : 0, opacity: i === 0 ? 1 : 0.9 
+                }))
+                const dataUri = DrawLayers(layers, layers[0].data.shape[1], layers[0].data.shape[0]);              
+            
+                setImageData(dataUri);
+                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
+            }
+            else {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset, colormap);                
             
