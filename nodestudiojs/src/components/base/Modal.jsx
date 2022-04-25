@@ -1,6 +1,5 @@
 import './Modal.scss';
 import ReactDOM from 'react-dom';
-import Planes from './components/Planes';
 
 const Modal = ({children, title = 'Modal Header', open, onClose}) => {
 

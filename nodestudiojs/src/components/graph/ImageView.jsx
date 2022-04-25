@@ -10,7 +10,7 @@ import DefaultImg from '../../images/default_image_icon.png';
 import Select from '../base/Select';
 import Slider from '../base/Slider';
 import Modal from '../base/Modal';
-import Planes from '../base/components/Planes';
+import Image3dViewer from './Image3dViewer';
 
 const ImageView = ({nodeID}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
@@ -148,7 +148,7 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal, nodeID, co
             <div className='text-align-center'>
                 <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
-            <Planes nodeID={nodeID} dataset = {dataset} colMap = {colMap} intensity={intensity} setIntensity={setIntensity}></Planes>   
+            <Image3dViewer nodeID={nodeID} dataset = {dataset} colMap = {colMap} intensity={intensity} setIntensity={setIntensity}></Image3dViewer>
             <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
                 <div> value: { intensity } </div>
             </div>
