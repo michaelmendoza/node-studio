@@ -16,6 +16,8 @@ const APIDataService = {
 
     getNode: (node_id, slice, index) => fetchAPI(`${dataUrl}/node?node_id=${node_id}&slice=${slice}&index=${index}`, FetchTypes.GET),
 
+    getNodeMetadata: (node_id) => fetchAPI(`${dataUrl}/node_metadata?node_id=${node_id}`, FetchTypes.GET),
+
     addNode: (node) => fetchAPI(`${dataUrl}/node/add`, FetchTypes.POST, node),
 
     updateNode: (node) =>  fetchAPI(`${dataUrl}/node/update`, FetchTypes.POST, node),

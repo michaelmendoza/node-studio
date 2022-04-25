@@ -17,17 +17,9 @@ export const fetchAPI = (url, type, payload) => {
 export const handleMiddleware = (response) => {
     const p = new Promise(resolve => resolve(response));
 
-    return p.then(handleErrors)
+    return p.then(() => response.json())
         .then(data => { Logger.log(response.url, data); return data.data; })
-        .catch(error => Logger.log(response.url, error));
-}
-
-export const handleErrors = (response) => {
-    if (!response.ok) {
-        Logger.log(response);
-        //throw Error(response.statusText);
-    }
-    return response.json();
+        .catch(error => { Logger.log(response.url, error); return undefined; });
 }
 
 export const createPostOptions = (body) => ({ 

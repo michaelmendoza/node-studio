@@ -3,7 +3,7 @@ import './NodeIO.scss';
 /**
  * Component for node input ports
  */
-const NodeInputs = ({inputs}) => <div className="node_input flex-50"> 
+const NodeInputs = ({inputs = []}) => <div className="node_input flex-50"> 
     { 
         inputs.map((item, index) => {
             return <div key={index} className="node_io-item layout-row-center flex"> 
@@ -17,7 +17,7 @@ const NodeInputs = ({inputs}) => <div className="node_input flex-50">
 /**
  *  Component for node output ports
  */
-const NodeOutput = ({outputs}) => {
+const NodeOutput = ({outputs = []}) => {
     return (
         <div className="node_output flex-50"> 
             {
@@ -35,9 +35,9 @@ const NodeOutput = ({outputs}) => {
 /**
  * Contains Input and Output ports IU
  */
-const NodeIO = ({inputLabels, outputLabels}) => <div className="node_io layout-row flex" > 
-    <NodeInputs inputs={inputLabels}></NodeInputs>
-    <NodeOutput outputs={outputLabels}></NodeOutput>
+const NodeIO = ({node}) => <div className="node_io layout-row flex" > 
+    <NodeInputs inputs={node.inputLabels}></NodeInputs>
+    <NodeOutput outputs={node.outputLabels}></NodeOutput>
 </div>
 
 export default NodeIO;

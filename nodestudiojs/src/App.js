@@ -15,6 +15,7 @@ import Console from './components/Console';
 import NodeList from './models/NodeList';
 import Graph from './models/Graph';
 import SideInspector from './components/SideInspector';
+import HistogramChart from './components/Charts/Histogram';
 
 const AppComponents = () => {
     const {dispatch} = useContext(AppContext);

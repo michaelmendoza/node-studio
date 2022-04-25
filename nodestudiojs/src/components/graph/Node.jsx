@@ -28,8 +28,8 @@ const Node = ({node, onContextMenu}) => {
     const onControlledDrag = (e, position) => {
         e.preventDefault();
         const {x, y} = position;
-        node.position.x = Math.round(x);
-        node.position.y = Math.round(y);
+        node.styles.x = Math.floor(x);
+        node.styles.y = Math.floor(y);
         setPosition(position)
         dispatch({ type: ActionTypes.UPDATE_NODE, node, updateAPI:false });
       };
@@ -52,9 +52,9 @@ const Node = ({node, onContextMenu}) => {
         <Draggable nodeRef={nodeRef} handle=".node_title" position={position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} onStop={onStop}>
             <div ref={nodeRef}>
                 <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
-                    <NodeTitle {...node}></NodeTitle>
-                    <NodeIO {...node} ></NodeIO>
-                    <NodeProps {...node}></NodeProps>
+                    <NodeTitle name={node.name}></NodeTitle>
+                    <NodeIO node={node} ></NodeIO>
+                    <NodeProps node={node}></NodeProps>
                 </div>
             </div>
         </Draggable>

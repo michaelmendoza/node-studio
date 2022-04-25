@@ -1,3 +1,4 @@
+import Node from "./Node";
 
 class Project {
  
@@ -14,7 +15,15 @@ class Project {
     static load() {
         let projects = JSON.parse(localStorage.getItem('saved-projects'));
         projects = projects ? projects : {};
-        return Object.values(projects);
+        projects =  Object.values(projects);
+        
+        projects.forEach((project) => {
+            for (const [key, value] of Object.entries(project.nodes)) {
+                project.nodes[key] = new Node(value);
+            }
+        })
+
+        return projects;
     }
 
     static deleteSave(graph) {

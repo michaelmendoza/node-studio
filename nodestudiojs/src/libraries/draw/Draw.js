@@ -1,12 +1,12 @@
 function getColor(vin,colormap){
     const color = [];
 
-    if(colormap == 'bw'){
+    if(colormap === 'bw'){
         for(let i = 0; i < 3; i++){
             color[i] = vin * 255;
         }
     }
-    else if(colormap == 'jet'){
+    else if(colormap === 'jet'){
         if(vin < 0.25){
             color[0] = 0;
             color[1] = 4 * vin * 255;
@@ -35,8 +35,12 @@ function getColor(vin,colormap){
     return color;
 }
 
-export const DrawImg = (data, colormap) => {
+const calcAlpha = (value, threshold) => {
+    if(threshold === undefined) return 255;
+    else return (value > threshold) ? 255 : 0;
+}
 
+const DrawCanvas = (data, colormap, threshold = undefined) => {
     const pixelArray = data.pixelArray;
     const resolution = data.isScaled ? data.resolution : data.max;
     const height = data.shape[0];
@@ -51,18 +55,41 @@ export const DrawImg = (data, colormap) => {
     let i = 0;
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
-            const value = pixelArray[ y * width + x ] / resolution;
-            const colorValues = getColor(value, colormap);
+            const value = pixelArray[ y * width + x ];          // Pixel value
+            const fValue = value / resolution;                  // Fractional value of max resolution 
+            const colorValues = getColor(fValue, colormap);
+            const alpha = calcAlpha(value, threshold);
             imageData.data[4*i] = colorValues[0];
             imageData.data[4*i+1] = colorValues[1];
             imageData.data[4*i+2] = colorValues[2];
-            imageData.data[4*i+3] = 255;
+            imageData.data[4*i+3] = alpha;
         }
 
     
     context.putImageData(imageData, 0, 0);
+    return canvas;
+}
+
+export const DrawImg = (data, colormap, threshold = undefined) => {
+    const canvas = DrawCanvas(data, colormap, threshold);
     const dataURL = canvas.toDataURL();    
     return dataURL; 
+}
+
+export const DrawLayers = (layers, width, height) => {
+    
+    const canvas = document.createElement('canvas');
+    const context = canvas.getContext('2d');
+    canvas.width =  width;
+    canvas.height = height;
+
+    layers.forEach((layer) => {
+        const layerCanvas = DrawCanvas(layer.data, layer.colormap, layer.threshold);
+        context.globalAlpha = layer.opacity;
+        context.drawImage(layerCanvas, 0, 0);
+    })
+
+    return canvas.toDataURL();
 }
 
 export const getImgPixelValue = (data, x, y) => {
