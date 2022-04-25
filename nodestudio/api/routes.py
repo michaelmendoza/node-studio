@@ -1,3 +1,5 @@
+import traceback
+from typing import List
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
@@ -9,8 +11,9 @@ def handle_exception(func):
         try:
             data = await func(*args, **kwargs)
         except Exception as e:
-            print('Error:', e)
-            raise HTTPException(status_code=500, detail = {'message':"Error", 'error':str(e)} )
+            error_message = str(traceback.format_exc())
+            print(error_message)
+            raise HTTPException(status_code=500, detail = {'message':"Error", 'error':error_message} )
         else:
             return data
 
@@ -53,6 +56,13 @@ async def get_node(node_id: str, slice: str, index: int):
     data = controllers.get_node_data(node_id, slice, index)
     return { 'message': 'Retrieved node data', 'data': data }
 
+@router.get("/node_metadata")
+@handle_exception
+async def get_node_metadata(node_id: str):
+    ''' Gets node metadata for given node_id '''
+    data = controllers.get_node_metadata(node_id)
+    return { 'message': 'Retrieved node data', 'data': data }
+
 @router.post("/node/add")
 @handle_exception
 async def add_node(data: NodeData):
@@ -90,7 +100,7 @@ async def remove_link(data: ID_Data):
 
 @router.post("/session")
 @handle_exception
-async def run_session(data: ID_Data):
+async def run_session(data: List[str]):
     ''' Adds node to graph '''
-    data = controllers.run_session(data.id)
-    return { 'message': 'Completed sesson', 'data': { 'shape': data['data'].shape, 'dtype': str(data['data'].dtype), 'size': data['data'].size } }
+    data = controllers.run_session(data)
+    return { 'message': 'Completed sesson', 'data': data }

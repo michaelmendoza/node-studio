@@ -20,6 +20,10 @@ def process_data(data):
         
     return data
 
+def process_2channel_data(data0, data1):
+    # Process data with 2 data channels
+    return [process_data(data0), process_data(data1)]
+
 def process_uint16_data(data):
     # Processes stats and histogram for unsigned integer data 
     
@@ -29,9 +33,9 @@ def process_uint16_data(data):
     std = np.nanstd(data)
 
     resolution = 4096
-    histogram = np.histogram(data, 128)
+    histogram = generate_histogram(data)
 
-    return { 'data':data, 'isScaled': False,'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    return { 'data':data, 'dtype': str(data.dtype), 'fullshape': data.shape, 'isScaled': False,'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_and_scale_data(data):
     # Processes stats and scales data to fit data into a uint16
@@ -46,9 +50,9 @@ def process_and_scale_data(data):
     output = (output - min) * resolution / (max - min)
     output[np.isnan(output)] = 8192 #replace nans
     output = np.floor(output).astype('uint16')
-    histogram = np.histogram(output[output !=8192], 128) #exclude values assigned to exceptions
+    histogram = generate_histogram(output[output !=8192])
 
-    return { 'data': output, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    return { 'data': output, 'dtype': str(data.dtype), 'fullshape': data.shape, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_complex_data(data, datatype = 'mag'):
     # Process complex128 numpy data 
@@ -66,4 +70,8 @@ def process_complex_data(data, datatype = 'mag'):
     
     return process_and_scale_data(mdata)
 
-
+def generate_histogram(data, bins = 16):
+    histogram = np.histogram(data, bins) 
+    histogram = [histogram[0].tolist(), histogram[1].tolist()]
+    histogram = [{ 'y': histogram[0][x], 'x0': histogram[1][x], 'x1': histogram[1][x+1] } for x in range(len(histogram[0]))]
+    return histogram

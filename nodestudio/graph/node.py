@@ -42,6 +42,7 @@ class Node:
         props = self.props.dict()
         styles = self.styles.dict()
         props['type'] = props['type'].name
+        props['detail'] = props['detail'].value
         del props['fn']
         return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'outputs': self.outputs, 'styles': styles, 'args': self.args }
 

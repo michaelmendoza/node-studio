@@ -9,7 +9,12 @@ const NodeInspector = () => {
         <div className='node-inspector'> 
             <div>
                 {
-                    JSON.stringify(state.activeElement, null,'\t')
+                    state.activeElement ? Object.keys(state.activeElement).map( (key) => {
+                        return (<div key={key}>
+                            <label>{key}</label>
+                            <div>{JSON.stringify(state.activeElement[key], null,'\t')}</div>
+                        </div>) 
+                    }) : null
                 }
             </div>
         </div>

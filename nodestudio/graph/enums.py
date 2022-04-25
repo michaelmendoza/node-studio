@@ -6,13 +6,20 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
-    MOCK = 'MOCK'
     FILE_RAWDATA = 'FILE_RAWDATA'
+    MOCK = 'MOCK'
+
+    # Generator Nodes
+    MASK_GENERATOR = 'MASK_GENERATOR'
+    SHAPE_GENERATOR = 'SHAPE_GENERATOR'
+
+    # Filter Nodes
+    MASK = 'MASK'
+    THRESHOLD_MASK = 'THRESHOLD_MASK'
 
     # Computer Nodes
     ADD = 'ADD'
     MULT = 'MULT'
-    MASK = 'MASK'
     FIT = 'FIT'
     SOS = 'SOS'
     CRSOS = 'CRSOS'
@@ -25,6 +32,8 @@ class NodeType(Enum):
     # Output Nodes
     DISPLAY = 'DISPLAY'
     CDISPLAY = 'CDISPLAY'
+    LAYER_DISPLAY = 'LAYER_DISPLAY'
+    HISTOGRAM = 'HISTOGRAM'
 
 class NodeDetail(Enum):
     BLANK = ''
@@ -37,13 +46,20 @@ class NodeDetail(Enum):
     Supports:
     - Dicoms
     '''
-    MOCK = '''MOCK detail'''
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
+    MOCK = '''MOCK detail'''
+
+    # Generator Nodes
+    MASK_GENERATOR = 'MASK_GENERATOR detail'
+    SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
+
+    # Filter Nodes
+    MASK = '''MASK detail'''
+    THRESHOLD_MASK = 'THRESHOLD_MASK detail'
 
     # Computer Nodes
     ADD = '''ADD detail'''
     MULT = '''MULT detail'''
-    MASK = '''MASK detail'''
     FIT = '''FIT detail'''
     SOS = '''any string
     $$
@@ -61,3 +77,5 @@ class NodeDetail(Enum):
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
     CDISPLAY = '''CDISPLAY detail'''
+    LAYER_DISPLAY = 'LAYER_DISPLAY detail'
+    HISTOGRAM = 'HISTOGRAM detail'

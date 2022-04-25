@@ -16,6 +16,12 @@
         overflow: auto;
     }
 
+    .plugin-tag-label {
+        text-align: left;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+
     .button-icon {
         position: absolute;
         right: 0;
@@ -55,7 +61,7 @@
 
     &.plugin-item {
         cursor: grab;
-        label { cursor: pointer; }
+        label { cursor: grab; }
     }
 
     img {

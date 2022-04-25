@@ -46,8 +46,8 @@ const GraphView = () => {
     const handleDrop = (e) => {
         const data = e.dataTransfer.getData('text');
         var rect = e.target.getBoundingClientRect();
-        var x = Math.round((e.clientX - rect.left) / scale); //x position within the element.
-        var y = Math.round((e.clientY - rect.top) / scale);  //y position within the element.
+        var x = Math.floor((e.clientX - rect.left) / scale); //x position within the element.
+        var y = Math.floor((e.clientY - rect.top) / scale);  //y position within the element.
 
         const node = Node.create(data, {x, y});
         if (node) dispatch({ type: ActionTypes.ADD_NODE, node, updateAPI:true });

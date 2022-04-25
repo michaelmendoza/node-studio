@@ -1,6 +1,6 @@
 
 import Tabs from '../shared/Tabs';
-import NodeInspector from '../shared/NodeInspector';
+import NodeInspector from './NodeInspector';
 import InspectorInfo from './InspectorInfo';
 
 const SideInspector = () => {

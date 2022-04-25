@@ -111,18 +111,20 @@ const PanelRun = () => {
     const {state, dispatch} = useContext(AppState.AppContext);
 
     const handleRunGraph = async () => {
-        const nodesToRun = []
+        const nodesToRun = [];
         Object.values(state.nodes).forEach(node => {
-            if (node.type === 'DISPLAY' || node.type === 'CDISPLAY') {
-                nodesToRun.push(node);
+            const found = node.props.tags.find((x) => x === 'output' || x === 'generator');
+            if (found) {
+                nodesToRun.push(node.id);
             }
         });
 
+        await APIDataService.runSesson(nodesToRun);
+        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false })
+
         for(let i = 0; i < nodesToRun.length; i++) {
             const node = nodesToRun[i];
-            await APIDataService.runSesson({id: node.id});
-            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node.id, update:true});
-            dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false })
+            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node, update:true});
         }
     }
 

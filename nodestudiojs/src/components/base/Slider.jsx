@@ -1,6 +1,6 @@
 import './Slider.scss';
 
-const Slider = ({value, onChange, label='', min = 0, max = 100, step = 1 }) => {
+const Slider = ({ value, onChange, label='', min = 0, max = 100, step = 1, className='' }) => {
 
     const handleChange = (e) => {
         const value = parseInt(e.target.value);
@@ -8,7 +8,7 @@ const Slider = ({value, onChange, label='', min = 0, max = 100, step = 1 }) => {
     }
 
     return (
-        <div className='slider layout-row-center'>
+        <div className={ 'slider layout-row-center ' + className }>
             { label !== '' ? <label> {label} </label> : null }
             <span className='slider-input flex'>
                 <input type="range" name="zoom" 
