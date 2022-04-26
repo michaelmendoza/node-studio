@@ -11,6 +11,7 @@ import Select from '../base/Select';
 import Slider from '../base/Slider';
 import Modal from '../base/Modal';
 import Image3dViewer from './Image3dViewer';
+import ImageViewer from '../ImageViewer';
 
 const ImageView = ({nodeID}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
@@ -65,18 +66,12 @@ const ImageView = ({nodeID}) => {
     }
 
     const updateSliceMax = (slice) => {
-        let maxIndex;
-        if (slice === 'xy')
-            maxIndex = shape[0];
-        if (slice === 'xz')
-            maxIndex = shape[1];
-        if (slice === 'yz')
-            maxIndex = shape[2];
-        setSliceMax(maxIndex);
+        const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
+        setSliceMax(shape[shapeIndex]);
 
-        if (index > maxIndex) {
-            setIndex(maxIndex-1);
-            return maxIndex-1;
+        if (index > shape[shapeIndex]) {
+            setIndex(shape[shapeIndex]-1);
+            return shape[shapeIndex]-1;
         }
         return index;
     }
@@ -139,6 +134,7 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal, nodeID, co
         setStyles(width > height ? { width: '60vw' } : { height: '60vh' });
     }
 
+    /*
     return (
         <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
             <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
@@ -149,9 +145,13 @@ const ImageViewModal = ({dataset, imageData, showModal, setShowModal, nodeID, co
                 <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
             </div>
             <Image3dViewer nodeID={nodeID} dataset = {dataset} colMap = {colMap} intensity={intensity} setIntensity={setIntensity}></Image3dViewer>
-            <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
-                <div> value: { intensity } </div>
-            </div>
+        </Modal>
+    )
+    */
+
+    return (
+        <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
+            <ImageViewer nodeID={nodeID}></ImageViewer>
         </Modal>
     )
 }

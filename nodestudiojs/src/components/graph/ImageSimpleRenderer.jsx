@@ -29,7 +29,7 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
                 setImageData(dataUri);
                 dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
-        })
+        }, 100, slice);
     }
     
     return (

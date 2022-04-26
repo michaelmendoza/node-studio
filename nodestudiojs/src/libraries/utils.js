@@ -1,18 +1,18 @@
 
-let ref = undefined;
+let refs = {};
 
-export const throttle = (f, throttleTime = 100) => {
-    if (ref) return;
+export const throttle = (f, throttleTime = 100, id = '0') => {
+    if (refs[id]) return;
     f()
 
-    ref = setTimeout(() => {    
-        ref = undefined;
+    refs[id] = setTimeout(() => {    
+        refs[id] = undefined;
     }, throttleTime);
 }
 
-export const debounce = (f, debounceTime = 100) => {
-    clearTimeout(ref);
-    ref = setTimeout(() => {
+export const debounce = (f, debounceTime = 100, id = '0') => {
+    clearTimeout(refs[id]);
+    refs[id] = setTimeout(() => {
         f();
     }, debounceTime);
 };

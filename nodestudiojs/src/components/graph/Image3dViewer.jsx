@@ -1,6 +1,7 @@
 import '../base/components/viewer3d.scss';
-import { useRef, useState } from 'react';
+import { useRef, useState, useEffect } from 'react';
 import ImageRender from './ImageSimpleRenderer';
+import APIDataService from '../../services/APIDataService';
 
 const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosition, picturesize, colMap }) => {
     const viewerRef = useRef(null);
@@ -97,52 +98,71 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
 
 const Image3dViewer = ({nodeID, dataset, colMap, intensity, setIntensity}) =>{
   
-    var pic_x = 200;
-    var pic_y = 200;
-    var pic_z = 200;
+    const [isInit, setInit] = useState(false);
+    const [picturesize, setPicsize] = useState(); //less than 300
+    const [position, setPosition] = useState();
 
-    if(dataset!=null){
-      pic_x = dataset.fullshape[2];
-      pic_y = dataset.fullshape[1];
-      pic_z = dataset.fullshape[0];
-    }
+    useEffect(() => {
+        const fetch = async () => {
+            const picSize = await init();
+            setPicsize(picSize);
+            setPosition({ x:picSize.x/2, y:picSize.y/2, z:picSize.z/2 });
+            setInit(true);
+         }
+        fetch()
+    }, [])
 
-    var ratio = 1;
-    var maxImgDim = 0;
-    if (pic_x >= pic_y&&pic_x >= pic_z){
-      maxImgDim = pic_x;
-    }
-    else if (pic_y >= pic_x&& pic_y >= pic_z){
-      maxImgDim = pic_y;
-    }
-    else maxImgDim = pic_z;
+    const init = async () => {
 
-    ratio = 300/maxImgDim;
-    pic_x = ratio*pic_x;
-    pic_y = ratio*pic_y;
-    pic_z = ratio*pic_z;
-    const [picturesize, setPicsize] = useState({  x:pic_x, y:pic_y, z:pic_z })//less than 300
-    const [position, setPosition] = useState({ x:picturesize.x/2, y:picturesize.y/2, z:picturesize.z/2 })
+        const metadata = await APIDataService.getNodeMetadata(nodeID);
+
+        var pic_x = 200;
+        var pic_y = 200;
+        var pic_z = 200;
+    
+        if(metadata !== null){
+          pic_x = metadata.fullshape[2];
+          pic_y = metadata.fullshape[1];
+          pic_z = metadata.fullshape[0];
+        }
+    
+        var ratio = 1;
+        var maxImgDim = 0;
+        if (pic_x >= pic_y&&pic_x >= pic_z){
+          maxImgDim = pic_x;
+        }
+        else if (pic_y >= pic_x&& pic_y >= pic_z){
+          maxImgDim = pic_y;
+        }
+        else maxImgDim = pic_z;
+    
+        ratio = 300/maxImgDim;
+        pic_x = ratio*pic_x;
+        pic_y = ratio*pic_y;
+        pic_z = ratio*pic_z;
+
+        return {  x:pic_x, y:pic_y, z:pic_z }
+    }
 
     return (
-      <div className = 'wrapper'>
-        <h2>Transverse</h2>
-        <h2>Coronal</h2>
-        <h2>Saggital</h2>
         <div>
-          <ImageSliceViewer slicetype = 'transverse' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}></ImageSliceViewer> 
+            { isInit ? <div className='layout-row'>
+                <div style={{padding: '1em'}}>
+                    <h2>Transverse</h2>
+                    <ImageSliceViewer slicetype = 'transverse' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}></ImageSliceViewer> 
+                </div>
+                <div style={{padding: '1em'}}>
+                    <h2>Coronal</h2>
+                    <ImageSliceViewer slicetype = 'coronal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity}></ImageSliceViewer>
+                </div>
+                <div style={{padding: '1em'}}>
+                    <h2>Saggital</h2>
+                    <ImageSliceViewer slicetype = 'sagittal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} ></ImageSliceViewer>
+                </div>
+            </div> : null
+            }
+            
         </div>
-        <div>
-          <ImageSliceViewer slicetype = 'coronal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity}></ImageSliceViewer>
-        </div>
-        <div>
-          <ImageSliceViewer slicetype = 'sagittal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} ></ImageSliceViewer>
-        </div>
-        <div className='box1'>
-        ({(position.x/picturesize.x).toFixed(2)}, {(position.y/picturesize.y).toFixed(2)}, {(position.z/picturesize.z).toFixed(2)})
-        </div>
-      </div>
-      
     );
   }
 
