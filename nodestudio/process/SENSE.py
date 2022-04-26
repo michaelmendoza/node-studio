@@ -22,7 +22,6 @@ def SENSErecon(data,sensmap):
     
     -------------------------------------------------------------------------
     Notes
-    at least sense is much easier to code than GRAPPA :D 
     
     -------------------------------------------------------------------------
     References
