@@ -2,7 +2,7 @@ import './MaskGenerator.scss';
 import { useState, useEffect } from 'react';
 import { DrawImg } from '../../libraries/draw/Draw';
 import Modal from '../base/Modal';
-import ImageRenderer from '../graph/ImageRenderer';
+import ImageMultiLayerRenderer from '../graph/ImageMultiLayerRenderer';
 
 const zerosMask = (width = 64, height = 64) => {
     const uint8Array = new Uint8Array(width * height);
@@ -115,7 +115,7 @@ const MaskGeneratorView = ({nodeID}) => {
             </div>
             <div onMouseMove={handleHover} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
                 <img src={imageData} style={{ width:'100%' }}  draggable="false" alt='mask'/> 
-                <ImageRenderer nodeID={nodeID} slice='xy' index={70}></ImageRenderer>
+                <ImageMultiLayerRenderer nodeID={nodeID} slice='xy' index={70}></ImageMultiLayerRenderer>
             </div>
         </div>
     )

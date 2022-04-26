@@ -7,7 +7,7 @@ import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
 import DefaultImg from  '../../images/default_image_icon.png';
 
-const ImageRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex = true }) => {
+const ImageMultiLayerRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex = true }) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const [imageData, setImageData] = useState(DefaultImg);
     
@@ -60,4 +60,4 @@ const ImageRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex
     )
 
 }
-export default ImageRenderer;
+export default ImageMultiLayerRenderer;

@@ -1,5 +1,5 @@
 import { useState, useContext, useEffect } from 'react';
-import ImageRenderer from './ImageRenderer';
+import ImageMultiLayerRenderer from './ImageMultiLayerRenderer';
 import Select from '../base/Select';
 import Slider from '../base/Slider';
 import AppState from '../../state/AppState';
@@ -49,7 +49,7 @@ const ImageLayerView = ({nodeID}) => {
 
     return (
         <div className="image-view">
-            <ImageRenderer nodeID={nodeID} slice={slice.value} index={index} useFractionalIndex={false}></ImageRenderer>
+            <ImageMultiLayerRenderer nodeID={nodeID} slice={slice.value} index={index} useFractionalIndex={false}></ImageMultiLayerRenderer>
             <label>Slice</label>
             <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
