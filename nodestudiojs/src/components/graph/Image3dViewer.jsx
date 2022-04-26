@@ -1,4 +1,4 @@
-import '../base/components/viewer3d.scss';
+import './Image3dViewer.scss';
 import { useRef, useState, useEffect } from 'react';
 import ImageRender from './ImageSimpleRenderer';
 import APIDataService from '../../services/APIDataService';
