@@ -2,6 +2,7 @@ import './Image3dViewer.scss';
 import { useRef, useState, useEffect } from 'react';
 import ImageRender from './ImageSimpleRenderer';
 import APIDataService from '../../services/APIDataService';
+import { useWindowSize } from '../../hooks/useWindowSize';
 
 const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosition, picturesize, colMap }) => {
     const viewerRef = useRef(null);
@@ -26,9 +27,9 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
     };
 
     const index = {
-        'transverse': position.z/picturesize.z, 
-        'coronal': position.y/picturesize.y, 
-        'sagittal': position.x/picturesize.x
+        'transverse': position.z / picturesize.z, 
+        'coronal': position.y / picturesize.y, 
+        'sagittal': position.x / picturesize.x
     };
 
     const handleMouseDown = (e) => { e.preventDefault(); setCanDrag(true); }
@@ -52,7 +53,7 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
             y = y > viewerRef.current.clientHeight ? viewerRef.current.clientHeight : y
             x = x < 0 ? 0 : x
             x = x > viewerRef.current.clientWidth ? viewerRef.current.clientWidth : x
-            setPosition({ x, y, z});
+            setPosition({ x, y, z });
         }
         if (slicetype === 'coronal') {
             let x = Math.round(e.pageX - rect.left);
@@ -80,9 +81,8 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
     }    
 
     return (
-        <div className='viewer-3d'>
-    
-            <div className='viewer-continer' style={style[slicetype][0]} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
+        <div className='image-slice-viewer'>
+            <div style={style[slicetype][0]} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
             <ImageRender slice={slice[slicetype]} index={index[slicetype]} colormap={colMap} nodeID={nodeID}></ImageRender>
               <div className={'drag-handle-viewable-h-' + color[slicetype][0]} style={style[slicetype][1]} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
                 <div className='drag-handle-dragable-h'></div>
@@ -97,7 +97,9 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
 }
 
 const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
-  
+    const viewerRef = useRef(null);
+    const size = useWindowSize();
+
     const [isInit, setInit] = useState(false);
     const [picturesize, setPicsize] = useState(); //less than 300
     const [position, setPosition] = useState();
@@ -106,47 +108,36 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
         const fetch = async () => {
             const picSize = await init();
             setPicsize(picSize);
-            setPosition({ x:picSize.x/2, y:picSize.y/2, z:picSize.z/2 });
+            setPosition({ x:picSize.x / 2, y:picSize.y / 2, z:picSize.z / 2 });
             setInit(true);
          }
         fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [size])
 
     const init = async () => {
-
         const metadata = await APIDataService.getNodeMetadata(nodeID);
-
-        var pic_x = 200;
-        var pic_y = 200;
-        var pic_z = 200;
+        if(metadata === null) return {  x:200, y:200, z:200 }
     
-        if(metadata !== null){
-          pic_x = metadata.fullshape[2];
-          pic_y = metadata.fullshape[1];
-          pic_z = metadata.fullshape[0];
-        }
+        let x = metadata.fullshape[2];
+        let y = metadata.fullshape[1];
+        let z = metadata.fullshape[0];
     
-        var ratio = 1;
         var maxImgDim = 0;
-        if (pic_x >= pic_y && pic_x >= pic_z){
-          maxImgDim = pic_x;
-        }
-        else if (pic_y >= pic_x && pic_y >= pic_z){
-          maxImgDim = pic_y;
-        }
-        else maxImgDim = pic_z;
+        if (x >= y && x >= z){ maxImgDim = x; }
+        else if (y >= x && y >= z) { maxImgDim = y; }
+        else maxImgDim = z;
     
-        ratio = 300 / maxImgDim;
-        pic_x = ratio * pic_x;
-        pic_y = ratio * pic_y;
-        pic_z = ratio * pic_z;
+        const vWidth = viewerRef.current.clientWidth * .3333 - 24;
+        x = vWidth / maxImgDim * x;
+        y = vWidth / maxImgDim * y;
+        z = vWidth / maxImgDim * z;
 
-        return {  x:pic_x, y:pic_y, z:pic_z }
+        return { x:x, y:y, z:z }
     }
 
     return (
-        <div className='image-3d-viwer'>
+        <div className='image-3d-viewer' ref={viewerRef}> 
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>
@@ -162,7 +153,6 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
                 </div>
             </div> : null
             }
-            
         </div>
     );
   }
