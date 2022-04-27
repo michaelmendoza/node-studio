@@ -96,7 +96,7 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
       );
 }
 
-const Image3dViewer = ({nodeID, dataset, colMap, intensity, setIntensity}) =>{
+const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
   
     const [isInit, setInit] = useState(false);
     const [picturesize, setPicsize] = useState(); //less than 300
@@ -110,6 +110,7 @@ const Image3dViewer = ({nodeID, dataset, colMap, intensity, setIntensity}) =>{
             setInit(true);
          }
         fetch()
+    // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
     const init = async () => {
@@ -128,24 +129,24 @@ const Image3dViewer = ({nodeID, dataset, colMap, intensity, setIntensity}) =>{
     
         var ratio = 1;
         var maxImgDim = 0;
-        if (pic_x >= pic_y&&pic_x >= pic_z){
+        if (pic_x >= pic_y && pic_x >= pic_z){
           maxImgDim = pic_x;
         }
-        else if (pic_y >= pic_x&& pic_y >= pic_z){
+        else if (pic_y >= pic_x && pic_y >= pic_z){
           maxImgDim = pic_y;
         }
         else maxImgDim = pic_z;
     
-        ratio = 300/maxImgDim;
-        pic_x = ratio*pic_x;
-        pic_y = ratio*pic_y;
-        pic_z = ratio*pic_z;
+        ratio = 300 / maxImgDim;
+        pic_x = ratio * pic_x;
+        pic_y = ratio * pic_y;
+        pic_z = ratio * pic_z;
 
         return {  x:pic_x, y:pic_y, z:pic_z }
     }
 
     return (
-        <div>
+        <div className='image-3d-viwer'>
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>

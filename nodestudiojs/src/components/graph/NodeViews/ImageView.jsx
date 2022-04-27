@@ -1,17 +1,16 @@
 import './ImageView.scss';
 import { useState, useEffect, useContext, useRef } from 'react';
-import { DrawImg, getImgPixelValue } from '../../libraries/draw/Draw';
-import { decodeDataset } from '../../libraries/signal/Dataset';
-import { throttle } from '../../libraries/utils';
-import APIDataService from '../../services/APIDataService';
-import { ActionTypes } from '../../state/AppReducers';
-import AppState from '../../state/AppState';
-import DefaultImg from '../../images/default_image_icon.png';
-import Select from '../base/Select';
-import Slider from '../base/Slider';
-import Modal from '../base/Modal';
-import Image3dViewer from './Image3dViewer';
-import ImageViewer from '../ImageViewer';
+import { DrawImg } from '../../../libraries/draw/Draw';
+import { decodeDataset } from '../../../libraries/signal/Dataset';
+import { throttle } from '../../../libraries/utils';
+import APIDataService from '../../../services/APIDataService';
+import { ActionTypes } from '../../../state/AppReducers';
+import AppState from '../../../state/AppState';
+import DefaultImg from '../../../images/default_image_icon.png';
+import Select from '../../base/Select';
+import Slider from '../../base/Slider';
+import Modal from '../../base/Modal';
+import ImageViewer from '../../ImageViewer';
 
 const ImageView = ({nodeID}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
@@ -21,7 +20,6 @@ const ImageView = ({nodeID}) => {
     const [index, setIndex] = useState(0);
     const [shape, setShape] = useState([160, 640, 640]);
     const [showModal, setShowModal] = useState(false);
-    const [dataset, setDataset] = useState(null);
     const [colormap,setColormap] = useState({label:'B/W', value:'bw'});
 
     useEffect(() => {
@@ -35,7 +33,6 @@ const ImageView = ({nodeID}) => {
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset, colormap);
-                setDataset(dataset);
                 setImageData(dataUri);
                 setShape(dataset.fullshape);
                 updateSliceMax(slice);
@@ -91,68 +88,13 @@ const ImageView = ({nodeID}) => {
             <label>Colormap</label>
             <Select options={colmap_options} value={colormap} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
-            <ImageViewModal dataset={dataset} imageData={imageData} showModal={showModal} setShowModal={setShowModal} nodeID={nodeID} colMap = {colormap}></ImageViewModal>
+
+            <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
+                <ImageViewer nodeID={nodeID}></ImageViewer>
+            </Modal>
+
         </div>
         
-    )
-}
-
-const ImageViewModal = ({dataset, imageData, showModal, setShowModal, nodeID, colMap}) => {
-    const [intensity, setIntensity] = useState(0)
-    const imgRef = useRef(null);
-    const [position, setPosition] = useState({ x:0, y:0})
-    const [styles, setStyles] = useState({});
-
-    useEffect(() => {
-        updateStyles();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [showModal])
-        
-    const handleMouseMove = (e) => {
-        if(dataset === null) return;
-
-        var rect = imgRef.current.getBoundingClientRect();
-        const width = imgRef.current.clientWidth
-        const height = imgRef.current.clientHeight;
-        const x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
-        const y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
-        setPosition({ x, y });
-    }
-
-    const getImageValue = () => {
-        if(dataset === null) return;
-        return getImgPixelValue(dataset, position.x, position.y)
-    }
-
-    const updateStyles = () => {
-        if ( imageData === DefaultImg || imgRef.current === null )
-            return { height: '64px'} ;
-
-        const width = imgRef.current.clientWidth
-        const height = imgRef.current.clientHeight;
-
-        setStyles(width > height ? { width: '60vw' } : { height: '60vh' });
-    }
-
-    /*
-    return (
-        <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
-            <div style={{color:'#AAAAAA', margin:'0 0 2em 0'}}>
-                <div> x: { position.x }, y:{ position.y } </div>
-                <div> value: { getImageValue() } </div>
-            </div>
-            <div className='text-align-center'>
-                <img src={imageData} alt='viewport' ref={imgRef} style={styles} onMouseMove={handleMouseMove}/>
-            </div>
-            <Image3dViewer nodeID={nodeID} dataset = {dataset} colMap = {colMap} intensity={intensity} setIntensity={setIntensity}></Image3dViewer>
-        </Modal>
-    )
-    */
-
-    return (
-        <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
-            <ImageViewer nodeID={nodeID}></ImageViewer>
-        </Modal>
     )
 }
 
