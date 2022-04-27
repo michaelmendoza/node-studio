@@ -2,13 +2,13 @@ import './NodeProps.scss';
 import React, { useContext, useEffect } from 'react';
 import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
-import ImageView from './ImageView';
+import ImageView from './NodeViews/ImageView';
 import Select from '../base/Select';
 import TextInput from '../base/TextInput';
 import { isString } from '../../libraries/utils';
 import MaskGenerator from '../Generators/MaskGenerator';
-import HistogramView from './HistogramView';
-import ImageLayerView from './ImageLayerView';
+import HistogramView from './NodeViews/HistogramView';
+import ImageLayerView from './NodeViews/ImageLayerView';
 
 /**
  * Node Property Options

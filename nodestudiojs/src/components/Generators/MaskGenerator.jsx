@@ -2,7 +2,7 @@ import './MaskGenerator.scss';
 import { useState, useEffect } from 'react';
 import { DrawImg } from '../../libraries/draw/Draw';
 import Modal from '../base/Modal';
-import ImageMultiLayerRenderer from '../graph/ImageMultiLayerRenderer';
+import ImageMultiLayerRenderer from '../ImageViewer/ImageMultiLayerRenderer';
 
 const zerosMask = (width = 64, height = 64) => {
     const uint8Array = new Uint8Array(width * height);

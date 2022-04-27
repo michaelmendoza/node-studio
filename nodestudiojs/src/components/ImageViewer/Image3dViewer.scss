@@ -1,4 +1,14 @@
-.viewer-3d {
+.image-3d-viewer {
+
+    width: 90vw;
+
+    h2 {
+        color: #EEEEEE;
+        font-weight: 300;
+    }
+}
+
+.image-slice-viewer {
     position: relative;
 }
 
@@ -65,10 +75,4 @@
     height: 100%;
     background-color: #0000aa00;
 
-}
-
-.viewer-continer {
-    width: 0px;
-    height: 0px;
-    background-color: #EEEEEE;
 }
