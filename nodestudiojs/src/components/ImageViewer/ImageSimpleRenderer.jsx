@@ -6,8 +6,9 @@ import { throttle } from '../../libraries/utils';
 import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
 import DefaultImg from  '../../images/default_image_icon.png';
+import WheelInput from '../base/WheelInput';
 
-const ImageRender = ({ slice, index, colormap, nodeID }) => {
+const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const imgRef = useRef(null);
     const [imageData, setImageData] = useState(DefaultImg);
@@ -49,6 +50,14 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
         setPosition({ x, y });
     }
 
+    const handleWheelScroll = (e) => {
+        const dIndex = e.deltaY > 0 ? 0.005 : -0.005;
+        let new_index = index + dIndex;
+        new_index = new_index < 0 ? 0 : new_index;
+        new_index = new_index > 1 ? 1 : new_index;
+        setIndex(new_index);
+    }   
+
     const getImageValue = () => {
         if(dataset === null) return;
         return getImgPixelValue(dataset, position.x, position.y)
@@ -63,7 +72,10 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
                 <div> Zoom: { (zoom * 100).toFixed(2) } % </div>
                 <div> Pixel: { getImageValue() } ({ position.x }, { position.y }) </div>
             </div>
-            <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove}></img>
+            <WheelInput onWheel={handleWheelScroll}>
+                <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove}></img>
+            </WheelInput>
+
         </div>
     )
 
