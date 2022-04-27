@@ -7,7 +7,8 @@ import Image2dViewer from './Image2dViewer';
 const ImageViewer = ({nodeID}) => {
 
     const [mode, setMode] = useState({ label:'Transverse', value:'transverse' });
-    const modeOptions = [{ label:'Transverse', value:'transverse' }, { label:'3D View', value:'3d' }];
+    const modeOptions = [   { label:'Transverse', value:'transverse' }, { label:'Coronal', value:'coronal' }, 
+                            { label:'Sagittal', value:'sagittal' }, { label:'3D View', value:'3d' }];
 
     return (<div className="image-viewer">
         <div className="image-viewer-options layout-row" >
@@ -16,7 +17,13 @@ const ImageViewer = ({nodeID}) => {
 
         <div className='image-viewer-viewport'>
             {
-                mode.value === 'transverse' ? <Image2dViewer nodeID={nodeID}></Image2dViewer>: null
+                mode.value === 'transverse' ? <Image2dViewer nodeID={nodeID} slice={'xy'}></Image2dViewer>: null
+            }
+            {
+                mode.value === 'coronal' ? <Image2dViewer nodeID={nodeID} slice={'xz'}></Image2dViewer>: null
+            }
+            {
+                mode.value === 'sagittal' ? <Image2dViewer nodeID={nodeID} slice={'yz'}></Image2dViewer>: null
             }
             {
                 mode.value === '3d' ? <Image3dViewer nodeID={nodeID}></Image3dViewer> : null

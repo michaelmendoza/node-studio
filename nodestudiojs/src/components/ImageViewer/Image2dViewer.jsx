@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react';
 import ImageRender from './ImageSimpleRenderer';
 
-const Image2dViewer = ({nodeID}) => {
+const Image2dViewer = ({nodeID, slice}) => {
     const imgRef = useRef(null);
     const [styles, setStyles] = useState({});
     const [index, setIndex] = useState(0.5);
@@ -19,7 +19,7 @@ const Image2dViewer = ({nodeID}) => {
 
     return (
         <div style={styles} ref={imgRef}> 
-            <ImageRender nodeID={nodeID} slice={'xy'} index={index} setIndex={setIndex}></ImageRender> 
+            <ImageRender nodeID={nodeID} slice={slice} index={index} setIndex={setIndex}></ImageRender> 
         </div>
     )
 }
