@@ -12,6 +12,7 @@ class NodeType(Enum):
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR'
+    PHANTOM = "PHANTOM"
 
     # Filter Nodes
     MASK = 'MASK'
@@ -49,7 +50,8 @@ class NodeDetail(Enum):
     '''
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
     MOCK = '''MOCK detail'''
-
+    PHANTOM = "PHANTOM_GENERATOR"   
+    
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
