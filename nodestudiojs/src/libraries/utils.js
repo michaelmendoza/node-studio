@@ -1,4 +1,3 @@
-
 let refs = {};
 
 export const throttle = (f, throttleTime = 100, id = '0') => {

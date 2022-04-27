@@ -9,6 +9,10 @@
         color: #FEFEFE;
         width: 100%;
         margin: 0;
+
+        &:hover, &.show {
+            background-color: lighten($app-background-color, 20%);
+        }
     }
     
     .select-options {
@@ -23,10 +27,12 @@
         width: 100%;
         color: #FEFEFE;
         border: 1px solid transparent;
+        border-bottom: 1px solid #FEFEFE22;
+        border-radius: 0;
 
         &:hover {
             color: #FFFFFF;
-            border: 1px solid #FEFEFE;
+            background-color: lighten($app-background-color, 20%);
         }
     }
 }

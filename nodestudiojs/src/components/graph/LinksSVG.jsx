@@ -16,7 +16,7 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
     const [fill, setFill] = useState('#FEFEFE');
     const [stroke, setStroke] = useState('#444444');
 
-    const handleMouseEnter = () => { setRadius(6); setFill('#FEFEFE'); setStroke('#000000'); }
+    const handleMouseEnter = () => { setRadius(6); setFill('#92C7F3'); setStroke('#444444'); }
 
     const handleMouseLeave = () => { setRadius(5); setFill('#FEFEFE'); setStroke('#444444'); }
 
@@ -99,10 +99,16 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
         }
 
         const handleMouseUp = (e, endNode, type, index) => {
-            console.log(type, index);
 
-            if(activePort.type === 'output') {
+            if (activePort.node.id === endNode.id) return;
+
+            if (type === 'input' && activePort.type === 'output') {
                 const link = new LinkModel({ startNode:activePort.node.id, startPort:activePort.index, endNode:endNode.id, endPort:index });
+                dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
+            }
+
+            if (type ==='output' && activePort.type === 'input') {
+                const link = new LinkModel({ startNode:endNode.id, startPort:index, endNode:activePort.node.id, endPort:activePort.index });
                 dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
             }
         }
