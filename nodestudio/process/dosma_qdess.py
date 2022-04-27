@@ -61,4 +61,5 @@ def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
     qdess = QDess.from_dicom(filepath, verbose=True)
     t2map = qdess.generate_t2_map(t, suppress_fat=True, suppress_fluid=True)
     t2map.volumetric_map = np.clip(t2map.volumetric_map, int(lowerBound), int(upperBound))
-    return t2map.volumetric_map.A
+    image = t2map.volumetric_map.A
+    return image
