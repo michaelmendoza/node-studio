@@ -13,6 +13,7 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
     const [imageData, setImageData] = useState(DefaultImg);
     const [dataset, setDataset] = useState(null);
     const [position, setPosition] = useState({ x:0, y:0 });
+    const [frame, setFrame] = useState(0);
 
     useEffect(() => {
         fetchData(slice, index, colormap);
@@ -31,6 +32,7 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
                 const dataUri = DrawImg(dataset, colormap);
                 setImageData(dataUri);
                 setDataset(dataset);
+                setFrame(new_index);
                 dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
         }, 100, slice);
@@ -40,7 +42,7 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
         if(dataset === null) return;
 
         var rect = imgRef.current.getBoundingClientRect();
-        const width = imgRef.current.clientWidth
+        const width = imgRef.current.clientWidth;
         const height = imgRef.current.clientHeight;
         const x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
         const y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
@@ -52,11 +54,14 @@ const ImageRender = ({ slice, index, colormap, nodeID }) => {
         return getImgPixelValue(dataset, position.x, position.y)
     }
 
+    const zoom = dataset !== null ? imgRef.current.clientWidth / dataset.shape[1] : 1;
+
     return (
         <div style = {{ width : '100%', height : '100%', position: 'relative' }}>
             <div style={{ color:'#AAAAAA', margin:'0.5em', position: 'absolute', zIndex:1, fontSize:'0.8em' }}>
-                <div> x: { position.x }, y:{ position.y } </div>
-                <div> value: { getImageValue() } </div>
+                <div> Frame: { frame } </div>
+                <div> Zoom: { (zoom * 100).toFixed(2) } % </div>
+                <div> Pixel: { getImageValue() } ({ position.x }, { position.y }) </div>
             </div>
             <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove}></img>
         </div>
