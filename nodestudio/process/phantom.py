@@ -1,11 +1,28 @@
 import numpy as np
+from pdf2image import convert_from_path
+
+def phantom_generator(type, fov, coil):
+    if type == "Shepp_logan":
+        return shepp_logan(fov, coil)
+    if type == "Brain":
+        return brain(int(fov), int(coil))
+
+
+def brain(fov, coil = 1):
+    #awesome brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/
+    image = np.array(convert_from_path('nodestudio/process/phantom/Brain.pdf', size = (fov, fov))[0])
+    image = np.asarray(np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]), dtype = complex)
+    im = np.repeat(image[:, :, np.newaxis], coil, axis=2)
+    s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)
+    if (coil== 1): s = np.squeeze(s, axis = 2)
+    return s
 
 def shepp_logan(fov, coil = 1):
     fov = int(fov); coil = int(coil)
     im = np.repeat(shepp_logan_phantom([fov,fov])[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)
     if (coil== 1): s = np.squeeze(s, axis = 2) 
-    return fft2c(s)
+    return s
     
 def generate_birdcage_sensitivities(matrix_size = 256, number_of_coils = 8, relative_radius = 1.5, normalize=True):
     """ Generates birdcage coil sensitivites.
@@ -162,16 +179,3 @@ def rotation_matrix(angle):
               ctheta]]
     return np.array(alpha)
 
-def ifft2c(F, axis = (0,1)):
-    x,y = (axis)
-    tmp0 = np.fft.ifftshift(np.fft.ifftshift(F, axes=(x,)), axes=(y,))
-    tmp1 = np.fft.ifft(np.fft.ifft(tmp0, axis = x), axis = y)
-    f = np.fft.fftshift(np.fft.fftshift(tmp1, axes=(x,)), axes=(y,))
-    return f   
-
-def fft2c(f, axis = (0,1)):
-    x,y = (axis)
-    tmp0 = np.fft.fftshift(np.fft.fftshift(f, axes=(x,)), axes=(y,))
-    tmp1 = np.fft.fft(np.fft.fft(tmp0, axis = x), axis = y)
-    F = np.fft.ifftshift(np.fft.ifftshift(tmp1, axes=(x,)), axes=(y,))
-    return F   
