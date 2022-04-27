@@ -80,10 +80,28 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
      
     }    
 
+    const setIndex = (new_index) => {
+        let x = position.x;
+        let y = position.y;
+        let z =  position.z;
+
+        if (slicetype === 'transverse') { 
+            z = new_index * picturesize.z;
+        }
+        if (slicetype === 'coronal') {
+            y = new_index * picturesize.y;
+        }
+        if (slicetype === 'sagittal') {
+            x = new_index * picturesize.x;
+        }
+
+        setPosition({ x, y, z });
+    }
+
     return (
         <div className='image-slice-viewer'>
             <div style={style[slicetype][0]} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-            <ImageRender slice={slice[slicetype]} index={index[slicetype]} colormap={colMap} nodeID={nodeID}></ImageRender>
+            <ImageRender slice={slice[slicetype]} index={index[slicetype]} setIndex={setIndex} colormap={colMap} nodeID={nodeID}></ImageRender>
               <div className={'drag-handle-viewable-h-' + color[slicetype][0]} style={style[slicetype][1]} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
                 <div className='drag-handle-dragable-h'></div>
               </div>  
