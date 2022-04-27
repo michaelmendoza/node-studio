@@ -24,7 +24,7 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
         <g className='port' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 
                             onMouseDown={(e) => handleMouseDown(e, type, index)} onMouseUp={(e) => handleMouseUp(e, port.node, type, index)}>
             <circle className='port-circle' cx={port.x} cy={port.y} r={radius} fill={fill} stroke={stroke}></circle> 
-            <rect className='port-clickbox' x={port.x - 14} y={port.y - 13} width='26' height='26' opacity='0%'></rect> 
+            <rect className='port-clickbox' x={type === 'input' ? port.x - 14 : port.x - 27} y={port.y - 13} width='40' height='26' opacity='0%'></rect> 
         </g>
     )
 }
