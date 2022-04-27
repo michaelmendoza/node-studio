@@ -16,7 +16,7 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
     const [fill, setFill] = useState('#FEFEFE');
     const [stroke, setStroke] = useState('#444444');
 
-    const handleMouseEnter = () => { setRadius(6); setFill('#FEFEFE'); setStroke('#000000'); }
+    const handleMouseEnter = () => { setRadius(6); setFill('#92C7F3'); setStroke('#444444'); }
 
     const handleMouseLeave = () => { setRadius(5); setFill('#FEFEFE'); setStroke('#444444'); }
 
@@ -24,7 +24,7 @@ const Port = ({port, index, type, handleMouseDown, handleMouseUp}) => {
         <g className='port' onMouseEnter={handleMouseEnter} onMouseLeave={handleMouseLeave} 
                             onMouseDown={(e) => handleMouseDown(e, type, index)} onMouseUp={(e) => handleMouseUp(e, port.node, type, index)}>
             <circle className='port-circle' cx={port.x} cy={port.y} r={radius} fill={fill} stroke={stroke}></circle> 
-            <rect className='port-clickbox' x={port.x - 14} y={port.y - 13} width='26' height='26' opacity='0%'></rect> 
+            <rect className='port-clickbox' x={type === 'input' ? port.x - 14 : port.x - 27} y={port.y - 13} width='40' height='26' opacity='0%'></rect> 
         </g>
     )
 }
@@ -99,10 +99,16 @@ const LinksSVG = ({position, onContextMenu, width = 1600, height = 1600}) => {
         }
 
         const handleMouseUp = (e, endNode, type, index) => {
-            console.log(type, index);
 
-            if(activePort.type === 'output') {
+            if (activePort.node.id === endNode.id) return;
+
+            if (type === 'input' && activePort.type === 'output') {
                 const link = new LinkModel({ startNode:activePort.node.id, startPort:activePort.index, endNode:endNode.id, endPort:index });
+                dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
+            }
+
+            if (type ==='output' && activePort.type === 'input') {
+                const link = new LinkModel({ startNode:endNode.id, startPort:index, endNode:activePort.node.id, endPort:activePort.index });
                 dispatch({ type: ActionTypes.ADD_LINK, link, updateAPI: true });
             }
         }

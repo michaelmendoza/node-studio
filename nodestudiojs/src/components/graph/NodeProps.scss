@@ -16,6 +16,8 @@ $node-canvas-bg-color: #e6e6e6;
     border-style: solid;
     border-bottom-color: $grey-border-color;
     border-width: 0px 0px 1px 0px;
+    border-bottom-left-radius: 4px; 
+    border-bottom-right-radius: 4px;
       
     input {
         background-color: lighten($app-background-color, 80%);
