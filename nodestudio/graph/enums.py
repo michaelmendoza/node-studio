@@ -13,6 +13,7 @@ class NodeType(Enum):
     MASK_GENERATOR = 'MASK_GENERATOR'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR'
     PHANTOM = "PHANTOM"
+    NUFFT_SAMPLING = "NUFFT_SAMPLING"
 
     # Filter Nodes
     MASK = 'MASK'
@@ -30,6 +31,8 @@ class NodeType(Enum):
     UNDERSAMPLE = 'UNDERSAMPLE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
     DOSMA_QDESS = "DOSMA_QDESS"
+    NUFFT_FORWARD = "NUFFT_FORWARD"
+    NUFFT_INVERSE = "NUFFT_INVERSE"
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -55,6 +58,7 @@ class NodeDetail(Enum):
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
+    NUFFT_SAMPLING = "NUFFT_SAMPLING detail"
 
     # Filter Nodes
     MASK = '''MASK detail'''
@@ -77,6 +81,10 @@ class NodeDetail(Enum):
     UNDERSAMPLE = '''UNDERSAMPLE detail'''
     SENSITIVITY_MAP = '''SENSITIVITY_MAP detail'''
     DOSMA_QDESS = "DOSMA_QDESS detail"
+    NUFFT_FORWARD = "NUFFT_FORWARD detail"
+    NUFFT_INVERSE = "NUFFT_INVERSE detail"
+    
+
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
     CDISPLAY = '''CDISPLAY detail'''

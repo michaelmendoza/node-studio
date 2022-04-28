@@ -52,7 +52,7 @@ def process_and_scale_data(data):
     output = np.floor(output).astype('uint16')
     histogram = generate_histogram(output[output !=8192])
 
-    return { 'data': output, 'dtype': str(data.dtype), 'fullshape': data.shape, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
+    return { 'data': output, 'dtype': str(output.dtype), 'fullshape': data.shape, 'isScaled': True, 'min':min, 'max':max, 'mean':mean, 'std':std, 'resolution':resolution, 'histogram':histogram }
 
 def process_complex_data(data, datatype = 'mag'):
     # Process complex128 numpy data 
