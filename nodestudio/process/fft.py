@@ -14,3 +14,9 @@ def fft2c(f, axis = (0,1)):
     tmp1 = np.fft.fft(np.fft.fft(tmp0, axis = x), axis = y)
     F = np.fft.ifftshift(np.fft.ifftshift(tmp1, axes=(x,)), axes=(y,))
     return F   
+
+def fft(f, type):
+    if type == "ifft":
+        return ifft2c(f)
+    else:
+        return fft2c(f)
