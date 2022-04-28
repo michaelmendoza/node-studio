@@ -23,7 +23,7 @@ function getColor(vin,colormap){
             color[0] = 255;
             color[1] = 255 + 4 * (0.75 - vin) * 255;
             color[2] = 0;
-        }else if (vin == 2){ //the NaN case
+        }else if (vin === 2){ //the NaN case
             for(let i = 0; i < 3; i++)
             color[i] = 35;
         }

@@ -1,7 +1,7 @@
-import HistogramChart from "../Charts/Histogram";
+import HistogramChart from "../../Charts/Histogram";
 import { useEffect, useContext, useState } from 'react';
-import APIDataService from "../../services/APIDataService";
-import AppState from "../../state/AppState";
+import APIDataService from "../../../services/APIDataService";
+import AppState from "../../../state/AppState";
 
 const HistogramView = ({nodeID}) => {
     const {state} = useContext(AppState.AppContext);

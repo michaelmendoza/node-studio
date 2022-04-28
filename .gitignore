@@ -8,7 +8,7 @@ __pycache__
 *.pyc
 .ipynb_checkpoints
 .DS_Store
-
+.idea
 .vscode
 
 graph_model_data.json

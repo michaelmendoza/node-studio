@@ -14,7 +14,8 @@ from process.GRAPPA import GRAPPArecon
 from process.undersampling import undersample
 from process.sensitivity_map import get_sensitivity_map
 from process.SENSE import SENSErecon
-
+from process.dosma_qdess import dosma_qDessT2mapping
+from process.phantom import phantom_generator
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -50,6 +51,7 @@ NodeInfo = {
     NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
+    NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain']}, 'fov', 'coil'], fn=phantom_generator),
 
     # Filter Node
     NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
@@ -66,6 +68,7 @@ NodeInfo = {
     NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA','SENSE']},'undersampling_ratio'], fn=undersample), 
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map',tags=['compute'], description='Calculates sensitivity map',detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'conjugate', 'flag': True }], fn=get_sensitivity_map),
     NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
+    NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='DOSMA qdess', tags=['compute'], description='DOSMA qDESS', detail=NodeDetail.DOSMA_QDESS, options=['filepath',{'name':'tissuetype', 'select':['Femoral_cartilage','Tibial_cartilage','Patellar_cartilage','Meniscus']},'lowerBound','upperBound'], output=['out'], fn=dosma_qDessT2mapping),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),

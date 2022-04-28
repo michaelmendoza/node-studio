@@ -12,6 +12,7 @@ class NodeType(Enum):
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR'
+    PHANTOM = "PHANTOM"
 
     # Filter Nodes
     MASK = 'MASK'
@@ -28,6 +29,7 @@ class NodeType(Enum):
     SENSE = 'SENSE'
     UNDERSAMPLE = 'UNDERSAMPLE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
+    DOSMA_QDESS = "DOSMA_QDESS"
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -48,7 +50,8 @@ class NodeDetail(Enum):
     '''
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
     MOCK = '''MOCK detail'''
-
+    PHANTOM = "PHANTOM_GENERATOR"   
+    
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
@@ -73,7 +76,7 @@ class NodeDetail(Enum):
     SENSE = '''SENSE detail'''
     UNDERSAMPLE = '''UNDERSAMPLE detail'''
     SENSITIVITY_MAP = '''SENSITIVITY_MAP detail'''
-    
+    DOSMA_QDESS = "DOSMA_QDESS detail"
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
     CDISPLAY = '''CDISPLAY detail'''

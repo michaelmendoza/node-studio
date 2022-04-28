@@ -1,10 +1,10 @@
 import { useState, useContext, useEffect } from 'react';
-import ImageMultiLayerRenderer from './ImageMultiLayerRenderer';
-import Select from '../base/Select';
-import Slider from '../base/Slider';
-import AppState from '../../state/AppState';
-import { throttle } from '../../libraries/utils';
-import APIDataService from '../../services/APIDataService';
+import ImageMultiLayerRenderer from '../../ImageViewer/ImageMultiLayerRenderer';
+import Select from '../../base/Select';
+import Slider from '../../base/Slider';
+import AppState from '../../../state/AppState';
+import { throttle } from '../../../libraries/utils';
+import APIDataService from '../../../services/APIDataService';
 
 const ImageLayerView = ({nodeID}) => {
     const {state} = useContext(AppState.AppContext);
