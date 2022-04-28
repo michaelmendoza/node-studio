@@ -37,7 +37,7 @@ You have two options:
 > or by individual package
 > ```
 > pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
-> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab
+> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab pdf2image
 > pip install dosma tensorflow
 > ```
 
