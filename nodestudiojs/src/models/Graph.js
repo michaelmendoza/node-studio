@@ -30,7 +30,7 @@ class Graph {
     }
 
     static exportJson(graph) {
-        const nodes = Object.values(graph.nodes).map((node) => Node.export(node));
+        const nodes = graph.nodes;
         const links = graph.links;
         const output = JSON.stringify({ nodes, links });
         return output;
