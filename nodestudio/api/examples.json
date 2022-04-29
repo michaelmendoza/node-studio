@@ -353,5 +353,142 @@
                 }
             ]
         }
+    },
+    {
+        "name": "NUFFT",
+        "description": "Non-unform Fourier transform",
+        "graph": {
+            "nodes": {
+                "d9e60756-ba23-48c4-94c5-f019851361ed": {
+                    "id": "d9e60756-ba23-48c4-94c5-f019851361ed",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 155,
+                        "y": 70
+                    },
+                    "args": {
+                        "fov": "256",
+                        "coil": "1",
+                        "type": "Brain"
+                    }
+                },
+                "833926e8-b40e-4b4c-bd1e-9199be32ae48": {
+                    "id": "833926e8-b40e-4b4c-bd1e-9199be32ae48",
+                    "props": {
+                        "type": "NUFFT_SAMPLING"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 144,
+                        "y": 314
+                    },
+                    "args": {
+                        "type": "radial",
+                        "R": "4"
+                    }
+                },
+                "3717b3a1-0038-4c68-a089-2a7fbbc8022b": {
+                    "id": "3717b3a1-0038-4c68-a089-2a7fbbc8022b",
+                    "props": {
+                        "type": "NUFFT_INVERSE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 598,
+                        "y": 366
+                    },
+                    "args": {}
+                },
+                "799c9e8f-c98f-4f05-a07d-21144d04a42c": {
+                    "id": "799c9e8f-c98f-4f05-a07d-21144d04a42c",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 861,
+                        "y": 266
+                    },
+                    "args": {}
+                },
+                "5dbe960e-bdf3-4931-88a8-f0b02acdc894": {
+                    "id": "5dbe960e-bdf3-4931-88a8-f0b02acdc894",
+                    "props": {
+                        "type": "NUFFT_FORWARD"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 395,
+                        "y": 235
+                    },
+                    "args": {}
+                },
+                "9db8234e-a4bd-4eeb-9c58-d321ca2a9758": {
+                    "id": "9db8234e-a4bd-4eeb-9c58-d321ca2a9758",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 635,
+                        "y": 29
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "c8694dcd-7372-4aa0-8a2d-21e69c6fb463",
+                    "startNode": "d9e60756-ba23-48c4-94c5-f019851361ed",
+                    "startPort": 0,
+                    "endNode": "5dbe960e-bdf3-4931-88a8-f0b02acdc894",
+                    "endPort": 0
+                },
+                {
+                    "id": "3a4b0eea-62ea-4476-960f-a34132742876",
+                    "startNode": "833926e8-b40e-4b4c-bd1e-9199be32ae48",
+                    "startPort": 0,
+                    "endNode": "5dbe960e-bdf3-4931-88a8-f0b02acdc894",
+                    "endPort": 1
+                },
+                {
+                    "id": "56b8328b-8132-4c9a-8db2-e3eaffd80df7",
+                    "startNode": "5dbe960e-bdf3-4931-88a8-f0b02acdc894",
+                    "startPort": 0,
+                    "endNode": "3717b3a1-0038-4c68-a089-2a7fbbc8022b",
+                    "endPort": 0
+                },
+                {
+                    "id": "c3f36fd4-a9f0-496d-b5c3-3834ec279897",
+                    "startNode": "833926e8-b40e-4b4c-bd1e-9199be32ae48",
+                    "startPort": 0,
+                    "endNode": "3717b3a1-0038-4c68-a089-2a7fbbc8022b",
+                    "endPort": 1
+                },
+                {
+                    "id": "9109a604-5425-4ae0-a74b-24ce4e7a7855",
+                    "startNode": "3717b3a1-0038-4c68-a089-2a7fbbc8022b",
+                    "startPort": 0,
+                    "endNode": "799c9e8f-c98f-4f05-a07d-21144d04a42c",
+                    "endPort": 0
+                },
+                {
+                    "id": "4ad87c75-d8b8-4ab1-86a9-411feddfa6c1",
+                    "startNode": "d9e60756-ba23-48c4-94c5-f019851361ed",
+                    "startPort": 0,
+                    "endNode": "9db8234e-a4bd-4eeb-9c58-d321ca2a9758",
+                    "endPort": 0
+                }
+            ]
+        }
     }
 ]

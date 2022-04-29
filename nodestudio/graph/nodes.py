@@ -55,8 +55,7 @@ NodeInfo = {
     NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
     NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain']}, 'fov', 'coil'], fn=phantom_generator),
-    NodeType.NUFFT_SAMPLING: NodeProps(type=NodeType.NUFFT_SAMPLING, name='NUFFT sampling', tags=['compute'], description='Nufft sampling', detail=NodeDetail.NUFFT_INVERSE, options=[{'name':'type', 'select':['radial']}, 'R'],output=['out'],fn=nufft_sampling),
-
+    
     # Filter Node
     NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
     NodeType.THRESHOLD_MASK: NodeProps(type=NodeType.THRESHOLD_MASK, name='Threshold Mask', tags=['filter'], description='Threshold Mask', detail=NodeDetail.THRESHOLD_MASK, input=['data'], output=['out'], options=['threshold'], fn=apply_threshold_mask), 
@@ -73,6 +72,7 @@ NodeInfo = {
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map',tags=['compute'], description='Calculates sensitivity map',detail=NodeDetail.UNDERSAMPLE, input=['Kspace_data'], output=['out'], fn=get_sensitivity_map),
     NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
     NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='DOSMA qdess', tags=['compute'], description='DOSMA qDESS', detail=NodeDetail.DOSMA_QDESS, options=['filepath',{'name':'tissuetype', 'select':['Femoral_cartilage','Tibial_cartilage','Patellar_cartilage','Meniscus']},'lowerBound','upperBound'], output=['out'], fn=dosma_qDessT2mapping),
+    NodeType.NUFFT_SAMPLING: NodeProps(type=NodeType.NUFFT_SAMPLING, name='NUFFT sampling', tags=['compute'], description='Nufft sampling', detail=NodeDetail.NUFFT_INVERSE, options=[{'name':'type', 'select':['radial']}, 'R'],output=['out'],fn=nufft_sampling),
     NodeType.NUFFT_FORWARD: NodeProps(type=NodeType.NUFFT_FORWARD, name='NUFFT forward', tags=['compute'], description='Nufft forward', detail=NodeDetail.NUFFT_FORWARD, input=['image','traj'],output=['out'],fn=nufft_forward),
     NodeType.NUFFT_INVERSE: NodeProps(type=NodeType.NUFFT_INVERSE, name='NUFFT inverse', tags=['compute'], description='Nufft inverse', detail=NodeDetail.NUFFT_INVERSE, input=['data','traj'],output=['out'],fn=nufft_inverse),
     NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),

@@ -60,7 +60,7 @@ class NodeDetail(Enum):
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
-    NUFFT_SAMPLING = "NUFFT_SAMPLING detail"
+    NUFFT_SAMPLING = "NUFFT sampler provide sampling trajecories used for nufft"
 
     # Filter Nodes
     MASK = '''MASK detail'''
@@ -77,8 +77,8 @@ class NodeDetail(Enum):
     So it's still a bit buggy - only a certain combo is allowed hmmm...
     '''
 
-    NUFFT_FORWARD = "NUFFT_FORWARD detail"
-    NUFFT_INVERSE = "NUFFT_INVERSE detail"
+    NUFFT_FORWARD = "The nufft sampler performs the the non-cartesian Fourier transform based on sampling trajectory from NUFFT_SAMPLING module"
+    NUFFT_INVERSE = "To enable reconstruction of non-cartesian k-space sampling trajectory, NUFFT based gridding was also developed as a plugin. The gridding algorithm linearly interpolates the raw data to the surrounding grid. The resulting data allows the use of  fast inverse Fourier transform to maximise computational efficiency."
     
     CRSOS = '''Coil combination algorithm takes a collection of coil images and produces a weighted combination. The coil combination module in adopted the most commonly used root sum of squares (RSOS) method to preserve signal to noise ratio (SNR) without requiring detailed information about the magnetic field for each coil'''
     T2_qDESS = '''The QDESS T2 mapping module is able to compute pixel wise T2 values (an intrinsic tissue parameter) analytically using dicom images acquired at multiple echo times(TE). Applying a threshold on the set of T2 values allows quantitative mapping of a specific tissue.'''
