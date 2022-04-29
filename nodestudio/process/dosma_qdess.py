@@ -31,7 +31,9 @@ def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
     
     -------------------------------------------------------------------------
     Notes: 
-    See the DOSMA documentation, this is only a partice example 
+    See the DOSMA documentation, this is only a partice example
+    If I'm not crazy, DOSMA qDESS T2 mapping used same algorithm as qDESS_T2
+    So idealy, they should display the same result, unless I'm missing something  
     
     -------------------------------------------------------------------------
     References
@@ -46,8 +48,6 @@ def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
     Title: A Simple Analytic Method for Estimating T2 in the Knee from DESS
     Link: https://www.ncbi.nlm.nih.gov/pubmed/28017730
     
-    PS: If I'm not crazy, DOSMA qDESS T2 mapping used same algorithm as qDESS_T2.ipynb
-    So idealy, they should display the same result, unless I'm missing something 
     '''
     if tissuetype == "Femoral_cartilage":
         t = FemoralCartilage()
