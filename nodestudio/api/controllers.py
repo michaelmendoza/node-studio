@@ -1,9 +1,10 @@
 import base64
+import json
 import numpy as np
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
-from graph.nodes import NodeInfo, NodeProps
+from graph.nodes import NodeInfo
 from graph.sesson import Session
 from graph.interfaces import LinkData
 
@@ -104,3 +105,12 @@ def delete_link(link_id):
 def run_session(node_ids):
     session_metadata = Session.run(node_ids)
     return session_metadata
+
+def get_examples():
+    with open('./nodestudio/api/examples.json') as json_file:
+        data = json.load(json_file)
+        return data
+    
+def set_examples(data):
+    with open('./nodestudio/api/examples.json', 'w') as outfile:
+        json.dump(data, outfile, ensure_ascii=False, indent=4)

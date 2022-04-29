@@ -4,7 +4,7 @@
   "private": false,
   "scripts": {
     "start": "cd nodestudiojs && npm start",
-    "api": "cd nodestudio; uvicorn server:app --reload",
+    "api": "python nodestudio/server.py",
     "tests": "python nodestudio/test_runner.py",
     "build": "cd nodestudiojs && npm install",
     "pip": "pip install -r requirements.txt"

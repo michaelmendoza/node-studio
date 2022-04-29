@@ -2,8 +2,8 @@ import './ItemExplorer.scss';
 import { useState, useContext } from 'react';
 import AppState from '../../state/AppState';
 import { ActionTypes } from '../../state/AppReducers';
-import { load } from '../../db/Saved';
 import Project from '../../models/Project';
+import Examples from '../../models/Example';
 
 const ItemExplorer = ({itemType, items = [], callback}) => {
 
@@ -126,12 +126,10 @@ const ProjectItemView = ({item, callback}) => {
 const ExamplesItemView = ({item}) => {
 
     const { dispatch } = useContext(AppState.AppContext);
-
-    const updatedAt = (new Date(item.updatedAt)).toLocaleString()
     
     const handleClick =  async () => {
-        const graphData = await load(item.json_string);
-        dispatch({ type:ActionTypes.INIT_GRAPH, graph:graphData });
+        const graphData = await Examples.load(item);
+        dispatch({ type:ActionTypes.LOAD_GRAPH, graph:graphData });
         dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false });
     }
 
@@ -139,7 +137,6 @@ const ExamplesItemView = ({item}) => {
         <div className='explorer-item-view project-item' onClick={handleClick}>
             <h4> { item.name } </h4>
             <label> { item.description } </label>
-            <label> Updated: { updatedAt } </label>
         </div>
     )
 }
@@ -157,9 +154,6 @@ const PluginItemView = ({item}) => {
 
     return (
         <div className='explorer-item-view plugin-item layout-row' draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-            <div>
-                <img src='https://via.placeholder.com/36' alt='node item'/>
-            </div>
             <div className='description'>
                 <h4> {item.name} </h4>
                 <label> {item.description} </label>
