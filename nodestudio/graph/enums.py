@@ -88,7 +88,7 @@ class NodeDetail(Enum):
     SENSITIVITY_MAP = '''Sensitivity maps are used for sense, and can be obtained from dicom images'''
     DOSMA_QDESS = "Dosma implementation of the qDESS T2 mapping, see T2_qDESS(identical algorithm)"
     CGSENSE = "An optimised reconstruction plugin of SENSE, cgSENSE, was also included, where cg stands for conjugate gradient. By using the forward model, computation speed can be reduced from O(N^3) to O(NlogN) compared to regular SENSE, with N being the number of iterations performed."
-    FFT = "Fourier transforma and inverse Fourier transform"
+    FFT = "Fourier transform and inverse Fourier transform"
 
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
