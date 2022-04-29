@@ -1,15 +1,18 @@
 import './SidePanel.scss';
 import { useContext, useState } from 'react';
 import AppState from '../../state/AppState';
-import ItemExplorer from './ItemExplorer';
 import { ActionTypes } from '../../state/AppReducers';
 import APIDataService from '../../services/APIDataService';
-import Graph from '../../models/Graph';
 import Modal from '../base/Modal';
 import TextInput from '../base/TextInput';
-import { savedProjectList } from '../../db/Saved';
 import NodeList from '../../models/NodeList';
 import Project from '../../models/Project';
+import Examples from '../../models/Example';
+import Node from '../../models/Node';
+import Link from '../../models/Link';
+import Graph from '../../models/Graph';
+import ItemExplorer from './ItemExplorer';
+
 
 const SidePanel = ({activeNav}) => {
     const {state} = useContext(AppState.AppContext);
@@ -99,11 +102,57 @@ const ProjectSaveModel = ({showModal, setShowModal, onSave}) => {
 }
 
 const PanelExamples = ({navItem}) => {
+    const {state} = useContext(AppState.AppContext);
+    const [showModal, setShowModal] = useState(false);
+
+    const handleSave = ({name, description}) => {
+        const example = {}
+        example.name = name;
+        example.description = description;
+        const nodes = {}
+        Object.keys(state.nodes).forEach((nodeID) => nodes[nodeID] = Node.export(state.nodes[nodeID]));
+        const links = state.links.map((link) => Link.export(link));
+        example.graph = { nodes, links };
+        Examples.save(example);
+    }
+
+    const handleOpenSave = () => {
+        setShowModal(true);
+    }
+
+    const items = Examples.getList();
+
     return (
         <div className='sidepanel-panel'>
             <h2> Examples </h2>
-            <ItemExplorer itemType={navItem.name} items={savedProjectList}></ItemExplorer>
+            <button onClick={handleOpenSave}> Save Example </button>  
+            <ItemExplorer itemType={navItem.name} items={items}></ItemExplorer>
+            <ExampleSaveModel showModal={showModal} setShowModal={setShowModal} onSave={handleSave}></ExampleSaveModel>
         </div>
+    )
+}
+
+const ExampleSaveModel = ({showModal, setShowModal, onSave}) => {
+    const [name, setName] = useState('');
+    const [description, setDescription] = useState('');
+
+    const handleSave = () => {
+       onSave({name, description});
+       setName('');
+       setDescription('');
+       setShowModal(false);
+    }
+
+    return (
+        <Modal title='Save Example' open={showModal} onClose={() => setShowModal(!showModal)}>
+            <div className='project-save-modal'>
+                <TextInput name="Name" value={name} onChange={(e) => setName(e.target.value)}></TextInput>
+                <TextInput name="Description" value={description} onChange={(e) => setDescription(e.target.value)}></TextInput>
+                <div className='layout-row-center'>
+                    <button onClick={handleSave}>Save</button>
+                </div>
+            </div>
+        </Modal>
     )
 }
 

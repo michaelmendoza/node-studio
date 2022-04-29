@@ -78,13 +78,18 @@ class Graph:
   
         self.links.remove(link)
 
-    def json(self):
-        ''' Converts graph into a json string '''
+    def export(self):
+        ''' Formats graph data for exporting '''
         data = {
-            'nodes': [node.dict() for node in self.node_dict.values()],
+            'nodes': dict([(node, self.node_dict[node].dict()) for node in self.node_dict ]),
             'links': [link.dict() for link in self.links]
         }
         
+        return data
+
+    def json(self):
+        ''' Converts graph into a json string '''
+        data = self.export()
         json_string = jsonpickle.encode(data)
         return json_string
 
@@ -100,10 +105,7 @@ class Graph:
         data = json.loads(jsondata)
 
         # Transform Node class from node dict 
-        nodes = []
-        for node in data['nodes']:
-            nodes.append(Node.load(node))
-        self.node_dict = dict([(node.id, node) for node in nodes ])
+        self.node_dict = dict([(node, Node.load(data['nodes'][node])) for node in data['nodes'] ])
         self.links = [Link.load(link) for link in data['links']]
 
         return None

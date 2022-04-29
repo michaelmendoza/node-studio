@@ -16,6 +16,11 @@ class LinkData(BaseModel):
     endNode: str
     endPort: int
 
+class ExampleData(BaseModel):
+    name: str
+    description: str
+    graph: Any
+
 class JsonData(BaseModel):
     json_string: str
 

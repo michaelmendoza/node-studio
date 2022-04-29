@@ -9,6 +9,18 @@ class Link {
         this.endPort = link.endPort;
     }
 
+    /** Exports link to format need for saving / backend */
+    static export(link) {
+        const data = {
+            id: link.id,
+            startNode: link.startNode,
+            startPort: link.startPort,
+            endNode: link.endNode,
+            endPort: link.endPort
+        }
+        return data;
+    }
+
 }
 
 export default Link;

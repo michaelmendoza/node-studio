@@ -1,7 +1,8 @@
 import numpy as np
+from process.fft import * 
 
 def SENSErecon(data,sensmap):
-    [images,R] = data
+    [kspaceData,R] = data
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -9,8 +10,8 @@ def SENSErecon(data,sensmap):
     sensmap: array_like
     sensivity maps for each coils [height, width, coils]
     
-    images: array_like
-    images for each coils [height, width, coils]
+    kspaceData: array_like
+    k space data for each coils [height, width, coils]
     
     R: scalar 
     under sampling ratio 
@@ -21,9 +22,6 @@ def SENSErecon(data,sensmap):
     reconstructed image
     
     -------------------------------------------------------------------------
-    Notes
-    
-    -------------------------------------------------------------------------
     References
     
     [1] 
@@ -31,6 +29,7 @@ def SENSErecon(data,sensmap):
     Title: SENSE: Sensitivity Encoding for Fast MRI
     Link: https://pubmed.ncbi.nlm.nih.gov/10542355/
     '''
+    images = ifft2c(kspaceData)
     [height, width, coil] = sensmap.shape
     image = np.zeros([height, width], dtype= complex)
     for y in range(int(height/R)):
