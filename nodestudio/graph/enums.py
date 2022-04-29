@@ -30,6 +30,7 @@ class NodeType(Enum):
     UNDERSAMPLE = 'UNDERSAMPLE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
     DOSMA_QDESS = "DOSMA_QDESS"
+    CGSENSE = "CGSENSE"
     FFT = "FFT"
     
     # Output Nodes
@@ -78,7 +79,9 @@ class NodeDetail(Enum):
     UNDERSAMPLE = '''UNDERSAMPLE detail'''
     SENSITIVITY_MAP = '''SENSITIVITY_MAP detail'''
     DOSMA_QDESS = "DOSMA_QDESS detail"
+    CGSENSE = "CGSENSE"
     FFT = "FFT detail"
+
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
     CDISPLAY = '''CDISPLAY detail'''
