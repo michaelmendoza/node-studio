@@ -2,6 +2,29 @@ import numpy as np
 from pdf2image import convert_from_path
 
 def phantom_generator(type, fov, coil):
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    type: string
+    type of phantom
+
+    fov: scalar
+    phantom dimensions
+
+    coil: scalar 
+    number of coils 
+    
+    -------------------------------------------------------------------------
+    Returns
+    data : array like
+    k space data from each coil 
+
+    -------------------------------------------------------------------------
+    Notes
+    -------------------------------------------------------------------------
+    References:
+
+    '''
     if type == "Shepp_logan":
         return shepp_logan(fov, coil)
     if type == "Brain":
@@ -9,7 +32,28 @@ def phantom_generator(type, fov, coil):
 
 
 def brain(fov, coil = 1):
-    #awesome brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    fov: scalar
+    phantom dimensions
+
+    coil: scalar 
+    number of coils 
+    
+    -------------------------------------------------------------------------
+    Returns
+    data : array like
+    k space data from each coil 
+
+    -------------------------------------------------------------------------
+    Notes
+    -------------------------------------------------------------------------
+    References:
+        [1] 
+        brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/
+    
+    '''
     image = np.array(convert_from_path('nodestudio/process/phantom/Brain.pdf', size = (fov, fov))[0])
     image = np.asarray(np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]), dtype = complex)
     im = np.repeat(image[:, :, np.newaxis], coil, axis=2)
@@ -18,6 +62,28 @@ def brain(fov, coil = 1):
     return s
 
 def shepp_logan(fov, coil = 1):
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    fov: scalar
+    phantom dimensions
+
+    coil: scalar 
+    number of coils 
+    
+    -------------------------------------------------------------------------
+    Returns
+    data : array like
+    k space data from each coil 
+
+    -------------------------------------------------------------------------
+    Notes
+    -------------------------------------------------------------------------
+    References:
+        [1] 
+        analytical phantom obatined from sigpy
+    
+    '''
     fov = int(fov); coil = int(coil)
     im = np.repeat(shepp_logan_phantom([fov,fov])[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)
