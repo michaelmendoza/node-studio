@@ -13,6 +13,9 @@ def ifft2c(F, axis = (0,1)):
     Returns
     f : array-like
     image
+
+    axis: list
+    fourier transform axes 
     
     -------------------------------------------------------------------------
     Notes: 
@@ -40,6 +43,9 @@ def fft2c(f, axis = (0,1)):
     Returns
     F : array-like
     k space data
+
+    axis: list
+    fourier transform axes 
     
     -------------------------------------------------------------------------
     Notes: 
@@ -56,6 +62,28 @@ def fft2c(f, axis = (0,1)):
     return F   
 
 def fft(f, type):
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    
+    f: array_like
+    data 
+
+    type: string
+    type of fourier transform
+    -------------------------------------------------------------------------
+
+    Returns
+    F : array-like
+    processed data
+    -------------------------------------------------------------------------
+    Notes: 
+
+    -------------------------------------------------------------------------
+    References:
+    
+    
+    '''
     if type == "ifft":
         return ifft2c(f)
     else:
