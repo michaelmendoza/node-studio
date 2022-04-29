@@ -31,6 +31,7 @@ class NodeType(Enum):
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
     DOSMA_QDESS = "DOSMA_QDESS"
     CGSENSE = "CGSENSE"
+    FFT = "FFT"
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -79,6 +80,8 @@ class NodeDetail(Enum):
     SENSITIVITY_MAP = '''SENSITIVITY_MAP detail'''
     DOSMA_QDESS = "DOSMA_QDESS detail"
     CGSENSE = "CGSENSE"
+    FFT = "FFT detail"
+
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
     CDISPLAY = '''CDISPLAY detail'''
