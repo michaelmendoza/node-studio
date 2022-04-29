@@ -47,8 +47,6 @@ def brain(fov, coil = 1):
     k space data from each coil 
 
     -------------------------------------------------------------------------
-    Notes
-    -------------------------------------------------------------------------
     References:
         [1] 
         brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/

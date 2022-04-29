@@ -40,12 +40,10 @@ def qDESS_T2(filePath,tissue):
     
     -------------------------------------------------------------------------
     Notes
-    
     user can estimate T1 and diffusivity of the tissue for better results or the function can accept more images for better mapping
     
     -------------------------------------------------------------------------
     References
-    
     [1] 
     Author: B Sveinsson et al. 
     Title: A Simple Analytic Method for Estimating T2 in the Knee from DESS

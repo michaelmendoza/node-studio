@@ -13,17 +13,6 @@ def ifft2c(F, axis = (0,1)):
     Returns
     f : array-like
     image
-
-    axis: list
-    fourier transform axes 
-    
-    -------------------------------------------------------------------------
-    Notes: 
-
-    -------------------------------------------------------------------------
-    References:
-    
-    
     '''
     x,y = (axis)
     tmp0 = np.fft.ifftshift(np.fft.ifftshift(F, axes=(x,)), axes=(y,))
@@ -41,19 +30,9 @@ def fft2c(f, axis = (0,1)):
 
     -------------------------------------------------------------------------
     Returns
+
     F : array-like
     k space data
-
-    axis: list
-    fourier transform axes 
-    
-    -------------------------------------------------------------------------
-    Notes: 
-
-    -------------------------------------------------------------------------
-    References:
-    
-    
     '''
     x,y = (axis)
     tmp0 = np.fft.fftshift(np.fft.fftshift(f, axes=(x,)), axes=(y,))
@@ -75,14 +54,7 @@ def fft(f, type):
 
     Returns
     F : array-like
-    processed data
-    -------------------------------------------------------------------------
-    Notes: 
-
-    -------------------------------------------------------------------------
-    References:
-    
-    
+    processed data 
     '''
     if type == "ifft":
         return ifft2c(f)

@@ -7,22 +7,19 @@ def cgSolver(Kspace_data, sensitivity_map, numIter = 100):
     Parameters
     
     Kspace_data: array_like
-    undersampled k space data
+    undersampled k space data [heigth, width, coil]
     
     sensitivity_map: array_like
-    sensitivity maps of the coils 
+    sensitivity maps of the coils [heigth, width, coil]
     
-    
-    numIter: scalar
+    numIter: int
     number of iterations of the cg algorithm
     
     -------------------------------------------------------------------------
     Returns
     x : array-like
     reconstructed image
-    
-    -------------------------------------------------------------------------
-    Notes: 
+
     -------------------------------------------------------------------------
     References
     

@@ -17,10 +17,7 @@ def get_sensitivity_map(Kspace_data,coilAxis = 2):
     Returns
     sens_map: array_like
     sensitivity maps for each coil 
-    
-    -------------------------------------------------------------------------
-    Notes
-    
+
     -------------------------------------------------------------------------
     References
     
