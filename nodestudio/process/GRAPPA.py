@@ -18,6 +18,34 @@ class GRAPPA:
         return np.mod(np.linspace(ys[int(self.kh/2)-1]+1, ys[int(self.kh/2)]-1, self.R-1, dtype = int),self.ny)
 
 def GRAPPArecon(data, R = 2, width = 5, height = 4):    
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    data: array_like
+    undersampled k space data [height, width, coils]
+
+    R: scalar
+    undersampling ratio
+
+    width: scalar 
+    grappa kernel width 
+
+    height: scalar 
+    grappa kernel height
+    
+    -------------------------------------------------------------------------
+    Returns
+    image : array like
+    reconstructed image for each coil 
+    -------------------------------------------------------------------------
+    Notes
+    -------------------------------------------------------------------------
+    References
+    [1] 
+    Author: Mark A. Griswold et al. 
+    Title: Generalized Autocalibrating Partially Parallel Acquisitions (GRAPPA)
+    Link: https://pubmed.ncbi.nlm.nih.gov/12111967/
+    '''
     dataR = data
     [ny, nx, nc] = dataR.shape
     ACS_lut = np.arange(ny)*0

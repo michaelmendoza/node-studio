@@ -6,6 +6,52 @@ import math
 from numpy import sqrt, sin, cos, pi, exp, log
 
 def qDESS_T2(filePath,tissue):
+    '''
+    -------------------------------------------------------------------------
+    Parameters
+    
+    filePath: string  
+    filepath of the dicom images used for T2 mapping
+    
+    spl_dur: s 
+    Flip or tip angle of the magnetization vector 
+    
+    spl_area: mT/(ms) 
+    Area of the spoiler gradient in units (G/cm)*us
+    
+    tissue: string 
+    Type of tissue, like bones, CSF, fat.
+    
+    Optional parameters: 
+    
+    T1: s
+    estimated T1 value of the tissue
+    
+    D: m^2/s
+    estimate for the diffusivity of the tissue
+    
+    -------------------------------------------------------------------------
+    Returns
+    images : array like
+    images of the dicom files under the given dir
+    
+    t2map : array like 
+    t2 map
+    
+    -------------------------------------------------------------------------
+    Notes
+    
+    user can estimate T1 and diffusivity of the tissue for better results or the function can accept more images for better mapping
+    
+    -------------------------------------------------------------------------
+    References
+    
+    [1] 
+    Author: B Sveinsson et al. 
+    Title: A Simple Analytic Method for Estimating T2 in the Knee from DESS
+    Link: https://www.ncbi.nlm.nih.gov/pubmed/28017730
+    
+    '''
     #depth, height, width
     
     #--------DICTIONARY--------
