@@ -16,6 +16,10 @@ class LinkData(BaseModel):
     endNode: str
     endPort: int
 
+class GraphData(BaseModel):
+    nodes: Dict[str, NodeData]
+    links: List[LinkData]
+    
 class JsonData(BaseModel):
     json_string: str
 

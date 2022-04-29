@@ -3,7 +3,7 @@ from typing import List
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
-from graph.interfaces import JsonData, ID_Data, NodeData, LinkData
+from graph.interfaces import JsonData, ID_Data, NodeData, LinkData, GraphData
 
 def handle_exception(func):
     @wraps(func)
@@ -104,3 +104,17 @@ async def run_session(data: List[str]):
     ''' Adds node to graph '''
     data = controllers.run_session(data)
     return { 'message': 'Completed sesson', 'data': data }
+
+@router.get("/examples")
+@handle_exception
+async def get_examples():
+    ''' Retrieves examples '''
+    data = controllers.get_examples()
+    return { 'message': 'Retrieved Examples', 'data': data }
+
+@router.post("/examples")
+@handle_exception
+async def set_examples(data: GraphData):
+    ''' Updates examples '''
+    data = controllers.set_examples(data)
+    return { 'message': 'Updated Examples', 'data': data }

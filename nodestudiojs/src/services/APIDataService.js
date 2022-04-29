@@ -29,6 +29,10 @@ const APIDataService = {
     deleteLink: (link_id) => fetchAPI(`${dataUrl}/link/delete`, FetchTypes.POST, { id:link_id }),
 
     runSesson: body =>  fetchAPI(`${dataUrl}/session`, FetchTypes.POST, body),
+
+    getExamples: () => fetchAPI(`${dataUrl}/examples`, FetchTypes.GET),
+
+    setExamples: (examples) => fetchAPI(`${dataUrl}/examples`, FetchTypes.POST, examples)
 }
 
 export default APIDataService;

@@ -13,15 +13,16 @@ import AppHeader from './components/layout/AppHeader';
 import SideNav from './components/SideNav';
 import Console from './components/Console';
 import NodeList from './models/NodeList';
+import Examples from './models/Example';
 import Graph from './models/Graph';
 import SideInspector from './components/SideInspector';
-import HistogramChart from './components/Charts/Histogram';
 
 const AppComponents = () => {
     const {dispatch} = useContext(AppContext);
 
     useEffect(() => {
         NodeList.fetch();
+        Examples.fetch();
         
         const fetch = async () => {
             const json_string = await APIDataService.getGraph();
