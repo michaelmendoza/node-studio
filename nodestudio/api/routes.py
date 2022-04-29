@@ -1,9 +1,9 @@
 import traceback
-from typing import List
+from typing import Any, List
 from functools import wraps
 from fastapi import APIRouter, HTTPException
 from api import controllers
-from graph.interfaces import JsonData, ID_Data, NodeData, LinkData, GraphData
+from graph.interfaces import JsonData, ID_Data, NodeData, LinkData
 
 def handle_exception(func):
     @wraps(func)
@@ -114,7 +114,7 @@ async def get_examples():
 
 @router.post("/examples")
 @handle_exception
-async def set_examples(data: GraphData):
+async def set_examples(data: List[Any]):
     ''' Updates examples '''
     data = controllers.set_examples(data)
     return { 'message': 'Updated Examples', 'data': data }

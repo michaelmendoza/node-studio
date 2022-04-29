@@ -1,15 +1,18 @@
 import './SidePanel.scss';
 import { useContext, useState } from 'react';
 import AppState from '../../state/AppState';
-import ItemExplorer from './ItemExplorer';
 import { ActionTypes } from '../../state/AppReducers';
 import APIDataService from '../../services/APIDataService';
-import Graph from '../../models/Graph';
 import Modal from '../base/Modal';
 import TextInput from '../base/TextInput';
 import NodeList from '../../models/NodeList';
 import Project from '../../models/Project';
 import Examples from '../../models/Example';
+import Node from '../../models/Node';
+import Link from '../../models/Link';
+import Graph from '../../models/Graph';
+import ItemExplorer from './ItemExplorer';
+
 
 const SidePanel = ({activeNav}) => {
     const {state} = useContext(AppState.AppContext);
@@ -106,7 +109,10 @@ const PanelExamples = ({navItem}) => {
         const example = {}
         example.name = name;
         example.description = description;
-        example.graph = { nodes: { ...state.nodes }, links: [ ...state.links ] };
+        const nodes = {}
+        Object.keys(state.nodes).forEach((nodeID) => nodes[nodeID] = Node.export(state.nodes[nodeID]));
+        const links = state.links.map((link) => Link.export(link));
+        example.graph = { nodes, links };
         Examples.save(example);
     }
 
