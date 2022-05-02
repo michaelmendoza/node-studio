@@ -6,6 +6,9 @@ NodeStudio was developed to enable researchers to build complex imaging processi
 
 This project is active development. An Alpha release is planned for July 2020.  
 
+![nodestudio example pipeline](https://github.com/michaelmendoza/node-studio/blob/master/media/design/ExampleSegmentationPipeline.png)
+Figure: An Example of a Quantitative MR Analysis Pipeline with NodeStudio User Interface
+
 ## Local Development
 
 Frontend javascript code located in nodestudiojs. Backend python server code located in nodestudio
