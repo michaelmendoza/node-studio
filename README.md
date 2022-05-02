@@ -4,7 +4,7 @@ NodeStudio is an open-source node-based imaging processing web platform created 
 
 NodeStudio was developed to enable researchers to build complex imaging processing pipelines visually using a computation graph. A visual computation graph is a method for the design of complex algorithms without writing a single line of code. Instead of writing code, the user can visually assemble node networks in a cross-platform web application. NodeStudio gives rapid feedback that reflects network changes. It is designed to be simple to use and doesn’t require the knowledge of Python or any standard programming languages. This platform also supports multi-vendor MRI data, the integration of custom Python code, and the integration of third-party packages the deep learning framework DOSMA. As a tool for musculoskeletal MRI analysis, the platform supports several techniques for quantitative MR analysis.
 
-This project is active development. An Alpha release is planned for July 2020.  
+This project is active development. An Alpha release is planned for July 2022.  
 
 ![nodestudio example pipeline](https://github.com/michaelmendoza/node-studio/blob/master/media/design/ExampleSegmentationPipeline.png)
 Figure: An Example of a Quantitative MR Analysis Pipeline with NodeStudio User Interface
