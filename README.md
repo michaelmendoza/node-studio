@@ -37,9 +37,9 @@ You have two options:
 > ```
 > or by individual package
 > ```
-> pip install numpy matplotlib scipy scikit-image pydicom pymapvbvd 
-> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab pdf2image
-> pip install dosma tensorflow
+> pip install numpy matplotlib scipy scikit-image 
+> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab ipywidgets pdf2image
+> pip install pydicom==2.0.0 pymapvbvd dosma tensorflow
 > ```
 
 2. Use the yml file to setup the conda environment with required packages
