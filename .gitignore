@@ -12,3 +12,4 @@ __pycache__
 .vscode
 
 graph_model_data.json
+nodestudio/notebooks/
