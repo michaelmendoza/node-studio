@@ -58,6 +58,7 @@ You have two options:
 ```
 npm run api
 ```
+
 ## Architecture
 
 Nodestudio is divided into a frontend react application using react and a backend server application using python. The frontend app is located in /nodestudiojs and the Backend app is located in /nodestudio. The frontend application tech stack consists of react with sass. The frontend uses fastapi for a light weight python server. 

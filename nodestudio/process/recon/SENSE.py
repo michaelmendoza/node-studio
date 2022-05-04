@@ -1,5 +1,5 @@
 import numpy as np
-from process.fft import * 
+from process.core.fft import * 
 
 def SENSErecon(data,sensmap):
     [kspaceData,R] = data
