@@ -1,5 +1,5 @@
 import numpy as np
-from process.fft import *
+from process.core.fft import *
 
 def cgSolver(Kspace_data, sensitivity_map, numIter = 100):
     '''

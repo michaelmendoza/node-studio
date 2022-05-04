@@ -1,5 +1,5 @@
 import numpy as np
-from process.fft import *
+from process.core.fft import *
 
 def undersample(data, type, undersampling_ratio, height= 5):
     undersampling_ratio = int(undersampling_ratio)

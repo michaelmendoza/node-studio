@@ -1,6 +1,6 @@
 import numpy as np
-from process.SOS import complex_root_sum_of_squares
-from process.fft import *
+from process.core.fft import *
+from process.recon.SOS import complex_root_sum_of_squares
 
 def get_sensitivity_map(Kspace_data,coilAxis = 2):
     '''

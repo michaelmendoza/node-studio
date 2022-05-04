@@ -3,21 +3,22 @@ from typing import Dict, List, Callable, Optional, Union, Any
 # from matplotlib.pyplot import get
 from pydantic import BaseModel
 from graph.enums import NodeType, NodeDetail
-from process.display import process_data, process_complex_data, process_2channel_data
-from process.file.file import read_file, read_rawdata
-from process.fit import fit
-from process.mask import apply_mask, apply_threshold_mask
-from process.SOS import sum_of_squares, complex_root_sum_of_squares
-from process.mock import mock_2d_data
-from process.T2_map import qDESS_T2
-from process.GRAPPA import GRAPPArecon
-from process.undersampling import undersample
-from process.sensitivity_map import get_sensitivity_map
-from process.SENSE import SENSErecon
-from process.dosma_qdess import dosma_qDessT2mapping
-from process.phantom import phantom_generator
-from process.cgSENSE import cgSolver
-from process.fft import fft
+
+from process.core.fft import fft
+from process.core.fit import fit
+from process.core.mask import apply_mask, apply_threshold_mask
+from process.core.undersampling import undersample
+from process.core.sensitivity_map import get_sensitivity_map
+from process.io.display import process_data, process_complex_data, process_2channel_data
+from process.io.file import read_file, read_rawdata
+from process.phantom.phantom import phantom_generator
+from process.simulation.mock import mock_2d_data
+from process.quantative_map.T2_map import qDESS_T2
+from process.recon.SOS import sum_of_squares, complex_root_sum_of_squares
+from process.recon.GRAPPA import GRAPPArecon
+from process.recon.SENSE import SENSErecon
+from process.recon.cgSENSE import cgSolver
+from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 
 class NodeNumberOption(BaseModel):
     name: str

@@ -9,6 +9,9 @@ This project is active development. An Alpha release is planned for July 2022.
 ![nodestudio example pipeline](https://github.com/michaelmendoza/node-studio/blob/master/media/design/ExampleSegmentationPipeline.png)
 Figure: An Example of a Quantitative MR Analysis Pipeline with NodeStudio User Interface
 
+
+# Development 
+
 ## Local Development
 
 Frontend javascript code located in nodestudiojs. Backend python server code located in nodestudio
@@ -55,4 +58,48 @@ You have two options:
 - Run to API server
 ```
 npm run api
+```
+
+## Architecture
+
+Nodestudio is divided into a frontend react application using react and a backend server application using python. The frontend app is located in /nodestudiojs and the Backend app is located in /nodestudio. The frontend application tech stack consists of react with sass. The frontend uses fastapi for a light weight python server. 
+
+
+### Frontend
+```
+/nodestudiojs/src
+    /components - contains react application components
+    /hooks - contains custom react hooks
+    /libraries - contains  utility functions that don’t have side effects
+    /models - contains javascript classes used as models in application state
+    /services - contains functions that touch endpoints & communicate with APIs
+    /state - contains app state and reducers (functions that modify state & have side-effects.)
+    /styles -  scss styles
+```
+
+### Backend
+
+```
+/nodestudio
+    /server.py - server entrypoint
+    /api - contains fastAPI server code
+        /controllers - api controllers (should be lightweight)
+        /routes -  api router routes
+    /graph - contains code for computation graph
+        /enums - contains NodeType and NodeDetail enums for node designation
+        /graph - represents computation graph (built from nodes, links and sessions)
+        /interfaces - interfaces for data types uses pydantic
+        /link - represents node connections
+        /node - represents computation node
+        /nodes - contains list of NodeProps for node properties
+        /session - represents computation sesssion
+    /process - contains node processes computation code
+        /core - base node process i.e. fft, mask, stats
+        /integration/dosma - dosma intergation
+        /io - io nodes i.e. file, display
+        /phantom - phantom for simulation code
+        /quantiative_maps - quantiative maps for tissue properies i.e. T1, T2 
+        /recon - MR image reconstruction code
+        /simulation - MR simulation code
+    /tests - contains unit tests (TODO)
 ```
