@@ -1,6 +1,7 @@
 @import '../../styles/base/variables.scss';
 
-.modal {
+.status-modal {
+
     position: fixed;
     top:0;
     bottom: 0;
@@ -8,7 +9,7 @@
     right:0;
     z-index: 100;
 
-    .modal-backdrop {
+    .status-backdrop {
         position: fixed;
         top:0;
         bottom: 0;
@@ -18,19 +19,25 @@
         background-color: #66666666;
     }
 
-    .modal-container {
-        min-width: 200px;
-        max-width: 100vw;
-        max-height: 100vh;
+    .status-container {
+        min-width: 20em;
+        min-height: 20em;
         z-index: 101;
         overflow: auto;
     }
 
-    .modal-header {
+    .status-content { 
+        background-color: $modal-background;
+        border-radius: 4px;
+        padding: 2em;
+    }
+
+    .status-header {
         background-color: $modal-header;
         color: $modal-color;
         padding: 0.5em 0.5em 0.5em 1.5em;
         text-align: left;
+        text-transform: capitalize;
 
         h2 {
             font-size: 1.25em;
@@ -53,21 +60,7 @@
         }
     }
 
-    .modal-content {
-        background-color: $modal-background;
-        padding: 2em;
-    }
-
-    .modal-children {
-       
-    }
-
-    .modal-buttons {
-        margin: auto;
-        text-align: right;
-
-        button {
-            margin: 0 0.5em;
-        }
+    .status-header.status-error {
+        background-color: $modal-error;
     }
 }

@@ -1,6 +1,7 @@
 import uuid
 import json
 from typing import List
+import traceback
 
 from pydantic import BaseModel
 import graph
@@ -53,7 +54,13 @@ class Node:
             args = self.args
             inputs = graph.current_graph.getNodeList(self.inputs)
             values = [input.value for input in inputs]
-            self.value = self.props.fn(*values, **args)
+
+            # Try to compute node fn and do error handling on error 
+            try: 
+                self.value = self.props.fn(*values, **args)
+            except Exception as e:
+                error_message = str(traceback.format_exc())
+                raise Exception({ 'nodeid': self.id, 'error': error_message })
 
         print(f'Computed complete.')
 

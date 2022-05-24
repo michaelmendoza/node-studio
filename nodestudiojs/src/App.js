@@ -16,11 +16,14 @@ import NodeList from './models/NodeList';
 import Examples from './models/Example';
 import Graph from './models/Graph';
 import SideInspector from './components/SideInspector';
+import { createWebsocketServer } from './services/WebsocketService';
+import StatusModal from './components/shared/StatusModal';
 
 const AppComponents = () => {
     const {dispatch} = useContext(AppContext);
 
     useEffect(() => {
+        createWebsocketServer(dispatch);
         NodeList.fetch();
         Examples.fetch();
         
@@ -36,6 +39,7 @@ const AppComponents = () => {
     return (
         <div className='app-components'>
             <AppHeader></AppHeader>
+            <StatusModal></StatusModal>
             <section>
                 <CenterView>
                     <GraphView></GraphView>

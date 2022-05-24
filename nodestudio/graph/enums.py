@@ -39,6 +39,10 @@ class NodeType(Enum):
     LAYER_DISPLAY = 'LAYER_DISPLAY'
     HISTOGRAM = 'HISTOGRAM'
 
+    # Debug Nodes
+    DELAY = 'DELAY'
+    ERROR = 'ERROR'
+
 class NodeDetail(Enum):
     BLANK = ''
 
@@ -87,3 +91,7 @@ class NodeDetail(Enum):
     CDISPLAY = '''CDISPLAY detail'''
     LAYER_DISPLAY = 'LAYER_DISPLAY detail'
     HISTOGRAM = 'HISTOGRAM detail'
+
+    # Debug Nodes
+    DELAY = 'Adds a time delay'
+    ERROR = 'Purposely throws an error'
