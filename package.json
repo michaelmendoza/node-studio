@@ -26,5 +26,6 @@
   "bugs": {
     "url": "https://github.com/michaelmendoza/image-nodes/issues"
   },
-  "homepage": "https://github.com/michaelmendoza/image-nodes#readme"
+  "homepage": "https://github.com/michaelmendoza/image-nodes#readme",
+  "dependencies": {}
 }

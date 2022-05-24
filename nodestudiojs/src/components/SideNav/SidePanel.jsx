@@ -168,8 +168,8 @@ const PanelRun = () => {
             }
         });
 
+        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
         await APIDataService.runSesson(nodesToRun);
-        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false })
 
         for(let i = 0; i < nodesToRun.length; i++) {
             const node = nodesToRun[i];

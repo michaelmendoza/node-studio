@@ -1,9 +1,6 @@
-# from socket import send_fds
 from typing import Dict, List, Callable, Optional, Union, Any
-# from matplotlib.pyplot import get
 from pydantic import BaseModel
 from graph.enums import NodeType, NodeDetail
-
 from process.core.fft import fft
 from process.core.fit import fit
 from process.core.mask import apply_mask, apply_threshold_mask
@@ -19,6 +16,8 @@ from process.recon.GRAPPA import GRAPPArecon
 from process.recon.SENSE import SENSErecon
 from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
+from process.debug.debug import time_delay, error_node
+
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -80,4 +79,8 @@ NodeInfo = {
     NodeType.CDISPLAY: NodeProps(type=NodeType.CDISPLAY, name='Display (Complex)', tags=['output'], description='Displays complex data as an image', detail=NodeDetail.CDISPLAY, input=['In'], options=[{'name':'datatype', 'select':['mag','phase','real','imag']}], fn=process_complex_data),
     NodeType.LAYER_DISPLAY: NodeProps(type=NodeType.LAYER_DISPLAY, name='Layer Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.LAYER_DISPLAY, input=['Layer 1', 'Layer 2'], fn=process_2channel_data),
     NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_data),
+
+    # Debug Nodes
+    NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
+    NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
 }

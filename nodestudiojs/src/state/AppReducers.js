@@ -17,7 +17,8 @@ export const ActionTypes = {
     'UPDATE_SESSION': count(),
     'SET_MOUSESTATE': count(),
     'SET_ACTIVE_ELEMENT': count(),
-    'SET_SIDENAV_SHOW': count()
+    'SET_SIDENAV_SHOW': count(),
+    'UPDATE_WEBSOCKET': count()
 }
 
 export const AppReducers = (state, action) => {
@@ -107,6 +108,11 @@ export const AppReducers = (state, action) => {
         // SideNav actions
         case ActionTypes.SET_SIDENAV_SHOW:
             return { ...state, sideNav: { ...state.sideNav, show: action.show }};
+
+        // Websocket
+        case ActionTypes.UPDATE_WEBSOCKET:
+            const websocket = action.message;
+            return { ...state, websocket };
 
         default:
             return state;

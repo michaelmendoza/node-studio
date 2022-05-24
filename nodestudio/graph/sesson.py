@@ -1,11 +1,14 @@
 import time
 import graph
+from api import websocket
 
 class Session:
 
-    def run(operations):
+    async def run(id, operations):
         ''' Run a compute session for an input operation '''
+
         print('Run Sesson')
+        await websocket.manager.emit('status', { 'session_id':id, 'status':'compute', 'message':'Computing Nodes ...' })
 
         start = time.time()
 
@@ -13,14 +16,19 @@ class Session:
         for operation in operations:
             node = graph.current_graph.getNode(operation)
             order = Session.compute_order(node)
-            for node in order:
+            for index, node in enumerate(order):
                 if node.id not in computed:
+                    node_start = time.time()
                     node.compute()
                     computed.append(node.id)
+                    node_process_time = (time.time() - node_start) * 1000
+                    await websocket.manager.emit('status', {'session_id':id, 'status':'compute', 'message': f'Node {index+1} of {len(order)} Computed', 'time': node_process_time, 'id': node.id, 'name': node.props.type.name })
 
         process_time = (time.time() - start) * 1000     # Processed time in ms
 
         print('Sesson Complete')
+        await websocket.manager.emit('status', { 'session_id':id, 'status':'end', 'message':'Computation complete', 'time': process_time })
+
         return { 'time': round(time.time() * 1000), 'process_time': process_time, 'nodes_computed': [ node for node in computed ] }
 
     def compute_order(start_node):

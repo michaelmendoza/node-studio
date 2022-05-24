@@ -21,27 +21,21 @@ const DebugConsole = () => {
     const linkText = JSON.stringify(state.links, null,'\t').split(/\r?\n/);
     const activeElement = JSON.stringify(state.activeElement, null,'\t').split(/\r?\n/);
     const sideNav = JSON.stringify(state.sideNav, null,'\t').split(/\r?\n/);
+    const websocket = JSON.stringify(state.websocket, null,'\t').split(/\r?\n/);
 
     return (
         <div className='console-view text-align-left'>
             <div> MouseState: { state.mouseState } </div>
-            
             <div> Nodes: </div>
-            {
-                nodesText
-            }
+            { nodesText }
             <div> Links: </div>
-            {
-                linkText 
-            }
+            { linkText  }
             <div> ActiveElement: </div>
-            {
-                activeElement
-            }
+            { activeElement }
             <div> SideNav </div> 
-            {
-                sideNav
-            }
+            { sideNav }
+            <div> Websocket </div>
+            { websocket }
         </div>
     )
 }

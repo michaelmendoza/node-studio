@@ -1,6 +1,9 @@
 import base64
 import json
+import uuid
+import traceback
 import numpy as np
+from api import websocket
 from graph import current_graph
 from graph.link import Link
 from graph.node import Node
@@ -102,9 +105,23 @@ def delete_link(link_id):
     link = current_graph.getLink(link_id)
     current_graph.removeLink(link)
 
-def run_session(node_ids):
-    session_metadata = Session.run(node_ids)
-    return session_metadata
+async def run_session(node_ids):
+    id = uuid.uuid1().hex
+
+    try:
+        session_metadata = await Session.run(id, node_ids)
+    except Exception as e:
+        try:
+            error_message = e.args[0]['error']
+            nodeid = e.args[0]['nodeid']
+        except Exception as e:
+            error_message = str(traceback.format_exc())
+            nodeid = None
+
+        await websocket.manager.emit('status', { 'session_id': id, 'nodeid': nodeid, 'status': 'error', 'message': "Error", 'error': error_message })
+        session_metadata = { 'message':"Error: Session runtime error.", 'error': error_message }
+    finally:
+        return session_metadata
 
 def get_examples():
     with open('./nodestudio/api/examples.json') as json_file:

@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { DrawImg } from '../../libraries/draw/Draw';
 import Modal from '../base/Modal';
 import ImageMultiLayerRenderer from '../ImageViewer/ImageMultiLayerRenderer';
+import Viewport3D from './Viewport3D';
 
 const zerosMask = (width = 64, height = 64) => {
     const uint8Array = new Uint8Array(width * height);
@@ -57,6 +58,7 @@ const MaskGeneratorView = ({nodeID}) => {
     const [dataset, setDataset] = useState(zerosMask())
     const [imageData, setImageData] = useState(null);
     const [drawMask, setDrawMask] = useState(false);
+    const [drawUpdate, setDrawUpdate] = useState(0);
     
     const [brush, setBrush] = useState(1);
     const [maskValue, setMaskValue] = useState(1);
@@ -93,7 +95,8 @@ const MaskGeneratorView = ({nodeID}) => {
 
         if(drawMask) {
             const dataUri = DrawImg(updateMaskPixels(dataset, { x, y }, maskValue, brush))
-            setImageData(dataUri)
+            setImageData(dataUri);
+            setDrawUpdate(drawUpdate+1);
         }
     }
 
@@ -115,6 +118,7 @@ const MaskGeneratorView = ({nodeID}) => {
             </div>
             <div onMouseMove={handleHover} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} onMouseLeave={handleMouseUp}>
                 <img src={imageData} style={{ width:'100%' }}  draggable="false" alt='mask'/> 
+                <Viewport3D dataset={dataset} drawUpdate={drawUpdate}></Viewport3D>
                 <ImageMultiLayerRenderer nodeID={nodeID} slice='xy' index={70}></ImageMultiLayerRenderer>
             </div>
         </div>

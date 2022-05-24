@@ -3,9 +3,10 @@ import uvicorn
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
-from api import routes
+from api import routes, websocket
 
 app = FastAPI()
+websocket.create_websocket(app)
 
 app.add_middleware(
     CORSMiddleware,
