@@ -1,5 +1,7 @@
 import numpy as np
 from pdf2image import convert_from_path
+from core.dataset import *
+from process.core.fft import *
 
 def phantom_generator(type, fov, coil):
     '''
@@ -26,9 +28,14 @@ def phantom_generator(type, fov, coil):
 
     '''
     if type == "Shepp_logan":
-        return shepp_logan(fov, coil)
+        rawdata =  fft2c(shepp_logan(fov, coil))
     if type == "Brain":
-        return brain(int(fov), int(coil))
+        rawdata =  fft2c(brain(int(fov), int(coil)))
+    rawdata = rawdata[np.newaxis, ...]
+
+    metadata = NodeMetadata("phantom", "phantom")
+    return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
+    
 
 
 def brain(fov, coil = 1):
@@ -56,7 +63,6 @@ def brain(fov, coil = 1):
     image = np.asarray(np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]), dtype = complex)
     im = np.repeat(image[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)
-    if (coil== 1): s = np.squeeze(s, axis = 2)
     return s
 
 def shepp_logan(fov, coil = 1):
@@ -85,7 +91,6 @@ def shepp_logan(fov, coil = 1):
     fov = int(fov); coil = int(coil)
     im = np.repeat(shepp_logan_phantom([fov,fov])[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)
-    if (coil== 1): s = np.squeeze(s, axis = 2) 
     return s
     
 def generate_birdcage_sensitivities(matrix_size = 256, number_of_coils = 8, relative_radius = 1.5, normalize=True):

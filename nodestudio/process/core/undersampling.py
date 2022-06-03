@@ -1,29 +1,34 @@
 import numpy as np
 from process.core.fft import *
+from core.dataset import NodeDataset
+from core.datagroup import DataGroup
+from core.metadata import NodeMetadata
 
-def undersample(data, type, undersampling_ratio, height= 5):
-    undersampling_ratio = int(undersampling_ratio)
-    if(len(data.shape) == 4):
-        data = np.reshape(data, (data.shape[1],data.shape[2],data.shape[3]))
-    if(type=='GRAPPA'):
-        [phase, frequency, coil] = data.shape
-        mask = np.zeros([phase, frequency, coil], dtype = complex)
-        ACS = 2 * undersampling_ratio *(height-1)  # assume the minimum
-        start = np.floor((phase - ACS)/2)
-        end = start + ACS
-        for i in range(phase):
-            if (i >= start) and (i < end):
-                mask[i, :, :] = 1  # middle region
-            if (i % undersampling_ratio == 1):
-                mask[i, :, :] = 1  # outside region
-        data_R = data * mask
-        return data_R
+def acs(rawKspace,acsShape):
+    ny, nx = rawKspace.shape[1:3]
+    [cny, cnx] = acsShape
+    idxx = int(np.floor((nx - cnx)/2))
+    idxy = int(np.floor((ny - cny)/2))
+    print(rawKspace.shape)
+    ACS = rawKspace[:,idxy:idxy+cny, idxx:idxx+cnx,...]
+    return ACS
 
-    elif (type=='SENSE'):
-        [fovHeight, fovWidth, numCoil] = data.shape
-        mask = np.zeros([fovHeight, fovWidth, numCoil])
-        mask[::undersampling_ratio,:,:] = 1
-        dataR = data * mask
 
+def undersample(dataset, type, undersampling_ratio):
+    if dataset.tag != "kspace":
+        raise Exception("undersample in image domain")
+
+    if type == "GRAPPA": 
+        ref = acs(dataset.data,(32,32))
+    #if type == "SENSE":
+         # skip no idea what raw data looks like 
         
-        return dataR,undersampling_ratio
+    undersampling_ratio = int(undersampling_ratio)    
+    mask = np.zeros(dataset.shape)
+    mask[:,::undersampling_ratio,...] = 1
+    dataset.data = dataset.data * mask
+       
+    metadata = NodeMetadata("phantom", "phantom")
+    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'image')
+    datagroup = DataGroup({"rawdata": dataset, "reference": reference})
+    return datagroup
