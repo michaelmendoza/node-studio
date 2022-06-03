@@ -29,7 +29,7 @@ class WebsocketManager:
 
     async def emit(self, eventName, message):
         await self.sio.emit(eventName, message)
-        await self.sio.emit(eventName, message)
+        await self.sio.sleep(0)
 
 manager = WebsocketManager()
 
