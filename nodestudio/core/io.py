@@ -5,9 +5,9 @@ import pydicom
 import numpy as np
 import mapvbvd
 
-from core.dataset import NodeDataset
-from core.metadata import NodeMetadata
-from core.datagroup import DataGroup
+from nodestudio.core.dataset import NodeDataset
+from nodestudio.core.metadata import NodeMetadata
+from nodestudio.core.datagroup import DataGroup
 
 def read_dicom(filepath, group_by=None, sort_by=None):
     ''' Reads dicom files from a folder or single file. Groups data if group_by is set to tag in dicom header'''

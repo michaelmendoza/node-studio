@@ -1,5 +1,5 @@
 
-from core.io import read_dicom, read_rawdata
-from core.dataset import NodeDataset
-from core.metadata import NodeMetadata
-from core.datagroup import DataGroup
+from nodestudio.core.io import read_dicom, read_rawdata
+from nodestudio.core.dataset import NodeDataset
+from nodestudio.core.metadata import NodeMetadata
+from nodestudio.core.datagroup import DataGroup
