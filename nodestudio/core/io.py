@@ -1,14 +1,13 @@
 
-from email import header
 import os
 import glob
 import pydicom
 import numpy as np
 import mapvbvd
-from requests import head
 
 from core.dataset import NodeDataset
 from core.metadata import NodeMetadata
+from core.datagroup import DataGroup
 
 def read_dicom(filepath, group_by=None, sort_by=None):
     ''' Reads dicom files from a folder or single file. Groups data if group_by is set to tag in dicom header'''
@@ -60,7 +59,7 @@ def read_dicom(filepath, group_by=None, sort_by=None):
     if len(datagroup) == 1:
         return datagroup[0]
     else:
-        return datagroup
+        return DataGroup(datagroup)
 
     '''
     dataset = pydicom.dcmread(paths[0])
