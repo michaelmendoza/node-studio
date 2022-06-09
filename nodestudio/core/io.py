@@ -15,7 +15,7 @@ def read_dicom(filepath, group_by=None, sort_by=None):
 
     # Get filenames and sort alphabetically
     if os.path.isdir(filepath):
-        paths = glob.glob(filepath + '*.dcm')
+        paths = glob.glob(filepath + '*.dcm') # add .ima files and other dicom file names
     elif os.path.isfile(filepath):
         paths = [filepath]
     else:
@@ -47,13 +47,13 @@ def read_dicom(filepath, group_by=None, sort_by=None):
         height = headers[key][0].pixel_array.shape[0]
         width = headers[key][0].pixel_array.shape[1]
 
-        # Create data array from dicoms
+        # Create data array from dicoms            
+        data = np.zeros((depth, height, width), dtype='uint16')
         for idx, header in enumerate(headers[key]):
-            data = np.zeros((depth, height, width), dtype='uint16')
             data[idx,:,:] = header.pixel_array
 
         # Create metadata and datasets
-        metadata = NodeMetadata(headers[group_key], 'dicom')
+        metadata = NodeMetadata(headers[key], 'dicom')
         dataset = NodeDataset(data, metadata, ['Sli', 'Lin', 'Col'])
         datagroup.append(dataset)
 
