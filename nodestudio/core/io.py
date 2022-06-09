@@ -1,21 +1,20 @@
 
-from email import header
 import os
 import glob
 import pydicom
 import numpy as np
 import mapvbvd
-from requests import head
 
 from core.dataset import NodeDataset
 from core.metadata import NodeMetadata
+from core.datagroup import DataGroup
 
 def read_dicom(filepath, group_by=None, sort_by=None):
     ''' Reads dicom files from a folder or single file. Groups data if group_by is set to tag in dicom header'''
 
     # Get filenames and sort alphabetically
     if os.path.isdir(filepath):
-        paths = glob.glob(filepath + '*.dcm')
+        paths = glob.glob(filepath + '*.dcm') # add .ima files and other dicom file names
     elif os.path.isfile(filepath):
         paths = [filepath]
     else:
@@ -47,20 +46,20 @@ def read_dicom(filepath, group_by=None, sort_by=None):
         height = headers[key][0].pixel_array.shape[0]
         width = headers[key][0].pixel_array.shape[1]
 
-        # Create data array from dicoms
+        # Create data array from dicoms            
+        data = np.zeros((depth, height, width), dtype='uint16')
         for idx, header in enumerate(headers[key]):
-            data = np.zeros((depth, height, width), dtype='uint16')
             data[idx,:,:] = header.pixel_array
 
         # Create metadata and datasets
-        metadata = NodeMetadata(headers[group_key], 'dicom')
+        metadata = NodeMetadata(headers[key], 'dicom')
         dataset = NodeDataset(data, metadata, ['Sli', 'Lin', 'Col'])
         datagroup.append(dataset)
 
     if len(datagroup) == 1:
         return datagroup[0]
     else:
-        return datagroup
+        return DataGroup(datagroup)
 
     '''
     dataset = pydicom.dcmread(paths[0])

@@ -1,5 +1,6 @@
 import numpy as np
 from dosma import MedicalVolume
+from dosma.core.io.dicom_io import to_RAS_affine
 from core.metadata import NodeMetadata
 
 class NodeDataset():
@@ -26,7 +27,8 @@ class NodeDataset():
             else:
                 headers = None
             data = np.moveaxis(self.data, 0, 2)
-            mv = MedicalVolume(data, np.eye(4), headers=headers)
+            affine = to_RAS_affine(headers)
+            mv = MedicalVolume(data, affine, headers=headers)
             return mv
         
     def to_numpy(self):
