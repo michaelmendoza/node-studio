@@ -131,3 +131,6 @@ def get_examples():
 def set_examples(data):
     with open('./nodestudio/api/examples.json', 'w') as outfile:
         json.dump(data, outfile, ensure_ascii=False, indent=4)
+
+def get_entries(path):
+    pass #add stuff here

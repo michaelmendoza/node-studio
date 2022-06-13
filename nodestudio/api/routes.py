@@ -118,3 +118,10 @@ async def set_examples(data: List[Any]):
     ''' Updates examples '''
     data = controllers.set_examples(data)
     return { 'message': 'Updated Examples', 'data': data }
+
+@router.post("/current_directory_entries")
+@handle_exception
+async def get_entries(path: str):
+    ''' Updates entries '''
+    data = controllers.get_entries(data)
+    return { 'message': 'Updated Entries', 'data': data }

@@ -32,7 +32,9 @@ const APIDataService = {
 
     getExamples: () => fetchAPI(`${dataUrl}/examples`, FetchTypes.GET),
 
-    setExamples: (examples) => fetchAPI(`${dataUrl}/examples`, FetchTypes.POST, examples)
+    setExamples: (examples) => fetchAPI(`${dataUrl}/examples`, FetchTypes.POST, examples),
+
+    getCurrentDirectoryEntries: (path) => fetchAPI(`${dataUrl}/current_directory_entries?path=${path}`, FetchTypes.GET)
 }
 
 export default APIDataService;
