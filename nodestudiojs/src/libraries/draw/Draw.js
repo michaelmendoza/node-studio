@@ -1,4 +1,4 @@
-import getnewContrastImage from './ImageContrast';
+//import {getnewContrastImage} from './ImageContrast';
 
 function getColor(vin,colormap){
     const color = [];
@@ -37,6 +37,14 @@ function getColor(vin,colormap){
     return color;
 }
 
+const getnewContrastImage = (levelIndex, widthIndex, resolution, value) => {
+    var min = levelIndex - widthIndex/2.0;
+    var output = (resolution/widthIndex)*(value - min);
+    output = output<0?0:output;
+    output = output>resolution?resolution:output;
+    return output;
+}
+
 const calcAlpha = (value, threshold) => {
     if(threshold === undefined) return 255;
     else return (value > threshold) ? 255 : 0;
@@ -58,9 +66,9 @@ const DrawCanvas = (data, colormap, threshold = undefined) => {
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
             const value = pixelArray[ y * width + x ];          // Pixel value
-            const fValue = value / resolution;                  // Fractional value of max resolution //getnewContrastImage(2048, 4096,resolution,value)/resolution;
-            const test =getnewContrastImage(2048, 4096,resolution,value);
-            const colorValues = getColor(fValue, colormap);
+            //const fValue = value / resolution;                  // Fractional value of max resolution //getnewContrastImage(2048, 4096,resolution,value)/resolution;
+            const test = getnewContrastImage(2048, 4096,resolution,value);
+            const colorValues = getColor(test, colormap);
             const alpha = calcAlpha(value, threshold);
             imageData.data[4*i] = colorValues[0];
             imageData.data[4*i+1] = colorValues[1];

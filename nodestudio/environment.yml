@@ -1,4 +1,4 @@
-name: nodestudio
+nname: nodestudio
 channels:
   - defaults
 dependencies:
