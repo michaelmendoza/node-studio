@@ -119,7 +119,8 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
 const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
     const viewerRef = useRef(null);
     const size = useWindowSize();
-    const [index, setIndex] = useState(0);
+    const [levelIndex, setlevelIndex] = useState(0);
+    const [widthIndex, setwidthIndex] = useState(0);
     const [isInit, setInit] = useState(false);
     const [picturesize, setPicsize] = useState(); //less than 300
     const [position, setPosition] = useState();
@@ -156,13 +157,17 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
         return { x:x, y:y, z:z }
     }
 
-    const handleIndexUpdate = (value) => {
-        setIndex(value);
+    const handlelevelIndexUpdate = (value) => {
+        setlevelIndex(value);
+    }
+    const handlewidthIndexUpdate = (value) => {
+        setwidthIndex(value);
     }
 
     return (
         <div className='image-3d-viewer' ref={viewerRef}> 
-            <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={50}></Slider>
+            <Slider label={'Window Level'} value={levelIndex} onChange={handlelevelIndexUpdate} max={50}></Slider>
+            <Slider label={'Window Size'} value={widthIndex} onChange={handlewidthIndexUpdate} max={50}></Slider>
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>
