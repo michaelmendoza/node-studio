@@ -166,8 +166,8 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
 
     return (
         <div className='image-3d-viewer' ref={viewerRef}> 
-            <Slider label={'Window Level'} value={levelIndex} onChange={handlelevelIndexUpdate} max={50} min={-50}></Slider>
-            <Slider label={'Window Size'} value={widthIndex} onChange={handlewidthIndexUpdate} max={50} min={-50}></Slider>
+            <Slider label={'Window Level'} value={levelIndex} onChange={handlelevelIndexUpdate} max={500} min={-500}></Slider>
+            <Slider label={'Window Size'} value={widthIndex} onChange={handlewidthIndexUpdate} max={500} min={-500}></Slider>
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>
