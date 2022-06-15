@@ -6,7 +6,7 @@ import { useWindowSize } from '../../hooks/useWindowSize';
 import Slider from "../../components/base/Slider";
 
 
-const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosition, picturesize, colMap }) => {
+const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosition, picturesize, colMap, levelIndex, widthIndex }) => {
     const viewerRef = useRef(null);
     const [canDrag, setCanDrag] = useState(false);
     
@@ -103,7 +103,7 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
     return (
         <div className='image-slice-viewer'>
             <div style={style[slicetype][0]} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-            <ImageRender slice={slice[slicetype]} index={index[slicetype]} setIndex={setIndex} colormap={colMap} nodeID={nodeID}></ImageRender>
+            <ImageRender slice={slice[slicetype]} index={index[slicetype]} setIndex={setIndex} colormap={colMap} nodeID={nodeID} levelIndex ={levelIndex} widthIndex={widthIndex}></ImageRender>
               <div className={'drag-handle-viewable-h-' + color[slicetype][0]} style={style[slicetype][1]} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
                 <div className='drag-handle-dragable-h'></div>
               </div>  
@@ -166,20 +166,20 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
 
     return (
         <div className='image-3d-viewer' ref={viewerRef}> 
-            <Slider label={'Window Level'} value={levelIndex} onChange={handlelevelIndexUpdate} max={50}></Slider>
-            <Slider label={'Window Size'} value={widthIndex} onChange={handlewidthIndexUpdate} max={50}></Slider>
+            <Slider label={'Window Level'} value={levelIndex} onChange={handlelevelIndexUpdate} max={50} min={-50}></Slider>
+            <Slider label={'Window Size'} value={widthIndex} onChange={handlewidthIndexUpdate} max={50} min={-50}></Slider>
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>
-                    <ImageSliceViewer slicetype = 'transverse' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}></ImageSliceViewer> 
+                    <ImageSliceViewer slicetype = 'transverse' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} levelIndex ={levelIndex} widthIndex={widthIndex}></ImageSliceViewer> 
                 </div>
                 <div style={{padding: '1em'}}>
                     <h2>Coronal</h2>
-                    <ImageSliceViewer slicetype = 'coronal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity}></ImageSliceViewer>
+                    <ImageSliceViewer slicetype = 'coronal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity} levelIndex ={levelIndex} widthIndex={widthIndex}></ImageSliceViewer>
                 </div>
                 <div style={{padding: '1em'}}>
                     <h2>Saggital</h2>
-                    <ImageSliceViewer slicetype = 'sagittal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} ></ImageSliceViewer>
+                    <ImageSliceViewer slicetype = 'sagittal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} levelIndex ={levelIndex} widthIndex={widthIndex}></ImageSliceViewer>
                 </div>
             </div> : null
             }

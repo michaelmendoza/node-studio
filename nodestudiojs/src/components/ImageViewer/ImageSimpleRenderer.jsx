@@ -8,7 +8,7 @@ import AppState from '../../state/AppState';
 import DefaultImg from  '../../images/default_image_icon.png';
 import WheelInput from '../base/WheelInput';
 
-const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) => {
+const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID, levelIndex, widthIndex }) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const imgRef = useRef(null);
     const [imageData, setImageData] = useState(DefaultImg);
@@ -30,7 +30,7 @@ const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) =>
             const encodedData = await APIDataService.getNode(nodeID, slice, new_index);
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset, colormap);
+                const dataUri = DrawImg(dataset, colormap, levelIndex, widthIndex);
                 setImageData(dataUri);
                 setDataset(dataset);
                 setFrame(new_index);

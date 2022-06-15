@@ -50,7 +50,7 @@ const calcAlpha = (value, threshold) => {
     else return (value > threshold) ? 255 : 0;
 }
 
-const DrawCanvas = (data, colormap, threshold = undefined) => {
+const DrawCanvas = (data, colormap, threshold = undefined, levelIndex, widthIndex) => {
     const pixelArray = data.pixelArray;
     const resolution = data.isScaled ? data.resolution : data.max;
     const height = data.shape[0];
@@ -67,7 +67,7 @@ const DrawCanvas = (data, colormap, threshold = undefined) => {
         for(let x = 0; x < width; x++, i++) {
             const value = pixelArray[ y * width + x ];          // Pixel value
             //const fValue = value / resolution;                  // Fractional value of max resolution //getnewContrastImage(2048, 4096,resolution,value)/resolution;
-            const test = getnewContrastImage(2048, 4096,resolution,value);
+            const test = getnewContrastImage(resolution/2+levelIndex, resolution+widthIndex,resolution,value)/resolution;
             const colorValues = getColor(test, colormap);
             const alpha = calcAlpha(value, threshold);
             imageData.data[4*i] = colorValues[0];
@@ -81,8 +81,8 @@ const DrawCanvas = (data, colormap, threshold = undefined) => {
     return canvas;
 }
 
-export const DrawImg = (data, colormap, threshold = undefined) => {
-    const canvas = DrawCanvas(data, colormap, threshold);
+export const DrawImg = (data, colormap, levelIndex, widthIndex, threshold = undefined) => {
+    const canvas = DrawCanvas(data, colormap, threshold, levelIndex, widthIndex);
     const dataURL = canvas.toDataURL();    
     return dataURL; 
 }
