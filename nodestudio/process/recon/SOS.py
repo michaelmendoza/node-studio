@@ -9,12 +9,12 @@ def sum_of_squares(a,b):
         return result
 
 def complex_root_sum_of_squares(input):
-    result= np.sqrt(np.sum((input*1j*input), axis=2))
-    return result
+    return np.sqrt(np.sum(np.square(np.abs(input)),axis = 3))
+
 
 def rsos(images,coilaxis = 3):
-    image = np.sqrt(np.sum((images*1j*images),axis = coilaxis))
-    return image
+    return np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis))
+
 
 def cmap(images, coilAxis = 3):
     shape = images.shape
