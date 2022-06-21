@@ -12,11 +12,19 @@ const APIDataService = {
 
     resetGraph: body => fetchAPI(`${dataUrl}/graph/reset`, FetchTypes.GET),
 
+    getGraphNodeViewMetadata: body => fetchAPI(`${dataUrl}/graph/nodeview_metadata`, FetchTypes.GET),
+
     getNodeList: () => fetchAPI(`${dataUrl}/nodelist`, FetchTypes.GET),
 
     getNode: (node_id, slice, index) => fetchAPI(`${dataUrl}/node?node_id=${node_id}&slice=${slice}&index=${index}`, FetchTypes.GET),
 
     getNodeMetadata: (node_id) => fetchAPI(`${dataUrl}/node_metadata?node_id=${node_id}`, FetchTypes.GET),
+
+    getNodeValue : (node_id, key) => fetchAPI(`${dataUrl}/node/value?node_id=${node_id}&key=${key}`, FetchTypes.GET),
+
+    getNodeType : (node_id) => fetchAPI(`${dataUrl}/node/type?node_id=${node_id}`, FetchTypes.GET),
+
+    getNodeShape : (node_id) => fetchAPI(`${dataUrl}/node/shape?node_id=${node_id}`, FetchTypes.GET),
 
     addNode: (node) => fetchAPI(`${dataUrl}/node/add`, FetchTypes.POST, node),
 

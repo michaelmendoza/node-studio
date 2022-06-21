@@ -4,7 +4,7 @@ import { useState } from 'react';
 import Image3dViewer from './Image3dViewer';
 import Image2dViewer from './Image2dViewer';
 
-const ImageViewer = ({nodeID}) => {
+const ImageViewer = ({node, nodeID}) => {
 
     const [mode, setMode] = useState({ label:'Transverse', value:'transverse' });
     const modeOptions = [   { label:'Transverse', value:'transverse' }, { label:'Coronal', value:'coronal' }, 
@@ -17,16 +17,16 @@ const ImageViewer = ({nodeID}) => {
 
         <div className='image-viewer-viewport'>
             {
-                mode.value === 'transverse' ? <Image2dViewer nodeID={nodeID} slice={'xy'}></Image2dViewer>: null
+                mode.value === 'transverse' ? <Image2dViewer node={node} nodeID={nodeID} slice={'xy'}></Image2dViewer>: null
             }
             {
-                mode.value === 'coronal' ? <Image2dViewer nodeID={nodeID} slice={'xz'}></Image2dViewer>: null
+                mode.value === 'coronal' ? <Image2dViewer node={node} nodeID={nodeID} slice={'xz'}></Image2dViewer>: null
             }
             {
-                mode.value === 'sagittal' ? <Image2dViewer nodeID={nodeID} slice={'yz'}></Image2dViewer>: null
+                mode.value === 'sagittal' ? <Image2dViewer node={node} nodeID={nodeID} slice={'yz'}></Image2dViewer>: null
             }
             {
-                mode.value === '3d' ? <Image3dViewer nodeID={nodeID}></Image3dViewer> : null
+                mode.value === '3d' ? <Image3dViewer node={node} nodeID={nodeID}></Image3dViewer> : null
             }
         </div>
     </div>)

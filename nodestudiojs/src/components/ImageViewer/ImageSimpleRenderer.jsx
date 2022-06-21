@@ -1,40 +1,35 @@
-import { useEffect, useContext, useState, useRef } from 'react';
+import { useEffect, useState, useRef } from 'react';
 import APIDataService from '../../services/APIDataService';
 import { DrawImg, getImgPixelValue } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import { throttle } from '../../libraries/utils';
-import { ActionTypes } from '../../state/AppReducers';
-import AppState from '../../state/AppState';
 import DefaultImg from  '../../images/default_image_icon.png';
 import WheelInput from '../base/WheelInput';
 
-const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) => {
-    const {state, dispatch} = useContext(AppState.AppContext);
+const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
     const imgRef = useRef(null);
     const [imageData, setImageData] = useState(DefaultImg);
     const [dataset, setDataset] = useState(null);
     const [position, setPosition] = useState({ x:0, y:0 });
-    const [frame, setFrame] = useState(0);
+    const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetchData(slice, index, colormap);
+        fetchData(slice, colormap);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sessions, slice, index, colormap])
+    }, [node.view.update, node.view.indices, slice, colormap])
     
-    const fetchData = (slice, index, colormap) => {
+    const fetchData = (slice, colormap) => {
         throttle(async () => {
-            const metadata = await APIDataService.getNodeMetadata(nodeID);
             const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice];
-            const new_index = Math.floor(index * metadata.fullshape[shapeIndex]);
+            const _index = node.view.indices[shapeIndex];
+            setIndex(_index);
 
-            const encodedData = await APIDataService.getNode(nodeID, slice, new_index);
+            const encodedData = await APIDataService.getNode(node.id, slice, _index);
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset, colormap);
                 setImageData(dataUri);
                 setDataset(dataset);
-                setFrame(new_index);
-                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
         }, 100, slice);
     }
@@ -51,11 +46,18 @@ const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) =>
     }
 
     const handleWheelScroll = (e) => {
-        const dIndex = e.deltaY > 0 ? 0.005 : -0.005;
-        let new_index = index + dIndex;
+        const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice];
+        const _index = node.view.indices[shapeIndex];
+        const maxIndex = node.view.shape[shapeIndex] - 1;
+
+        const dIndex = e.deltaY > 0 ? 1 : -1;
+        let new_index = _index + dIndex;
         new_index = new_index < 0 ? 0 : new_index;
-        new_index = new_index > 1 ? 1 : new_index;
+        new_index = new_index > maxIndex ? maxIndex : new_index;
+
+        node.view.updateIndex(shapeIndex, new_index);
         setIndex(new_index);
+        updateIndex(new_index);
     }   
 
     const getImageValue = () => {
@@ -68,16 +70,14 @@ const ImageRender = ({ slice, index, setIndex = () => {}, colormap, nodeID }) =>
     return (
         <div style = {{ width : '100%', height : '100%', position: 'relative' }}>
             <div style={{ color:'#AAAAAA', margin:'0.5em', position: 'absolute', zIndex:1, fontSize:'0.8em' }}>
-                <div> Frame: { frame } </div>
+                <div> Frame: { index } </div>
                 <div> Zoom: { (zoom * 100).toFixed(2) } % </div>
                 <div> Pixel: { getImageValue() } ({ position.x }, { position.y }) </div>
             </div>
             <WheelInput onWheel={handleWheelScroll}>
                 <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove}></img>
             </WheelInput>
-
         </div>
     )
-
 }
-export default ImageRender;
+export default ImageSimpleRenderer;

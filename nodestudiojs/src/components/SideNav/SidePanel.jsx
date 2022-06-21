@@ -170,11 +170,8 @@ const PanelRun = () => {
 
         dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
         await APIDataService.runSesson(nodesToRun);
-
-        for(let i = 0; i < nodesToRun.length; i++) {
-            const node = nodesToRun[i];
-            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node, update:true});
-        }
+        const metadata = await APIDataService.getGraphNodeViewMetadata();
+        dispatch({ type:ActionTypes.UPDATE_SESSION, metadata });
     }
 
     return (

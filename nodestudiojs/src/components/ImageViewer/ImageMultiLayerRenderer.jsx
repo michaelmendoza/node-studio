@@ -1,20 +1,17 @@
-import { useEffect,useContext, useState } from 'react';
+import { useEffect, useState } from 'react';
 import APIDataService from '../../services/APIDataService';
 import { DrawImg, DrawLayers } from '../../libraries/draw/Draw';
 import { decodeDataset } from '../../libraries/signal/Dataset';
 import { throttle } from '../../libraries/utils';
-import { ActionTypes } from '../../state/AppReducers';
-import AppState from '../../state/AppState';
 import DefaultImg from  '../../images/default_image_icon.png';
 
-const ImageMultiLayerRenderer = ({ nodeID, slice, index, colormap='bw', useFractionalIndex = true }) => {
-    const {state, dispatch} = useContext(AppState.AppContext);
+const ImageMultiLayerRenderer = ({node, nodeID, slice, index, colormap='bw', useFractionalIndex = true }) => {
     const [imageData, setImageData] = useState(DefaultImg);
     
     useEffect(() => {
         fetchData(slice, index, colormap);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sessions, slice, index]);
+    }, [node.view.update, slice, index]);
     
     const fetchData = (slice, index, colormap) => {
         throttle(async () => {
@@ -43,14 +40,12 @@ const ImageMultiLayerRenderer = ({ nodeID, slice, index, colormap='bw', useFract
                 const dataUri = DrawLayers(layers, layers[0].data.shape[1], layers[0].data.shape[0]);              
             
                 setImageData(dataUri);
-                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
             else {
                 const dataset = decodeDataset(encodedData);
                 const dataUri = DrawImg(dataset, colormap);                
             
                 setImageData(dataUri);
-                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
         })
     }

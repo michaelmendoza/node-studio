@@ -6,16 +6,16 @@ import AppState from '../../../state/AppState';
 import { throttle } from '../../../libraries/utils';
 import APIDataService from '../../../services/APIDataService';
 
-const ImageLayerView = ({nodeID}) => {
+const ImageLayerView = ({node, nodeID}) => {
     const {state} = useContext(AppState.AppContext);
     const [slice, setSlice] = useState({label:'XY', value:'xy'});
     const [sliceMax, setSliceMax] = useState(100);
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        if (state.sessions[nodeID]) fetchData(slice.value, index);
+        fetchData(slice.value, index);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sessions])
+    }, [node.view.update])
 
     const fetchData = () => {
         throttle(async () => {
@@ -49,7 +49,7 @@ const ImageLayerView = ({nodeID}) => {
 
     return (
         <div className="image-view">
-            <ImageMultiLayerRenderer nodeID={nodeID} slice={slice.value} index={index} useFractionalIndex={false}></ImageMultiLayerRenderer>
+            <ImageMultiLayerRenderer node={node} nodeID={nodeID} slice={slice.value} index={index} useFractionalIndex={false}></ImageMultiLayerRenderer>
             <label>Slice</label>
             <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
             <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>

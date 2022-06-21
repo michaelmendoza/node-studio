@@ -9,6 +9,7 @@ import { isString } from '../../libraries/utils';
 import MaskGenerator from '../Generators/MaskGenerator';
 import HistogramView from './NodeViews/HistogramView';
 import ImageLayerView from './NodeViews/ImageLayerView';
+import DataView from './NodeViews/DataView';
 
 /**
  * Node Property Options
@@ -106,23 +107,27 @@ const NodeProps = ({node}) => {
     return (
     <div className="node_props"> 
         {
-            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView nodeID={node.id}></ImageView> : null
+            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView node={node} nodeID={node.id}></ImageView> : null
         }
 
         {
-            node.type === 'LAYER_DISPLAY' ? <ImageLayerView nodeID={node.id}></ImageLayerView> : null
+            node.type === 'LAYER_DISPLAY' ? <ImageLayerView node={node} nodeID={node.id}></ImageLayerView> : null
         }
 
         {
-            node.type === 'MASK_GENERATOR' ? <MaskGenerator nodeID={node.id}></MaskGenerator> : null
+            node.type === 'MASK_GENERATOR' ? <MaskGenerator node={node} nodeID={node.id}></MaskGenerator> : null
         }
 
         {
-            node.type === 'HISTOGRAM' ? <HistogramView nodeID={node.id}></HistogramView> : null
+            node.type === 'HISTOGRAM' ? <HistogramView node={node} nodeID={node.id}></HistogramView> : null
         }
 
         {
-            <NodePropsOptions id={node.id} options={node.options} args={node.args}></NodePropsOptions>
+            <NodePropsOptions node={node} id={node.id} options={node.options} args={node.args}></NodePropsOptions>
+        }
+
+        {
+            node.type !== 'DISPLAY' ? <DataView node={node} nodeID={node.id}></DataView> : null
         }
     </div>
     )

@@ -11,6 +11,31 @@ class Node {
         this.props = node.props || {};
         this.styles = node.styles || {};
         this.args = node.args || {};                // Fn arguments dict for Node compute
+        this.view = {
+            update: 0,      // Check if view needs update i.e. session has run 
+            dims: [],       // Shape labels i.e. [depth, height, width, coils, phase_cycles]
+            shape: [],      // Data shape i.e. [180, 360, 360, 4, 8]
+            indices: [],    // Indices for view
+            colormap: 'bw', // Colormap
+            get hasData() { return this.shape?.length > 0 },
+            init: (view_metadata) => { 
+                this.view.shape = view_metadata.shape;
+                this.view.dims = view_metadata.dims;
+                this.view.indices = this.view.shape?.map(s => Math.floor(s / 2));
+            },
+            updateIndex: (index, value) => {
+                const indices = [...this.view.indices];
+                indices[index] = value;
+                this.view.indices = indices;
+            },
+            updateIndex3d: (x, y, z) => {
+                const indices = [...this.view.indices];
+                indices[0] = z;
+                indices[1] = y;
+                indices[2] = x;
+                this.view.indices = indices;
+            }
+        }
     }
 
     get name() { return this?.props.name || 'Test'; }

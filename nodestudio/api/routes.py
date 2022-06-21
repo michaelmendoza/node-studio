@@ -21,6 +21,42 @@ def handle_exception(func):
 
 router = APIRouter(prefix="/api")
 
+import base64
+from io import BytesIO
+from PIL import Image
+import numpy as np
+img = np.tile(np.linspace(0,255,640),(640,1))
+buffered = BytesIO()
+
+@router.get("/test")
+@handle_exception
+async def get_test():
+    ''' Retrieves the list of available nodes '''
+    return { 'message': 'Retrieved data', 'data': img.tolist() }
+
+@router.get("/test2")
+@handle_exception
+async def get_test2():
+    ''' Retrieves the list of available nodes '''
+    min = float(np.nanmin(img))
+    max = float(np.nanmax(img))
+    resolution = 4096
+    output = (img - min) * resolution / (max - min)
+    output = np.floor(output).astype('uint16')
+    encodedData = base64.b64encode(output)
+    return { 'message': 'Retrieved data', 'data': encodedData }
+
+@router.get("/test3")
+@handle_exception
+async def get_test3():
+    ''' Retrieves the list of available nodes '''
+    resolution = np.max(img)
+    sim = img * 255 / resolution
+    im = Image.fromarray(np.uint8(sim))
+    im.save(buffered, format="PNG")
+    img_str = "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
+    return { 'message': 'Retrieved data', 'data': img_str }
+
 @router.get("/nodelist")
 @handle_exception
 async def get_graph():
@@ -49,11 +85,39 @@ async def reset_graph():
     data = controllers.reset_graph()
     return { 'message': 'Reset graph', 'data': data }
 
+@router.get("/graph/nodeview_metadata")
+@handle_exception
+async def get_graph_nodeview_metadata():
+    ''' Creates compuate graph '''
+    data = controllers.get_graph_nodeview_metadata()
+    return { 'message': 'Retrieved graph nodeview metadata', 'data': data }
+
 @router.get("/node")
 @handle_exception
 async def get_node(node_id: str, slice: str, index: int):
     ''' Gets node data for given node_id '''
     data = controllers.get_node_data(node_id, slice, index)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/value")
+@handle_exception
+async def get_node(node_id: str, key: str):
+    ''' Gets node data for given node_id '''
+    data = controllers.get_node_value(node_id, key)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/type")
+@handle_exception
+async def get_node(node_id: str, key: str):
+    ''' Gets node data type for given node_id '''
+    data = controllers.get_node_value_type(node_id)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/shape")
+@handle_exception
+async def get_node(node_id: str):
+    ''' Gets node data shape for given node_id '''
+    data = controllers.get_node_value_shape(node_id)
     return { 'message': 'Retrieved node data', 'data': data }
 
 @router.get("/node_metadata")
