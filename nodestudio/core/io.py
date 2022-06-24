@@ -1,5 +1,6 @@
 import os
 import glob
+import uuid
 import pydicom
 import numpy as np
 import mapvbvd
@@ -8,12 +9,50 @@ from core.dataset import NodeDataset
 from core.metadata import NodeMetadata
 from core.datagroup import DataGroup
 
+files_loaded = {}
+
+def get_filedata(file):
+    ''' Retrieves file data from files_loaded cache. '''
+
+    if(file['id'] in files_loaded):
+        return files_loaded[file['id']]['data']
+    else:
+        id = read_file(file.filepath)
+        return files_loaded[id].data
+
+def read_file(filepath):
+    id = uuid.uuid1().hex
+
+    ''' Detects valid files in filepath and reads file, and places data in io datastore '''
+    if os.path.isdir(filepath):
+        # Read raw data files in folder (load one dataset per file)
+        paths = glob.glob(filepath + '*.dat') 
+        for filename in paths:
+            id = uuid.uuid1().hex
+            files_loaded[id] = { 'id':id, 'path':filename, 'name':f'File {len(files_loaded)}', 'type':'raw data', 'data': read_rawdata(filename)} 
+
+        # Read raw data files in folder (load one dataset/datagroup per folder)
+        paths = glob.glob(filepath + '*.dcm')        
+        paths.extend(glob.glob(filepath + '*.ima'))
+        if len(paths) > 0:
+            files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'dicom', 'data': read_dicom(filepath)}  
+    else:
+        # Check for file extension and read dicom / raw data files
+        filename, file_extension = os.path.splitext(filepath)
+        if file_extension == '.dat':
+            files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'raw data', 'data': read_rawdata(filepath)}  
+        if file_extension == '.dcm' or file_extension == '.ima':
+            files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'dicom', 'data': read_dicom(filepath)}  
+    
+    return id
+
 def read_dicom(filepath, group_by=None, sort_by=None):
     ''' Reads dicom files from a folder or single file. Groups data if group_by is set to tag in dicom header'''
 
     # Get filenames and sort alphabetically
     if os.path.isdir(filepath):
-        paths = glob.glob(filepath + '*.dcm') # add .ima files and other dicom file names
+        paths = glob.glob(filepath + '*.dcm')        # add .dcm files
+        paths.extend(glob.glob(filepath + '*.ima'))  # add .ima files
     elif os.path.isfile(filepath):
         paths = [filepath]
     else:
@@ -59,24 +98,6 @@ def read_dicom(filepath, group_by=None, sort_by=None):
         return datagroup[0]
     else:
         return DataGroup(datagroup)
-
-    '''
-    dataset = pydicom.dcmread(paths[0])
-    depth = len(paths)
-    height = dataset.pixel_array.shape[0]
-    width = dataset.pixel_array.shape[1]
-
-    headers = []
-    data = np.zeros((depth, height, width), dtype='uint16')
-    for idx, path in enumerate(paths):
-        dataset = pydicom.dcmread(path, force=True)
-        data[idx,:,:] = dataset.pixel_array
-        headers.append(dataset)
-
-    metadata = NodeMetadata(headers, 'dicom')
-    dataset = NodeDataset(data, metadata, ['Sli', 'Lin', 'Col'])
-    return dataset
-    '''
 
 def read_rawdata(filepath, datatype='image'):
     ''' Reads rawdata files and returns NodeDataset '''

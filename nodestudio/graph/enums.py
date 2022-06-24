@@ -6,6 +6,7 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
+    FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = 'FILE_RAWDATA'
     MOCK = 'MOCK'
 
@@ -54,6 +55,7 @@ class NodeDetail(Enum):
     Supports:
     - Dicoms
     '''
+    FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   

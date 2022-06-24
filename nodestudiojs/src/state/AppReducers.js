@@ -18,7 +18,8 @@ export const ActionTypes = {
     'SET_MOUSESTATE': count(),
     'SET_ACTIVE_ELEMENT': count(),
     'SET_SIDENAV_SHOW': count(),
-    'UPDATE_WEBSOCKET': count()
+    'UPDATE_WEBSOCKET': count(),
+    'SET_FILES': count()
 }
 
 export const AppReducers = (state, action) => {
@@ -121,6 +122,10 @@ export const AppReducers = (state, action) => {
         case ActionTypes.UPDATE_WEBSOCKET:
             const websocket = action.message;
             return { ...state, websocket };
+
+        // Files
+        case ActionTypes.SET_FILES:
+            return { ...state, files:action.files}
 
         default:
             return state;

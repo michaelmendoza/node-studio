@@ -6,7 +6,7 @@
     display: block;
     width: 200px;
     position: absolute;
-    top: -0.7em;
+    top: 0em;
     left: 4.2em;
     
     h2 {
@@ -18,6 +18,7 @@
     input {
         margin-top: 1em;
         margin-bottom: 1em;
+        color: #FEFEFE;
     }
 
     button {
@@ -30,6 +31,15 @@
         &:hover {
             border: 1px solid #FEFEFE;
         }
+    }
+
+    .text-input {
+        text-align: left;
+    }
+
+    .divider {
+        margin: 1em 0;
+        border-bottom: 1px solid #55555555;
     }
 
     .sidepanel-panel {

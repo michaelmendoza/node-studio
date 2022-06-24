@@ -12,6 +12,8 @@ import Node from '../../models/Node';
 import Link from '../../models/Link';
 import Graph from '../../models/Graph';
 import ItemExplorer from './ItemExplorer';
+import { useEffect } from 'react';
+import Table from '../base/Table';
 
 
 const SidePanel = ({activeNav}) => {
@@ -28,21 +30,40 @@ const SidePanel = ({activeNav}) => {
     }
 
     return (
-        <div className='side-panel'>
+        <div className='side-panel' style={{ width:'30em'}}>
             { state.sideNav.show ? render() : null }
         </div>
     )
 }
 
 const PanelFiles = () => {
-    const handleOnLoad = (e) => {
-        let filepath = e.target.files[0].name;
+    const { state, dispatch } = useContext(AppState.AppContext);
+    const [filepath, setFilepath] = useState('')
+
+    const handleTextChange = (e) => {
+        setFilepath(e.target.value);
     }
+
+    const handleFileLoad = async (e) => {
+        await APIDataService.addFiles(filepath);
+        let files = await APIDataService.getFiles();
+        dispatch({ type:ActionTypes.SET_FILES, files });
+    }
+
+    const files = state.files.map(file => [file.name, file.type, file.path]);
 
     return (
         <div className='panel-files'>
             <h2> Files </h2>
-            <input type="file" multiple onChange={handleOnLoad}/>
+            <TextInput name={'Filepath'} value={filepath} placeholder={'Enter filepath for file to load'} onChange={handleTextChange}></TextInput>
+            <button onClick={handleFileLoad}> Load File </button>  
+
+            <div className='divider'></div>
+
+            <div>
+                <h2> Available Files </h2>
+                <Table data={files} headers={['Name', 'Type', 'Path']}></Table>
+            </div>
         </div>
     )
 }

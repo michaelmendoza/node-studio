@@ -1,5 +1,5 @@
 import './NodeProps.scss';
-import React, { useContext, useEffect } from 'react';
+import React, { useContext, useEffect, useState } from 'react';
 import { ActionTypes } from '../../state/AppReducers';
 import AppState from '../../state/AppState';
 import ImageView from './NodeViews/ImageView';
@@ -10,6 +10,8 @@ import MaskGenerator from '../Generators/MaskGenerator';
 import HistogramView from './NodeViews/HistogramView';
 import ImageLayerView from './NodeViews/ImageLayerView';
 import DataView from './NodeViews/DataView';
+import APIDataService from '../../services/APIDataService';
+import Node from '../../models/Node';
 
 /**
  * Node Property Options
@@ -127,10 +129,45 @@ const NodeProps = ({node}) => {
         }
 
         {
+            node.type === 'FILE' ? <FilePropsOptions node={node}></FilePropsOptions> : null
+        }
+
+        {
             node.type !== 'DISPLAY' ? <DataView node={node} nodeID={node.id}></DataView> : null
         }
     </div>
     )
+}
+
+const FilePropsOptions = ({ node }) => {
+    const { state, dispatch } = useContext(AppState.AppContext);
+
+    const select = state.files.map(file => ({ label:file.name, value:file }));
+
+    const handleOptionChange = async(select) => {
+        node.args['file'] = select.value
+        await APIDataService.updateNode(Node.export(node));
+        await APIDataService.runSesson([node.id]);
+        const metadata = await APIDataService.getNodeViewMetadata(node.id);
+        node.view.init(metadata)
+        node.view.update += 1;
+
+        dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+    }
+
+    return (
+        <div>
+            {
+                state.files.length > 0 ? 
+                    <div> 
+                        <label>Select File</label> 
+                        <Select options={select} onChange={handleOptionChange}></Select> 
+                    </div> : 
+                    <div className='text-align-center'> <div> No file available.</div><div> Upload file from files tab. </div> </div> 
+            }
+        </div>
+    )
+
 }
 
 export default NodeProps;

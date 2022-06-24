@@ -18,8 +18,6 @@
                         "y": 50
                     },
                     "args": {
-                        "filetype": "dicom",
-                        "filepath": "/Users/michael/projects/MRI/data/foot_data/"
                     }
                 },
                 "4ce1c07c8a1211ec8516acde48001122": {
@@ -349,6 +347,169 @@
                     "startNode": "ddd6aa89-ec16-4899-8f90-65205cf81da6",
                     "startPort": 0,
                     "endNode": "4047daf6-a861-4fc7-882e-bf879d6217b6",
+                    "endPort": 0
+                }
+            ]
+        }
+    },
+    {
+        "name": "T2 Seg",
+        "description": "T2 + DOSMA Segmentation",
+        "graph": {
+            "nodes": {
+                "4ce1b6d68a1211ec8516acde48001122": {
+                    "id": "4ce1b6d68a1211ec8516acde48001122",
+                    "props": {
+                        "type": "FILE"
+                    },
+                    "inputs": [],
+                    "outputs": [
+                        "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b",
+                        "4c66a1b0-91a1-4692-8faf-dcf6d72bee62"
+                    ],
+                    "styles": {
+                        "x": 60,
+                        "y": 30
+                    },
+                    "args": {
+                        "filetype": "dicom",
+                        "filepath": "//knee_data"
+                    }
+                },
+                "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b": {
+                    "id": "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b",
+                    "props": {
+                        "type": "MASK_GENERATOR"
+                    },
+                    "inputs": [
+                        "4ce1b6d68a1211ec8516acde48001122"
+                    ],
+                    "outputs": [
+                        "39afd575-8c63-4dee-9f25-492422e453bf",
+                        "76bff9d9-72ed-40f3-a63c-c5709a34ac46"
+                    ],
+                    "styles": {
+                        "x": 355,
+                        "y": 60
+                    },
+                    "args": {}
+                },
+                "4c66a1b0-91a1-4692-8faf-dcf6d72bee62": {
+                    "id": "4c66a1b0-91a1-4692-8faf-dcf6d72bee62",
+                    "props": {
+                        "type": "T2_qDESS"
+                    },
+                    "inputs": [
+                        "4ce1b6d68a1211ec8516acde48001122"
+                    ],
+                    "outputs": [
+                        "39afd575-8c63-4dee-9f25-492422e453bf"
+                    ],
+                    "styles": {
+                        "x": 232,
+                        "y": 288
+                    },
+                    "args": {}
+                },
+                "5766d516-9260-4a20-8e9f-d2dfed4f2080": {
+                    "id": "5766d516-9260-4a20-8e9f-d2dfed4f2080",
+                    "props": {
+                        "type": "HISTOGRAM"
+                    },
+                    "inputs": [
+                        "39afd575-8c63-4dee-9f25-492422e453bf"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 793,
+                        "y": 374
+                    },
+                    "args": {}
+                },
+                "39afd575-8c63-4dee-9f25-492422e453bf": {
+                    "id": "39afd575-8c63-4dee-9f25-492422e453bf",
+                    "props": {
+                        "type": "MULT"
+                    },
+                    "inputs": [
+                        "4c66a1b0-91a1-4692-8faf-dcf6d72bee62",
+                        "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b"
+                    ],
+                    "outputs": [
+                        "5766d516-9260-4a20-8e9f-d2dfed4f2080",
+                        "76bff9d9-72ed-40f3-a63c-c5709a34ac46"
+                    ],
+                    "styles": {
+                        "x": 550,
+                        "y": 139
+                    },
+                    "args": {}
+                },
+                "76bff9d9-72ed-40f3-a63c-c5709a34ac46": {
+                    "id": "76bff9d9-72ed-40f3-a63c-c5709a34ac46",
+                    "props": {
+                        "type": "LAYER_DISPLAY"
+                    },
+                    "inputs": [
+                        "39afd575-8c63-4dee-9f25-492422e453bf",
+                        "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 858,
+                        "y": 35
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "463497ed-e270-43c3-a269-03bcc169858d",
+                    "startNode": "4ce1b6d68a1211ec8516acde48001122",
+                    "startPort": 0,
+                    "endNode": "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b",
+                    "endPort": 0
+                },
+                {
+                    "id": "c792b240-15fc-4131-9a72-61e06f3805a9",
+                    "startNode": "4ce1b6d68a1211ec8516acde48001122",
+                    "startPort": 0,
+                    "endNode": "4c66a1b0-91a1-4692-8faf-dcf6d72bee62",
+                    "endPort": 0
+                },
+                {
+                    "id": "895d1714-64d6-4d0c-aec3-996b1cb5d8e6",
+                    "startNode": "4c66a1b0-91a1-4692-8faf-dcf6d72bee62",
+                    "startPort": 0,
+                    "endNode": "39afd575-8c63-4dee-9f25-492422e453bf",
+                    "endPort": 1
+                },
+                {
+                    "id": "03a35524-b337-4eb4-a0dc-48b1f081fca0",
+                    "startNode": "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b",
+                    "startPort": 0,
+                    "endNode": "39afd575-8c63-4dee-9f25-492422e453bf",
+                    "endPort": 0
+                },
+                {
+                    "id": "37d5a119-a6ba-4fd1-819d-7c724906c02f",
+                    "startNode": "39afd575-8c63-4dee-9f25-492422e453bf",
+                    "startPort": 0,
+                    "endNode": "5766d516-9260-4a20-8e9f-d2dfed4f2080",
+                    "endPort": 0
+                },
+                {
+                    "id": "b3eaeb54-ac37-428e-8407-b868443df486",
+                    "startNode": "39afd575-8c63-4dee-9f25-492422e453bf",
+                    "startPort": 0,
+                    "endNode": "76bff9d9-72ed-40f3-a63c-c5709a34ac46",
+                    "endPort": 1
+                },
+                {
+                    "id": "4b4dcdbf-649d-476a-a178-9da6b77d4268",
+                    "startNode": "0cb4d3a4-ee9d-464d-ae9d-673f15893f7b",
+                    "startPort": 0,
+                    "endNode": "76bff9d9-72ed-40f3-a63c-c5709a34ac46",
                     "endPort": 0
                 }
             ]

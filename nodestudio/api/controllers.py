@@ -10,7 +10,7 @@ from graph.node import Node
 from graph.nodes import NodeInfo
 from graph.sesson import Session
 from graph.interfaces import LinkData
-from core import NodeDataset, DataGroup
+from core import NodeDataset, DataGroup, io
 
 def get_nodelist():
     data = NodeInfo
@@ -78,6 +78,9 @@ def get_node_value_dims(node_id):
 
     if isinstance(node.value, NodeDataset):
         return node.value.dims
+
+def get_node_view_metadata(node_id):
+    return { 'shape': get_node_value_shape(node_id), 'dims': get_node_value_dims(node_id) } 
 
 def get_node_data(node_id, slice, index):
     node = current_graph.getNode(node_id)
@@ -182,3 +185,14 @@ def get_examples():
 def set_examples(data):
     with open('./nodestudio/api/examples.json', 'w') as outfile:
         json.dump(data, outfile, ensure_ascii=False, indent=4)
+
+def get_files():
+    return [ { 'id':file['id'], 'path':file['path'], 'name':file['name'], 'type':file['type'] } for file in io.files_loaded.values() ]
+
+def read_file(filepath):
+    io.read_file(filepath)
+    return get_files()
+
+def update_filename(id, name):
+    io.files_loaded[id]['name'] = name
+    return get_files()

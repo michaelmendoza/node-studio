@@ -13,7 +13,8 @@ const initialState  = {
     mouseState: MouseStates.NORMAL,
     activeElement: null, // can be Node or Link
     sideNav: { show: false },
-    websocket: { } 
+    websocket: { },
+    files: [],
 };
 
 /**

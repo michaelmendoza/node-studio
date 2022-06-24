@@ -57,7 +57,7 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
 
         node.view.updateIndex(shapeIndex, new_index);
         setIndex(new_index);
-        updateIndex(new_index);
+        if (updateIndex) updateIndex(new_index);
     }   
 
     const getImageValue = () => {
