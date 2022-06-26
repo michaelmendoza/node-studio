@@ -17,11 +17,13 @@ class Node {
             shape: [],      // Data shape i.e. [180, 360, 360, 4, 8]
             indices: [],    // Indices for view
             colormap: 'bw', // Colormap
+            isComplex: false,
             get hasData() { return this.shape?.length > 0 },
             init: (view_metadata) => { 
                 this.view.shape = view_metadata.shape;
                 this.view.dims = view_metadata.dims;
                 this.view.indices = this.view.shape?.map(s => Math.floor(s / 2));
+                this.view.isComplex = view_metadata.isComplex
             },
             updateIndex: (index, value) => {
                 const indices = [...this.view.indices];

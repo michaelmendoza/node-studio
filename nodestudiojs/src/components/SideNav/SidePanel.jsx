@@ -12,12 +12,15 @@ import Node from '../../models/Node';
 import Link from '../../models/Link';
 import Graph from '../../models/Graph';
 import ItemExplorer from './ItemExplorer';
-import { useEffect } from 'react';
 import Table from '../base/Table';
 
 
 const SidePanel = ({activeNav}) => {
-    const {state} = useContext(AppState.AppContext);
+    const { state, dispatch } = useContext(AppState.AppContext);
+
+    const handleHide = () => {
+        dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
+    }
 
     const render = () => {
         if (activeNav.name === 'files') return <PanelFiles></PanelFiles>
@@ -30,9 +33,15 @@ const SidePanel = ({activeNav}) => {
     }
 
     return (
-        <div className='side-panel' style={{ width:'30em'}}>
-            { state.sideNav.show ? render() : null }
+        <div>
+            { 
+                state.sideNav.show ? <div className='side-panel'>
+                    { state.sideNav.backdrop ? <div className='panel-backdrop' onClick={handleHide}></div> : null }
+                    {  <div className='panel-content' style={{ width:'30em'}}> {render()} </div> }
+                </div> : null
+            }
         </div>
+
     )
 }
 

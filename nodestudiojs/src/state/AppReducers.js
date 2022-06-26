@@ -18,6 +18,7 @@ export const ActionTypes = {
     'SET_MOUSESTATE': count(),
     'SET_ACTIVE_ELEMENT': count(),
     'SET_SIDENAV_SHOW': count(),
+    'SET_SIDENAV_BACKDROP': count(),
     'UPDATE_WEBSOCKET': count(),
     'SET_FILES': count()
 }
@@ -117,6 +118,8 @@ export const AppReducers = (state, action) => {
         // SideNav actions
         case ActionTypes.SET_SIDENAV_SHOW:
             return { ...state, sideNav: { ...state.sideNav, show: action.show }};
+        case ActionTypes.SET_SIDENAV_BACKDROP:
+            return { ...state, sideNav: { ...state.sideNav, backdrop: action.backdrop }};
 
         // Websocket
         case ActionTypes.UPDATE_WEBSOCKET:

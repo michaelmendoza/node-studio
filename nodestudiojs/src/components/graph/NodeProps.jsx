@@ -12,6 +12,7 @@ import ImageLayerView from './NodeViews/ImageLayerView';
 import DataView from './NodeViews/DataView';
 import APIDataService from '../../services/APIDataService';
 import Node from '../../models/Node';
+import DataView1D from './NodeViews/DataView1D';
 
 /**
  * Node Property Options
@@ -109,10 +110,6 @@ const NodeProps = ({node}) => {
     return (
     <div className="node_props"> 
         {
-            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView node={node} nodeID={node.id}></ImageView> : null
-        }
-
-        {
             node.type === 'LAYER_DISPLAY' ? <ImageLayerView node={node} nodeID={node.id}></ImageLayerView> : null
         }
 
@@ -129,11 +126,23 @@ const NodeProps = ({node}) => {
         }
 
         {
+            node.type === 'DISPLAY' ? <DisplayComplexPropsOptions node={node}></DisplayComplexPropsOptions> : null 
+        }
+
+        {
+            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView node={node} nodeID={node.id}></ImageView> : null
+        }
+
+        {
             node.type === 'FILE' ? <FilePropsOptions node={node}></FilePropsOptions> : null
         }
 
         {
             node.type !== 'DISPLAY' ? <DataView node={node} nodeID={node.id}></DataView> : null
+        }
+
+        {
+            node.type === 'LINE_DISPLAY' ? <DataView1D node={node}></DataView1D> : null
         }
     </div>
     )
@@ -164,6 +173,35 @@ const FilePropsOptions = ({ node }) => {
                         <Select options={select} onChange={handleOptionChange}></Select> 
                     </div> : 
                     <div className='text-align-center'> <div> No file available.</div><div> Upload file from files tab. </div> </div> 
+            }
+        </div>
+    )
+
+}
+
+const DisplayComplexPropsOptions = ({ node }) => {
+    const { dispatch } = useContext(AppState.AppContext);
+    const [datatype, setDatatype] = useState({ label:'Mag', value:'mag'});
+    const options = ['mag', 'angle', 'real', 'imag'];
+    const select = options.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }));
+
+    const handleOptionChange = async(select) => {
+        node.args['complex_datatype'] = select.value
+        await APIDataService.updateNode(Node.export(node));
+        await APIDataService.runSesson([node.id]);
+        node.view.update += 1;
+        dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+        setDatatype(select);
+    }
+
+    return (
+        <div>
+            {
+                node.view.isComplex ? 
+                <div> 
+                    <label>Complex Datatype</label> 
+                    <Select options={select} value={datatype} onChange={handleOptionChange}></Select> 
+                </div> : null
             }
         </div>
     )

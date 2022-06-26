@@ -70,6 +70,13 @@ async def get_node_value(node_id: str, key: str):
     data = controllers.get_node_value(node_id, key)
     return { 'message': 'Retrieved node data', 'data': data }
 
+@router.get("/node/value/uncompressed")
+@handle_exception
+async def get_node_value_uncompressed(node_id: str, key: str):
+    ''' Gets node data for given node_id '''
+    data = controllers.get_node_value_uncompressed(node_id, key)
+    return { 'message': 'Retrieved node data', 'data': data }
+
 @router.get("/node/type")
 @handle_exception
 async def get_node_type(node_id: str, key: str):

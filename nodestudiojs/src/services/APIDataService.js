@@ -24,6 +24,8 @@ const APIDataService = {
 
     getNodeValue : (node_id, key) => fetchAPI(`${dataUrl}/node/value?node_id=${node_id}&key=${key}`, FetchTypes.GET),
 
+    getNodeValueUncompressed: (node_id, key) => fetchAPI(`${dataUrl}/node/value/uncompressed?node_id=${node_id}&key=${key}`, FetchTypes.GET),
+
     getNodeType : (node_id) => fetchAPI(`${dataUrl}/node/type?node_id=${node_id}`, FetchTypes.GET),
 
     getNodeShape : (node_id) => fetchAPI(`${dataUrl}/node/shape?node_id=${node_id}`, FetchTypes.GET),

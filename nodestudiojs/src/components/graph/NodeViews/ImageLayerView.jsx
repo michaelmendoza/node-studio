@@ -22,7 +22,7 @@ const ImageLayerView = ({node, nodeID}) => {
             let metadata = await APIDataService.getNodeMetadata(nodeID);
             if(Array.isArray(metadata)) metadata = metadata[0];
             updateMaxSlice(metadata.fullshape);           
-        })
+        }, 100, node.id + '-ImageLayerView')
     }
 
     const handleOptionUpdate = (option) => {

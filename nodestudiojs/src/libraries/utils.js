@@ -18,6 +18,15 @@ export const debounce = (f, debounceTime = 100, id = '0') => {
     }, debounceTime);
 };
 
+/** 
+ * Returns an array of all integers from start to end. (Python like functionality)
+ * Ref: https://dev.to/ycmjason/how-to-create-range-in-javascript-539i
+ * */
+ export const range = (start, end) => {
+    const length = Math.ceil(end - start);
+    return Array.from({ length }, (_, i) => start + i);
+};
+
 /** Returns boolean for whether a value is a number */
 export const isNumber = (value) => (
     (value != null) &&

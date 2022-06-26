@@ -11,14 +11,14 @@ const HistogramView = ({node, nodeID}) => {
     }, [node.view.update]);
 
     const fetchData = async () => {
-        if (!node.view.hasData) return;
+        //if (!node.view.hasData) return;
         const metadata = await APIDataService.getNodeMetadata(nodeID);
-        if(metadata) setData(metadata);
+        if(metadata?.histogram) setData(metadata);
     }
 
     return (
         <div>
-            <HistogramChart width={200} height={200} data={data.histogram}></HistogramChart>
+            <HistogramChart width={310} height={310} data={data.histogram}></HistogramChart>
             <div>
                 <div className="layout-row layout-space-between">
                     <div style={{width:'50%'}}>

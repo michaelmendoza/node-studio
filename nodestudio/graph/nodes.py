@@ -7,7 +7,7 @@ from process.core.fit import fit
 from process.core.mask import apply_mask, apply_threshold_mask
 from process.core.undersampling import undersample
 from process.core.sensitivity_map import get_sensitivity_map
-from process.io.display import process_data, process_complex_data, process_2channel_data
+from process.io.display import process_data, process_2channel_data, process_historam
 from process.io.file import read_file, read_rawdata
 from process.phantom.phantom import phantom_generator
 from process.simulation.mock import mock_2d_data
@@ -78,9 +78,9 @@ NodeInfo = {
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
-    NodeType.CDISPLAY: NodeProps(type=NodeType.CDISPLAY, name='Display (Complex)', tags=['output'], description='Displays complex data as an image', detail=NodeDetail.CDISPLAY, input=['In'], options=[{'name':'datatype', 'select':['mag','phase','real','imag']}], fn=process_complex_data),
+    NodeType.LINE_DISPLAY: NodeProps(type=NodeType.LINE_DISPLAY, name='Line Display', tags=['output'], description='Displays data as 1d plots', detail=NodeDetail.LINE_DISPLAY, input=['In']),
     NodeType.LAYER_DISPLAY: NodeProps(type=NodeType.LAYER_DISPLAY, name='Layer Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.LAYER_DISPLAY, input=['Layer 1', 'Layer 2'], fn=process_2channel_data),
-    NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_data),
+    NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_historam),
 
     # Debug Nodes
     NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
