@@ -1,4 +1,6 @@
-import os
+import sys, os
+sys.path.insert(0, os.getcwd())
+
 import time
 import uvicorn
 from fastapi import FastAPI, Request, Response
