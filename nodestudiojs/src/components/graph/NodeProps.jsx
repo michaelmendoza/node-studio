@@ -150,8 +150,14 @@ const NodeProps = ({node}) => {
 
 const FilePropsOptions = ({ node }) => {
     const { state, dispatch } = useContext(AppState.AppContext);
-
+    const [file, setFile] = useState(null)
     const select = state.files.map(file => ({ label:file.name, value:file }));
+
+    useEffect(() => {
+        if (node.args.file)
+            handleOptionChange({ label:node.args.file.name, value:node.args.file })
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [])
 
     const handleOptionChange = async(select) => {
         node.args['file'] = select.value
@@ -161,6 +167,7 @@ const FilePropsOptions = ({ node }) => {
         node.view.init(metadata)
         node.view.update += 1;
 
+        setFile(select); 
         dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
     }
 
@@ -170,7 +177,7 @@ const FilePropsOptions = ({ node }) => {
                 state.files.length > 0 ? 
                     <div> 
                         <label>Select File</label> 
-                        <Select options={select} onChange={handleOptionChange}></Select> 
+                        <Select options={select} value={file} onChange={handleOptionChange}></Select> 
                     </div> : 
                     <div className='text-align-center'> <div> No file available.</div><div> Upload file from files tab. </div> </div> 
             }
