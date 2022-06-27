@@ -1,107 +1,67 @@
 import './Image3dViewer.scss';
 import { useRef, useState, useEffect } from 'react';
-import ImageRender from './ImageSimpleRenderer';
-import APIDataService from '../../services/APIDataService';
+import ImageSimpleRenderer from './ImageSimpleRenderer';
 import { useWindowSize } from '../../hooks/useWindowSize';
 
-const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosition, picturesize, colMap }) => {
+const ImageSliceViewer = ({ node, slicetype = 'transverse', position, setPosition, positionSize, colMap }) => {
     const viewerRef = useRef(null);
     const [canDrag, setCanDrag] = useState(false);
-    
-    const slice = {
-        'transverse': 'xy', 
-        'coronal': 'xz', 
-        'sagittal': 'yz'
-    };
+        
+    const slice = { 'transverse': 'xy', 'coronal': 'xz', 'sagittal': 'yz' };
+
+    const color = {'transverse': ['green', 'purple'], 'coronal': ['yellow', 'purple'], 'sagittal': ['yellow', 'green'] };
 
     const style = { 
-        'transverse': [{ width: picturesize.x, height: picturesize.y }, { top:position.y, width: picturesize.x }, { left:position.x }],
-        'coronal': [{ width : picturesize.x , height : picturesize.z }, { top:position.z, width: picturesize.x}, { left:position.x }],
-        'sagittal': [{ width: picturesize.y, height: picturesize.z }, { top:position.z, width: picturesize.y }, { left:picturesize.y-position.y }]
+        'transverse': [{ width: positionSize.x, height: positionSize.y }, { top:position.y, width: positionSize.x }, { left:position.x }],
+        'coronal': [{ width : positionSize.x , height : positionSize.z }, { top:position.z, width: positionSize.x}, { left:position.x }],
+        'sagittal': [{ width: positionSize.y, height: positionSize.z }, { top:position.z, width: positionSize.y }, { left:position.y }]
     }; 
 
-    const color = {
-        'transverse': ['green', 'purple'], 
-        'coronal': ['yellow', 'purple'], 
-        'sagittal': ['yellow', 'green']
-    };
-
-    const index = {
-        'transverse': position.z / picturesize.z, 
-        'coronal': position.y / picturesize.y, 
-        'sagittal': position.x / picturesize.x
-    };
-
     const handleMouseDown = (e) => { e.preventDefault(); setCanDrag(true); }
-  
+
     const handleMouseUp = (e) => { e.preventDefault(); setCanDrag(false); }
-  
+
     const handleMouseLeave = (e) => { e.preventDefault(); setCanDrag(false); }
-  
+
     const handleMouseMove = (e) => {
         e.preventDefault();
         if(!canDrag) return;
 
         var rect = viewerRef.current.getBoundingClientRect();
+        let x = Math.round(e.pageX - rect.left);
+        let y = Math.round(e.pageY - rect.top);
 
-        if (slicetype === 'transverse') {
-            let x = Math.round(e.pageX - rect.left);
-            let y = Math.round(e.pageY - rect.top );
-            let z = position.z
+        y = y < 0 ? 0 : y
+        y = y > viewerRef.current.clientHeight ? viewerRef.current.clientHeight : y
+        x = x < 0 ? 0 : x
+        x = x > viewerRef.current.clientWidth ? viewerRef.current.clientWidth : x
 
-            y = y < 0 ? 0 : y
-            y = y > viewerRef.current.clientHeight ? viewerRef.current.clientHeight : y
-            x = x < 0 ? 0 : x
-            x = x > viewerRef.current.clientWidth ? viewerRef.current.clientWidth : x
-            setPosition({ x, y, z });
-        }
-        if (slicetype === 'coronal') {
-            let x = Math.round(e.pageX - rect.left);
-            let y = position.y
-            let z = Math.round(e.pageY - rect.top );
-        
-            z = z < 0 ? 0 : z
-            z = z > viewerRef.current.clientHeight ? viewerRef.current.clientHeight : z
-            x = x < 0 ? 0 : x
-            x = x > viewerRef.current.clientWidth ? viewerRef.current.clientWidth : x
-            setPosition({ x, y, z })
-        }
-        if (slicetype === 'sagittal') {
-            let x = position.x
-            let y = Math.round(rect.right - e.pageX );
-            let z = Math.round(e.pageY - rect.top );
-        
-            z = z < 0 ? 0 : z
-            z = z > viewerRef.current.clientHeight ? viewerRef.current.clientHeight : z
-            y = y < 0 ? 0 : y
-            y = y > viewerRef.current.clientWidth ? viewerRef.current.clientWidth : y
-            setPosition({ x, y, z })
-        }
-     
+        let _position;
+        if (slicetype === 'transverse') _position = { x, y, z: position.z };
+        if (slicetype === 'coronal') _position = { x:x, y: position.y, z:y };
+        if (slicetype === 'sagittal') _position = { x:position.x, y:x, z:y };
+        setPosition(_position);
+
+        const maxIndex = node.view.shape.map((s) => s - 1);
+        const idx =  Math.floor(_position.x / positionSize.x * maxIndex[2]); // transverse - xy
+        const idy = Math.floor(_position.y / positionSize.y * maxIndex[1]); // coronal - xz
+        const idz = Math.floor(_position.z / positionSize.z * maxIndex[0]); // sagittal - yz
+        node.view.updateIndex3d(idx, idy, idz);
     }    
 
-    const setIndex = (new_index) => {
-        let x = position.x;
-        let y = position.y;
-        let z =  position.z;
-
-        if (slicetype === 'transverse') { 
-            z = new_index * picturesize.z;
-        }
-        if (slicetype === 'coronal') {
-            y = new_index * picturesize.y;
-        }
-        if (slicetype === 'sagittal') {
-            x = new_index * picturesize.x;
-        }
-
+    const updateIndex = (new_index) => {
+        const shapeIndex = ({ 'transverse':0, 'coronal':1, 'sagittal':2 })[slicetype];
+        const fractional_index = new_index / node.view.shape[shapeIndex];
+        let x = (slicetype === 'sagittal') ? fractional_index * positionSize.x : position.x;
+        let y = (slicetype === 'coronal') ? fractional_index * positionSize.y : position.y;
+        let z = (slicetype === 'transverse') ? fractional_index * positionSize.z : position.z;
         setPosition({ x, y, z });
     }
 
     return (
         <div className='image-slice-viewer'>
             <div style={style[slicetype][0]} ref={viewerRef} onMouseMove={handleMouseMove} onMouseLeave={handleMouseLeave}>
-            <ImageRender slice={slice[slicetype]} index={index[slicetype]} setIndex={setIndex} colormap={colMap} nodeID={nodeID}></ImageRender>
+            <ImageSimpleRenderer node={node} slice={slice[slicetype]} colormap={colMap} updateIndex={updateIndex}></ImageSimpleRenderer>
               <div className={'drag-handle-viewable-h-' + color[slicetype][0]} style={style[slicetype][1]} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp}> 
                 <div className='drag-handle-dragable-h'></div>
               </div>  
@@ -109,37 +69,34 @@ const ImageSliceViewer = ({ nodeID, slicetype = 'transverse', position, setPosit
                 <div className='drag-handle-dragable-v'></div>
               </div>  
             </div>
-          
         </div>
       );
 }
 
-const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
+const Image3dViewer = ({ node, colMap }) => {
     const viewerRef = useRef(null);
     const size = useWindowSize();
-
     const [isInit, setInit] = useState(false);
-    const [picturesize, setPicsize] = useState(); //less than 300
+    const [positionSize, setPositionSize] = useState(); //less than 300
     const [position, setPosition] = useState();
 
     useEffect(() => {
         const fetch = async () => {
-            const picSize = await init();
-            setPicsize(picSize);
-            setPosition({ x:picSize.x / 2, y:picSize.y / 2, z:picSize.z / 2 });
+            const size = await init();
+            setPositionSize(size);
+            setPosition({ x:size.x / 2, y:size.y / 2, z:size.z / 2 });
             setInit(true);
          }
-        fetch()
+        fetch();
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [size])
 
     const init = async () => {
-        const metadata = await APIDataService.getNodeMetadata(nodeID);
-        if(metadata === null) return {  x:200, y:200, z:200 }
+        if(!node.view.hasData) return { x:200, y:200, z:200 }
     
-        let x = metadata.fullshape[2];
-        let y = metadata.fullshape[1];
-        let z = metadata.fullshape[0];
+        let x = node.view.shape[2]; 
+        let y = node.view.shape[1];
+        let z = node.view.shape[0];
     
         var maxImgDim = 0;
         if (x >= y && x >= z){ maxImgDim = x; }
@@ -151,7 +108,7 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
         y = vWidth / maxImgDim * y;
         z = vWidth / maxImgDim * z;
 
-        return { x:x, y:y, z:z }
+        return { x, y, z }
     }
 
     return (
@@ -159,15 +116,15 @@ const Image3dViewer = ({nodeID, colMap, intensity, setIntensity}) =>{
             { isInit ? <div className='layout-row'>
                 <div style={{padding: '1em'}}>
                     <h2>Transverse</h2>
-                    <ImageSliceViewer slicetype = 'transverse' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}></ImageSliceViewer> 
+                    <ImageSliceViewer node={node} slicetype = 'transverse' position = {position} setPosition = {setPosition} positionSize = {positionSize} colMap = {colMap}></ImageSliceViewer> 
                 </div>
                 <div style={{padding: '1em'}}>
                     <h2>Coronal</h2>
-                    <ImageSliceViewer slicetype = 'coronal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap}  intensity={intensity} setIntensity={setIntensity}></ImageSliceViewer>
+                    <ImageSliceViewer node={node} slicetype = 'coronal' position = {position} setPosition = {setPosition} positionSize = {positionSize} colMap = {colMap}></ImageSliceViewer>
                 </div>
                 <div style={{padding: '1em'}}>
                     <h2>Saggital</h2>
-                    <ImageSliceViewer slicetype = 'sagittal' position = {position} setPosition = {setPosition} picturesize = {picturesize} nodeID = {nodeID} colMap = {colMap} ></ImageSliceViewer>
+                    <ImageSliceViewer node={node} slicetype = 'sagittal' position = {position} setPosition = {setPosition} positionSize = {positionSize} colMap = {colMap}></ImageSliceViewer>
                 </div>
             </div> : null
             }

@@ -26,11 +26,16 @@ const AppComponents = () => {
         createWebsocketServer(dispatch);
         NodeList.fetch();
         Examples.fetch();
-        
+        // Added call to cheek -> loaded files and load if needed 
+
         const fetch = async () => {
             const json_string = await APIDataService.getGraph();
-            const graphData = Graph.readJson(json_string);
-            dispatch({ type:ActionTypes.INIT_GRAPH, graph:graphData });
+            const graph = Graph.readJson(json_string);
+            const metadata = await APIDataService.getGraphNodeViewMetadata();
+            dispatch({ type:ActionTypes.INIT_GRAPH, graph, metadata });
+
+            const files = await APIDataService.getFiles();
+            dispatch({ type:ActionTypes.SET_FILES, files });
         }
         fetch()
     // eslint-disable-next-line react-hooks/exhaustive-deps

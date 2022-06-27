@@ -13,7 +13,7 @@ export const createWebsocketServer = (dispatch) => {
     });
 
     sio.on('status', data => { 
-        //console.log('status:', data); 
+        console.log('status:', data); 
         dispatch({ type:ActionTypes.UPDATE_WEBSOCKET, message:data });
     });
 }
