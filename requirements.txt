@@ -9,6 +9,7 @@ astunparse==1.6.3
 attrs==21.4.0
 Babel==2.9.1
 backcall==0.2.0
+beautifulsoup4==4.11.1
 bidict==0.22.0
 bleach==4.1.0
 cachetools==5.0.0
@@ -31,6 +32,7 @@ filelock==3.6.0
 flatbuffers==2.0
 fonttools==4.29.1
 gast==0.5.3
+gdown==4.5.1
 google-auth==2.6.6
 google-auth-oauthlib==0.4.6
 google-pasta==0.2.0
@@ -113,6 +115,7 @@ pyMapVBVD==0.4.8
 pymongo==4.0.2
 pyparsing==3.0.7
 pyrsistent==0.18.1
+PySocks==1.7.1
 pytest==7.0.1
 python-dateutil==2.8.2
 python-engineio==4.3.2
@@ -132,6 +135,7 @@ Send2Trash==1.8.0
 simplejson==3.17.6
 six==1.16.0
 sniffio==1.2.0
+soupsieve==2.3.2.post1
 stack-data==0.2.0
 starlette==0.17.1
 tabulate==0.8.9
