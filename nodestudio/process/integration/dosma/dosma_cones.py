@@ -1,8 +1,8 @@
 import numpy as np
 from dosma.scan_sequences import QDess
 from dosma.tissues import FemoralCartilage, TibialCartilage, PatellarCartilage, Meniscus
-from nodestudio.core.datagroup import DataGroup
-from nodestudio.core.dataset import NodeDataset 
+from core.datagroup import DataGroup
+from core.dataset import NodeDataset 
 
 def dosma_cones(data, mask,tissuetype, lowerBound = 0, upperBound = 80):
     '''

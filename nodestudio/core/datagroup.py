@@ -1,4 +1,4 @@
-from nodestudio.core.dataset import NodeDataset
+from core.dataset import NodeDataset
 from dosma.scan_sequences import QDess, CubeQuant, Cones
 from dosma.scan_sequences.scans import ScanSequence
 class DataGroup():

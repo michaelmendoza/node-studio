@@ -7,8 +7,8 @@ from dosma.scan_sequences import QDess, CubeQuant, Cones
 from dosma.tissues import FemoralCartilage
 import matplotlib.pyplot as plt
 from dosma.tissues import FemoralCartilage, TibialCartilage, PatellarCartilage, Meniscus
-from nodestudio.core.datagroup import DataGroup
-from nodestudio.core.dataset import NodeDataset 
+from core.datagroup import DataGroup
+from core.dataset import NodeDataset 
 
 
 

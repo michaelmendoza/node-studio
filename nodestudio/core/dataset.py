@@ -1,7 +1,7 @@
 import numpy as np
 from dosma import MedicalVolume
 from dosma.core.io.dicom_io import to_RAS_affine
-from nodestudio.core.metadata import NodeMetadata
+from core.metadata import NodeMetadata
 
 class NodeDataset():
     
