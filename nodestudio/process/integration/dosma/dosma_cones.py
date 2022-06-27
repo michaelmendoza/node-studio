@@ -4,7 +4,7 @@ from dosma.tissues import FemoralCartilage, TibialCartilage, PatellarCartilage, 
 from nodestudio.core.datagroup import DataGroup
 from nodestudio.core.dataset import NodeDataset 
 
-def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
+def dosma_cones(data, mask,tissuetype, lowerBound = 0, upperBound = 80):
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -29,15 +29,9 @@ def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
     
     -------------------------------------------------------------------------
     Returns
-    t2map : array-like
-    t2 map
-    
-    -------------------------------------------------------------------------
-    Notes: 
-    See the DOSMA documentation, this is only a partice example
-    If I'm not crazy, DOSMA qDESS T2 mapping used same algorithm as qDESS_T2
-    So idealy, they should display the same result, unless I'm missing something  
-    
+    t2 star map : array-like
+    t2 star map
+
     -------------------------------------------------------------------------
     References
     
@@ -52,9 +46,9 @@ def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
     Link: https://www.ncbi.nlm.nih.gov/pubmed/28017730
     
     '''
-    qdess = []
+    cones = []
     try: 
-        qdess = data.to_QDess()
+        cones = data.to_Cones()
     except:
         raise Exception("Error when converting datagroup to dosma qdess sequence")
 
@@ -71,8 +65,9 @@ def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
     else:
         t = Meniscus()
     
-    t2map = qdess.generate_t2_map(t, suppress_fat=True, suppress_fluid=True)
-    t2map.volumetric_map = np.clip(t2map.volumetric_map, int(lowerBound), int(upperBound))
-    dataset = NodeDataset(t2map.volumetric_map.A, metadata , dims, "quantitiveMapping")
+    t2star = cones.generate_t2_star_map(t, mask)
+
+    t2star.volumetric_map = np.clip(t2star.volumetric_map, int(lowerBound), int(upperBound))
+    dataset = NodeDataset(t2star.volumetric_map.A, metadata , dims, "quantitiveMapping")
 
     return DataGroup([dataset])

@@ -1,5 +1,5 @@
-from core.dataset import NodeDataset
-from dosma.scan_sequences import QDess
+from nodestudio.core.dataset import NodeDataset
+from dosma.scan_sequences import QDess, CubeQuant, Cones
 from dosma.scan_sequences.scans import ScanSequence
 class DataGroup():
     def __init__(self, dataGroup = {}):
@@ -16,6 +16,9 @@ class DataGroup():
 
     def __repr__(self):
         return str(self.group)
+
+    def values(self): # behave like dictionary
+        return self.group
 
     def add(self, key: str, dataset: NodeDataset):
         if key in self.group.keys():
@@ -34,6 +37,16 @@ class DataGroup():
         volumes = [ds.to_medicalvolume() for ds in self.group.values()]
         qdess = QDess(volumes)
         return qdess
+
+    def to_Cubequant(self):
+        volumes = [ds.to_medicalvolume() for ds in self.group.values()]
+        cubequant = CubeQuant(volumes)
+        return cubequant
+
+    def to_Cones(self):
+        volumes = [ds.to_medicalvolume() for ds in self.group.values()]
+        cones = Cones(volumes)
+        return cones
 
     def to_ScanSequence(self):
         volumes = [ds.to_medicalvolume() for ds in self.group.values()]
