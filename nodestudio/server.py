@@ -1,9 +1,13 @@
+import sys, os
+sys.path.insert(0, os.getcwd())
+
 import time
 import uvicorn
 from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from api import routes, websocket
+from core import read_file, download_example_data
 
 app = FastAPI()
 websocket.create_websocket(app)
@@ -15,6 +19,12 @@ app.add_middleware(
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+@app.on_event("startup")
+def load_examples():
+    filepath = os.path.join(os.getcwd(), 'data', 'examples', 'example1', '')
+    files = read_file(filepath, 'example1-b7027ec6f5b311ecbc2eacde48001122') #'./data/examples/example1'
+    print('Example data loaded: ' + files)
 
 @app.get("/")
 def read_root():
@@ -32,4 +42,5 @@ async def add_process_time_header(request: Request, call_next):
     return response
 
 if __name__ == "__main__":
-    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, debug=True)
+    download_example_data()
+    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, debug=True, workers=4)

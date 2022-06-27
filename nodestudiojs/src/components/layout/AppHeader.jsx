@@ -13,7 +13,7 @@ const AppHeader = () => {
             <span className='flex'>
             </span>
 
-            <HeaderLogin></HeaderLogin>
+            { false ? <HeaderLogin></HeaderLogin> : null }
         </header>
     );
 }

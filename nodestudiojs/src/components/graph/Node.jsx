@@ -48,10 +48,13 @@ const Node = ({node, onContextMenu}) => {
         onContextMenu(e, true, node);
     }
 
+    const isLarge = node.type === 'DISPLAY' || node.type === 'LINE_DISPLAY' || node.type === 'HISTOGRAM';
+    const nodeStyle = isLarge ? { width: '300px'} : {};
+
     return (
         <Draggable nodeRef={nodeRef} handle=".node_title" position={position} grid={[5, 5]} onStart={onStart} onDrag={onControlledDrag} onStop={onStop}>
             <div ref={nodeRef}>
-                <div className='node' onClick={handleClick} onContextMenu={handleContextMenu}>
+                <div className='node' style={nodeStyle} onClick={handleClick} onContextMenu={handleContextMenu}>
                     <NodeTitle name={node.name}></NodeTitle>
                     <NodeIO node={node} ></NodeIO>
                     <NodeProps node={node}></NodeProps>

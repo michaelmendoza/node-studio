@@ -16,12 +16,6 @@
         overflow: auto;
     }
 
-    .plugin-tag-label {
-        text-align: left;
-        text-transform: capitalize;
-        cursor: pointer;
-    }
-
     .button-icon {
         position: absolute;
         right: 0;
@@ -42,6 +36,18 @@
         i {
             font-size: 2em;
         }
+    }
+}
+
+.item-category-group {
+    .plugin-tag-label {
+        text-align: left;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+    
+    .plugin-item-group {
+        width: 30em;
     }
 }
 
@@ -82,7 +88,8 @@
         font-size: 0.75em;
     }
     
-    .description {
+    .plugin-item-content {
         margin-left: 0.5em;
+        width: 11em;
     }
 }

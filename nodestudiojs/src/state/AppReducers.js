@@ -18,7 +18,9 @@ export const ActionTypes = {
     'SET_MOUSESTATE': count(),
     'SET_ACTIVE_ELEMENT': count(),
     'SET_SIDENAV_SHOW': count(),
-    'UPDATE_WEBSOCKET': count()
+    'SET_SIDENAV_BACKDROP': count(),
+    'UPDATE_WEBSOCKET': count(),
+    'SET_FILES': count()
 }
 
 export const AppReducers = (state, action) => {
@@ -60,6 +62,11 @@ export const AppReducers = (state, action) => {
     switch(action.type) {
         // Graph actions
         case ActionTypes.INIT_GRAPH:
+            nodes = action.graph.nodes;
+            Object.values(nodes).forEach(node => {
+                node.view.init(action.metadata[node.id]);
+            });
+            return { ...state, nodes, links: action.graph.links}
         case ActionTypes.LOAD_GRAPH:
             return { ...state, nodes: action.graph.nodes, links: action.graph.links}
         case ActionTypes.RESET_GRAPH:
@@ -93,9 +100,12 @@ export const AppReducers = (state, action) => {
 
         // Session actions
         case ActionTypes.UPDATE_SESSION:
-            const sessions = { ...state.sessions };
-            sessions[action.nodeID] = action.update;
-            return { ...state, sessions};
+            nodes = { ...state.nodes };
+            Object.values(nodes).forEach(node => {
+                node.view.update += 1;
+                node.view.init(action.metadata[node.id]);
+            });
+            return { ...state, nodes};
 
         // MouseState actions
         case ActionTypes.SET_MOUSESTATE:
@@ -108,11 +118,17 @@ export const AppReducers = (state, action) => {
         // SideNav actions
         case ActionTypes.SET_SIDENAV_SHOW:
             return { ...state, sideNav: { ...state.sideNav, show: action.show }};
+        case ActionTypes.SET_SIDENAV_BACKDROP:
+            return { ...state, sideNav: { ...state.sideNav, backdrop: action.backdrop }};
 
         // Websocket
         case ActionTypes.UPDATE_WEBSOCKET:
             const websocket = action.message;
             return { ...state, websocket };
+
+        // Files
+        case ActionTypes.SET_FILES:
+            return { ...state, files:action.files}
 
         default:
             return state;

@@ -70,14 +70,16 @@ const ItemCategoryGroup = ({tag, itemsByTag, itemType, callback}) => {
     const [show, setShow] = useState(false);
 
     return (
-        <div>
+        <div className='item-category-group'>
             <div className='plugin-tag-label layout-row-center layout-space-between' onClick={() => setShow(!show)}>
                 <label>{tag}</label> 
                     <i className='material-icons'> { show ? 'arrow_drop_up' : 'arrow_drop_down'}</i> 
             </div>
+            <div className='plugin-item-group layout-row flex-wrap'> 
             {
                 show ? itemsByTag.items[tag].map((item) => <ItemView key={item.name} type={itemType} item={item} callback={callback}></ItemView>) : null
             }
+            </div>
         </div>
     )
 }
@@ -101,7 +103,7 @@ const ProjectItemView = ({item, callback}) => {
     
     const handleClick =  async () => { 
         dispatch({ type:ActionTypes.LOAD_GRAPH, graph:item, updateAPI: true });
-        dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
+        dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false });
     }
 
     const handleDeleteItem = () => {
@@ -146,15 +148,17 @@ const PluginItemView = ({item}) => {
 
     const handleDragStart = (e) => {
         e.dataTransfer.setData('text/plain', item.type);
+        dispatch({type:ActionTypes.SET_SIDENAV_BACKDROP, backdrop: false });
     }
 
     const handleDragEnd = (e) => {
         dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
+        dispatch({type:ActionTypes.SET_SIDENAV_BACKDROP, backdrop: true });
     }
 
     return (
         <div className='explorer-item-view plugin-item layout-row' draggable="true" onDragStart={handleDragStart} onDragEnd={handleDragEnd}>
-            <div className='description'>
+            <div className='plugin-item-content'>
                 <h4> {item.name} </h4>
                 <label> {item.description} </label>
             </div>
