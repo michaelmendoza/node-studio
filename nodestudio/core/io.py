@@ -20,8 +20,8 @@ def get_filedata(file):
         id = read_file(file.filepath)
         return files_loaded[id].data
 
-def read_file(filepath):
-    id = uuid.uuid1().hex
+def read_file(filepath, id = None):
+    id = uuid.uuid1().hex if id == None else id
 
     ''' Detects valid files in filepath and reads file, and places data in io datastore '''
     if os.path.isdir(filepath):
