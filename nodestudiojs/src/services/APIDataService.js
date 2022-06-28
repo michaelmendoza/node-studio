@@ -62,6 +62,8 @@ const APIDataService = {
 
     updateFile: (id, name) => fetchAPI(`${dataUrl}/files/update?id=${id}&name=${name}`, FetchTypes.GET),
 
+    getFilePreview: (id) => fetchAPI(`${dataUrl}/files/preview?id=${id}`, FetchTypes.GET),
+
 }
 
 export default APIDataService;

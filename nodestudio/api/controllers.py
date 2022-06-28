@@ -1,8 +1,11 @@
+import math
 import base64
 import json
 import uuid
 import traceback
 import numpy as np
+from io import BytesIO
+from PIL import Image
 from api import websocket
 from graph import current_graph
 from graph.link import Link
@@ -35,11 +38,10 @@ def get_graph_nodeview_metadata():
         metadata[node_id] = get_node_view_metadata(node_id)
     return metadata
 
-def get_node_value(node_id, key):
-    node = current_graph.getNode(node_id)
+def encode_data(data, key):
 
-    if isinstance(node.value, np.ndarray) or isinstance(node.value, NodeDataset):
-        data = eval(f'node.value{key}')
+    if isinstance(data, np.ndarray) or isinstance(data, NodeDataset):
+        data = eval(f'data{key}')
         data = np.ascontiguousarray(data)
 
         isComplex= False
@@ -54,7 +56,12 @@ def get_node_value(node_id, key):
 
         scaled_data = np.ascontiguousarray(scaled_data)
         encodedData = base64.b64encode(scaled_data)
-        return  { 'encoded': encodedData, 'dtype':'uint8', 'isComplex':isComplex, 'shape': data.shape, 'fullshape': node.value.shape, 'isScaled': True, 'resolution': 255, 'min':min, 'max':max }
+        return  { 'encoded': encodedData, 'dtype':'uint8', 'isComplex':isComplex, 'shape': data.shape, 'fullshape': data.shape, 'isScaled': True, 'resolution': 255, 'min':min, 'max':max }
+
+def get_node_value(node_id, key):
+    node = current_graph.getNode(node_id)
+    encoded = encode_data(node.value, key)
+    return encoded
 
 def get_node_value_uncompressed(node_id, key):
     node = current_graph.getNode(node_id)
@@ -217,6 +224,42 @@ def set_examples(data):
 
 def get_files():
     return [ { 'id':file['id'], 'path':file['path'], 'name':file['name'], 'type':file['type'] } for file in io.files_loaded.values() ]
+
+def get_file_data(file, key):
+    data = io.get_filedata(file)
+    encoded = encode_data(data, key)
+    return encoded
+
+def get_file_preview_img(file):
+    data = io.get_filedata(file)
+    
+    ''' Generate key for preview img'''
+    shape = data.shape
+    indices = [math.floor(s / 2) for s in shape ]
+    key = '['
+    for dim, index in enumerate(indices):
+        if dim == 1 or dim == 2:
+            key += ':'
+        else:
+            key += str(index)
+        if dim < len(indices) - 1:
+            key += ','
+    key += ']'
+
+    data = eval(f'data{key}')
+
+    if np.iscomplexobj(data):
+        data = np.abs(data)
+    min = float(np.nanmin(data))
+    max = float(np.nanmax(data))
+    scaled_data = (data - min) * 255 / (max - min)
+    scaled_data = np.uint8(scaled_data)
+
+    buffered = BytesIO()
+    im = Image.fromarray(np.uint8(scaled_data))
+    im = im.resize((128, 128))
+    im.save(buffered, format="PNG")
+    return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
 
 def read_file(filepath):
     io.read_file(filepath)

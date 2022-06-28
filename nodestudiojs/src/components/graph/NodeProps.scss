@@ -51,3 +51,50 @@ $node-canvas-bg-color: #e6e6e6;
         margin-bottom: 0.5em;
     }
 }
+
+.file-props-options-modal {
+    &.modal .modal-container {
+        max-height: 80vh;
+    }
+    
+    .file-item {
+        width: 500px;
+        overflow: auto;
+        overflow-wrap: break-word;
+
+        padding: 1em;
+        margin-bottom: 1em;
+        border: 1px solid transparent;
+        cursor: pointer;
+
+        &:hover {
+            border: 1px solid #fefefe;
+        }    
+
+        img {
+            margin-right: 1em;
+        }
+
+        label {
+            font-weight: 300;
+            margin: 0 0 0.5em 0;
+        }
+    }
+
+    .file-item::-webkit-scrollbar {
+        width: 8px;
+    }
+    
+    .file-item::-webkit-scrollbar-track {
+        background-color: #222222;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.3); 
+        border-radius: 10px;
+    }
+    
+    .file-item::-webkit-scrollbar-thumb {
+        background-color: #B7B7B7;
+        box-shadow: inset 0 0 6px rgba(0,0,0,0.5); 
+        border-radius: 10px;
+    }
+}
+

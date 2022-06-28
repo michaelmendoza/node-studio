@@ -1,11 +1,11 @@
 import './Modal.scss';
 import ReactDOM from 'react-dom';
 
-const Modal = ({children, title = 'Modal Header', open, onClose}) => {
+const Modal = ({children, className = '', title = 'Modal Header', open, onClose}) => {
 
     return ReactDOM.createPortal(
         <div>
-            { open ? <div className='modal layout-center'>
+            { open ? <div className={'modal layout-center ' + className}>
                 <div className='modal-backdrop' onClick={onClose}></div>
                 <div className='modal-container'>
                     <div className='modal-header layout-center layout-space-between'> 
