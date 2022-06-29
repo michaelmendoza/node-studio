@@ -16,6 +16,17 @@ const HistogramView = ({node, nodeID}) => {
         if(metadata?.histogram) setData(metadata);
     }
 
+    const formatNumber = (x) => {
+        if (x === 0)
+            return 0;
+        if (x > 10000 || x < 0.0001)
+            return x.toExponential(2)
+        if (x % 1 === 0)
+            return x;
+        else
+            return x.toFixed(2)    
+    }
+
     return (
         <div>
             <HistogramChart width={310} height={310} data={data.histogram}></HistogramChart>
@@ -23,21 +34,21 @@ const HistogramView = ({node, nodeID}) => {
                 <div className="layout-row layout-space-between">
                     <div style={{width:'50%'}}>
                         <label> min </label>
-                        {data.min.toFixed(2)}
+                        { formatNumber(data.min) }
                     </div>
                     <div style={{width:'50%'}}>
                         <label> max </label>
-                        {data.max.toFixed(2)}
+                        { formatNumber(data.max) }
                     </div>
                 </div>
                 <div className="layout-row layout-space-between">
                     <div style={{width:'50%'}}>
                         <label> mean </label>
-                        {data.mean.toFixed(2)}
+                        { formatNumber(data.mean) }
                     </div>
                     <div style={{width:'50%'}}>
                         <label> std </label>
-                        {data.std.toFixed(2)}
+                        { formatNumber(data.std) }
                     </div>
                 </div>
             </div>
