@@ -1,3 +1,5 @@
+//import {getnewContrastImage} from './ImageContrast';
+
 function getColor(vin,colormap){
     const color = [];
 
@@ -35,16 +37,25 @@ function getColor(vin,colormap){
     return color;
 }
 
+const calcContrast = (value, {level, window, resolution}) => {
+    var min = level - window / 2.0;
+    var output = (resolution / window) * (value - min);
+    output = output < 0 ? 0 : output;
+    output = output > resolution ? resolution : output;
+    return output;
+}
+
 const calcAlpha = (value, threshold) => {
     if(threshold === undefined) return 255;
     else return (value > threshold) ? 255 : 0;
 }
 
-const DrawCanvas = (data, colormap, threshold = undefined) => {
+const DrawCanvas = (data, colormap, contrast, threshold = undefined, ) => {
     const pixelArray = data.pixelArray;
     const resolution = data.isScaled ? data.resolution : data.max;
     const height = data.shape[0];
     const width = data.shape[1];
+    const useContrast = contrast ? contrast.useContrast : false;
 
     const canvas = document.createElement('canvas');
     const context = canvas.getContext('2d');	
@@ -55,8 +66,9 @@ const DrawCanvas = (data, colormap, threshold = undefined) => {
     let i = 0;
     for(let y = 0; y < height; y++)
         for(let x = 0; x < width; x++, i++) {
-            const value = pixelArray[ y * width + x ];          // Pixel value
-            const fValue = value / resolution;                  // Fractional value of max resolution 
+            const value = pixelArray[ y * width + x ];                              // Pixel value
+            const cValue = useContrast ? calcContrast(value, contrast) : value;     // Contrast adjusted value
+            const fValue = cValue / resolution;                                     // Fractional value of max resolution 
             const colorValues = getColor(fValue, colormap);
             const alpha = calcAlpha(value, threshold);
             imageData.data[4*i] = colorValues[0];
@@ -70,8 +82,8 @@ const DrawCanvas = (data, colormap, threshold = undefined) => {
     return canvas;
 }
 
-export const DrawImg = (data, colormap, threshold = undefined) => {
-    const canvas = DrawCanvas(data, colormap, threshold);
+export const DrawImg = (data, colormap, contrast, threshold = undefined) => {
+    const canvas = DrawCanvas(data, colormap, contrast, threshold);
     const dataURL = canvas.toDataURL();    
     return dataURL; 
 }

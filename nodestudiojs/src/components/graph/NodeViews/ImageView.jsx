@@ -32,7 +32,7 @@ const ImageView = ({ node }) => {
             console.log('D Time: ' + (endTime-startTime));
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset, colormap);
+                const dataUri = DrawImg(dataset, colormap, node.view.contrast);
                 setImageData(dataUri);
             }
         }, 100, node.id)

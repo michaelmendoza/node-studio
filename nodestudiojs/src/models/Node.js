@@ -18,6 +18,12 @@ class Node {
             indices: [],    // Indices for view
             colormap: 'bw', // Colormap
             isComplex: false,
+            contrast: {
+                useContrast: false,
+                resolution: 4096,
+                window: 4096.0,
+                level: 2048.0
+            },
             get hasData() { return this.shape?.length > 0 },
             init: (view_metadata) => { 
                 this.view.shape = view_metadata.shape;
