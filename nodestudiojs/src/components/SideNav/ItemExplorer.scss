@@ -13,7 +13,8 @@
 
     .items-list {
         max-height: 52.5vh;
-        overflow: auto;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .button-icon {
