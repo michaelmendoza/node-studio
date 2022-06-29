@@ -6,6 +6,7 @@ class NodeType(Enum):
 
     # Input Nodes
     FILE = 'FILE'
+    FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = 'FILE_RAWDATA'
     MOCK = 'MOCK'
 
@@ -35,7 +36,7 @@ class NodeType(Enum):
     
     # Output Nodes
     DISPLAY = 'DISPLAY'
-    CDISPLAY = 'CDISPLAY'
+    LINE_DISPLAY = 'LINE_DISPLAY'
     LAYER_DISPLAY = 'LAYER_DISPLAY'
     HISTOGRAM = 'HISTOGRAM'
 
@@ -54,6 +55,7 @@ class NodeDetail(Enum):
     Supports:
     - Dicoms
     '''
+    FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = '''FILE_RAWDATA detail'''
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   
@@ -88,7 +90,7 @@ class NodeDetail(Enum):
 
     # Output Nodes
     DISPLAY = '''DISPLAY detail'''
-    CDISPLAY = '''CDISPLAY detail'''
+    LINE_DISPLAY = 'LINE_DISPLAY'
     LAYER_DISPLAY = 'LAYER_DISPLAY detail'
     HISTOGRAM = 'HISTOGRAM detail'
 

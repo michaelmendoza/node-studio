@@ -1,14 +1,11 @@
 @import '../../styles/base/variables.scss';
 
 .side-panel {
-    background-color: darken($app-background-color, 2%);
-
-    display: block;
-    width: 200px;
-    position: absolute;
-    top: -0.7em;
+    position: fixed;
+    top:0;
     left: 4.2em;
-    
+    z-index: 100;
+
     h2 {
         margin: 0.25em 0 0.5em 0;
         font-weight: 200;
@@ -18,6 +15,7 @@
     input {
         margin-top: 1em;
         margin-bottom: 1em;
+        color: #FEFEFE;
     }
 
     button {
@@ -30,6 +28,34 @@
         &:hover {
             border: 1px solid #FEFEFE;
         }
+    }
+
+    .panel-backdrop {
+        position: fixed;
+        top: 0;
+        bottom: 0;
+        left: 4.2em;
+        right: 0;
+        z-index: 100;
+        //background-color: #66666622;
+    }
+
+    .panel-content {
+        width: 30em;
+        position: absolute;
+        top: 4em;
+        left: 0;
+        background-color: darken($app-background-color, 2%);
+        z-index: 101;
+    }
+
+    .text-input {
+        text-align: left;
+    }
+
+    .divider {
+        margin: 1em 0;
+        border-bottom: 1px solid #55555555;
     }
 
     .sidepanel-panel {

@@ -9,7 +9,7 @@ import MouseStates from '../../state/MouseStates';
 const GraphView = () => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const graphViewRef = useRef(null);
-    const sensitivity = 0.5;
+    const sensitivity = 1.0;
     const [offset, setOffset] = useState({ x:0, y:0 });         // Offset Position for moving GraphView
     const [position, setPosition] = useState({ x:0, y:0 });     // Mouse Position in GraphView
     const [scale, setScale] = useState(1);

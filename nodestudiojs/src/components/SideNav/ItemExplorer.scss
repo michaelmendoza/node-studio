@@ -13,13 +13,8 @@
 
     .items-list {
         max-height: 52.5vh;
-        overflow: auto;
-    }
-
-    .plugin-tag-label {
-        text-align: left;
-        text-transform: capitalize;
-        cursor: pointer;
+        overflow-y: auto;
+        overflow-x: hidden;
     }
 
     .button-icon {
@@ -42,6 +37,18 @@
         i {
             font-size: 2em;
         }
+    }
+}
+
+.item-category-group {
+    .plugin-tag-label {
+        text-align: left;
+        text-transform: capitalize;
+        cursor: pointer;
+    }
+    
+    .plugin-item-group {
+        width: 30em;
     }
 }
 
@@ -82,7 +89,8 @@
         font-size: 0.75em;
     }
     
-    .description {
+    .plugin-item-content {
         margin-left: 0.5em;
+        width: 11em;
     }
 }
