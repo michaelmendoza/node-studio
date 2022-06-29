@@ -13,6 +13,7 @@ import DataView from './NodeViews/DataView';
 import APIDataService from '../../services/APIDataService';
 import Node from '../../models/Node';
 import DataView1D from './NodeViews/DataView1D';
+import Modal from '../base/Modal';
 
 /**
  * Node Property Options
@@ -150,40 +151,65 @@ const NodeProps = ({node}) => {
 
 const FilePropsOptions = ({ node }) => {
     const { state, dispatch } = useContext(AppState.AppContext);
-    const [file, setFile] = useState(null)
-    const select = state.files.map(file => ({ label:file.name, value:file }));
+    const [file, setFile] = useState(null);
+    const [files, setFiles] = useState([]);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        if (node.args.file)
-            handleOptionChange({ label:node.args.file.name, value:node.args.file })
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+        fetchImageData();
+        // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [state.files])
 
-    const handleOptionChange = async(select) => {
-        node.args['file'] = select.value
+    const fetchImageData = async () => {
+        const _files = [...state.files];
+        const ids = state.files.map(file => file.id);
+        for(var i = 0; i < _files.length; i++) {
+            _files[i].img = await APIDataService.getFilePreview(ids[i]);
+        }
+        setFiles(_files);
+    }
+
+    const handleFileChange = async(_file) => {
+        node.args['file'] = _file; //select.value
         await APIDataService.updateNode(Node.export(node));
         await APIDataService.runSesson([node.id]);
         const metadata = await APIDataService.getNodeViewMetadata(node.id);
         node.view.init(metadata)
         node.view.update += 1;
 
-        setFile(select); 
+        setFile(_file); 
         dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+        setShowModal(false);
     }
 
     return (
-        <div>
+        <div className='file-props-options'>
             {
                 state.files.length > 0 ? 
                     <div> 
                         <label>Select File</label> 
-                        <Select options={select} value={file} onChange={handleOptionChange}></Select> 
+                        <button className='button-dark' onClick={() => setShowModal(true)}> { file ? file.name : 'Select File'} </button>
                     </div> : 
                     <div className='text-align-center'> <div> No file available.</div><div> Upload file from files tab. </div> </div> 
             }
+
+            <Modal className='file-props-options-modal' title='Available Files' open={showModal} onClose={() => setShowModal(!showModal)}>
+                <div>
+                    <h2> Select a File: </h2>
+                    {
+                        files.map((file) => <div key={file.id} className='layout-row file-item' onClick={() => handleFileChange(file)}> 
+                            <img src={file.img} alt={'File Preview'}/> 
+                            <div >
+                                <label> Name: {file.name} </label>
+                                <label> Type: {file.type} </label>
+                                <label> Path: {file.path} </label>
+                            </div>
+                            </div> )
+                    }
+                </div>
+            </Modal>
         </div>
     )
-
 }
 
 const DisplayComplexPropsOptions = ({ node }) => {

@@ -14,11 +14,12 @@ files_loaded = {}
 def get_filedata(file):
     ''' Retrieves file data from files_loaded cache. '''
 
-    if(file['id'] in files_loaded):
-        return files_loaded[file['id']]['data']
+    id = file['id']
+    if(id in files_loaded):
+        return files_loaded[id]['data']
     else:
-        id = read_file(file.filepath)
-        return files_loaded[id].data
+        id = read_file(file['filepath'])
+        return files_loaded[id]['data']
 
 def read_file(filepath, id = None):
     id = uuid.uuid1().hex if id == None else id
