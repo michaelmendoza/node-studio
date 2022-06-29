@@ -1,4 +1,18 @@
 .image-viewer {
+    .contrast-controls {
+        margin-left: 1em;
+        label { 
+            font-weight: 300; 
+            margin: 0;
+        }
+
+        .slider {
+            label {
+                width: 4em;
+            }
+        }
+    }
+
     .image-viewer-options {
         margin-bottom: 1em;
     }
