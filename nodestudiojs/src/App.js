@@ -18,6 +18,7 @@ import Graph from './models/Graph';
 import SideInspector from './components/SideInspector';
 import { createWebsocketServer } from './services/WebsocketService';
 import StatusModal from './components/shared/StatusModal';
+import FileBrowser from './components/FileBrowser/FileBrowser';
 
 const AppComponents = () => {
     const {dispatch} = useContext(AppContext);

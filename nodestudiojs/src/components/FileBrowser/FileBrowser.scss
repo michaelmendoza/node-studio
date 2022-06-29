@@ -1,5 +1,8 @@
 @import '../../styles/base/variables.scss';
 
 .file_browser {
-    position: absolute;
+    background-color: darken($app-background-color, 2%);
+    width: 150px;
+    text-align: left;
+    height: 100%;
 }

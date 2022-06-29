@@ -24,11 +24,11 @@ const FileBrowser = ({file}) => {
     },[currentDirectory])
     return (
     <div className='file_browser'>
-        <DirectoryControls setCurrentDirectory={setCurrentDirectory}></DirectoryControls>
+        {/* <DirectoryControls setCurrentDirectory={setCurrentDirectory}></DirectoryControls>
         <CurrentWorkingDirectory currentDirectory={currentDirectory}></CurrentWorkingDirectory>
         {
             files.map((file)=> <FileItem file={file} setCurrentDirectory={setCurrentDirectory}></FileItem>)
-        }
+        } */}
     </div>
     )
 
