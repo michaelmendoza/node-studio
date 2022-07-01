@@ -1,76 +1,78 @@
 import './ImageView.scss';
-import { useState, useEffect, useContext, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { DrawImg } from '../../../libraries/draw/Draw';
 import { decodeDataset } from '../../../libraries/signal/Dataset';
 import { throttle } from '../../../libraries/utils';
 import APIDataService from '../../../services/APIDataService';
-import { ActionTypes } from '../../../state/AppReducers';
-import AppState from '../../../state/AppState';
-import DefaultImg from '../../../images/default_image_icon.png';
 import Select from '../../base/Select';
 import Slider from '../../base/Slider';
 import Modal from '../../base/Modal';
 import ImageViewer from '../../ImageViewer';
 
-const ImageView = ({nodeID}) => {
-    const {state, dispatch} = useContext(AppState.AppContext);
-    const [imageData, setImageData] = useState(DefaultImg);
+const ImageView = ({ node }) => {
+    const [imageData, setImageData] = useState(null);
     const [slice, setSlice] = useState({label:'XY', value:'xy'});
-    const [sliceMax, setSliceMax] = useState(100);
-    const [index, setIndex] = useState(0);
-    const [shape, setShape] = useState([160, 640, 640]);
-    const [showModal, setShowModal] = useState(false);
     const [colormap,setColormap] = useState({label:'B/W', value:'bw'});
+    const [index, setIndex] = useState(0);
+    const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
-        if (state.sessions[nodeID]) fetchData(slice.value, index, colormap.value);
+        let _index = initalizeIndex(slice.value);
+        fetchData(slice.value, _index, colormap.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [state.sessions])
+    }, [node.view.update, node.view.indices])
 
     const fetchData = (slice, index, colormap) => {
         throttle(async () => {
-            const encodedData = await APIDataService.getNode(nodeID, slice, index);
+            if (!node.view.hasData) return;
+
+            const startTime = performance.now();
+            const encodedData = await APIDataService.getNode(node.id, slice, index);
+            const endTime = performance.now();
+            console.log('D Time: ' + (endTime-startTime));
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset, colormap);
+                const dataUri = DrawImg(dataset, colormap, node.view.contrast);
                 setImageData(dataUri);
-                setShape(dataset.fullshape);
-                updateSliceMax(slice);
-                dispatch({type:ActionTypes.UPDATE_SESSION, nodeID, update:false});
             }
-        })
+        }, 100, node.id)
     }
 
-    const handleOptionUpdate = (option) => {
-        setSlice(option.value);
-        if (state.sessions[nodeID] !== undefined) {
-            const index = updateSliceMax(option.value);
-            fetchData(option.value, index, colormap.value);
-        }
+    const handleSliceUpdate = (option) => {
+        setSlice(option);
+        let _index = initalizeIndex(option.value);
+        if (node.view.hasData) fetchData(option.value, _index, colormap.value);
     }
 
     const handleColormapChange = (option) =>{
-        setColormap(option.value);
-        if (state.sessions[nodeID] !== undefined) {
-            fetchData(slice.value,index,option.value);
-        }
+        setColormap(option);
+        if (node.view.hasData) fetchData(slice.value, index, option.value);
     }
 
     const handleIndexUpdate = (value) => {
         setIndex(value);
-        if (state.sessions[nodeID] !== undefined)
-            fetchData(slice.value, value, colormap.value) ;
+        const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
+        node.view.updateIndex(shapeIndex, value);
+        if (node.view.hasData) fetchData(slice.value, value, colormap.value) ;
     }
 
-    const updateSliceMax = (slice) => {
-        const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
-        setSliceMax(shape[shapeIndex]);
-
-        if (index > shape[shapeIndex]) {
-            setIndex(shape[shapeIndex]-1);
-            return shape[shapeIndex]-1;
+    const initalizeIndex = (slice) => {
+        let _index = 0
+        if (node.view.hasData) { // Set index to middle index on view update
+            const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice];
+            _index = node.view.indices[shapeIndex];
+            setIndex(_index);
         }
-        return index;
+        return _index;
+    }
+
+    const getMaxIndex = () => {
+        if (!node.view.hasData) return 1;
+        const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
+        const maxIndex = node.view.shape[shapeIndex] - 1
+        if (index > maxIndex) 
+            setIndex(maxIndex);
+        return maxIndex ;
     }
 
     const handleShowModal = () => {
@@ -82,15 +84,15 @@ const ImageView = ({nodeID}) => {
 
     return (
         <div className="image-view" onDoubleClick={handleShowModal}>
-            <img src={imageData} alt='viewport'/>
             <label>Slice</label>
-            <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
+            <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleSliceUpdate}></Select>
             <label>Colormap</label>
             <Select options={colmap_options} value={colormap} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
-            <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
+            { imageData ? <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={getMaxIndex()}></Slider> : null }
+            { imageData ? <img src={imageData} alt='viewport'/> : null}
 
             <Modal title='Image View' open={showModal} onClose={() => setShowModal(!showModal)}>
-                <ImageViewer nodeID={nodeID}></ImageViewer>
+                <ImageViewer node={node} nodeID={node.id}></ImageViewer>
             </Modal>
 
         </div>

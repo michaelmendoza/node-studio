@@ -1,7 +1,7 @@
 import numpy as np
 # this deals with high dimensional data, eg. [y, x, coil, slice]
 
-def ifft2c(F, axis = (0,1)):
+def ifft2c(F, axis = (1,2)):
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -18,9 +18,9 @@ def ifft2c(F, axis = (0,1)):
     tmp0 = np.fft.ifftshift(np.fft.ifftshift(F, axes=(x,)), axes=(y,))
     tmp1 = np.fft.ifft(np.fft.ifft(tmp0, axis = x), axis = y)
     f = np.fft.fftshift(np.fft.fftshift(tmp1, axes=(x,)), axes=(y,))
-    return f   
+    return f * np.sqrt(F.shape[x]* F.shape[y])   
 
-def fft2c(f, axis = (0,1)):
+def fft2c(f, axis = (1,2)):
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -38,7 +38,7 @@ def fft2c(f, axis = (0,1)):
     tmp0 = np.fft.fftshift(np.fft.fftshift(f, axes=(x,)), axes=(y,))
     tmp1 = np.fft.fft(np.fft.fft(tmp0, axis = x), axis = y)
     F = np.fft.ifftshift(np.fft.ifftshift(tmp1, axes=(x,)), axes=(y,))
-    return F   
+    return F / np.sqrt(f.shape[x]* f.shape[y]) 
 
 def fft(f, type):
     '''

@@ -2,6 +2,17 @@ import * as d3 from 'd3';
 import React, { useEffect, useRef } from 'react';
 import { PropTypes } from 'prop-types';
 
+const formatNumber = (x) => {
+    if (x === 0)
+        return 0;
+    if (x > 10000 || x < 0.0001)
+        return x.toExponential(1)
+    if (x % 1 === 0)
+        return x;
+    else
+        return x.toFixed(2)    
+}
+
 /**
  * Takes an array of data and histogram bins the data, then plots a svg bar 
  * chart using d3. Data is input as a array of number. 
@@ -58,14 +69,14 @@ const HistogramChart = (props) => {
             .attr('class', 'x axis')
             .attr('transform', 'translate(' + margin.left + ',' + (height + margin.top) + ')')
             .attr('opacity', '0.75')
-            .call(d3.axisBottom(x).tickFormat(d3.format('.5'))); 
+            .call(d3.axisBottom(x).tickFormat((d,i) => formatNumber(d))); 
         
         // Create an axis component with d3.axisLeft       
         const yAxis = svg.append('g')
             .attr('class', 'y axis')
             .attr('transform', 'translate(' + (margin.left) + ', ' + margin.top + ')')
             .attr('opacity', '0.75')
-            .call(d3.axisLeft(y).tickFormat(d3.format('.5'))); 
+            .call(d3.axisLeft(y).tickFormat((d,i) => formatNumber(d))); 
         
         self.current = { svg, g, x, y, xAxis, yAxis };
     }
@@ -80,10 +91,10 @@ const HistogramChart = (props) => {
 		y.range([height, 0]);
 
         // Create an axis component with d3.axisBottom
-         xAxis.call(d3.axisBottom(x).tickFormat(d3.format('.5')));
+         xAxis.call(d3.axisBottom(x).tickFormat((d,i) => formatNumber(d)));
         
         // Create an axis component with d3.axisLeft       
-        yAxis.call(d3.axisLeft(y).tickFormat(d3.format('.5'))); 
+        yAxis.call(d3.axisLeft(y).tickFormat((d,i) => formatNumber(d))); 
 
         // Update axis labels
         xAxis.select('.axis-title').attr('transform', 'translate(' + (width / 2) + ', 0)');
@@ -106,8 +117,8 @@ const HistogramChart = (props) => {
 
         // Update x,y axis
         const xAxisRef = xAxis.transition().duration(800);
-        xAxisRef.call(d3.axisBottom(x).tickFormat(d3.format('.5')));
-        yAxis.transition().duration(800).call(d3.axisLeft(y).tickFormat(d3.format('.5')));
+        xAxisRef.call(d3.axisBottom(x).tickFormat((d,i) => formatNumber(d)));
+        yAxis.transition().duration(800).call(d3.axisLeft(y).tickFormat((d,i) => formatNumber(d)));
         xAxis.selectAll('.tick text')	
             .style('text-anchor', 'end')
             .attr('dx', '-.5em')

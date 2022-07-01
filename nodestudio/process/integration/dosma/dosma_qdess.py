@@ -1,7 +1,10 @@
 import numpy as np
 from dosma.scan_sequences import QDess
 from dosma.tissues import FemoralCartilage, TibialCartilage, PatellarCartilage, Meniscus
-def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
+from core.datagroup import DataGroup
+from core.dataset import NodeDataset 
+
+def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -49,6 +52,16 @@ def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
     Link: https://www.ncbi.nlm.nih.gov/pubmed/28017730
     
     '''
+    qdess = []
+    try: 
+        qdess = data.to_QDess()
+    except:
+        raise Exception("Error when converting datagroup to dosma qdess sequence")
+
+    # read metadata -> we need to consider how to deal with this
+    metadata = data[0].metadata
+    dims = data[0].dims
+
     if tissuetype == "Femoral_cartilage":
         t = FemoralCartilage()
     elif tissuetype == "Tibial_cartilage":
@@ -58,8 +71,8 @@ def dosma_qDessT2mapping(filepath, tissuetype, lowerBound = 0, upperBound = 80):
     else:
         t = Meniscus()
     
-    qdess = QDess.from_dicom(filepath, verbose=True)
     t2map = qdess.generate_t2_map(t, suppress_fat=True, suppress_fluid=True)
     t2map.volumetric_map = np.clip(t2map.volumetric_map, int(lowerBound), int(upperBound))
-    image = t2map.volumetric_map.A
-    return image
+    dataset = NodeDataset(t2map.volumetric_map.A, metadata , dims, "quantitiveMapping")
+
+    return DataGroup([dataset])

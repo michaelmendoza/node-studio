@@ -49,12 +49,54 @@ async def reset_graph():
     data = controllers.reset_graph()
     return { 'message': 'Reset graph', 'data': data }
 
+@router.get("/graph/nodeview_metadata")
+@handle_exception
+async def get_graph_nodeview_metadata():
+    ''' Retrieves nodeview metadata '''
+    data = controllers.get_graph_nodeview_metadata()
+    return { 'message': 'Retrieved graph nodeview metadata', 'data': data }
+
 @router.get("/node")
 @handle_exception
 async def get_node(node_id: str, slice: str, index: int):
     ''' Gets node data for given node_id '''
     data = controllers.get_node_data(node_id, slice, index)
     return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/value")
+@handle_exception
+async def get_node_value(node_id: str, key: str):
+    ''' Gets node data for given node_id '''
+    data = controllers.get_node_value(node_id, key)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/value/uncompressed")
+@handle_exception
+async def get_node_value_uncompressed(node_id: str, key: str):
+    ''' Gets node data for given node_id '''
+    data = controllers.get_node_value_uncompressed(node_id, key)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/type")
+@handle_exception
+async def get_node_type(node_id: str, key: str):
+    ''' Gets node data type for given node_id '''
+    data = controllers.get_node_value_type(node_id)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/shape")
+@handle_exception
+async def get_node_shape(node_id: str):
+    ''' Gets node data shape for given node_id '''
+    data = controllers.get_node_value_shape(node_id)
+    return { 'message': 'Retrieved node data', 'data': data }
+
+@router.get("/node/view_metadata")
+@handle_exception
+async def get_node_view_metadata(node_id: str):
+    ''' Gets node data shape for given node_id '''
+    data = controllers.get_node_view_metadata(node_id)
+    return { 'message': 'Retrieved node view metadata', 'data': data }
 
 @router.get("/node_metadata")
 @handle_exception
@@ -125,3 +167,31 @@ async def get_entries(path: str):
     ''' Updates entries '''
     data = controllers.get_entries(data)
     return { 'message': 'Updated Entries', 'data': data }
+
+@router.get("/files")
+@handle_exception
+async def get_files():
+    ''' Retrieves all loaded files '''
+    data = controllers.get_files()
+    return { 'message': 'Loaded files', 'data': data }
+
+@router.get("/files/preview")
+@handle_exception
+async def get_file_preview_img(id: str, size: int = 128):
+    ''' Retrieves all loaded files '''
+    data = controllers.get_file_preview_img({ 'id': id }, size)
+    return { 'message': 'Generated preview img', 'data': data }
+
+@router.get("/files/add")
+@handle_exception
+async def read_file(filepath: str):
+    ''' Reads files in filepath '''
+    data = controllers.read_file(filepath)
+    return { 'message': 'Read file', 'data': data }
+
+@router.get("/files/update")
+@handle_exception
+async def update_filename(id: str, name: str):
+    ''' Updates filename '''
+    data = controllers.update_filename(id, name)
+    return { 'message': 'Updated file name', 'data': data }

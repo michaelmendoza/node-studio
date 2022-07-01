@@ -12,10 +12,16 @@ import Node from '../../models/Node';
 import Link from '../../models/Link';
 import Graph from '../../models/Graph';
 import ItemExplorer from './ItemExplorer';
+import Table from '../base/Table';
+import { useEffect } from 'react';
 
 
 const SidePanel = ({activeNav}) => {
-    const {state} = useContext(AppState.AppContext);
+    const { state, dispatch } = useContext(AppState.AppContext);
+
+    const handleHide = () => {
+        dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
+    }
 
     const render = () => {
         if (activeNav.name === 'files') return <PanelFiles></PanelFiles>
@@ -28,21 +34,58 @@ const SidePanel = ({activeNav}) => {
     }
 
     return (
-        <div className='side-panel'>
-            { state.sideNav.show ? render() : null }
+        <div>
+            { 
+                state.sideNav.show ? <div className='side-panel'>
+                    { state.sideNav.backdrop ? <div className='panel-backdrop' onClick={handleHide}></div> : null }
+                    {  <div className='panel-content' style={{ width:'30em'}}> {render()} </div> }
+                </div> : null
+            }
         </div>
+
     )
 }
 
 const PanelFiles = () => {
-    const handleOnLoad = (e) => {
-        let filepath = e.target.files[0].name;
+    const { state, dispatch } = useContext(AppState.AppContext);
+    const [filepath, setFilepath] = useState('')
+
+    useEffect(() => {
+        const fetch = async () => {
+            for (let i = 0; i < state.files.length; i++) {
+                if(!state.files[i].img) {
+                    const imgSrc = await APIDataService.getFilePreview(state.files[i].id);
+                    state.files[i].img = imgSrc;
+                }
+            }
+        }
+        fetch();
+    }, [state.files])
+
+    const handleTextChange = (e) => {
+        setFilepath(e.target.value);
     }
+
+    const handleFileLoad = async (e) => {
+        await APIDataService.addFiles(filepath);
+        let files = await APIDataService.getFiles();
+        dispatch({ type:ActionTypes.SET_FILES, files });
+    }
+
+    const files = state.files.map(file => [{ img: file.img, style:{width:'64px'} }, file.name, file.type]);
 
     return (
         <div className='panel-files'>
             <h2> Files </h2>
-            <input type="file" multiple onChange={handleOnLoad}/>
+            <TextInput name={'Filepath'} value={filepath} placeholder={'Enter filepath for file to load'} onChange={handleTextChange}></TextInput>
+            <button onClick={handleFileLoad}> Load File </button>  
+
+            <div className='divider'></div>
+
+            <div>
+                <h2> Available Files </h2>
+                <Table data={files} headers={['Preview','Name', 'Type']}></Table>
+            </div>
         </div>
     )
 }
@@ -170,11 +213,8 @@ const PanelRun = () => {
 
         dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
         await APIDataService.runSesson(nodesToRun);
-
-        for(let i = 0; i < nodesToRun.length; i++) {
-            const node = nodesToRun[i];
-            dispatch({type:ActionTypes.UPDATE_SESSION, nodeID:node, update:true});
-        }
+        const metadata = await APIDataService.getGraphNodeViewMetadata();
+        dispatch({ type:ActionTypes.UPDATE_SESSION, metadata });
     }
 
     return (
