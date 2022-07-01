@@ -39,7 +39,6 @@ const ImageViewer = ({node, nodeID}) => {
         node.view.contrast.window = value;
         node.view.update++;
         dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:false });
-
     }
 
     return (<div className="image-viewer">

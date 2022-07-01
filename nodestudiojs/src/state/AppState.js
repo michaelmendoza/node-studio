@@ -15,6 +15,7 @@ const initialState  = {
     sideNav: { show: false, backdrop: true },
     websocket: { },
     files: [],
+    debug: true
 };
 
 /**

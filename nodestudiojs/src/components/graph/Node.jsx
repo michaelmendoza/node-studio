@@ -6,6 +6,7 @@ import AppState from '../../state/AppState';
 import MouseStates from '../../state/MouseStates';
 import NodeProps from './NodeProps';
 import NodeIO from './NodeIO';
+import { useEffect } from 'react';
 
 /**
  * Node Title Text
@@ -19,6 +20,11 @@ const Node = ({node, onContextMenu}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const nodeRef = React.useRef(null);
     const [position, setPosition] = useState({ x:node.position.x, y:node.position.y })
+
+    useEffect(() => {
+        setPosition({ x:node.position.x, y:node.position.y });
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+    }, [node.styles]);
 
     const onStart = () => {
         dispatch({ type: ActionTypes.SET_ACTIVE_ELEMENT, activeElement:node });

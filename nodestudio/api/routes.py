@@ -170,9 +170,9 @@ async def get_files():
 
 @router.get("/files/preview")
 @handle_exception
-async def get_file_preview_img(id: str):
+async def get_file_preview_img(id: str, size: int = 128):
     ''' Retrieves all loaded files '''
-    data = controllers.get_file_preview_img({ 'id': id })
+    data = controllers.get_file_preview_img({ 'id': id }, size)
     return { 'message': 'Generated preview img', 'data': data }
 
 @router.get("/files/add")

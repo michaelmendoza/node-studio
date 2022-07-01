@@ -7,7 +7,6 @@ import remarkMath from 'remark-math'
 import rehypeKatex from 'rehype-katex'
 import 'katex/dist/katex.min.css';
 
-
 const InspectorInfo = () => {
 
     const {state} = useContext(AppState.AppContext);
@@ -17,7 +16,6 @@ const InspectorInfo = () => {
     return (
         <div className='inspector-info'> 
             <ReactMarkdown remarkPlugins={[remarkMath]} rehypePlugins={[rehypeKatex]} children={detail} />    
-
         </div>     
     );
 
