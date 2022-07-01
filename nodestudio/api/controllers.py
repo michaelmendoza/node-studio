@@ -230,7 +230,7 @@ def get_file_data(file, key):
     encoded = encode_data(data, key)
     return encoded
 
-def get_file_preview_img(file):
+def get_file_preview_img(file, size = 128):
     data = io.get_filedata(file)
     
     ''' Generate key for preview img'''
@@ -257,7 +257,7 @@ def get_file_preview_img(file):
 
     buffered = BytesIO()
     im = Image.fromarray(np.uint8(scaled_data))
-    im = im.resize((128, 128))
+    im = im.resize((size, size))
     im.save(buffered, format="PNG")
     return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
 

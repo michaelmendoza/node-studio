@@ -79,6 +79,7 @@ export const AppReducers = (state, action) => {
             nodes[action.node.id] = action.node;
             return { ...state, nodes };
         case ActionTypes.DELETE_NODE:
+            if (action.nodeID === state.activeElement.id) state.activeElement = null;
             nodes = { ...state.nodes };
             nodes[action.nodeID] = undefined;
             delete nodes[action.nodeID];

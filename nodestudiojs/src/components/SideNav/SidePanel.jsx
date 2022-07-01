@@ -13,6 +13,7 @@ import Link from '../../models/Link';
 import Graph from '../../models/Graph';
 import ItemExplorer from './ItemExplorer';
 import Table from '../base/Table';
+import { useEffect } from 'react';
 
 
 const SidePanel = ({activeNav}) => {
@@ -49,6 +50,18 @@ const PanelFiles = () => {
     const { state, dispatch } = useContext(AppState.AppContext);
     const [filepath, setFilepath] = useState('')
 
+    useEffect(() => {
+        const fetch = async () => {
+            for (let i = 0; i < state.files.length; i++) {
+                if(!state.files[i].img) {
+                    const imgSrc = await APIDataService.getFilePreview(state.files[i].id);
+                    state.files[i].img = imgSrc;
+                }
+            }
+        }
+        fetch();
+    }, [state.files])
+
     const handleTextChange = (e) => {
         setFilepath(e.target.value);
     }
@@ -59,7 +72,7 @@ const PanelFiles = () => {
         dispatch({ type:ActionTypes.SET_FILES, files });
     }
 
-    const files = state.files.map(file => [file.name, file.type, file.path]);
+    const files = state.files.map(file => [{ img: file.img, style:{width:'64px'} }, file.name, file.type]);
 
     return (
         <div className='panel-files'>
@@ -71,7 +84,7 @@ const PanelFiles = () => {
 
             <div>
                 <h2> Available Files </h2>
-                <Table data={files} headers={['Name', 'Type', 'Path']}></Table>
+                <Table data={files} headers={['Preview','Name', 'Type']}></Table>
             </div>
         </div>
     )

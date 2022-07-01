@@ -1,6 +1,5 @@
 
 .node-inspector {
-    width: 150px;
     font-size: 0.8em;
     text-align: left;
     color: #AAAAAA;
@@ -9,5 +8,58 @@
         font-size: 1.2em;
         text-transform: capitalize;
         color: #DDDDDD;
+    }
+
+    .text-input {
+        position: relative;
+        border-radius: 4px;
+        margin-bottom: 0.5em;
+        border: 1px solid transparent;
+        padding: 0 0 0 1em;
+        display: flex;
+        flex-direction: row;
+
+        &:hover {
+            border: 1px solid #dedede;
+            box-shadow: inset 0 1px 1px rgba(0, 0, 0, 0.1), 0 0 6px #8cbcfe;
+        }
+
+        label {
+            color: #DDDDDD66;
+            display: inline-block;
+            top: -1px;
+            font-weight: 300;
+        }
+
+        input {
+            color: #DDDDDD;
+            border: 1px solid transparent;
+            margin: 0;
+        }
+
+        [type=text]:focus, [type=text]:active {
+            box-shadow: none;
+        }
+    }
+
+    .slider {
+        label {
+            margin: 0;
+            font-weight: 300;
+        }
+    }
+
+    .node-property-item {
+        display: flex;
+        flex-direction: row;
+        justify-content:space-between;
+        margin: 0 0 1em;
+        padding: 0 1em;
+
+        label { 
+            font-weight: 300;
+            margin: 0;
+            color: #AAAAAA;
+        }
     }
 }

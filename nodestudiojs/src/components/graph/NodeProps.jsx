@@ -18,36 +18,54 @@ import Modal from '../base/Modal';
 /**
  * Node Property Options
  */
-const NodePropsOptions = ({id, options, args}) => {
+export const NodePropsOptions = ({node}) => {
+    const id = node.id;
+    const options = node.options;
+
+    return (
+        <div>
+            {
+                options.map((option, index) => { 
+                    return <NodePropsOption key={index} id={id} option={option}></NodePropsOption>
+                })
+            }
+        </div>
+    )
+}
+
+/**
+ * Node Property Option
+ */
+export const NodePropsOption = ({id, option}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
+    const args = state.nodes[id].args;
 
     useEffect(() => {
-        // Set default values for BooleanInput
-        options.forEach((option, index) => {
-            const hasFlag = option.flag;
-            if(hasFlag) {
-                const checked = option.name in args ? args[option.name] : option.flag;
-                const node = state.nodes[id].copy();
-                node.args[option.name] = checked;
-                dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
-            }
-        });
+        // Set default values for BooleanInput        
+        const hasFlag = option.flag;
+        if(hasFlag) {
+            const checked = option.name in args ? args[option.name] : option.flag;
+            const node = state.nodes[id].copy();
+            node.args[option.name] = checked;
+            dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
+        }
+
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [])
 
-    const renderTextInput = ({option, index}) =>  {
+    const renderTextInput = ({option}) =>  {
         const value = args[option];
 
         const handleTextChange = (e) => {
             const node = state.nodes[id].copy();
             node.args[option] = e.target.value;
-            dispatch({type: ActionTypes.UPDATE_NODE, node,  updateAPI:true });
+            dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
         }
 
-        return <TextInput key={index} name={option.replace(/_/g," ")} value={value} onChange={handleTextChange}></TextInput>
+        return <TextInput name={option.replace(/_/g," ")} value={value} onChange={handleTextChange}></TextInput>
     }
 
-    const renderOptionInput = ({option, index}) => {
+    const renderOptionInput = ({option}) => {
         const v = args[option.name];
         const value = v ? { label:v[0].toUpperCase() + v.substring(1), value:v } : undefined;
         const select = option.select.map(x => ({ label:x[0].toUpperCase() + x.substring(1), value:x }));
@@ -59,14 +77,14 @@ const NodePropsOptions = ({id, options, args}) => {
         }
 
         return (
-            <div key={index}>
+            <div>
                 <label>{option.name.replace(/_/g," ")}</label>
                 <Select options={select} value={value} onChange={handleOptionChange}></Select>
             </div>
         )
     }
 
-    const renderBooleanInput = ({option, index}) => {
+    const renderBooleanInput = ({option}) => {
         const defaultValue = option.flag;
         const checked = option.name in args ? args[option.name] : defaultValue;
 
@@ -77,7 +95,7 @@ const NodePropsOptions = ({id, options, args}) => {
         }
 
         return (
-            <div key={index} className='layout-row-center layout-space-between'>
+            <div className='layout-row-center layout-space-between'>
                 <label>{option.name.replace(/_/g," ")}</label>
                 <input type="checkbox" style={{ width:'25px' }} defaultChecked={checked} onClick={handleChange}></input>
             </div>
@@ -87,18 +105,9 @@ const NodePropsOptions = ({id, options, args}) => {
     return (
         <div>
             {
-                options.map((option, index) => {
-                    if(isString(option)) {
-                        return renderTextInput({option, index});
-                    }
-                    else if('select' in option) {
-                        return renderOptionInput({option, index});
-                    }
-                    else {
-                        return renderBooleanInput({option, index});
-                    }
-                })
-            }
+                isString(option) ? renderTextInput({option}) : 
+                    ('select' in option ? renderOptionInput({option}) : renderBooleanInput({option}))
+            }                            
         </div>
     )
 }
@@ -123,7 +132,7 @@ const NodeProps = ({node}) => {
         }
 
         {
-            <NodePropsOptions node={node} id={node.id} options={node.options} args={node.args}></NodePropsOptions>
+            <NodePropsOptions node={node}></NodePropsOptions>
         }
 
         {
@@ -131,7 +140,7 @@ const NodeProps = ({node}) => {
         }
 
         {
-            node.type === 'DISPLAY' || node.type === 'CDISPLAY' ? <ImageView node={node} nodeID={node.id}></ImageView> : null
+            node.type === 'DISPLAY' ? <ImageView node={node} nodeID={node.id}></ImageView> : null
         }
 
         {

@@ -25,7 +25,11 @@ const TableRow = (props) => {
         <div className='table-row layout-row-center'>
             {
                 props.row.map((cell, index) => {  
-                    cell = isNumberOrString(cell) ? cell : JSON.stringify(cell);
+                    if (cell?.img)
+                        cell = <img src={cell.img} style={cell?.style} alt='preview' />
+                    else
+                        cell = isNumberOrString(cell) ? cell : JSON.stringify(cell);
+
                     return <div key={index} className='table-row-cell flex'>{cell}</div> 
                 })
             }

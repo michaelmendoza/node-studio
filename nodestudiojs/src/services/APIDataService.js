@@ -62,7 +62,7 @@ const APIDataService = {
 
     updateFile: (id, name) => fetchAPI(`${dataUrl}/files/update?id=${id}&name=${name}`, FetchTypes.GET),
 
-    getFilePreview: (id) => fetchAPI(`${dataUrl}/files/preview?id=${id}`, FetchTypes.GET),
+    getFilePreview: (id, size = 128) => fetchAPI(`${dataUrl}/files/preview?id=${id}&size=${size}`, FetchTypes.GET),
 
 }
 

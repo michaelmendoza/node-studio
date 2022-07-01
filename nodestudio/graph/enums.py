@@ -52,11 +52,9 @@ class NodeDetail(Enum):
 
     # Input Nodes
     FILE = ''' # File 
-    Supports:
-    - Dicoms
+    Node for accessing file data. 
+    Supports dicom and raw file data. 
     '''
-    FILE_OLD = 'FILE_OLD'
-    FILE_RAWDATA = '''FILE_RAWDATA detail'''
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   
     
