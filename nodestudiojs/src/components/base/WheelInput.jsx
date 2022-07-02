@@ -13,6 +13,7 @@ const WheelInput = ({children, onWheel}) => {
     const handleWheel = (e) => {
         e.preventDefault();
         onWheel(e);
+        
     }
 
     return (

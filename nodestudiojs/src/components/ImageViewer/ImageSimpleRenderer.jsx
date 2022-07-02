@@ -12,6 +12,8 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
     const [dataset, setDataset] = useState(null);
     const [position, setPosition] = useState({ x:0, y:0 });
     const [index, setIndex] = useState(0);
+    const [mouseDownPosition, setmouseDownPosition] = useState({x:0, y:0});
+    const [contrastChange, setconstrastChange] = useState(false);
 
     useEffect(() => {
         fetchData(slice, colormap);
@@ -33,6 +35,18 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
             }
         }, 100, slice);
     }
+
+    const handleMouseDown = (e) => {
+
+        setmouseDownPosition(position);
+        setconstrastChange(true);
+       
+    }
+    const handleMouseUp = (e) => {
+        e.preventDefault();
+        setconstrastChange(false);
+       
+    }
     
     const handleMouseMove = (e) => {
         if(dataset === null) return;
@@ -43,6 +57,12 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
         const x = Math.round(dataset.shape[1] * (e.pageX - rect.left) / width);
         const y = Math.round(dataset.shape[0] * (e.pageY - rect.top) / height);
         setPosition({ x, y });
+
+        if(contrastChange) {
+            node.view.contrast.window = node.view.contrast.window + 0.1*(position.x-mouseDownPosition.x);
+            node.view.contrast.level = node.view.contrast.level + 0.1*(position.y-mouseDownPosition.y);
+            node.view.contrast.useContrast=true;
+        }
     }
 
     const handleWheelScroll = (e) => {
@@ -68,14 +88,14 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
     const zoom = dataset !== null ? imgRef.current.clientWidth / dataset.shape[1] : 1;
 
     return (
-        <div style = {{ width : '100%', height : '100%', position: 'relative' }}>
+        <div style = {{ width : '100%', height : '100%', position: 'relative' }} >
             <div style={{ color:'#AAAAAA', margin:'0.5em', position: 'absolute', zIndex:1, fontSize:'0.8em' }}>
                 <div> Frame: { index } </div>
                 <div> Zoom: { (zoom * 100).toFixed(2) } % </div>
                 <div> Pixel: { getImageValue() } ({ position.x }, { position.y }) </div>
             </div>
             <WheelInput onWheel={handleWheelScroll}>
-                <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove}></img>
+                <img src={imageData} alt='viewport' ref={imgRef}  style = {{ width : '100%', height : '100%' }} onMouseMove={handleMouseMove} onMouseDown={handleMouseDown} onMouseUp={handleMouseUp} ></img>
             </WheelInput>
         </div>
     )
