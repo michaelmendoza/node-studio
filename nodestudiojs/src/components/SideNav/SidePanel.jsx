@@ -14,7 +14,7 @@ import Graph from '../../models/Graph';
 import ItemExplorer from './ItemExplorer';
 import Table from '../base/Table';
 import { useEffect } from 'react';
-
+import FileBrowser from '../FileBrowser/FileBrowser';
 
 const SidePanel = ({activeNav}) => {
     const { state, dispatch } = useContext(AppState.AppContext);
@@ -48,7 +48,7 @@ const SidePanel = ({activeNav}) => {
 
 const PanelFiles = () => {
     const { state, dispatch } = useContext(AppState.AppContext);
-    const [filepath, setFilepath] = useState('')
+    const [showFileBrowser, setShowFileBrowser] = useState(false);
 
     useEffect(() => {
         const fetch = async () => {
@@ -62,30 +62,21 @@ const PanelFiles = () => {
         fetch();
     }, [state.files])
 
-    const handleTextChange = (e) => {
-        setFilepath(e.target.value);
-    }
-
-    const handleFileLoad = async (e) => {
-        await APIDataService.addFiles(filepath);
-        let files = await APIDataService.getFiles();
-        dispatch({ type:ActionTypes.SET_FILES, files });
-    }
+    const AvailableFilesList = () =>  <div className='available-files-list'>
+        <label> Available Files </label>
+        <Table data={files} headers={['Preview','Name', 'Type']}></Table>
+    </div>
 
     const files = state.files.map(file => [{ img: file.img, style:{width:'64px'} }, file.name, file.type]);
 
     return (
         <div className='panel-files'>
-            <h2> Files </h2>
-            <TextInput name={'Filepath'} value={filepath} placeholder={'Enter filepath for file to load'} onChange={handleTextChange}></TextInput>
-            <button onClick={handleFileLoad}> Load File </button>  
-
-            <div className='divider'></div>
-
-            <div>
-                <h2> Available Files </h2>
-                <Table data={files} headers={['Preview','Name', 'Type']}></Table>
+            <div className='layout-row-center layout-space-between'>
+                <h2> Files </h2>
+                <button className='button-icon' onClick={()=> setShowFileBrowser(!showFileBrowser)}> <i className='material-icons'> { showFileBrowser ? 'close' : 'add' } </i> </button>
             </div>
+
+            { showFileBrowser ? <FileBrowser onSelect={()=> setShowFileBrowser(false)}></FileBrowser> : <AvailableFilesList></AvailableFilesList> }
         </div>
     )
 }

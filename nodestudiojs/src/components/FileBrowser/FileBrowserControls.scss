@@ -1,0 +1,20 @@
+@import '../../styles/base/variables.scss';
+
+.file-browser-controls {
+    padding: 0 1em;
+
+    button {
+        margin: 1em 0;
+    }
+
+    .button-icon {
+        margin: 0em;
+        padding: 0.5em  0.55em;
+        border: 1px solid transparent;
+        background-color: transparent;
+    }
+
+    .controls-group{
+        text-align: right;
+    }
+}

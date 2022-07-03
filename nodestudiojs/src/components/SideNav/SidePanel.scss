@@ -64,6 +64,18 @@
 
     .panel-files {
         padding: 1em;
+
+        .button-icon {
+            margin: 0em;
+            padding: 0.5em  0.55em;
+            background-color: transparent;
+            border: 1px solid transparent;
+
+            &:hover, &:active {
+                border: 1px solid #818181;
+                background: transparent;
+              }
+        }
     }
 
     .panel-run {
@@ -77,6 +89,17 @@
         div {
             margin-bottom: 1em;
         }
+    }
+}
+
+.available-files-list {
+    max-height: 75vh;
+    overflow-y: auto;
+
+    label {
+        text-align: left;
+        font-weight: 300;
+        margin-bottom: 1em;
     }
 }
 

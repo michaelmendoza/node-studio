@@ -13,7 +13,7 @@ from graph.node import Node
 from graph.nodes import NodeInfo
 from graph.sesson import Session
 from graph.interfaces import LinkData
-from core import NodeDataset, DataGroup, io
+from core import NodeDataset, DataGroup, io, path
 
 def get_nodelist():
     data = NodeInfo
@@ -222,8 +222,9 @@ def set_examples(data):
     with open('./nodestudio/api/examples.json', 'w') as outfile:
         json.dump(data, outfile, ensure_ascii=False, indent=4)
 
-def get_entries(path):
-    pass #add stuff here
+def get_path_query(relative_path):
+    data = path.query_path(relative_path)
+    return { 'path': data[0], 'folders': data[1], 'files': data[2] }
 
 def get_files():
     return [ { 'id':file['id'], 'path':file['path'], 'name':file['name'], 'type':file['type'] } for file in io.files_loaded.values() ]

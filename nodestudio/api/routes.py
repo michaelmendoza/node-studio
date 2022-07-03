@@ -161,12 +161,12 @@ async def set_examples(data: List[Any]):
     data = controllers.set_examples(data)
     return { 'message': 'Updated Examples', 'data': data }
 
-@router.post("/current_directory_entries")
+@router.get("/path/query")
 @handle_exception
-async def get_entries(path: str):
+async def get_path_query(path: str):
     ''' Updates entries '''
-    data = controllers.get_entries(data)
-    return { 'message': 'Updated Entries', 'data': data }
+    data = controllers.get_path_query(path)
+    return { 'message': 'Retrieved path filesystem query', 'data': data }
 
 @router.get("/files")
 @handle_exception

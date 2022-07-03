@@ -1,8 +1,16 @@
 @import '../../styles/base/variables.scss';
 
-.file_browser {
+.file-browser {
     background-color: darken($app-background-color, 2%);
-    width: 150px;
     text-align: left;
     height: 100%;
+
+    label {
+        font-weight: 300;
+    }
+    
+    .file-browser-list {
+        max-height: 50vh;
+        overflow-y: auto;
+    }
 }
