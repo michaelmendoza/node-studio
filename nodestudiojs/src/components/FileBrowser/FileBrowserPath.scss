@@ -1,0 +1,13 @@
+
+.file-browser-path {
+    display: flex;
+    align-items: center;
+    flex-direction: row;
+    padding: 1em;
+    margin-bottom: 1em;
+    border-bottom: 1px solid #55555555;
+
+    .path {
+        margin-left: 1em;
+    }
+}

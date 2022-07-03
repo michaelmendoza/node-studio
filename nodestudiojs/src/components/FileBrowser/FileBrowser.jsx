@@ -1,0 +1,74 @@
+import './FileBrowser.scss';
+import { useEffect, useState } from 'react';
+import APIDataService from '../../services/APIDataService';
+import FileBrowserPath from './FileBrowserPath';
+import FileBrowserControls from './FileBrowserControls';
+import FileBrowserItem from './FileBrowserItem';
+import { useAppState } from '../../state/AppState';
+import { ActionTypes } from '../../state';
+
+const FileBrowser = ({onSelect}) => {
+    const { dispatch } = useAppState();
+    const [relativePath, setRelativePath] = useState('data');
+    const [pathInfo, setPathInfo] = useState({ path:'', folders:[], files:[] });
+
+    useEffect(()=>{
+        const fetch = async() => {
+            const data = await APIDataService.getPathQuery(relativePath);
+            setPathInfo(data);
+        }
+
+        fetch();
+    },[relativePath])
+
+    const handleFileItemSelect = (item, type) => {
+        const path = relativePath.concat("/", item)    
+        if (type === 'folder') {
+            setRelativePath(path);
+        }
+        if (type === 'file') {
+            loadFile(path);
+        }
+    }
+
+    const backOneDirectory = () => {
+        if (relativePath === 'data') return;
+        const last_slash_pos = relativePath.lastIndexOf('/');
+        const path = relativePath.slice(0,last_slash_pos);
+        setRelativePath(path)
+    }
+
+    const refreshBrowser = async() => {
+        setPathInfo(await APIDataService.getPathQuery(relativePath));
+    }
+
+    const loadFile = async (path) => {
+        await APIDataService.addFiles(path);
+        let files = await APIDataService.getFiles();
+        dispatch({ type:ActionTypes.SET_FILES, files });
+        onSelect();
+    }
+
+    const handleFileLoad = async () => {
+        loadFile(pathInfo.path);
+    }
+
+    return (
+    <div className='file-browser'> 
+        <label> File Browser </label>
+        <FileBrowserControls onLoad={handleFileLoad} onRefresh={refreshBrowser} onBack={backOneDirectory}></FileBrowserControls>
+        <FileBrowserPath path={relativePath}></FileBrowserPath>
+        <div className='file-browser-list'>
+            {
+                pathInfo.folders.map((item, index)=> <FileBrowserItem key={index} item={item} type={'folder'} onSelect={handleFileItemSelect}></FileBrowserItem>)
+            }
+
+            {
+                pathInfo.files.map((item, index)=> <FileBrowserItem key={index} item={item} type={'file'} onSelect={handleFileItemSelect}></FileBrowserItem>)
+            }
+        </div>
+    </div>
+    )
+}
+
+export default FileBrowser;

@@ -54,6 +54,10 @@ const APIDataService = {
 
     setExamples: (examples) => fetchAPI(`${dataUrl}/examples`, FetchTypes.POST, examples),
 
+    // ************* FileSystem Path *************
+   
+    getPathQuery: (path = '') => fetchAPI(`${dataUrl}/path/query?path=${path}`, FetchTypes.GET),
+
     // ************* Files *************
 
     getFiles: () => fetchAPI(`${dataUrl}/files`, FetchTypes.GET),
