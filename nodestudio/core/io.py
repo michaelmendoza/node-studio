@@ -27,6 +27,7 @@ def read_file(filepath, id = None):
     ''' Detects valid files in filepath and reads file, and places data in io datastore '''
     if os.path.isdir(filepath):
         # Read raw data files in folder (load one dataset per file)
+        filepath = os.path.join(filepath, '') # Added ending slash if needed
         paths = glob.glob(filepath + '*.dat') 
         for filename in paths:
             id = uuid.uuid1().hex
