@@ -63,8 +63,8 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
         setPosition({ x, y });
 
         if(contrastChange) {
-            node.view.contrast.window = node.view.contrast.window + (position.x-mouseDownPosition.x);
-            node.view.contrast.level = node.view.contrast.level + (position.y-mouseDownPosition.y);
+            node.view.contrast.window = node.view.contrast.window + 0.1*(position.x-mouseDownPosition.x);
+            node.view.contrast.level = node.view.contrast.level + 0.1*(position.y-mouseDownPosition.y);
             node.view.contrast.useContrast=true;
             node.view.update++;
             dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:false });
