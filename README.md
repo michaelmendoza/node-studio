@@ -44,7 +44,8 @@ You have two options:
 > or by individual package
 > ```
 > pip install numpy matplotlib scipy scikit-image 
-> pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab ipywidgets pdf2image python-socketio websockets gdown
+> pip install uvicorn fastapi pydantic pymongo jsonpickle 
+> pip install python-socketio websockets gdown tqdm jupyterlab ipywidgets pdf2image
 > pip install pydicom==2.0.0 pymapvbvd dosma tensorflow
 > ```
 
