@@ -83,6 +83,6 @@ NodeInfo = {
     NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_historam),
 
     # Debug Nodes
-    NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
-    NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
+    #NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
+    #NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
 }

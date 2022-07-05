@@ -28,9 +28,9 @@ const HistogramView = ({node, nodeID}) => {
     }
 
     return (
-        <div>
+        <div className='histogram-view'>
             <HistogramChart width={310} height={310} data={data.histogram}></HistogramChart>
-            <div>
+            <div className='stats-view' style={{'padding': '1em'}}>
                 <div className="layout-row layout-space-between">
                     <div style={{width:'50%'}}>
                         <label> min </label>
