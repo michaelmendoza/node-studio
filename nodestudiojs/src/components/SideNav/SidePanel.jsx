@@ -204,6 +204,9 @@ const PanelRun = () => {
 
         dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
         await APIDataService.runSesson(nodesToRun);
+        //if (state.websocket.status !== 'error')
+        //dispatch({ type:ActionTypes.UPDATE_WEBSOCKET, message:{'status':'end', 'message':'Computation complete'} });
+
         const metadata = await APIDataService.getGraphNodeViewMetadata();
         dispatch({ type:ActionTypes.UPDATE_SESSION, metadata });
     }

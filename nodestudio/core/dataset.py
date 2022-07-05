@@ -47,6 +47,9 @@ class NodeDataset():
     def __gt__(self, other):
         return self.data >= other
 
+    def is_medicalvolume(self):
+        return isinstance(self.value, MedicalVolume)
+
     def to_medicalvolume(self):
         if self.ndim == 3:
             if self.metadata.type == 'dicom':
@@ -58,6 +61,18 @@ class NodeDataset():
             mv = MedicalVolume(data, affine, headers=headers)
             return mv
         
+    @classmethod
+    def from_medicalvolume(cls, mv):
+        if not isinstance(mv, MedicalVolume):
+             return None
+
+        data = np.moveaxis(mv.A, 2, 0)
+        header_type = 'dicom'
+        headers = mv._headers[0,0,:].tolist()
+        metadata = NodeMetadata(headers, header_type)
+        dataset = NodeDataset(data, metadata, ['Sli', 'Lin', 'Col'])
+        return dataset
+
     def to_numpy(self):
         return self.data
 

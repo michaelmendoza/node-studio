@@ -56,11 +56,11 @@ def dosma_cones(data, mask,tissuetype, lowerBound = 0, upperBound = 80):
     metadata = data[0].metadata
     dims = data[0].dims
 
-    if tissuetype == "Femoral_cartilage":
+    if tissuetype == "Femoral Cartilage":
         t = FemoralCartilage()
-    elif tissuetype == "Tibial_cartilage":
+    elif tissuetype == "Tibial Cartilage":
         t = TibialCartilage()
-    elif tissuetype == "Patellar_cartilage":
+    elif tissuetype == "Patellar Cartilage":
         t = PatellarCartilage()
     else:
         t = Meniscus()

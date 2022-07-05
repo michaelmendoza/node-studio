@@ -12,17 +12,23 @@ class Session:
 
         start = time.time()
 
-        computed = []
+        to_compute = []
         for operation in operations:
             node = graph.current_graph.getNode(operation)
             order = Session.compute_order(node)
             for index, node in enumerate(order):
-                if node.id not in computed:
-                    node_start = time.time()
-                    node.compute()
-                    computed.append(node.id)
-                    node_process_time = (time.time() - node_start) * 1000
-                    await websocket.manager.emit('status', {'session_id':id, 'status':'compute', 'message': f'Node {index+1} of {len(order)} Computed', 'time': node_process_time, 'id': node.id, 'name': node.props.type.name })
+                if node.id not in to_compute:
+                    to_compute.append(node.id)
+
+        computed = []
+        for index, nodeID in enumerate(to_compute):
+            node = graph.current_graph.node_dict[nodeID]
+            if node.id not in computed:
+                node_start = time.time()
+                node.compute()
+                computed.append(node.id)
+                node_process_time = (time.time() - node_start) * 1000
+                await websocket.manager.emit('status', {'session_id':id, 'status':'compute', 'message': f'Node {index+1} of {len(to_compute)} Computed', 'time': node_process_time, 'id': node.id, 'name': node.props.type.name })
 
         process_time = (time.time() - start) * 1000     # Processed time in ms
 

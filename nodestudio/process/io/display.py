@@ -106,6 +106,10 @@ def process_historam(data, ignore_zeros = True, complex_datatype = 'mag'):
         data = process_complex_data(data, complex_datatype)
         isComplex = True
 
+    # Ignore zero values (or maybe a threshold)
+    idx = np.where(data > 0)
+    data = data[idx]
+
     start = time.time()
     min = float(np.nanmin(data))
     max = float(np.nanmax(data))

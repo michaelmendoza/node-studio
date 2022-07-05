@@ -9,6 +9,7 @@ class NodeType(Enum):
     FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = 'FILE_RAWDATA'
     MOCK = 'MOCK'
+    GROUP_BY = 'GROUP_BY'
 
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR'
@@ -30,7 +31,9 @@ class NodeType(Enum):
     SENSE = 'SENSE'
     UNDERSAMPLE = 'UNDERSAMPLE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
+    DOSMA_TEST = "DOSMA_TEST"
     DOSMA_QDESS = "DOSMA_QDESS"
+    DOSMA_SEGMENTATION = "DOSMA_SEGMENTATION"
     CGSENSE = "CGSENSE"
     FFT = "FFT"
     
@@ -57,7 +60,8 @@ class NodeDetail(Enum):
     '''
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   
-    
+    GROUP_BY = 'GROUP_BY'
+
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
@@ -82,7 +86,9 @@ class NodeDetail(Enum):
     SENSE = '''SENSE allows is an common image domain based reconstruction algorithm. The input to both algorithms is undersampled k-space data where every few rows are skipped. SENSE uses the prior knowledge of the sensitivity profile as additional spatial encoding to ‘unfold’ the aliased image'''
     UNDERSAMPLE = '''For testing of the parallel imaging plugins as well as potential educational needs, an undersampling module was developed to reproduce aliasing artefacts resulting from direct inverse fourier transform of undersampled k-space data. As each parallel imaging method was designed for a particular undersampling pattern, the module incorporates undersampling trajectories for each technique and can be selected by the user upon running the app.'''
     SENSITIVITY_MAP = '''Sensitivity maps are used for sense, and can be obtained from dicom images'''
+    DOSMA_TEST = "DOSMA_TEST"
     DOSMA_QDESS = "Dosma implementation of the qDESS T2 mapping, see T2_qDESS(identical algorithm)"
+    DOSMA_SEGMENTATION = "DOSMA_SEGMENTATION"
     CGSENSE = "An optimised reconstruction plugin of SENSE, cgSENSE, was also included, where cg stands for conjugate gradient. By using the forward model, computation speed can be reduced from O(N^3) to O(NlogN) compared to regular SENSE, with N being the number of iterations performed."
     FFT = "Fourier transforma and inverse Fourier transform"
 

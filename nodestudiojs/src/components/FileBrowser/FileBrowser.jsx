@@ -14,8 +14,9 @@ const FileBrowser = ({onSelect}) => {
 
     useEffect(()=>{
         const fetch = async() => {
-            const data = await APIDataService.getPathQuery(relativePath);
-            setPathInfo(data);
+            let data = await APIDataService.getPathQuery(relativePath);
+            if (data) setPathInfo(data);
+            else data = { path:'', folders:[], files:[] };
         }
 
         fetch();

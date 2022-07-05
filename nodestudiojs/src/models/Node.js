@@ -26,6 +26,7 @@ class Node {
             },
             get hasData() { return this.shape?.length > 0 },
             init: (view_metadata) => { 
+                if (!view_metadata) return;
                 this.view.shape = view_metadata.shape;
                 this.view.dims = view_metadata.dims;
                 this.view.indices = this.view.shape?.map(s => Math.floor(s / 2));
