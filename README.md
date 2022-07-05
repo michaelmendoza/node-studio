@@ -16,6 +16,7 @@ Figure: An Example of a Quantitative MR Analysis Pipeline with NodeStudio User I
 Frontend javascript code located in nodestudiojs. Backend python server code located in nodestudio
 
 To run locally frontend: ( From project root directory )
+- Install nodejs. (Requires Node 14 or greater)
 - Setup nodejs third party packages (uses npm install)
 ```
 npm run build
@@ -45,13 +46,6 @@ You have two options:
 > pip install numpy matplotlib scipy scikit-image 
 > pip install uvicorn fastapi pydantic pymongo jsonpickle tqdm jupyterlab ipywidgets pdf2image python-socketio websockets gdown
 > pip install pydicom==2.0.0 pymapvbvd dosma tensorflow
-> ```
-
-2. Use the yml file to setup the conda environment with required packages
-
-> ```
-> conda env create -f nodestudio/environment.yml
-> conda activate nodestudio
 > ```
 
 - Run to API server
