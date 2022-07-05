@@ -2,7 +2,7 @@ import { io } from "socket.io-client";
 import { ActionTypes } from "../state/AppReducers";
 
 export const createWebsocketServer = (dispatch) => {
-    const sio = io("ws://localhost:8000", { path: "/ws/socket.io/", transports: ['websocket', 'polling'] });
+    const sio = io("ws://localhost:8000", { path: "/ws/socket.io/", 'timeout':200000, transports: ['websocket', 'polling'] });
 
     sio.on('connect', () => {
         //console.log('connected');

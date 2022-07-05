@@ -12,17 +12,16 @@ import ImageViewer from '../../ImageViewer';
 const ImageView = ({ node }) => {
     const [imageData, setImageData] = useState(null);
     const [slice, setSlice] = useState({label:'XY', value:'xy'});
-    const [colormap,setColormap] = useState({label:'B/W', value:'bw'});
     const [index, setIndex] = useState(0);
     const [showModal, setShowModal] = useState(false);
 
     useEffect(() => {
         let _index = initalizeIndex(slice.value);
-        fetchData(slice.value, _index, colormap.value);
+        fetchData(slice.value, _index);
     // eslint-disable-next-line react-hooks/exhaustive-deps
     }, [node.view.update, node.view.indices])
 
-    const fetchData = (slice, index, colormap) => {
+    const fetchData = (slice, index) => {
         throttle(async () => {
             if (!node.view.hasData) return;
 
@@ -32,7 +31,7 @@ const ImageView = ({ node }) => {
             console.log('D Time: ' + (endTime-startTime));
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset, colormap, node.view.contrast);
+                const dataUri = DrawImg(dataset, node.view.colormap, node.view.contrast);
                 setImageData(dataUri);
             }
         }, 100, node.id)
@@ -41,19 +40,14 @@ const ImageView = ({ node }) => {
     const handleSliceUpdate = (option) => {
         setSlice(option);
         let _index = initalizeIndex(option.value);
-        if (node.view.hasData) fetchData(option.value, _index, colormap.value);
-    }
-
-    const handleColormapChange = (option) =>{
-        setColormap(option);
-        if (node.view.hasData) fetchData(slice.value, index, option.value);
+        if (node.view.hasData) fetchData(option.value, _index);
     }
 
     const handleIndexUpdate = (value) => {
         setIndex(value);
         const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
         node.view.updateIndex(shapeIndex, value);
-        if (node.view.hasData) fetchData(slice.value, value, colormap.value) ;
+        if (node.view.hasData) fetchData(slice.value, value) ;
     }
 
     const initalizeIndex = (slice) => {
@@ -80,14 +74,11 @@ const ImageView = ({ node }) => {
     }
 
     const options = [{label:'XY', value:'xy'}, {label:'XZ', value:'xz'}, {label:'YZ', value:'yz'}]
-    const colmap_options = [{label:'B/W', value:'bw'}, {label:'Jet', value:'jet'}]
 
     return (
         <div className="image-view" onDoubleClick={handleShowModal}>
             <label>Slice</label>
             <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleSliceUpdate}></Select>
-            <label>Colormap</label>
-            <Select options={colmap_options} value={colormap} placeholder={'Select Color Space'} onChange={handleColormapChange}></Select>
             { imageData ? <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={getMaxIndex()}></Slider> : null }
             { imageData ? <img src={imageData} alt='viewport'/> : null}
 

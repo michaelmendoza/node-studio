@@ -44,6 +44,7 @@ const FileBrowser = ({onSelect}) => {
     }
 
     const loadFile = async (path) => {
+        //dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
         await APIDataService.addFiles(path);
         let files = await APIDataService.getFiles();
         dispatch({ type:ActionTypes.SET_FILES, files });

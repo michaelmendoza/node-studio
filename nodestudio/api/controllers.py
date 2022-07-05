@@ -94,6 +94,9 @@ def get_node_value_shape(node_id):
         ds = node.value[0] # Return first value 
         return ds.shape
 
+    if isinstance(node.value, list):
+        return node.value[0]['fullshape']
+
     if 'fullshape' in node.value:
         return node.value['fullshape']
 

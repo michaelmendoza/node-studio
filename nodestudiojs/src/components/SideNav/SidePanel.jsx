@@ -232,7 +232,8 @@ const PanelShare = () => {
     return (
         <div className='panel-share'> 
             <h2> Share </h2> 
-            <div> Share with people and groups </div> <button> Copy Link </button>  
+            <div> Share with people and groups </div> 
+            <div> https://github.com/michaelmendoza/node-studio </div>
         </div>
     )
 }

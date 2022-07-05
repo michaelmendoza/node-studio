@@ -94,8 +94,9 @@ const NodeInspectorView = () => {
     const handleColormapChange = (select) => {
         setColormap(select);
         node.view.colormap = select.value;
+        node.view.update++;
         //const _node = node.copy();
-        //dispatch({type: ActionTypes.UPDATE_NODE, node:_node, updateAPI:true });
+        dispatch({type: ActionTypes.UPDATE_NODE, node:node, updateAPI:true });
     }
 
     return (<div className='node-inspector-view'>

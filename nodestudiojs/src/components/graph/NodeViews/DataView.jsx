@@ -27,7 +27,7 @@ const DataView = ({node, nodeID}) => {
 
             if(data) {
                 const dataset = decodeDataset(data);
-                const dataUri = DrawImg(dataset);
+                const dataUri = DrawImg(dataset, node.view.colormap);
                 setImageData(dataUri);
             }
         }, 100, nodeID)

@@ -1,48 +1,42 @@
-import { useState, useContext, useEffect } from 'react';
+import { useState, useEffect } from 'react';
 import ImageMultiLayerRenderer from '../../ImageViewer/ImageMultiLayerRenderer';
 import Select from '../../base/Select';
 import Slider from '../../base/Slider';
-import AppState from '../../../state/AppState';
-import { throttle } from '../../../libraries/utils';
-import APIDataService from '../../../services/APIDataService';
 
 const ImageLayerView = ({node, nodeID}) => {
-    const {state} = useContext(AppState.AppContext);
     const [slice, setSlice] = useState({label:'XY', value:'xy'});
-    const [sliceMax, setSliceMax] = useState(100);
     const [index, setIndex] = useState(0);
 
     useEffect(() => {
-        fetchData(slice.value, index);
+        initalizeIndex(slice.value);
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [node.view.update])
+    }, [node.view.update, node.view.indices])
 
-    const fetchData = () => {
-        throttle(async () => {
-            let metadata = await APIDataService.getNodeMetadata(nodeID);
-            if(Array.isArray(metadata)) metadata = metadata[0];
-            updateMaxSlice(metadata.fullshape);           
-        }, 100, node.id + '-ImageLayerView')
-    }
-
-    const handleOptionUpdate = (option) => {
-        setSlice(option.value);
-        if (state.sessions[nodeID] !== undefined) {
-            fetchData();
+    const initalizeIndex = (slice) => {
+        let _index = 0
+        if (node.view.hasData) { // Set index to middle index on view update
+            const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice];
+            _index = node.view.indices[shapeIndex];
+            setIndex(_index);
         }
+        return _index;
+    }
+    
+    const handleOptionUpdate = (option) => {
+        setSlice(option);
     }
 
     const handleIndexUpdate = (value) => {
         setIndex(value);
     }
 
-    const updateMaxSlice = (shape) => {
+    const getMaxIndex = () => {
+        if (!node.view.hasData) return 1;
         const shapeIndex = ({ 'xy':0, 'xz':1, 'yz':2 })[slice.value];
-        setSliceMax(shape[shapeIndex]);
-
-        if(index > shape[shapeIndex]) {
-            setIndex(shape[shapeIndex]-1)
-        }
+        const maxIndex = node.view.shape[shapeIndex] - 1
+        if (index > maxIndex) 
+            setIndex(maxIndex);
+        return maxIndex ;
     }
 
     const options = [{label:'XY', value:'xy'}, {label:'XZ', value:'xz'}, {label:'YZ', value:'yz'}]
@@ -52,7 +46,7 @@ const ImageLayerView = ({node, nodeID}) => {
             <ImageMultiLayerRenderer node={node} nodeID={nodeID} slice={slice.value} index={index} useFractionalIndex={false}></ImageMultiLayerRenderer>
             <label>Slice</label>
             <Select options={options} value={slice} placeholder={'Select Slice'} onChange={handleOptionUpdate}></Select>
-            <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={sliceMax}></Slider>
+            <Slider label={'Index'} value={index} onChange={handleIndexUpdate} max={getMaxIndex()}></Slider>
         </div>
     )
 }
