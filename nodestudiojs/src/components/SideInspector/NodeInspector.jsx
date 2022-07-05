@@ -94,8 +94,9 @@ const NodeInspectorView = () => {
     const handleColormapChange = (select) => {
         setColormap(select);
         node.view.colormap = select.value;
+        node.view.update++;
         //const _node = node.copy();
-        //dispatch({type: ActionTypes.UPDATE_NODE, node:_node, updateAPI:true });
+        dispatch({type: ActionTypes.UPDATE_NODE, node:node, updateAPI:true });
     }
 
     return (<div className='node-inspector-view'>
@@ -147,8 +148,8 @@ const NodeInspector = () => {
     const node = state?.nodes[id];
     const info = NodeList.getNode(node?.props?.type);
 
-    const Props = () => <div style={{width:'100%'}}>
-        <h1 style={{ margin:'0 0 0.5em 0' }}> {node.props.name } </h1>
+    const NodeProps = ({node}) => <div style={{width:'100%'}}>
+        <h1 style={{ margin:'0 0 0.5em 0' }}> {node?.props?.name } </h1>
         <div> { info?.description } </div>
         <Divider></Divider>
 
@@ -161,22 +162,28 @@ const NodeInspector = () => {
 
         <label>Properties</label>
         {
-            node.options.length > 0 ? <NodePropsOptions node={node}></NodePropsOptions> : 'No Properties to Modify'
+            node.options?.length > 0 ? <NodePropsOptions node={node}></NodePropsOptions> : 'No Properties to Modify'
         }
         <Divider></Divider>
 
         <label>Data View</label>
         { 
-            node.view.hasData ? <NodeInspectorView></NodeInspectorView> : "Run node in session to load data view"
+            node.view?.hasData ? <NodeInspectorView></NodeInspectorView> : "Run node in session to load data view"
         }
         <Divider></Divider>
 
     </div>
 
+    const Props = ({node}) => {
+        return (<div>
+            { node ? <NodeProps node = {node}></NodeProps> : null }
+        </div>)
+    }
+
     return (
         <div className='node-inspector'> 
             {
-                state.activeElement ? <Props></Props> : null
+                state.activeElement ? <Props node={node}></Props> : null
             }
         </div>
     );

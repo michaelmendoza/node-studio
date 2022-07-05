@@ -9,6 +9,7 @@ class NodeType(Enum):
     FILE_OLD = 'FILE_OLD'
     FILE_RAWDATA = 'FILE_RAWDATA'
     MOCK = 'MOCK'
+    GROUP_BY = 'GROUP_BY'
 
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR'
@@ -30,7 +31,9 @@ class NodeType(Enum):
     SENSE = 'SENSE'
     UNDERSAMPLE = 'UNDERSAMPLE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
+    DOSMA_TEST = "DOSMA_TEST"
     DOSMA_QDESS = "DOSMA_QDESS"
+    DOSMA_SEGMENTATION = "DOSMA_SEGMENTATION"
     CGSENSE = "CGSENSE"
     FFT = "FFT"
     
@@ -51,19 +54,17 @@ class NodeDetail(Enum):
     VARIABLE = ''' Variable Detail '''
 
     # Input Nodes
-    FILE = ''' # File 
-    Node for accessing file data. 
-    Supports dicom and raw file data. 
-    '''
+    FILE = ''' File Node for accessing loaded file data. Supports dicom and raw file data. '''
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   
-    
+    GROUP_BY = 'Data Aggregation node for grouping dicom files. For example GROUP_BY: "EchoNumber" will create a datagroup with 2 datasets if there files were qDESS data  '
+
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
 
     # Filter Nodes
-    MASK = '''MASK detail'''
+    MASK = '''Applies a mask to a dataset. Resultant image has all values where the corresponding value in the mask is zero set to zero. '''
     THRESHOLD_MASK = 'THRESHOLD_MASK detail'
 
     # Computer Nodes
@@ -82,15 +83,17 @@ class NodeDetail(Enum):
     SENSE = '''SENSE allows is an common image domain based reconstruction algorithm. The input to both algorithms is undersampled k-space data where every few rows are skipped. SENSE uses the prior knowledge of the sensitivity profile as additional spatial encoding to ‘unfold’ the aliased image'''
     UNDERSAMPLE = '''For testing of the parallel imaging plugins as well as potential educational needs, an undersampling module was developed to reproduce aliasing artefacts resulting from direct inverse fourier transform of undersampled k-space data. As each parallel imaging method was designed for a particular undersampling pattern, the module incorporates undersampling trajectories for each technique and can be selected by the user upon running the app.'''
     SENSITIVITY_MAP = '''Sensitivity maps are used for sense, and can be obtained from dicom images'''
-    DOSMA_QDESS = "Dosma implementation of the qDESS T2 mapping, see T2_qDESS(identical algorithm)"
+    DOSMA_TEST = "DOSMA_TEST"
+    DOSMA_QDESS = "T2 quantitative map. Generates a T2 map for qDESS data using the DOSMA library. ( A deep-learning, open-source framework for musculoskeletal MRI analysis )"
+    DOSMA_SEGMENTATION = "Segmentation mask generator. Generates the segmentation mask using the deep learning network used by DOSMA library.  ( A deep-learning, open-source framework for musculoskeletal MRI analysis )"
     CGSENSE = "An optimised reconstruction plugin of SENSE, cgSENSE, was also included, where cg stands for conjugate gradient. By using the forward model, computation speed can be reduced from O(N^3) to O(NlogN) compared to regular SENSE, with N being the number of iterations performed."
-    FFT = "Fourier transforma and inverse Fourier transform"
+    FFT = "Applies Fourier transform on to input dataset"
 
     # Output Nodes
-    DISPLAY = '''DISPLAY detail'''
+    DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
     LINE_DISPLAY = 'LINE_DISPLAY'
-    LAYER_DISPLAY = 'LAYER_DISPLAY detail'
-    HISTOGRAM = 'HISTOGRAM detail'
+    LAYER_DISPLAY = 'Data display node. Displays data as 2d-image with second image layered on top of first.'
+    HISTOGRAM = 'Display a histogram of data values and displays data statistics. '
 
     # Debug Nodes
     DELAY = 'Adds a time delay'

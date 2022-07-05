@@ -27,7 +27,7 @@ const ImageSimpleRenderer = ({ node, slice, colormap, updateIndex }) => {
             const encodedData = await APIDataService.getNode(node.id, slice, _index);
             if(encodedData) {
                 const dataset = decodeDataset(encodedData);
-                const dataUri = DrawImg(dataset, colormap, node.view.contrast);
+                const dataUri = DrawImg(dataset, node.view.colormap, node.view.contrast);
                 setImageData(dataUri);
                 setDataset(dataset);
             }

@@ -59,20 +59,20 @@ def dosma_qDessT2mapping(data, tissuetype, lowerBound = 0, upperBound = 80):
         raise Exception("Error when converting datagroup to dosma qdess sequence")
 
     # read metadata -> we need to consider how to deal with this
-    metadata = data[0].metadata
-    dims = data[0].dims
+    #metadata = data[0].metadata
+    #dims = data[0].dims
 
-    if tissuetype == "Femoral_cartilage":
+    if tissuetype == "Femoral Cartilage":
         t = FemoralCartilage()
-    elif tissuetype == "Tibial_cartilage":
+    elif tissuetype == "Tibial Cartilage":
         t = TibialCartilage()
-    elif tissuetype == "Patellar_cartilage":
+    elif tissuetype == "Patellar Cartilage":
         t = PatellarCartilage()
     else:
         t = Meniscus()
     
     t2map = qdess.generate_t2_map(t, suppress_fat=True, suppress_fluid=True)
     t2map.volumetric_map = np.clip(t2map.volumetric_map, int(lowerBound), int(upperBound))
-    dataset = NodeDataset(t2map.volumetric_map.A, metadata , dims, "quantitiveMapping")
-
-    return DataGroup([dataset])
+    #dataset = NodeDataset(t2map.volumetric_map.A, metadata , dims, "quantitiveMapping")
+    ds = NodeDataset.from_medicalvolume(t2map.volumetric_map)
+    return ds #DataGroup([dataset])

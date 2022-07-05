@@ -17,8 +17,15 @@ class DataGroup():
     def __repr__(self):
         return str(self.group)
 
+    @property
+    def value(self): # Reference to values()
+        return list(self.group.values())
+
     def values(self): # behave like dictionary
-        return self.group
+        return list(self.group.values())
+
+    def keys(self):
+        return list(self.group.key())
 
     def add(self, key: str, dataset: NodeDataset):
         if key in self.group.keys():
@@ -32,6 +39,10 @@ class DataGroup():
         if key not in self.group.keys():
             raise Exception("key does not exist")
         self.group[key] = value
+
+    def to_medicalvolumes(self):
+        volumes = [ds.to_medicalvolume() for ds in self.group.values()]
+        return volumes
 
     def to_QDess(self):
         volumes = [ds.to_medicalvolume() for ds in self.group.values()]

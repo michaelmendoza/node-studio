@@ -28,16 +28,14 @@ def phantom_generator(type, fov, coil):
 
     '''
     if type == "Shepp_logan":
-        rawdata =  fft2c(shepp_logan(fov, coil))
+        rawdata =  shepp_logan(fov, coil) #fft2c(shepp_logan(fov, coil))
     if type == "Brain":
-        rawdata =  fft2c(brain(int(fov), int(coil)))
+        rawdata =  brain(int(fov), int(coil)) #fft2c(brain(int(fov), int(coil)))
     rawdata = rawdata[np.newaxis, ...]
 
     metadata = NodeMetadata("phantom", "phantom")
-    return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
+    return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
     
-
-
 def brain(fov, coil = 1):
     '''
     -------------------------------------------------------------------------

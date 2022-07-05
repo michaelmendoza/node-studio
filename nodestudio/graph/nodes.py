@@ -1,10 +1,10 @@
 from typing import Dict, List, Callable, Optional, Union, Any
 from pydantic import BaseModel
 from graph.enums import NodeType, NodeDetail
-from core import io
+from core import io, dataset, aggregate
 from process.core.fft import fft
 from process.core.fit import fit
-from process.core.mask import apply_mask, apply_threshold_mask
+from process.core.mask import apply_mask, apply_threshold_mask, apply_positive_mask
 from process.core.undersampling import undersample
 from process.core.sensitivity_map import get_sensitivity_map
 from process.io.display import process_data, process_2channel_data, process_historam
@@ -16,8 +16,8 @@ from process.recon.GRAPPA import grappa
 from process.recon.SENSE import SENSErecon
 from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
+from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
-
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -46,31 +46,34 @@ NodeInfo = {
 
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', tags=['input'], description='File input', detail=NodeDetail.FILE, output=['out'], fn=io.get_filedata),
-    NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', tags=['input'], description='A basic variable', detail=NodeDetail.VARIABLE, output=['value'], options=['value']),
-    
+    #NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', tags=['input'], description='A basic variable', detail=NodeDetail.VARIABLE, output=['value'], options=['value']),
+
     # Generator Nodes
-    NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
-    NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
-    NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
+    #NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
+    #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
+    #NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
     NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain']}, 'fov', 'coil'], fn=phantom_generator),
 
     # Filter Node
-    NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
+    #NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
+    NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Applies linear rectified mask', detail=NodeDetail.MASK, input=['dataset','mask'], output=['out'], fn=apply_positive_mask), 
     NodeType.THRESHOLD_MASK: NodeProps(type=NodeType.THRESHOLD_MASK, name='Threshold Mask', tags=['filter'], description='Threshold Mask', detail=NodeDetail.THRESHOLD_MASK, input=['data'], output=['out'], options=['threshold'], fn=apply_threshold_mask), 
+    NodeType.GROUP_BY: NodeProps(type=NodeType.GROUP_BY, name='Group By', tags=['filter'], description='Group dataset by tag', detail=NodeDetail.GROUP_BY, options=[{'name':'group_by','select':['EchoNumber']}], input=['dataset'], output=['out'], fn=aggregate.group_by),
 
     # Compute Nodes
     NodeType.ADD: NodeProps(type=NodeType.ADD, name='Add', tags=['compute'], description='Adder', detail=NodeDetail.ADD, input=['a','b'], output=['out'], fn=lambda a, b: a + b),
     NodeType.MULT: NodeProps(type=NodeType.MULT, name='Mult', tags=['compute'], description='Multiplier', detail=NodeDetail.MULT, input=['a','b'], output=['out'], fn=lambda a, b: a * b),
-    NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', tags=['compute'], description='Linear Fit', input=['a'], detail=NodeDetail.FIT, output=['out'], fn=fit),
+    #NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', tags=['compute'], description='Linear Fit', input=['a'], detail=NodeDetail.FIT, output=['out'], fn=fit),
     NodeType.SOS: NodeProps(type=NodeType.SOS, name='SOS', tags=['compute'], description='Sum of squares',input=['a','b'], detail=NodeDetail.SOS, output = ['out'], fn=sum_of_squares),
-    NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
-    NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
-    NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA Reconstruction', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['a'], output=['out'], fn=grappa),
+    #NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
+    #NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
+    NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['a'], output=['out'], fn=grappa),
     NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA','SENSE']},'undersampling_ratio'], fn=undersample), 
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map',tags=['compute'], description='Calculates sensitivity map',detail=NodeDetail.UNDERSAMPLE, input=['Kspace_data'], output=['out'], fn=get_sensitivity_map),
-    NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
-    NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='DOSMA qdess', tags=['compute'], description='DOSMA qDESS', detail=NodeDetail.DOSMA_QDESS, options=['filepath',{'name':'tissuetype', 'select':['Femoral_cartilage','Tibial_cartilage','Patellar_cartilage','Meniscus']},'lowerBound','upperBound'], output=['out'], fn=dosma_qDessT2mapping),
-    NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
+    #NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
+    NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='T2 Mapping', tags=['compute'], description='T2 Mapping (DOSMA-QDESS)', detail=NodeDetail.DOSMA_QDESS, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_qDessT2mapping),
+    NodeType.DOSMA_SEGMENTATION: NodeProps(type=NodeType.DOSMA_SEGMENTATION, name='Segmentation', tags=['compute'], description='Seqmentation (DOSMA)', detail=NodeDetail.DOSMA_SEGMENTATION, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_segmentation),
+    #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
 
     # Output Nodes
@@ -80,6 +83,6 @@ NodeInfo = {
     NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_historam),
 
     # Debug Nodes
-    NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
-    NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
+    #NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
+    #NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
 }

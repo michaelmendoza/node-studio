@@ -37,6 +37,10 @@ def apply_threshold_mask(img, threshold):
     mask = create_threshold_mask(img, threshold)
     return img * mask
 
+def apply_positive_mask(img, mask):
+    positive_mask = mask[:] > 0
+    return img[:] * positive_mask
+
 def apply_mask(img, masktype, threshold = 0):
     ''' Mask input image data '''
     mask = create_mask(img, masktype, threshold)

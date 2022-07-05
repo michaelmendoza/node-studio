@@ -90,6 +90,13 @@ def get_node_value_shape(node_id):
     if isinstance(node.value, np.ndarray) or isinstance(node.value, NodeDataset):
         return node.value.shape
 
+    if isinstance(node.value, DataGroup):
+        ds = node.value[0] # Return first value 
+        return ds.shape
+
+    if isinstance(node.value, list):
+        return node.value[0]['fullshape']
+
     if 'fullshape' in node.value:
         return node.value['fullshape']
 
@@ -102,6 +109,10 @@ def get_node_value_dims(node_id):
     if isinstance(node.value, NodeDataset):
         return node.value.dims
 
+    if isinstance(node.value, DataGroup):
+        ds = list(node.value.values())[0] # Return first value 
+        return ds.dims
+
 def get_node_value_isComplex(node_id):
     node = current_graph.getNode(node_id)
 
@@ -110,6 +121,10 @@ def get_node_value_isComplex(node_id):
 
     if isinstance(node.value, np.ndarray) or isinstance(node.value, NodeDataset):
         return np.iscomplexobj(node.value[:])
+
+    if isinstance(node.value, DataGroup):
+        ds = list(node.value.values())[0] # Return first value 
+        return np.iscomplexobj(ds[:])
 
     if 'isComplex' in node.value:
         return node.value['isComplex']

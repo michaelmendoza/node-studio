@@ -1,5 +1,6 @@
 
 import os 
+from pathlib import Path
 import numpy as np
 import dosma as dm
 from matplotlib import pyplot as plt
@@ -7,10 +8,10 @@ import os
 from dosma.models import IWOAIOAIUnet2DNormalized
 from skimage.color import label2rgb
 import urllib.request
+from core.dataset import NodeDataset 
+from core.datagroup import DataGroup
 
-
-
-def dosma_segmentation(filepath, tissue):
+def dosma_segmentation(data, tissuetype):
     '''
     -------------------------------------------------------------------------
     Parameters
@@ -52,30 +53,40 @@ def dosma_segmentation(filepath, tissue):
             A Multi-Institute Evaluation and Analysis Framework on a Standardized Dataset
     Link: https://arxiv.org/abs/2004.14003
     '''
-    if tissue == "Femoral_cartilage":
-        tissue = "fc"
-    elif tissue == "Tibial_cartilage":
-        tissue = "tc"
-    elif tissue == "Patellar_cartilage":
-        tissue = "pc"
+    if tissuetype == "Femoral Cartilage":
+        tissuetype = "fc"
+    elif tissuetype == "Tibial Cartilage":
+        tissuetype = "tc"
+    elif tissuetype == "Patellar Cartilage":
+        tissuetype = "pc"
     else:
-        tissue = "men"
+        tissuetype = "men"
 
-    dr = dm.DicomReader(num_workers=4, verbose=True)
-    volumes = dr.load(filepath, group_by="EchoNumbers")
+    #volumes = dr.load(filepath, group_by="EchoNumbers")
+    #dr = dm.DicomReader(num_workers=4, verbose=True)
+
+    if not isinstance(data, DataGroup):
+        raise Exception('Input data error: Data must be DataGroup')
+
+    volumes = data.to_medicalvolumes()
     echo1, echo2 = tuple(volumes)
     echo1, echo2 = echo1.astype(np.float), echo2.astype(np.float)
     rss = np.sqrt(echo1 ** 2 + echo2 **2)
     input_shape = rss.shape[:2] + (1,)
     print(input_shape)
-    weights_path = "iwoai-2019-unet2d-normalized_fc-tc-pc-men_weights.h5"
 
-    if not os.path.isfile(weights_path):
+    weights_path = "iwoai-2019-unet2d-normalized_fc-tc-pc-men_weights.h5"
+    path = os.path.join(Path.cwd(), 'data', weights_path)
+
+    if not os.path.isfile(path):
         print("unet weights not found, dynamic download triggered")
         urllib.request.urlretrieve("https://huggingface.co/arjundd/dosma-models/resolve/main/iwoai-2019-t6-normalized/iwoai-2019-unet2d-normalized_fc-tc-pc-men_weights.h5",
-         weights_path)
+         path)
+
     # trained using DESS data from the Osteoarthritis Initiative (OAI) iMorphics dataset
-    model = IWOAIOAIUnet2DNormalized(input_shape, weights_path)
+    model = IWOAIOAIUnet2DNormalized(input_shape, path)
     outputs = model.generate_mask(rss)
-    segmentation = outputs[tissue]
-    return segmentation
+    segmentation = outputs[tissuetype].reformat_as(rss)
+    ds = NodeDataset.from_medicalvolume(segmentation)
+    return ds #DataGroup([dataset])
+    #return segmentation

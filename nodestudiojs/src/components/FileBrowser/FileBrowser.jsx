@@ -14,8 +14,9 @@ const FileBrowser = ({onSelect}) => {
 
     useEffect(()=>{
         const fetch = async() => {
-            const data = await APIDataService.getPathQuery(relativePath);
-            setPathInfo(data);
+            let data = await APIDataService.getPathQuery(relativePath);
+            if (data) setPathInfo(data);
+            else data = { path:'', folders:[], files:[] };
         }
 
         fetch();
@@ -43,6 +44,7 @@ const FileBrowser = ({onSelect}) => {
     }
 
     const loadFile = async (path) => {
+        //dispatch({ type:ActionTypes.SET_SIDENAV_SHOW, show: false })
         await APIDataService.addFiles(path);
         let files = await APIDataService.getFiles();
         dispatch({ type:ActionTypes.SET_FILES, files });
