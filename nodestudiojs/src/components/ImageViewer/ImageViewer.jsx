@@ -23,7 +23,7 @@ const ImageViewer = ({node, nodeID}) => {
             setContrastWindow(node.view.contrast.window);
         }
     // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
+    }, [node.view.contrast.level,node.view.contrast.window])
 
     const handleContrastLevelUpdate = (value) => {
         setContrastLevel(value);
