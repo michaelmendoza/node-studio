@@ -15,6 +15,7 @@ import ItemExplorer from './ItemExplorer';
 import Table from '../base/Table';
 import { useEffect } from 'react';
 import FileBrowser from '../FileBrowser/FileBrowser';
+import PanelFiles from '../FileBrowser/PanelFiles';
 
 const SidePanel = ({activeNav}) => {
     const { state, dispatch } = useContext(AppState.AppContext);
@@ -24,7 +25,8 @@ const SidePanel = ({activeNav}) => {
     }
 
     const render = () => {
-        if (activeNav.name === 'files') return <PanelFiles></PanelFiles>
+        if (activeNav.name === 'files') return <FileBrowser></FileBrowser>
+        if (activeNav.name === 'loaded files') return <PanelFiles></PanelFiles>
         if (activeNav.name === 'projects') return <PanelProjects navItem={activeNav}></PanelProjects>        
         if (activeNav.name === 'examples') return <PanelExamples navItem={activeNav}></PanelExamples>
         if (activeNav.name === 'run') return <PanelRun></PanelRun>
@@ -32,6 +34,7 @@ const SidePanel = ({activeNav}) => {
         if (activeNav.name === 'share') return  <PanelShare></PanelShare>
         else return null
     }
+
 
     return (
         <div>
@@ -46,40 +49,40 @@ const SidePanel = ({activeNav}) => {
     )
 }
 
-const PanelFiles = () => {
-    const { state, dispatch } = useContext(AppState.AppContext);
-    const [showFileBrowser, setShowFileBrowser] = useState(false);
+// const PanelFiles = () => {
+//     const { state, dispatch } = useContext(AppState.AppContext);
+//     const [showFileBrowser, setShowFileBrowser] = useState(false);
 
-    useEffect(() => {
-        const fetch = async () => {
-            for (let i = 0; i < state.files.length; i++) {
-                if(!state.files[i].img) {
-                    const imgSrc = await APIDataService.getFilePreview(state.files[i].id);
-                    state.files[i].img = imgSrc;
-                }
-            }
-        }
-        fetch();
-    }, [state.files])
+//     useEffect(() => {
+//         const fetch = async () => {
+//             for (let i = 0; i < state.files.length; i++) {
+//                 if(!state.files[i].img) {
+//                     const imgSrc = await APIDataService.getFilePreview(state.files[i].id);
+//                     state.files[i].img = imgSrc;
+//                 }
+//             }
+//         }
+//         fetch();
+//     }, [state.files])
 
-    const AvailableFilesList = () =>  <div className='available-files-list'>
-        <label> Available Files </label>
-        <Table data={files} headers={['Preview','Name', 'Type']}></Table>
-    </div>
+//     const AvailableFilesList = () =>  <div className='available-files-list'>
+//         <label> Available Files </label>
+//         <Table data={files} headers={['Preview','Name', 'Type']}></Table>
+//     </div>
 
-    const files = state.files.map(file => [{ img: file.img, style:{width:'64px'} }, file.name, file.type]);
+//     const files = state.files.map(file => [{ img: file.img, style:{width:'64px'} }, file.name, file.type]);
 
-    return (
-        <div className='panel-files'>
-            <div className='layout-row-center layout-space-between'>
-                <h2> Files </h2>
-                <button className='button-icon' onClick={()=> setShowFileBrowser(!showFileBrowser)}> <i className='material-icons'> { showFileBrowser ? 'close' : 'add' } </i> </button>
-            </div>
+//     return (
+//         <div className='panel-files'>
+//             <div className='layout-row-center layout-space-between'>
+//                 <h2> Files </h2>
+//                 <button className='button-icon' onClick={()=> setShowFileBrowser(!showFileBrowser)}> <i className='material-icons'> { showFileBrowser ? 'close' : 'add' } </i> </button>
+//             </div>
 
-            { showFileBrowser ? <FileBrowser onSelect={()=> setShowFileBrowser(false)}></FileBrowser> : <AvailableFilesList></AvailableFilesList> }
-        </div>
-    )
-}
+//             { showFileBrowser ? <FileBrowser onSelect={()=> setShowFileBrowser(false)}></FileBrowser> : <AvailableFilesList></AvailableFilesList> }
+//         </div>
+//     )
+// }
 
 const PanelProjects = ({navItem}) => {
     const {state} = useContext(AppState.AppContext);

@@ -88,6 +88,8 @@ const ItemView = ({type, item, callback}) => {
     const getItem = () => {
         if (type === 'projects')
             return <ProjectItemView item={item} callback={callback}></ProjectItemView>
+        // if (type === 'loaded files')
+        //     return <LoadedFiles></LoadedFiles>
         if (type === 'examples')
             return <ExamplesItemView item={item}></ExamplesItemView>
         if (type === 'plugins')

@@ -5,7 +5,7 @@ export const SideViewPositions = {
     'RIGHT': 'right'
 }
 
-const SideView = ({children, position = SideViewPositions.LEFT}) => {
+const SideView = ({children, position = SideViewPositions.LEFT}) => { 
     // Position should be 'left' or 'right'
 
     return (
