@@ -47,8 +47,8 @@ const ImageViewer = ({node, nodeID}) => {
             <Select options={modeOptions} value={mode} placeholder={'Select Slice'} onChange={(option) => setMode(option)}></Select>
             <div className='contrast-controls'>
                 <label> Contrast </label>
-                <Slider label={'Level'} value={contrastLevel} onChange={handleContrastLevelUpdate} max={4096} min={0}></Slider>
-                <Slider label={'Window'} value={contrastWindow} onChange={handleContrastWindowUpdate} max={4096} min={0}></Slider> 
+                <Slider label={'Level'} value={contrastLevel} onChange={handleContrastLevelUpdate} max={node.view.resolution} min={0}></Slider>
+                <Slider label={'Window'} value={contrastWindow} onChange={handleContrastWindowUpdate} max={node.view.resolution} min={0}></Slider> 
             </div>
         </div>
 
