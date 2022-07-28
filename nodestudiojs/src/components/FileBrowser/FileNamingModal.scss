@@ -1,0 +1,64 @@
+@import '../../styles/base/variables.scss';
+
+.file-naming-modal {
+
+    position: fixed;
+    top:0;
+    bottom: 0;
+    left:0;
+    right:0;
+    z-index: 100;
+
+    .file-naming-backdrop {
+        position: fixed;
+        top:0;
+        bottom: 0;
+        left:0;
+        right:0;
+        z-index: 100;
+        background-color: #66666666;
+    }
+
+    .file-naming-container {
+        min-width: 20em;
+        min-height: 20em;
+        z-index: 101;
+        overflow: auto;
+    }
+
+    .file-naming-content { 
+        background-color: $modal-background;
+        border-radius: 4px;
+        padding: 2em;
+    }
+
+    .file-naming-header {
+        background-color: $modal-header;
+        color: $modal-color;
+        padding: 0.5em 0.5em 0.5em 1.5em;
+        text-align: left;
+        text-transform: capitalize;
+
+        h2 {
+            font-size: 1.25em;
+            margin: 0;
+            font-weight: 300;
+        }
+
+        .button-icon {
+            color: darken($modal-color, 10%);
+            padding: 0;
+
+            &:hover, &:focus, &:active {
+                color: lighten($modal-color, 10%);
+                background-color: lighten($modal-background, 10%);
+            }
+
+            i {
+                font-size: 2em;
+            }
+        }
+    }
+
+
+}

@@ -6,11 +6,13 @@ import FileBrowserControls from './FileBrowserControls';
 import FileBrowserItem from './FileBrowserItem';
 import { useAppState } from '../../state/AppState';
 import { ActionTypes } from '../../state';
+import FileNamingModal from './FileNamingModal';
 
 const FileBrowser = ({onSelect}) => {
     const { dispatch } = useAppState();
     const [relativePath, setRelativePath] = useState('data');
     const [pathInfo, setPathInfo] = useState({ path:'', folders:[], files:[] });
+    const [showFileNamingModal, setShowFileNamingModal] = useState(false);
 
     useEffect(()=>{
         const fetch = async() => {
