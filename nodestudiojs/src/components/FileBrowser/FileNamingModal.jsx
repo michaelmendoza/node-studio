@@ -2,17 +2,20 @@ import './FileNamingModal.scss';
 import { useEffect, useState } from 'react';
 import { useAppState } from "../../state/AppState";
 import Modal from '../base/Modal';
+import TextInput from '../base/TextInput';
 
-const FileNamingModal = () => {
+const FileNamingModal = ({showModal, setShowModal, filename, setFilename, loadFile}) => {
     const { state } = useAppState();
-    const [filename, setFilename] = useState('');
 
     const handleFileNaming = () => {
+        if (filename === '') return;
+        
         setFilename('');
+        loadFile()
     }
 
     return (
-        <Modal title='Name File' open={showFileNamingModal} onClose={() => setShowFileNamingModal(!showFileNamingModal)}>
+        <Modal title='Name File' open={showModal} onClose={() => setShowModal(!showModal)}>
             <div className='file-naming-modal'>
                 <TextInput name="Enter file name" value={filename} onChange={(e) => setFilename(e.target.value)}></TextInput>
                 <div className='layout-row-center'>

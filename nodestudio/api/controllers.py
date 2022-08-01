@@ -280,7 +280,7 @@ def get_file_preview_img(file, size = 128):
     im.save(buffered, format="PNG")
     return "data:image/png;base64," + base64.b64encode(buffered.getvalue()).decode()
 
-def read_file(filepath):
+def read_file(filepath, filename):
     io.read_file(filepath)
     return get_files()
 
