@@ -14,6 +14,10 @@ const FileBrowser = ({onSelect}) => {
     const [pathInfo, setPathInfo] = useState({ path:'', folders:[], files:[] });
     const [showFileNamingModal, setShowFileNamingModal] = useState(false);
 
+    const handleFileNaming = () => {
+        setShowFileNamingModal(true);
+    }
+
     useEffect(()=>{
         const fetch = async() => {
             let data = await APIDataService.getPathQuery(relativePath);
@@ -54,6 +58,7 @@ const FileBrowser = ({onSelect}) => {
     }
 
     const handleFileLoad = async () => {
+        setShowFileNamingModal(true);
         loadFile(pathInfo.path);
     }
 
@@ -62,6 +67,7 @@ const FileBrowser = ({onSelect}) => {
         <label> File Browser </label>
         <FileBrowserControls onLoad={handleFileLoad} onRefresh={refreshBrowser} onBack={backOneDirectory}></FileBrowserControls>
         <FileBrowserPath path={relativePath}></FileBrowserPath>
+        <FileNamingModal showFileNamingModal={showFileNamingModal} setShowFileNamingModal={setShowFileNamingModal}></FileNamingModal>
         <div className='file-browser-list'>
             {
                 pathInfo.folders.map((item, index)=> <FileBrowserItem key={index} item={item} type={'folder'} onSelect={handleFileItemSelect}></FileBrowserItem>)
