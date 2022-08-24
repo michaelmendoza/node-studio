@@ -15,7 +15,7 @@ const FileNamingModal = ({showModal, setShowModal, filename, setFilename, loadFi
     }
 
     return (
-        <Modal title='Name File' open={showModal} onClose={() => setShowModal(!showModal)}>
+        <Modal title='Load File' open={showModal} onClose={() => setShowModal(!showModal)}>
             <div className='file-naming-modal'>
                 <TextInput name="Enter file name" value={filename} onChange={(e) => setFilename(e.target.value)}></TextInput>
                 <div className='layout-row-center'>
@@ -23,6 +23,7 @@ const FileNamingModal = ({showModal, setShowModal, filename, setFilename, loadFi
                 </div>
             </div>
         </Modal>
+        
     )
 
 }

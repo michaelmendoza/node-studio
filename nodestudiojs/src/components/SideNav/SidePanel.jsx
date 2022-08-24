@@ -45,7 +45,6 @@ const SidePanel = ({activeNav}) => {
                 </div> : null
             }
         </div>
-
     )
 }
 
