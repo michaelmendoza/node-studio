@@ -9,9 +9,10 @@ const FileNamingModal = ({showModal, setShowModal, filename, setFilename, loadFi
 
     const handleFileNaming = () => {
         if (filename === '') return;
-        
-        setFilename('');
-        loadFile()
+        else {
+            loadFile();
+            setShowModal(false);
+        }
     }
 
     return (

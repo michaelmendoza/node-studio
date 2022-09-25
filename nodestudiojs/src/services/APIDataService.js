@@ -62,7 +62,7 @@ const APIDataService = {
 
     getFiles: () => fetchAPI(`${dataUrl}/files`, FetchTypes.GET),
 
-    addFiles: (filepath) => fetchAPI(`${dataUrl}/files/add?filepath=${filepath}`, FetchTypes.GET),
+    addFiles: (filepath, filename) => fetchAPI(`${dataUrl}/files/add?filepath=${filepath}&filename=${filename}`, FetchTypes.GET),
 
     updateFile: (id, name) => fetchAPI(`${dataUrl}/files/update?id=${id}&name=${name}`, FetchTypes.GET),
 
