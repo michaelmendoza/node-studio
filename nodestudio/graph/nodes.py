@@ -18,6 +18,7 @@ from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
+from process.io.export import export_data
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -47,7 +48,9 @@ NodeInfo = {
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', tags=['input'], description='File input', detail=NodeDetail.FILE, output=['out'], fn=io.get_filedata),
     #NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', tags=['input'], description='A basic variable', detail=NodeDetail.VARIABLE, output=['value'], options=['value']),
-
+    NodeType.EXPORT_FILE: NodeProps(type=NodeType.EXPORT_FILE, name='Export', tags=['export'], description='File export', detail=NodeDetail.EXPORT_FILE,input = ['data'],options=['file_name',{'name':'type', 'select':['All','Dicoms', 'Nifti', 'Mat']}], fn=export_data),
+    
+    
     # Generator Nodes
     #NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),

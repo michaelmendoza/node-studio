@@ -10,7 +10,8 @@ class NodeType(Enum):
     FILE_RAWDATA = 'FILE_RAWDATA'
     MOCK = 'MOCK'
     GROUP_BY = 'GROUP_BY'
-
+    EXPORT_FILE = 'EXPORT_FILE'
+    
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR'
@@ -58,6 +59,7 @@ class NodeDetail(Enum):
     MOCK = '''MOCK detail'''
     PHANTOM = "PHANTOM_GENERATOR"   
     GROUP_BY = 'Data Aggregation node for grouping dicom files. For example GROUP_BY: "EchoNumber" will create a datagroup with 2 datasets if there files were qDESS data  '
+    EXPORT_FILE = 'export file to dicoms, nifti, or mat'
 
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
