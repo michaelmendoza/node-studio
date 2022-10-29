@@ -7,7 +7,7 @@ from core.dataset import NodeDataset
 from dosma import DicomWriter
 import os
 
-def export_data(data, file_name, type):
+def export_data(data, file_name = "test", type = "Dicoms"):
     dosma_medicalvolume = data.to_medicalvolume()
     dw = DicomWriter()
     data_path = "data/processed/"
@@ -17,3 +17,4 @@ def export_data(data, file_name, type):
     if os.path.isdir(export_path) is False:
         os.mkdir(export_path)
     # dw.save(dosma_medicalvolume, "../../data")
+    return data

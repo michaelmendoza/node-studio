@@ -48,7 +48,7 @@ NodeInfo = {
     # Input Nodes
     NodeType.FILE: NodeProps(type=NodeType.FILE, name='File', tags=['input'], description='File input', detail=NodeDetail.FILE, output=['out'], fn=io.get_filedata),
     #NodeType.VARIABLE: NodeProps(type=NodeType.VARIABLE, name='Variable', tags=['input'], description='A basic variable', detail=NodeDetail.VARIABLE, output=['value'], options=['value']),
-    NodeType.EXPORT_FILE: NodeProps(type=NodeType.EXPORT_FILE, name='Export', tags=['export'], description='File export', detail=NodeDetail.EXPORT_FILE,input = ['data'],options=['file_name',{'name':'type', 'select':['All','Dicoms', 'Nifti', 'Mat']}], fn=export_data),
+    NodeType.EXPORT_FILE: NodeProps(type=NodeType.EXPORT_FILE, name='Export', tags=['export'], description='File export', detail=NodeDetail.EXPORT_FILE,input = ['data'],output=['out'], options=['file_name',{'name':'type', 'select':['All','Dicoms', 'Nifti', 'Mat']}], fn=export_data),
     
     
     # Generator Nodes
