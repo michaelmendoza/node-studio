@@ -16,6 +16,7 @@ def check_and_create_dir(path):
         os.mkdir(path)
 
 def export_data(data, file_name = "test", type = "Dicoms"):
+    type = str(type)
     dosma_medicalvolume = data.to_medicalvolume()
     dw = DicomWriter()
     # default directory
@@ -30,14 +31,14 @@ def export_data(data, file_name = "test", type = "Dicoms"):
     Nifti_path = export_path+"Nifti/"
 
     # it is much easier to convert dicoms to nifti 
-    if type == "Mat" or "All":
+    if type == "Mat" or type ==  "All":
         check_and_create_dir(mat_path)
         mat2save = {"data": data[:]}
         savemat(mat_path+"data.mat", mat2save)
     if type != "Mat":
         check_and_create_dir(dicom_path)
         dw.save(dosma_medicalvolume, export_path+"Dicoms/")
-    if type == "Nifti" or "All":
+    if type == "Nifti" or type == "All":
         check_and_create_dir(Nifti_path)
         dicom2nifti.convert_directory(dicom_path, Nifti_path)
         if type == "Nifti":
