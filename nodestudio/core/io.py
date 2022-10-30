@@ -8,7 +8,7 @@ import mapvbvd
 from core.dataset import NodeDataset
 from core.metadata import NodeMetadata
 from core.datagroup import DataGroup
-
+import nibabel as nib
 files_loaded = {}
 
 def get_filedata(file):
@@ -36,6 +36,8 @@ def read_file(filepath, id = None):
         # Read raw data files in folder (load one dataset/datagroup per folder)
         paths = glob.glob(filepath + '*.dcm')        
         paths.extend(glob.glob(filepath + '*.ima'))
+        paths.extend(glob.glob(filepath + '*.nii'))
+        paths.extend(glob.glob(filepath + '*.nii.gz'))
         if len(paths) > 0:
             files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'dicom', 'data': read_dicom(filepath)}  
     else:
@@ -45,8 +47,25 @@ def read_file(filepath, id = None):
             files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'raw data', 'data': read_rawdata(filepath)}  
         if file_extension == '.dcm' or file_extension == '.ima':
             files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'dicom', 'data': read_dicom(filepath)}  
+        if file_extension == '.nii' or file_extension == '.nii.gz' or file_extension== '.gz':
+            files_loaded[id] = { 'id':id, 'path':filepath, 'name':f'File {len(files_loaded)}', 'type':'nifti', 'data': read_nifti(filepath)}  
     
     return id
+def read_nifti(filepath):
+    if os.path.isdir(filepath):
+        paths = glob.glob(filepath + '*.nii')       
+        paths.extend(glob.glob(filepath + '*.nii.gz'))  
+    elif os.path.isfile(filepath):
+        paths = [filepath]
+    else:
+        raise IOError(f"No directory or file found: {filepath}")
+    datagroup = []
+    for idx, path in enumerate(paths):
+        datagroup.append(nib.load(path).get_fdata())
+    if len(datagroup) == 1:
+        return datagroup[0]
+    else:
+        return DataGroup(datagroup)
 
 def read_dicom(filepath, group_by=None, sort_by=None):
     ''' Reads dicom files from a folder or single file. Groups data if group_by is set to tag in dicom header'''
