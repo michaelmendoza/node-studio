@@ -4,7 +4,7 @@ NodeStudio is an open-source node-based imaging processing web platform created 
 
 NodeStudio was developed to enable researchers to build complex imaging processing pipelines visually using a computation graph. A visual computation graph is a method for the design of complex algorithms without writing a single line of code. Instead of writing code, the user can visually assemble node networks in a cross-platform web application. NodeStudio gives rapid feedback that reflects network changes. It is designed to be simple to use and doesn’t require the knowledge of Python or any standard programming languages. This platform also supports multi-vendor MRI data, the integration of custom Python code, and the integration of third-party packages the deep learning framework DOSMA. As a tool for musculoskeletal MRI analysis, the platform supports several techniques for quantitative MR analysis.
 
-This project is active development. An Alpha release is planned for July 2022.  
+This project is active development. Demo of application is [here](https://drive.google.com/file/d/1_KPBHWeIJKArQ0QkV5V376SyWoEt89q5/view?usp=share_link). Slides for IWAOI conference [here](https://docs.google.com/presentation/d/1KL4WV9qS9neKAYWxKOtZBnJlh3dIdgtD68phWoJFnJQ/edit#slide=id.g14d587e214a_2_57).
 
 ![nodestudio example pipeline](https://github.com/michaelmendoza/node-studio/blob/master/media/design/ExampleSegmentationPipeline.png)
 Figure: An Example of a Quantitative MR Analysis Pipeline with NodeStudio User Interface
@@ -97,3 +97,20 @@ Nodestudio is divided into a frontend react application using react and a backen
         /simulation - MR simulation code
     /tests - contains unit tests (TODO)
 ```
+
+## Citation
+```
+@article{mendoza2022nodestudio,
+    title = { Nodestudio, A Visual Programming Framework For Musculoskeletal MRI Analysis },
+    journal = {Osteoarthritis Imaging},
+    volume = {2},
+    pages = {100014},
+    year = {2022},
+    note = {16th International Workshop on Osteoarthritis ImagingTokyo, JapanJuly 6-8, 2022},
+    issn = {2772-6541},
+    doi = {https://doi.org/10.1016/j.ostima.2022.100014},
+    url = {https://www.sciencedirect.com/science/article/pii/S2772654122000083},
+    author = {M.A. Mendoza and Z. Huo and Y. Diao and Y. Jin and J. Huang and N.K. Bangerter}
+}
+```
+In addition using NodeStudio, please also consider citing the work that introduced the method used for analysis.
