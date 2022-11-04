@@ -113,3 +113,4 @@ Nodestudio is divided into a frontend react application using react and a backen
     author = {M.A. Mendoza and Z. Huo and Y. Diao and Y. Jin and J. Huang and N.K. Bangerter}
 }
 ```
+In addition using NodeStudio, please also consider citing the work that introduced the method used for analysis.
