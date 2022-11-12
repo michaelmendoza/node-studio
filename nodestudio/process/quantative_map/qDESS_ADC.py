@@ -262,13 +262,27 @@ def qDESS_ADC_Bieri_method(TR,TE,Tg,GhArea,GlArea, Alpha_deg,Nstates,e1_H,e2_H,e
         adcFitBieri[s],t2Fit2D[s],adcFit2D[s] = DESS2dFit_img(TR,TE,Tg,GhArea,GlArea, Alpha_deg,Nstates,e1_H[s],e2_H[s],e1_L[s],e2_L[s])
     return adcFitBieri
 
-def qDESS_ADC(scan1, scan2, method):
+def qDESS_ADC(scan1, scan2, method, spoiler_duration_ms, gradient_area1, gradient_area2):
     ns, ny, nx = scan1.shape
-    dcmheader = scan1.metadata.headers
-    e1_H = scan1[0:int(ns/2),:,:]
-    e1_L = scan1[int(ns/2):,:,:] 
-    e2_H = scan2[0:int(ns/2),:,:]
-    e2_L = scan2[int(ns/2):,:,:] 
-    print("yes")
-
+    dcmheader = scan1.metadata.headers[0]
+    TR = dcmheader.RepetitionTime*1e-3
+    TE = dcmheader.EchoTime*1e-3
+    alpha = dcmheader.FlipAngle
+    Tg = float(spoiler_duration_ms) * 10**(-3)
+    if gradient_area1 > gradient_area2:
+        GhArea, GlArea = float(gradient_area1), float(gradient_area2)
+        e1_H = scan1[0:int(ns/2),:,:]
+        e2_H = scan1[int(ns/2):,:,:] 
+        e1_L = scan2[0:int(ns/2),:,:]
+        e2_L = scan2[int(ns/2):,:,:] 
+    else:
+        GhArea, GlArea = float(gradient_area2), float(gradient_area1)
+        e1_H = scan2[0:int(ns/2),:,:]
+        e2_H = scan2[int(ns/2):,:,:] 
+        e1_L = scan1[0:int(ns/2),:,:]
+        e2_L = scan1[int(ns/2):,:,:] 
+    if method == "Bragi":
+        return qDESS_ADC_Bragi_method(TR,TE,Tg,GhArea,GlArea, alpha,6,e1_H,e2_H,e1_L,e2_L)
+    else:
+        return qDESS_ADC_Bieri_method(TR,TE,Tg,GhArea,GlArea, alpha,6,e1_H,e2_H,e1_L,e2_L)
     
