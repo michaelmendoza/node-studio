@@ -264,7 +264,7 @@ def qDESS_ADC_Bieri_method(TR,TE,Tg,GhArea,GlArea, Alpha_deg,Nstates,e1_H,e2_H,e
 
 def qDESS_ADC(scan1, scan2, method):
     ns, ny, nx = scan1.shape
-    dcmhdear = scan1.metadata.headers
+    dcmheader = scan1.metadata.headers
     e1_H = scan1[0:int(ns/2),:,:]
     e1_L = scan1[int(ns/2):,:,:] 
     e2_H = scan2[0:int(ns/2),:,:]
