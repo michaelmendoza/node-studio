@@ -16,12 +16,11 @@ def acs(rawKspace,acsShape):
 
 def undersample(dataset, type, undersampling_ratio):
     if dataset.tag != "kspace":
-        raise Exception("undersample in image domain")
+        dataset.data = fft2c(dataset.data, axis = (1,2))
+    ACS = []
+    if type == "GRAPPA/SENSE": 
+        ACS = acs(dataset.data,(32,32))
 
-    if type == "GRAPPA": 
-        ref = acs(dataset.data,(32,32))
-    #if type == "SENSE":
-         # skip no idea what raw data looks like 
         
     undersampling_ratio = int(undersampling_ratio)    
     mask = np.zeros(dataset.shape)
@@ -29,6 +28,6 @@ def undersample(dataset, type, undersampling_ratio):
     dataset.data = dataset.data * mask
        
     metadata = NodeMetadata("phantom", "phantom")
-    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'image')
+    reference = NodeDataset(ACS, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
     datagroup = DataGroup({"rawdata": dataset, "reference": reference})
     return datagroup

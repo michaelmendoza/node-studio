@@ -4,27 +4,22 @@ import math
 from scipy.linalg import pinv
 from core.datagroup import DataGroup
 from core.dataset import NodeDataset 
-
+from process.recon.SOS import * 
 def grappa(datagroup):
     if len(datagroup.group) % 2: 
         raise Exception("data group should be mutliple of 2 for reconstruction")
-    npair = int(len(datagroup.group)/2)
-    recongroup = DataGroup(dict())
-    for p in range (npair):
-        # this is stupid, but should work
-        datakey = list(datagroup.group.keys())[2*p]
-        refkey = list(datagroup.group.keys())[2*p+1]
-        dataRset = datagroup[datakey].data
-        calibset = datagroup[refkey].data
-        reconset = NodeDataset(None, datagroup[datakey].metadata, datagroup[datakey].dims, "image")
-        for sli in range(dataRset.shape[0]):
-            data = recon( dataRset[sli,...], calibset[sli,...])
-            if reconset.data == None: 
-                reconset.data = data
-            else: 
-                reconset.data = np.concatenate((reconset.data, data), axis = 0)
-        recongroup.add(int(p), reconset)
-    return recongroup
+    datakey = list(datagroup.group.keys())[0]
+    refkey = list(datagroup.group.keys())[1]
+    dataRset = datagroup[datakey].data
+    calibset = datagroup[refkey].data
+    reconset = NodeDataset(None, datagroup[datakey].metadata, datagroup[datakey].dims, "image")
+    for sli in range(dataRset.shape[0]):
+        data = recon( dataRset[sli,...], calibset[sli,...])
+        if reconset.data == None: 
+            reconset.data = data
+        else: 
+            reconset.data = np.concatenate((reconset.data, data), axis = 0)
+    return reconset
    
 def recon(dataR, calib, kh = 2, kw = 3):
     calib = np.moveaxis(calib, -1, 0) # move the coil to the front -> fft in the axis 3 and 4
@@ -54,7 +49,7 @@ def recon(dataR, calib, kh = 2, kw = 3):
             kernel = data[:,ys][:,:,xs].reshape(-1,1)
             data[:,yf, x] = np.matmul(w, kernel).reshape(nc,R)
     data = np.moveaxis(data, 0, -1)
-    return ifft2c(data)
+    return rsos(ifft2c(data))
 
 def get_circ_xidx(x, kw, nx):
     return np.mod(np.linspace(x-np.floor(kw/2), x+np.floor(kw/2), kw,dtype = int),nx)
