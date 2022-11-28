@@ -8,6 +8,8 @@ def sum_of_squares(a,b):
         
         return result
 
+def complex_root_sum_of_squares(images,coilaxis = 3):
+    return np.abs(np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis)))
 
 def rsos(images,coilaxis = 3):
     return np.abs(np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis)))
