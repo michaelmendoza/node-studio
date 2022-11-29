@@ -14,6 +14,18 @@ def acs(rawKspace,acsShape):
     ACS = rawKspace[:,idxy:idxy+cny, idxx:idxx+cnx,...]
     return ACS
 
+def var_den_mask(shape, R):
+    start = 1e-7
+    end = 0.1
+    for i in range(20):    
+        cur = (start + end)/2
+        mask = var_dens_mask(shape, cur)
+        curR = undersampling_rate(mask)
+        if curR < 1/R: 
+            end = (start + end) /2
+        else: 
+            start = (start + end) /2
+    return mask
 
 def undersample(dataset, type, undersampling_ratio):
     if dataset.tag != "kspace":
@@ -33,7 +45,8 @@ def undersample(dataset, type, undersampling_ratio):
 
     if type == "Variable Density":
         ns, ny, nx, nc = dataset.data.shape
-        mask = var_dens_mask([ny, nx], 0.001)
+        # i need to think about this. 
+        mask = var_den_mask([ny, nx], int(undersampling_ratio)    ) 
         mask = np.tile(mask.reshape(1, ny,nx, 1), (ns, 1,1, nc))
         ref = inati_cmap(ifft2c(dataset.data))
          

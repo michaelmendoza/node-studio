@@ -10,7 +10,7 @@ import h5py
 import torchkbnufft as tkbn
 import time
 from core.dataset import NodeDataset 
-def MRITorch_compressed_sensing(datagroup, method, device):
+def MIRTorch_compressed_sensing(datagroup, method, device):
 
     data = datagroup["rawdata"].data
     cmap = datagroup["reference"].data
@@ -20,7 +20,7 @@ def MRITorch_compressed_sensing(datagroup, method, device):
     else: 
         device0 = torch.device('gpu')
     
-    reconset = NodeDataset(None, datagroup["rawdata"].metadata, datagroup["rawdata"].dims, "image")
+    reconset = NodeDataset(None, datagroup["rawdata"].metadata, datagroup["rawdata"].dims[:2], "image")
     recon = np.zeros([ns, ny, nx])
     for sli in range(ns):
         s_c = np.swapaxes(cmap[sli], 2, 0)
@@ -57,9 +57,10 @@ def MRITorch_compressed_sensing(datagroup, method, device):
         if method == "POGM":
             [pg_wavelet, loss_pg_wavelet] = POGM(f_grad=gradA, f_L=L[1].item()**2, g_prox=P, max_iter=100, eval_func=evalation).run(x0=I0)
             recon[sli] = torch.abs((pg_wavelet[0,0,:,:])).cpu().data.numpy()
-        # if method == "FBPD":
-        #     [fbpd_wavelet, loss_fbpd_wavelet] = FBPD(gradA, f_prox, P, L[1].item()**2, 1, G=W, max_iter=200, eval_func=evalation).run(torch.zeros_like(I0))
-        #     recon[sli] = torch.abs((fbpd_wavelet[0,0,:,:])).cpu().data.numpy()
+        if method == "FBPD":
+            f_prox = Const()
+            [fbpd_wavelet, loss_fbpd_wavelet] = FBPD(gradA, f_prox, P, L[1].item()**2, 1, G=W, max_iter=200, eval_func=evalation).run(torch.zeros_like(I0))
+            recon[sli] = torch.abs((fbpd_wavelet[0,0,:,:])).cpu().data.numpy()
     reconset.data = recon
     return reconset
 

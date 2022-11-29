@@ -18,7 +18,7 @@ from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
-from process.integration.MRITorch.cs import MRITorch_compressed_sensing
+from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -76,7 +76,7 @@ NodeInfo = {
     NodeType.DOSMA_SEGMENTATION: NodeProps(type=NodeType.DOSMA_SEGMENTATION, name='Segmentation', tags=['compute'], description='Seqmentation (DOSMA)', detail=NodeDetail.DOSMA_SEGMENTATION, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_segmentation),
     #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
-    NodeType.MRITorch_CS: NodeProps(type=NodeType.MRITorch_CS, name='MRITorch_CS', tags=['compute'], description='MRITorch Compressed Sensing', detail=NodeDetail.MRITorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MRITorch_compressed_sensing),
+    NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
