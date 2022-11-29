@@ -61,6 +61,9 @@ def MIRTorch_compressed_sensing(datagroup, method, device):
             f_prox = Const()
             [fbpd_wavelet, loss_fbpd_wavelet] = FBPD(gradA, f_prox, P, L[1].item()**2, 1, G=W, max_iter=200, eval_func=evalation).run(torch.zeros_like(I0))
             recon[sli] = torch.abs((fbpd_wavelet[0,0,:,:])).cpu().data.numpy()
+        if method == "FISTA":
+            [fs_wavelet, loss_fs_wavelet] = FISTA(f_grad=gradA, f_L=L[1].item()**2, g_prox=P, max_iter=100, eval_func=evalation).run(x0=I0)
+            recon[sli] = torch.abs((fs_wavelet[0,0,:,:])).cpu().data.numpy()
     reconset.data = recon
     return reconset
 
