@@ -36,7 +36,7 @@ class NodeType(Enum):
     DOSMA_SEGMENTATION = "DOSMA_SEGMENTATION"
     CGSENSE = "CGSENSE"
     FFT = "FFT"
-    MIRTorch_CS = "MRITorch_CS"
+    MIRTorch_CS = "MIRTorch_CS"
 
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -89,7 +89,7 @@ class NodeDetail(Enum):
     DOSMA_SEGMENTATION = "Segmentation mask generator. Generates the segmentation mask using the deep learning network used by DOSMA library.  ( A deep-learning, open-source framework for musculoskeletal MRI analysis )"
     CGSENSE = "An optimised reconstruction plugin of SENSE, cgSENSE, was also included, where cg stands for conjugate gradient. By using the forward model, computation speed can be reduced from O(N^3) to O(NlogN) compared to regular SENSE, with N being the number of iterations performed."
     FFT = "Applies Fourier transform on to input dataset"
-    MIRTorch_CS = "MRITorch_CS"
+    MIRTorch_CS = "MIRTorch_CS"
     
     # Output Nodes
     DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
