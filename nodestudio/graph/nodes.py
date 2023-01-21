@@ -18,7 +18,7 @@ from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
-from process.quantative_map import magnetization_transfer_ratio
+from process.quantative_map.qDESS_ADC import qDESS_ADC
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -76,7 +76,7 @@ NodeInfo = {
     NodeType.DOSMA_SEGMENTATION: NodeProps(type=NodeType.DOSMA_SEGMENTATION, name='Segmentation', tags=['compute'], description='Seqmentation (DOSMA)', detail=NodeDetail.DOSMA_SEGMENTATION, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_segmentation),
     #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
-    NodeType.Magnetization_Transfer_Ratio: NodeProps(type=NodeType.Magnetization_Transfer_Ratio, name='Magnetization_Transfer_Ratio', tags=['compute'], description='Magnetization_Transfer_Ratio', detail=NodeDetail.Magnetization_Transfer_Ratio, input=['f'], output=['out'], fn=magnetization_transfer_ratio.mtr),
+    NodeType.QDESS_ADC: NodeProps(type=NodeType.QDESS_ADC, name='QDESS_ADC', tags=['compute'], description='QDESS ADC', detail=NodeDetail.QDESS_ADC, input=['scan1', 'scan2'],options=[{'name':'method', 'select':['Bragi','Bieri']}, 'spoiler_duration_ms', 'gradient_area1', 'gradient_area2'], output=['out'], fn=qDESS_ADC),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
