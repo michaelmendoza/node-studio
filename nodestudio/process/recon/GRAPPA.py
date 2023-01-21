@@ -56,3 +56,19 @@ def get_circ_xidx(x, kw, nx):
 def get_circ_yidx(ys, R, kh, ny):
     return np.mod(np.linspace(ys[int(kh/2)-1]+1, ys[int(kh/2)]-1, R-1, dtype = int),ny)
  
+
+
+import numpy as np
+
+
+def conjugate(data):
+    return fft2c(np.conj(ifft2c(data)))
+
+def vc_grappa(dataR, calib, R, kh = 4, kw = 5):
+    kspace = dataR
+    vc_kspace = conjugate(kspace)
+    vc_calib = conjugate(calib)
+    kspace = np.concatenate((kspace, vc_kspace), axis=-1)
+    calib = np.concatenate((calib, vc_calib), axis=-1)
+    recon = grappa(kspace, calib, R, kh, kw)
+    return recon 

@@ -29,9 +29,16 @@ def phantom_generator(type, fov, coil):
     '''
     if type == "Shepp_logan":
         rawdata =  shepp_logan(fov, coil) #fft2c(shepp_logan(fov, coil))
+        rawdata = rawdata[np.newaxis, ...]
     if type == "Brain":
         rawdata =  brain(int(fov), int(coil)) #fft2c(brain(int(fov), int(coil)))
-    rawdata = rawdata[np.newaxis, ...]
+        rawdata = rawdata[np.newaxis, ...]
+    if type == "Simultaneous_multislice":
+        slice1 = np.load("nodestudio/process/phantom/slice1_grappa1.npy")
+        slice2 = np.load("nodestudio/process/phantom/slice2_grappa1.npy")
+        slice3 = np.load("nodestudio/process/phantom/slice3_grappa1.npy")
+        slice4 = np.load("nodestudio/process/phantom/slice4_grappa1.npy")
+        rawdata = np.concatenate((slice1[None,...], slice2[None,...], slice3[None,...], slice4[None,...]), 0)
 
     metadata = NodeMetadata("phantom", "phantom")
     return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
