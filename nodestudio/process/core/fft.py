@@ -15,12 +15,11 @@ def ifft2c(dataset, axis = (1,2)):
     image
     '''
     x,y = (axis)
-    tmp0 = np.fft.ifftshift(np.fft.ifftshift(dataset[:], axes=(x,)), axes=(y,))
+    tmp0 = np.fft.ifftshift(np.fft.ifftshift(dataset, axes=(x,)), axes=(y,))
     tmp1 = np.fft.ifft(np.fft.ifft(tmp0, axis = x), axis = y)
     f = np.fft.fftshift(np.fft.fftshift(tmp1, axes=(x,)), axes=(y,))
     result = f * np.sqrt(dataset.shape[x]* dataset.shape[y])   
-    ds = NodeDataset(result, dataset.metadata, dataset.dims, dataset.tag)
-    return ds
+    return result
 
 def fft2c(dataset, axis = (1,2)):
     '''
@@ -37,12 +36,11 @@ def fft2c(dataset, axis = (1,2)):
     k space data
     '''
     x,y = (axis)
-    tmp0 = np.fft.fftshift(np.fft.fftshift(dataset[:], axes=(x,)), axes=(y,))
+    tmp0 = np.fft.fftshift(np.fft.fftshift(dataset, axes=(x,)), axes=(y,))
     tmp1 = np.fft.fft(np.fft.fft(tmp0, axis = x), axis = y)
     F = np.fft.ifftshift(np.fft.ifftshift(tmp1, axes=(x,)), axes=(y,))
     result = F / np.sqrt(dataset.shape[x]* dataset.shape[y]) 
-    ds = NodeDataset(result, dataset.metadata, dataset.dims, dataset.tag)
-    return ds
+    return result 
 
 def fft(dataset, type):
     '''

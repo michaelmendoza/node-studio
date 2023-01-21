@@ -18,6 +18,7 @@ from process.recon.cgSENSE import cgSolver
 from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
+from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -68,13 +69,14 @@ NodeInfo = {
     #NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
     #NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
     NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['a'], output=['out'], fn=grappa),
-    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA','SENSE']},'undersampling_ratio'], fn=undersample), 
+    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA', 'SENSE', 'Variable Density']},'undersampling_ratio'], fn=undersample), 
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map',tags=['compute'], description='Calculates sensitivity map',detail=NodeDetail.UNDERSAMPLE, input=['Kspace_data'], output=['out'], fn=get_sensitivity_map),
     #NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
     NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='T2 Mapping', tags=['compute'], description='T2 Mapping (DOSMA-QDESS)', detail=NodeDetail.DOSMA_QDESS, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_qDessT2mapping),
     NodeType.DOSMA_SEGMENTATION: NodeProps(type=NodeType.DOSMA_SEGMENTATION, name='Segmentation', tags=['compute'], description='Seqmentation (DOSMA)', detail=NodeDetail.DOSMA_SEGMENTATION, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_segmentation),
     #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
+    NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD', 'FISTA']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),

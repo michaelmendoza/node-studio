@@ -91,7 +91,7 @@ def get_node_value_shape(node_id):
         return node.value.shape
 
     if isinstance(node.value, DataGroup):
-        ds = node.value[0] # Return first value 
+        ds = list(node.value.values())[0] # Return first value 
         return ds.shape
 
     if isinstance(node.value, list):
