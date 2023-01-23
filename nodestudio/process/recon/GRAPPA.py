@@ -1,25 +1,37 @@
 import numpy as np
-from process.core.fft import *
+from nodestudio.process.core.fft import fft1c, ifft1c, fft2c, ifft2c 
 import math
 from scipy.linalg import pinv
-from core.datagroup import DataGroup
-from core.dataset import NodeDataset 
-from process.recon.SOS import * 
+from nodestudio.core.datagroup import DataGroup
+from nodestudio.core.dataset import NodeDataset 
+from nodestudio.process.recon.SOS import * 
+
+flags_for_undersampling = ["PATREFSCAN"]
+
 def grappa(datagroup):
-    if len(datagroup.group) % 2: 
-        raise Exception("data group should be mutliple of 2 for reconstruction")
-    datakey = list(datagroup.group.keys())[0]
-    refkey = list(datagroup.group.keys())[1]
-    dataRset = datagroup[datakey].data
-    calibset = datagroup[refkey].data
-    reconset = NodeDataset(None, datagroup[datakey].metadata, datagroup[datakey].dims, "image")
+    if type(datagroup) is not DataGroup: 
+        raise Exception("Not a data group")
+
+    keys = datagroup.keys()
+    if "DATA" not in keys:
+        raise Exception("No data availble for the operation")
+    
+    if any(i in keys for i in flags_for_undersampling) == False:
+        raise Exception("Fully sampled")
+    
+    
+
+    dataRset = datagroup["DATA"].data
+    calibset = datagroup["PATREFSCAN"].data
+    reconset = NodeDataset(None, datagroup["DATA"].metadata, datagroup["DATA"].dims[:3], "image")
     for sli in range(dataRset.shape[0]):
         data = recon( dataRset[sli,...], calibset[sli,...])
         if reconset.data == None: 
             reconset.data = data
         else: 
             reconset.data = np.concatenate((reconset.data, data), axis = 0)
-    return reconset
+    datagroup = DataGroup({"DATA": reconset})
+    return datagroup
    
 def recon(dataR, calib, kh = 2, kw = 3):
     calib = np.moveaxis(calib, -1, 0) # move the coil to the front -> fft in the axis 3 and 4
@@ -49,7 +61,7 @@ def recon(dataR, calib, kh = 2, kw = 3):
             kernel = data[:,ys][:,:,xs].reshape(-1,1)
             data[:,yf, x] = np.matmul(w, kernel).reshape(nc,R)
     data = np.moveaxis(data, 0, -1)
-    return rsos(ifft2c(data))
+    return rsos(ifft2c(data, (0, 1)), 2)[None, ...]
 
 def get_circ_xidx(x, kw, nx):
     return np.mod(np.linspace(x-np.floor(kw/2), x+np.floor(kw/2), kw,dtype = int),nx)

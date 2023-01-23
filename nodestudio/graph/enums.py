@@ -37,12 +37,14 @@ class NodeType(Enum):
     CGSENSE = "CGSENSE"
     FFT = "FFT"
     QDESS_ADC = "QDESS_ADC"
+    SMS_SIM = "simultaneous multi-slice simulation"
+    SMS_RECON = "simultaneous multi-slice reconstruction"
     # Output Nodes
     DISPLAY = 'DISPLAY'
     LINE_DISPLAY = 'LINE_DISPLAY'
     LAYER_DISPLAY = 'LAYER_DISPLAY'
     HISTOGRAM = 'HISTOGRAM'
-
+    
     # Debug Nodes
     DELAY = 'DELAY'
     ERROR = 'ERROR'
@@ -89,7 +91,8 @@ class NodeDetail(Enum):
     CGSENSE = "An optimised reconstruction plugin of SENSE, cgSENSE, was also included, where cg stands for conjugate gradient. By using the forward model, computation speed can be reduced from O(N^3) to O(NlogN) compared to regular SENSE, with N being the number of iterations performed."
     FFT = "Applies Fourier transform on to input dataset"
     QDESS_ADC = "QDESS_ADC maps"
-    
+    SMS_SIM = "simultaneous multi-slice"
+    SMS_RECON = "simultaneous multi-slice reconstruction"
     # Output Nodes
     DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
     LINE_DISPLAY = 'LINE_DISPLAY'

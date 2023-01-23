@@ -5,9 +5,13 @@ import pydicom
 import numpy as np
 import mapvbvd
 
-from core.dataset import NodeDataset
-from core.metadata import NodeMetadata
-from core.datagroup import DataGroup
+# from core.dataset import NodeDataset
+# from core.metadata import NodeMetadata
+# from core.datagroup import DataGroup
+# -c marker
+from nodestudio.core.dataset import NodeDataset
+from nodestudio.core.metadata import NodeMetadata
+from nodestudio.core.datagroup import DataGroup
 
 files_loaded = {}
 

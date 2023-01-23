@@ -1,8 +1,8 @@
 import numpy as np
 from pdf2image import convert_from_path
-from core.dataset import *
-from process.core.fft import *
-
+from nodestudio.core.dataset import *
+from nodestudio.process.core.fft import *
+from nodestudio.core.datagroup import DataGroup
 def phantom_generator(type, fov, coil):
     '''
     -------------------------------------------------------------------------
@@ -41,7 +41,10 @@ def phantom_generator(type, fov, coil):
         rawdata = np.concatenate((slice1[None,...], slice2[None,...], slice3[None,...], slice4[None,...]), 0)
 
     metadata = NodeMetadata("phantom", "phantom")
-    return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
+    dataset = NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
+    dataset.tag = "image"
+    datagroup = DataGroup({"DATA": dataset})
+    return datagroup
     
 def brain(fov, coil = 1):
     '''

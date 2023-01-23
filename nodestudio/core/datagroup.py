@@ -1,4 +1,4 @@
-from core.dataset import NodeDataset
+from nodestudio.core.dataset import NodeDataset
 from dosma.scan_sequences import QDess, CubeQuant, Cones
 from dosma.scan_sequences.scans import ScanSequence
 class DataGroup():
@@ -25,7 +25,7 @@ class DataGroup():
         return list(self.group.values())
 
     def keys(self):
-        return list(self.group.key())
+         return list(self.group.keys())
 
     def add(self, key: str, dataset: NodeDataset):
         if key in self.group.keys():

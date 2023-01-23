@@ -1,6 +1,6 @@
 import numpy as np
 
-from process.core.fft import *
+from nodestudio.process.core.fft import *
 
 def sum_of_squares(a,b):
     if isinstance(a, np.ndarray) & isinstance(b, np.ndarray):
@@ -19,9 +19,9 @@ def cmap(images, coilAxis = 3):
     shape = images.shape
     cmap = np.zeros(shape,dtype= complex)
     for i in range(shape[coilAxis]):
-        cmap[:,:,i] = images[:,:,i]/rsos(images)
-    cmap[cmap == np.nan] = 0 
-    cmap[cmap ==np.inf] = 0
+        cmap[:,:,i] = images[:,:,i]/rsos(images,coilAxis)
+    # cmap[cmap == np.nan] = 0 
+    # cmap[cmap ==np.inf] = 0
     return cmap 
 
 from scipy import ndimage
@@ -192,3 +192,46 @@ def smooth(img, box=5):
     simg = t_real + 1j*t_imag
 
     return simg
+    
+def walsh_cmap(img, smoothing=5, niter=3):
+    img = np.moveaxis(img, -1, 0)
+
+    assert img.ndim == 3, "Coil sensitivity map must have exactly 3 dimensions"
+
+    ncoils = img.shape[0]
+    ny = img.shape[1]
+    nx = img.shape[2]
+
+    # Compute the sample covariance pointwise
+    Rs = np.zeros((ncoils,ncoils,ny,nx),dtype=img.dtype)
+    for p in range(ncoils):
+        for q in range(ncoils):
+            Rs[p,q,:,:] = img[p,:,:] * np.conj(img[q,:,:])
+
+    # Smooth the covariance
+    for p in range(ncoils):
+        for q in range(ncoils):
+            Rs[p,q] = smooth(Rs[p,q,:,:], smoothing)
+
+    # At each point in the image, find the dominant eigenvector
+    # and corresponding eigenvalue of the signal covariance
+    # matrix using the power method
+    rho = np.zeros((ny, nx))
+    csm = np.zeros((ncoils, ny, nx),dtype=img.dtype)
+    for y in range(ny):
+        for x in range(nx):
+            R = Rs[:,:,y,x]
+            v = np.sum(R,axis=0)
+            lam = np.linalg.norm(v)
+            v = v/lam
+
+            for iter in range(niter):
+                v = np.dot(R,v)
+                lam = np.linalg.norm(v)
+                v = v/lam
+
+            rho[y,x] = lam
+            csm[:,y,x] = v
+    csm = np.moveaxis(csm, 0, -1)
+    #return (csm, rho)
+    return csm

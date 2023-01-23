@@ -1,10 +1,13 @@
 import numpy as np
-from process.core.fft import *
-from core.dataset import NodeDataset
-from core.datagroup import DataGroup
-from core.metadata import NodeMetadata
-from process.recon.SOS import *
-from process.core.mask import * 
+from nodestudio.process.core.fft import fft1c, ifft1c, ifft2c, fft2c
+from nodestudio.core.dataset import NodeDataset
+from nodestudio.core.datagroup import DataGroup
+from nodestudio.core.metadata import NodeMetadata
+from nodestudio.process.recon.SOS import inati_cmap
+from nodestudio.process.core.mask import var_dens_mask, undersampling_rate
+
+flags_for_undersampling = ["PATREFSCAN"]
+
 def acs(rawKspace,acsShape):
     ny, nx = rawKspace.shape[1:3]
     [cny, cnx] = acsShape
@@ -27,33 +30,43 @@ def var_den_mask(shape, R):
             start = (start + end) /2
     return mask
 
-def undersample(dataset, type, undersampling_ratio):
-    if dataset.tag != "kspace":
-        dataset.data = fft2c(dataset.data)
+def undersample(datagroup, types, undersampling_ratio):
 
-    if type == "GRAPPA": 
+    if type(datagroup) is not DataGroup: 
+        raise Exception("Not a data group")
+
+    keys = datagroup.keys()
+    if "DATA" not in keys:
+        raise Exception("No data availble for the operation")
+    
+    if any(i in keys for i in flags_for_undersampling) == True:
+        raise Exception("Already undersampled")
+
+    dataset = datagroup["DATA"]
+
+    if dataset.tag == "image":
+        print("currently in image space, convert to kspace")
+        dataset.data = fft2c(dataset.data, (1,2))
+        dataset.tag = "kspace"
+
+    if types == "GRAPPA" or type == "SENSE": 
         undersampling_ratio = int(undersampling_ratio)    
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
         ref = acs(dataset.data,(32,32))
 
-    if type == "SENSE":
-        undersampling_ratio = int(undersampling_ratio)    
-        mask = np.zeros(dataset.shape)
-        mask[:,::undersampling_ratio,...] = 1
-        ref = inati_cmap(ifft2c(dataset.data))
 
-    if type == "Variable Density":
+    if types == "Variable Density":
         ns, ny, nx, nc = dataset.data.shape
         # i need to think about this. 
         mask = var_den_mask([ny, nx], int(undersampling_ratio)    ) 
         mask = np.tile(mask.reshape(1, ny,nx, 1), (ns, 1,1, nc))
         ref = inati_cmap(ifft2c(dataset.data))
          
-
+    
     dataset.data = dataset.data * mask
        
     metadata = NodeMetadata("phantom", "phantom")
-    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'image')
-    datagroup = DataGroup({"rawdata": dataset, "reference": reference})
+    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
+    datagroup = DataGroup({"DATA": dataset, "PATREFSCAN": reference})
     return datagroup

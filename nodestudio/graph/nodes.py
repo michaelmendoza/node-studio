@@ -19,7 +19,8 @@ from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
 from process.quantative_map.qDESS_ADC import qDESS_ADC
-
+from process.simulation.sim_sms import sms_simulator
+from process.recon.SMS_RECON import sms_reconstruction
 class NodeNumberOption(BaseModel):
     name: str
     range: List[int] = None
@@ -53,7 +54,7 @@ NodeInfo = {
     #NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
-    NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain']}, 'fov', 'coil'], fn=phantom_generator),
+    NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain', 'Simultaneous_multislice']}, 'fov', 'coil'], fn=phantom_generator),
 
     # Filter Node
     #NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
@@ -69,7 +70,7 @@ NodeInfo = {
     #NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
     #NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
     NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['a'], output=['out'], fn=grappa),
-    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'type','select':['GRAPPA', 'SENSE', 'Variable Density']},'undersampling_ratio'], fn=undersample), 
+    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['out'], options=[{'name':'types','select':['GRAPPA', 'SENSE', 'Variable Density']},'undersampling_ratio'], fn=undersample), 
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map',tags=['compute'], description='Calculates sensitivity map',detail=NodeDetail.UNDERSAMPLE, input=['Kspace_data'], output=['out'], fn=get_sensitivity_map),
     #NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.GRAPPA, input=['data','sensitivity_map'], output=['out'], fn=SENSErecon),
     NodeType.DOSMA_QDESS: NodeProps(type=NodeType.DOSMA_QDESS, name='T2 Mapping', tags=['compute'], description='T2 Mapping (DOSMA-QDESS)', detail=NodeDetail.DOSMA_QDESS, options=[{'name':'tissuetype', 'select':['Femoral Cartilage','Tibial Cartilage','Patellar Cartilage','Meniscus']}], input=['datagroup'], output=['out'], fn=dosma_qDessT2mapping),
@@ -77,6 +78,9 @@ NodeInfo = {
     #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
     NodeType.QDESS_ADC: NodeProps(type=NodeType.QDESS_ADC, name='QDESS_ADC', tags=['compute'], description='QDESS ADC', detail=NodeDetail.QDESS_ADC, input=['scan1', 'scan2'],options=[{'name':'method', 'select':['Bragi','Bieri']}, 'spoiler_duration_ms', 'gradient_area1', 'gradient_area2'], output=['out'], fn=qDESS_ADC),
+    NodeType.SMS_SIM: NodeProps(type=NodeType.SMS_SIM, name="SMS_simulator", tags=['compute'], description='Simulate the effect of simultanous multi-slice', detail=NodeDetail.SMS_SIM, input=['dataset'], output=['out'], options=[{'name':'type', 'select':['CAIPI', 'NO_CAIPI']}], fn=phantom_generator),
+    NodeType.SMS_RECON: NodeProps(type=NodeType.SMS_RECON, name="SMS_reconstruction", tags=['compute'], description='Simultanous multi-slice reconstruction', detail=NodeDetail.SMS_RECON, input=['dataset'], output=['out'], options=[{'name':'method', 'select':['Slice_grappa', 'Slice_grappa_2kernel','Split_slice_grappa', 'Split_slice_grappa_2kernel']}], fn=sms_reconstruction),
+
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
