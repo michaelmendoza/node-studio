@@ -5,20 +5,31 @@ from scipy.linalg import pinv
 from core.datagroup import DataGroup
 from core.dataset import NodeDataset 
 from process.recon.SOS import * 
+
+flags_for_undersampling = ["PATREFSCAN"]
+
 def grappa(datagroup):
-    if len(datagroup.group) % 2: 
-        raise Exception("data group should be mutliple of 2 for reconstruction")
-    datakey = list(datagroup.group.keys())[0]
-    refkey = list(datagroup.group.keys())[1]
-    dataRset = datagroup[datakey].data
-    calibset = datagroup[refkey].data
-    reconset = NodeDataset(None, datagroup[datakey].metadata, datagroup[datakey].dims, "image")
+    if type(datagroup) is not DataGroup: 
+        raise Exception("GRAPPA requires datagroup as input")
+
+    keys = datagroup.keys()
+    if "DATA" not in keys:
+        raise Exception("No data availble for the operation")
+    
+    if any(i in keys for i in flags_for_undersampling) == False:
+        raise Exception("Fully sampled")
+    
+
+    dataRset = datagroup["DATA"].data
+    calibset = datagroup["PATREFSCAN"].data
+    reconset = NodeDataset(None, datagroup["DATA"].metadata, datagroup["DATA"].dims[:3], "image")
     for sli in range(dataRset.shape[0]):
-        data = recon( dataRset[sli,...], calibset[sli,...])
+        data = recon( dataRset[sli,...], calibset[0,...])
         if reconset.data == None: 
             reconset.data = data
         else: 
             reconset.data = np.concatenate((reconset.data, data), axis = 0)
+
     return reconset
    
 def recon(dataR, calib, kh = 2, kw = 3):
@@ -49,10 +60,26 @@ def recon(dataR, calib, kh = 2, kw = 3):
             kernel = data[:,ys][:,:,xs].reshape(-1,1)
             data[:,yf, x] = np.matmul(w, kernel).reshape(nc,R)
     data = np.moveaxis(data, 0, -1)
-    return rsos(ifft2c(data))
+    return rsos(ifft2c(data, (0, 1)), 2)[None, ...]
 
 def get_circ_xidx(x, kw, nx):
     return np.mod(np.linspace(x-np.floor(kw/2), x+np.floor(kw/2), kw,dtype = int),nx)
 def get_circ_yidx(ys, R, kh, ny):
     return np.mod(np.linspace(ys[int(kh/2)-1]+1, ys[int(kh/2)]-1, R-1, dtype = int),ny)
  
+
+
+import numpy as np
+
+
+def conjugate(data):
+    return fft2c(np.conj(ifft2c(data)))
+
+def vc_grappa(dataR, calib, R, kh = 4, kw = 5):
+    kspace = dataR
+    vc_kspace = conjugate(kspace)
+    vc_calib = conjugate(calib)
+    kspace = np.concatenate((kspace, vc_kspace), axis=-1)
+    calib = np.concatenate((calib, vc_calib), axis=-1)
+    recon = grappa(kspace, calib, R, kh, kw)
+    return recon 

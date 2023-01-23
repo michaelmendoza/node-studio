@@ -12,7 +12,7 @@ def complex_root_sum_of_squares(images,coilaxis = 3):
     return np.abs(np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis)))
 
 def rsos(images,coilaxis = 3):
-    return np.abs(np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis)))
+    return np.sqrt(np.sum(np.square(np.abs(images)),axis = coilaxis))
 
 
 def cmap(images, coilAxis = 3):
@@ -47,6 +47,57 @@ def adaptive_combine(data, ks = 9, smoothing = 5):
             recon[y,x] = U[:,0].conj().T@image[y,x,:]
     return recon
 
+
+# the following code from ismrmrd tools     
+"""
+Utilities for coil sensivity maps, pre-whitening, etc
+"""
+import numpy as np
+from scipy import ndimage
+
+
+def walsh_cmap(img, smoothing=5, niter=3):
+    img = np.moveaxis(img, -1, 0)
+
+    assert img.ndim == 3, "Coil sensitivity map must have exactly 3 dimensions"
+
+    ncoils = img.shape[0]
+    ny = img.shape[1]
+    nx = img.shape[2]
+
+    # Compute the sample covariance pointwise
+    Rs = np.zeros((ncoils,ncoils,ny,nx),dtype=img.dtype)
+    for p in range(ncoils):
+        for q in range(ncoils):
+            Rs[p,q,:,:] = img[p,:,:] * np.conj(img[q,:,:])
+
+    # Smooth the covariance
+    for p in range(ncoils):
+        for q in range(ncoils):
+            Rs[p,q] = smooth(Rs[p,q,:,:], smoothing)
+
+    # At each point in the image, find the dominant eigenvector
+    # and corresponding eigenvalue of the signal covariance
+    # matrix using the power method
+    rho = np.zeros((ny, nx))
+    csm = np.zeros((ncoils, ny, nx),dtype=img.dtype)
+    for y in range(ny):
+        for x in range(nx):
+            R = Rs[:,:,y,x]
+            v = np.sum(R,axis=0)
+            lam = np.linalg.norm(v)
+            v = v/lam
+
+            for iter in range(niter):
+                v = np.dot(R,v)
+                lam = np.linalg.norm(v)
+                v = v/lam
+
+            rho[y,x] = lam
+            csm[:,y,x] = v
+    csm = np.moveaxis(csm, 0, -1)
+    #return (csm, rho)
+    return csm
 def inati_cmap(im, smoothing=5, niter=5, thresh=1e-3,
                              verbose=False):
     im = np.moveaxis(im, -1, 0)

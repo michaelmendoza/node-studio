@@ -34,8 +34,10 @@ def phantom_generator(type, fov, coil):
     rawdata = rawdata[np.newaxis, ...]
 
     metadata = NodeMetadata("phantom", "phantom")
-    return NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
-    
+    dataset = NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
+    dataset.tag = "image"
+    return dataset 
+
 def brain(fov, coil = 1):
     '''
     -------------------------------------------------------------------------

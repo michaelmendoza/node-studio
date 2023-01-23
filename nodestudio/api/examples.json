@@ -478,5 +478,190 @@
                 }
             ]
         }
+    },
+    {
+        "name": "GRAPPA Example",
+        "description": "GRAPPA with digital brain phantom",
+        "graph": {
+            "nodes": {
+                "7700ffb2-32fd-42fc-ab56-663fef13d6c1": {
+                    "id": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [],
+                    "outputs": [
+                        "aa122c0d-2adc-49da-ad5d-1fd22368272a"
+                    ],
+                    "styles": {
+                        "x": 542,
+                        "y": 170
+                    },
+                    "args": {
+                        "type": "GRAPPA",
+                        "undersampling_ratio": "2"
+                    }
+                },
+                "ff4bf309-e4c5-48ca-8d80-a3673bdf946d": {
+                    "id": "ff4bf309-e4c5-48ca-8d80-a3673bdf946d",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "aa122c0d-2adc-49da-ad5d-1fd22368272a"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 1172,
+                        "y": 211
+                    },
+                    "args": {}
+                },
+                "0f7166ab-37ea-4fea-9f24-591eb65aca9d": {
+                    "id": "0f7166ab-37ea-4fea-9f24-591eb65aca9d",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 235,
+                        "y": 162
+                    },
+                    "args": {
+                        "type": "Brain",
+                        "fov": "256",
+                        "coil": "8"
+                    }
+                },
+                "94c12f3a-36d0-420a-bf3f-023e3fe9ec00": {
+                    "id": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
+                    "props": {
+                        "type": "GRAPPA"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 905,
+                        "y": 186
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "53bf2265-4449-434b-a147-f2b06cedcec3",
+                    "startNode": "0f7166ab-37ea-4fea-9f24-591eb65aca9d",
+                    "startPort": 0,
+                    "endNode": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
+                    "endPort": 0
+                },
+                {
+                    "id": "7148bb13-845d-41d7-9584-6b8dc1c5be52",
+                    "startNode": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
+                    "startPort": 0,
+                    "endNode": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
+                    "endPort": 0
+                },
+                {
+                    "id": "be317e2c-95ae-42ab-b2d1-c3737cb79412",
+                    "startNode": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
+                    "startPort": 0,
+                    "endNode": "ff4bf309-e4c5-48ca-8d80-a3673bdf946d",
+                    "endPort": 0
+                }
+            ]
+        }
+    },
+    {
+        "name": "SENSE Example",
+        "description": "SENSE with Digital shepp logan phantom",
+        "graph": {
+            "nodes": {
+                "c3cc277b-dcf7-4e80-9e26-032ba76c99bc": {
+                    "id": "c3cc277b-dycf7-4e80-9e26-032ba76c99bc",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 294,
+                        "y": 202
+                    },
+                    "args": {
+                        "type": "Shepp_logan",
+                        "coil": "8",
+                        "fov": "256"
+                    }
+                },
+                "368794d8-b585-4bab-bee7-8de9c3f8f2f2": {
+                    "id": "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                    "props": {
+                        "type": "SENSE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 822,
+                        "y": 226
+                    },
+                    "args": {}
+                },
+                "d4c31035-642b-4894-b966-2a4d84475e06": {
+                    "id": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 579,
+                        "y": 207
+                    },
+                    "args": {
+                        "type": "SENSE",
+                        "undersampling_ratio": "2"
+                    }
+                },
+                "c9fa4a30-16ca-4fc4-82a9-183169147140": {
+                    "id": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 1082,
+                        "y": 201
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "bf66aa86-ca5e-4b44-bff2-f9a8f78dfe18",
+                    "startNode": "c3cc277b-dcf7-4e80-9e26-032ba76c99bc",
+                    "startPort": 0,
+                    "endNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "endPort": 0
+                },
+                {
+                    "id": "ee7a21b9-c11a-401a-a617-63e50dec3cf5",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                    "endPort": 0
+                },
+                {
+                    "id": "c1f5e426-243d-4866-81f0-4035d4033ff2",
+                    "startNode": "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                    "startPort": 0,
+                    "endNode": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "endPort": 0
+                }
+            ]
+        }
     }
+   
 ]

@@ -1,41 +1,50 @@
 import numpy as np
-from process.core.fft import * 
+from process.core.fft import fft1c, ifft1c, fft2c, ifft2c
+from core.dataset import NodeDataset 
+from core.datagroup import DataGroup
+from process.recon.SOS import inati_cmap, rsos, walsh_cmap
+from process.recon.zpad import zpad
+flags_for_undersampling = ["PATREFSCAN"]
 
-def SENSErecon(data,sensmap):
-    [kspaceData,R] = data
-    '''
-    -------------------------------------------------------------------------
-    Parameters
+def SENSErecon(datagroup):
+    if type(datagroup) is not DataGroup: 
+        raise Exception("SENSE requires datagroup as input")
     
-    sensmap: array_like
-    sensivity maps for each coils [height, width, coils]
+    keys = datagroup.keys()
+    if "DATA" not in keys:
+        raise Exception("No data availble for the operation")
     
-    kspaceData: array_like
-    k space data for each coils [height, width, coils]
+    if any(i in keys for i in flags_for_undersampling) == False:
+        raise Exception("Fully sampled")
     
-    R: scalar 
-    under sampling ratio 
-    
-    -------------------------------------------------------------------------
-    Returns
-    image : array like
-    reconstructed image
-    
-    -------------------------------------------------------------------------
-    References
-    
-    [1] 
-    Author: Klaas P. Pruessmann et al. 
-    Title: SENSE: Sensitivity Encoding for Fast MRI
-    Link: https://pubmed.ncbi.nlm.nih.gov/10542355/
-    '''
-    images = ifft2c(kspaceData)
-    [height, width, coil] = sensmap.shape
-    image = np.zeros([height, width], dtype= complex)
-    for y in range(int(height/R)):
-        index = np.arange(y,height,int(height/R))
-        for x in range(width):
-            s = np.transpose(sensmap[index,x,:].reshape(R,-1))
-            M = np.matmul(np.linalg.pinv(s),images[y,x,:].reshape(-1,1))    
-            image[index,x] = M[:,0]
-    return image
+    dataRset = datagroup["DATA"].data
+    calibset = datagroup["PATREFSCAN"].data
+    reconset = NodeDataset(None, datagroup["DATA"].metadata, datagroup["DATA"].dims[:3], "image")
+    for sli in range(dataRset.shape[0]):
+        data = sense( dataRset[sli,...], calibset[0,...])
+        if reconset.data == None: 
+            reconset.data = data
+        else: 
+            reconset.data = np.concatenate((reconset.data, data), axis = 0)
+    return reconset
+
+
+def sense(dataR, acs, lamda = 1E-4):
+    mask = np.where(dataR[:,0,0] == 0, 0, 1).flatten()
+    R = int(np.ceil(mask.shape[0]/np.sum(mask)))
+    [ny, nx, nc] = dataR.shape
+    images = ifft2c(dataR,(0,1))
+    readny = int(ny/R)
+    pat = ifft2c(zpad(acs, (ny, nx), (0,1)), (0,1))
+    coilmaps = walsh_cmap(pat) 
+    coilmaps = coilmaps / np.max(rsos(coilmaps, -1))
+    recon = np.zeros([ny,nx], dtype = complex)
+    for x in (range(nx)):
+        for y in range(readny):
+            yidx = np.arange(y,ny,readny)
+            S = coilmaps[yidx,x,:]
+            STS = S.T @ S     
+            #M = np.linalg.inv(STS+np.eye(STS.shape[0])*lamda*np.linalg.norm(STS)/STS.shape[0])@S.T 
+            M = np.linalg.pinv(STS)@S.T 
+            recon[yidx,x] = M.T@images[y,x,:]
+    return recon[None,...]

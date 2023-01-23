@@ -62,3 +62,18 @@ def fft(dataset, type):
         return ifft2c(dataset)
     else:
         return fft2c(dataset)
+
+
+def ifft1c(F, axis = (0)):
+    x = (axis)
+    tmp0 = np.fft.ifftshift(F, axes=(x,))
+    tmp1 = np.fft.ifft(tmp0, axis = x)
+    f = np.fft.fftshift(tmp1, axes=(x,))
+    return f * F.shape[x]
+
+def fft1c(f, axis = (0)):
+    x = (axis)
+    tmp0 = np.fft.fftshift(f, axes=(x,))
+    tmp1 = np.fft.fft(tmp0, axis = x)
+    F = np.fft.ifftshift(tmp1, axes=(x,))
+    return F / f.shape[x]
