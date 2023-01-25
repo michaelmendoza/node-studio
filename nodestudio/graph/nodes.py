@@ -19,6 +19,7 @@ from process.integration.dosma.dosma_qdess import dosma_qDessT2mapping
 from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
 from process.quantative_map.qDESS_ADC import qDESS_ADC
+from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
 
 class NodeNumberOption(BaseModel):
     name: str
@@ -79,6 +80,7 @@ NodeInfo = {
     #NodeType.CGSENSE: NodeProps(type=NodeType.CGSENSE, name='cg SENSE', tags=['compute'], description='cg SENSE', detail=NodeDetail.CGSENSE,  input=['Kspace_data','sensitivity_map'],options=['numIter'], output=['out'], fn=cgSolver),
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.DOSMA_QDESS, input=['f'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft),
     NodeType.QDESS_ADC: NodeProps(type=NodeType.QDESS_ADC, name='QDESS_ADC', tags=['compute'], description='QDESS ADC', detail=NodeDetail.QDESS_ADC, input=['scan1', 'scan2'],options=[{'name':'method', 'select':['Bragi','Bieri']}, 'spoiler_duration_ms', 'gradient_area1', 'gradient_area2'], output=['out'], fn=qDESS_ADC),
+    NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD', 'FISTA']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
 
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
