@@ -29,7 +29,7 @@ def var_den_mask(shape, R):
 
 def undersample(dataset, type, undersampling_ratio):
     if dataset.tag != "kspace":
-        dataset.data = fft2c(dataset.data)
+        dataset.data = fft2c(dataset.data, (1, 2))
 
     if type == "GRAPPA": 
         undersampling_ratio = int(undersampling_ratio)    
@@ -38,10 +38,12 @@ def undersample(dataset, type, undersampling_ratio):
         ref = acs(dataset.data,(32,32))
 
     if type == "SENSE":
+        ref = acs(dataset.data,(32,32))
         undersampling_ratio = int(undersampling_ratio)    
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
-        ref = inati_cmap(ifft2c(dataset.data))
+        # ref = inati_cmap(ifft2c(dataset.data))
+        
 
     if type == "Variable Density":
         ns, ny, nx, nc = dataset.data.shape
@@ -54,6 +56,6 @@ def undersample(dataset, type, undersampling_ratio):
     dataset.data = dataset.data * mask
        
     metadata = NodeMetadata("phantom", "phantom")
-    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'image')
-    datagroup = DataGroup({"rawdata": dataset, "reference": reference})
+    reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
+    datagroup = DataGroup({"DATA": dataset, "PATREFSCAN": reference})
     return datagroup

@@ -19,6 +19,12 @@ Examples.load = async (example) => {
 }
 
 Examples.save = async (example) => {
+    const nodes = Object.values(example.graph.nodes)
+    nodes.forEach((node) => {
+        if(node?.args?.file?.img)
+        delete node.args.file.img;
+    })
+
     const list = await APIDataService.getExamples();
     list.push(example)
     await APIDataService.setExamples(list);

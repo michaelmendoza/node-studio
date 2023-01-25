@@ -25,7 +25,7 @@ class DataGroup():
         return list(self.group.values())
 
     def keys(self):
-        return list(self.group.key())
+        return list(self.group.keys())
 
     def add(self, key: str, dataset: NodeDataset):
         if key in self.group.keys():

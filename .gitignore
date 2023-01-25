@@ -12,5 +12,10 @@ __pycache__
 .idea
 .vscode
 
+.pkl
+.npy
+.mat
+.dcm
+
 graph_model_data.json
 nodestudio/notebooks/
