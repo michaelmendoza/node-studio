@@ -9,6 +9,7 @@ from process.recon.SOS import *
 flags_for_undersampling = ["PATREFSCAN"]
 
 def grappa(data, ref):
+    ''' GRAPPA: Paralleling imaging reconstruction  '''
     '''
         if type(datagroup) is not DataGroup: 
             raise Exception("GRAPPA requires datagroup as input")
@@ -21,7 +22,7 @@ def grappa(data, ref):
             raise Exception("Fully sampled")
     '''
 
-    dataRset = data.data
+    dataRset = np.copy(data.data)
     calibset = ref.data
     reconset = NodeDataset(None, data.metadata, data.dims[:3], "image")
     for sli in range(dataRset.shape[0]):

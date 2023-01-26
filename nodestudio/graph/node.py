@@ -25,7 +25,7 @@ class Node:
         self.styles = styles        # Node UI styles
         self.args = args            # Function args
         self.value = None           # Cached compute result
-
+        
         # Add links to all input nodes
         inputs = graph.current_graph.getNodeList(inputs)
         for index, input in enumerate(inputs):

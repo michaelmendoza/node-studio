@@ -262,102 +262,8 @@
         }
     },
     {
-        "name": "GRAPPA Example",
-        "description": "GRAPPA with digital brain phantom",
-        "graph": {
-            "nodes": {
-                "7700ffb2-32fd-42fc-ab56-663fef13d6c1": {
-                    "id": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
-                    "props": {
-                        "type": "UNDERSAMPLE"
-                    },
-                    "inputs": [],
-                    "outputs": [
-                        "aa122c0d-2adc-49da-ad5d-1fd22368272a"
-                    ],
-                    "styles": {
-                        "x": 542,
-                        "y": 170
-                    },
-                    "args": {
-                        "type": "GRAPPA",
-                        "undersampling_ratio": "2"
-                    }
-                },
-                "ff4bf309-e4c5-48ca-8d80-a3673bdf946d": {
-                    "id": "ff4bf309-e4c5-48ca-8d80-a3673bdf946d",
-                    "props": {
-                        "type": "DISPLAY"
-                    },
-                    "inputs": [
-                        "aa122c0d-2adc-49da-ad5d-1fd22368272a"
-                    ],
-                    "outputs": [],
-                    "styles": {
-                        "x": 1172,
-                        "y": 211
-                    },
-                    "args": {}
-                },
-                "0f7166ab-37ea-4fea-9f24-591eb65aca9d": {
-                    "id": "0f7166ab-37ea-4fea-9f24-591eb65aca9d",
-                    "props": {
-                        "type": "PHANTOM"
-                    },
-                    "inputs": [],
-                    "outputs": [],
-                    "styles": {
-                        "x": 235,
-                        "y": 162
-                    },
-                    "args": {
-                        "type": "Brain",
-                        "fov": "256",
-                        "coil": "8"
-                    }
-                },
-                "94c12f3a-36d0-420a-bf3f-023e3fe9ec00": {
-                    "id": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
-                    "props": {
-                        "type": "GRAPPA"
-                    },
-                    "inputs": [],
-                    "outputs": [],
-                    "styles": {
-                        "x": 905,
-                        "y": 186
-                    },
-                    "args": {}
-                }
-            },
-            "links": [
-                {
-                    "id": "53bf2265-4449-434b-a147-f2b06cedcec3",
-                    "startNode": "0f7166ab-37ea-4fea-9f24-591eb65aca9d",
-                    "startPort": 0,
-                    "endNode": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
-                    "endPort": 0
-                },
-                {
-                    "id": "7148bb13-845d-41d7-9584-6b8dc1c5be52",
-                    "startNode": "7700ffb2-32fd-42fc-ab56-663fef13d6c1",
-                    "startPort": 0,
-                    "endNode": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
-                    "endPort": 0
-                },
-                {
-                    "id": "be317e2c-95ae-42ab-b2d1-c3737cb79412",
-                    "startNode": "94c12f3a-36d0-420a-bf3f-023e3fe9ec00",
-                    "startPort": 0,
-                    "endNode": "ff4bf309-e4c5-48ca-8d80-a3673bdf946d",
-                    "endPort": 0
-                }
-            ]
-        }
-    },
-    {
-        "name": "SENSE Example",
-        "description": "SENSE example with phantom",
+        "name": "SENSE ",
+        "description": "SENSE Example with Phantom",
         "graph": {
             "nodes": {
                 "c3cc277b-dycf7-4e80-9e26-032ba76c99bc": {
@@ -370,8 +276,8 @@
                         "d4c31035-642b-4894-b966-2a4d84475e06"
                     ],
                     "styles": {
-                        "x": 294,
-                        "y": 202
+                        "x": 109,
+                        "y": 447
                     },
                     "args": {
                         "type": "Shepp_logan",
@@ -385,14 +291,15 @@
                         "type": "SENSE"
                     },
                     "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06",
                         "d4c31035-642b-4894-b966-2a4d84475e06"
                     ],
                     "outputs": [
                         "c9fa4a30-16ca-4fc4-82a9-183169147140"
                     ],
                     "styles": {
-                        "x": 822,
-                        "y": 226
+                        "x": 562,
+                        "y": 446
                     },
                     "args": {}
                 },
@@ -405,11 +312,13 @@
                         "c3cc277b-dycf7-4e80-9e26-032ba76c99bc"
                     ],
                     "outputs": [
-                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2"
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
                     ],
                     "styles": {
-                        "x": 579,
-                        "y": 207
+                        "x": 334,
+                        "y": 447
                     },
                     "args": {
                         "type": "SENSE",
@@ -426,8 +335,42 @@
                     ],
                     "outputs": [],
                     "styles": {
-                        "x": 1082,
-                        "y": 201
+                        "x": 807,
+                        "y": 446
+                    },
+                    "args": {}
+                },
+                "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a": {
+                    "id": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "props": {
+                        "type": "FFT"
+                    },
+                    "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "outputs": [
+                        "7025601b-2781-4e44-8fd6-8f903d5035b1"
+                    ],
+                    "styles": {
+                        "x": 565,
+                        "y": 142
+                    },
+                    "args": {
+                        "type": "fft"
+                    }
+                },
+                "7025601b-2781-4e44-8fd6-8f903d5035b1": {
+                    "id": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 808,
+                        "y": 20
                     },
                     "args": {}
                 }
@@ -453,6 +396,182 @@
                     "startPort": 0,
                     "endNode": "c9fa4a30-16ca-4fc4-82a9-183169147140",
                     "endPort": 0
+                },
+                {
+                    "id": "200dc62e-3fbf-4db2-8f82-6db736b5a20a",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 1,
+                    "endNode": "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                    "endPort": 1
+                },
+                {
+                    "id": "f83e6c87-5a3a-4c05-91ca-a476204ed617",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "endPort": 0
+                },
+                {
+                    "id": "395e3af5-6e91-439d-b7ef-17a29d54df3f",
+                    "startNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "startPort": 0,
+                    "endNode": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "endPort": 0
+                }
+            ]
+        }
+    },
+    {
+        "name": "GRAPPA",
+        "description": "GRAPPA Example with Phantom",
+        "graph": {
+            "nodes": {
+                "c3cc277b-dycf7-4e80-9e26-032ba76c99bc": {
+                    "id": "c3cc277b-dycf7-4e80-9e26-032ba76c99bc",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "styles": {
+                        "x": 109,
+                        "y": 447
+                    },
+                    "args": {
+                        "type": "Shepp_logan",
+                        "coil": "8",
+                        "fov": "256"
+                    }
+                },
+                "d4c31035-642b-4894-b966-2a4d84475e06": {
+                    "id": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [
+                        "c3cc277b-dycf7-4e80-9e26-032ba76c99bc"
+                    ],
+                    "outputs": [
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "styles": {
+                        "x": 334,
+                        "y": 447
+                    },
+                    "args": {
+                        "type": "GRAPPA",
+                        "undersampling_ratio": "2"
+                    }
+                },
+                "c9fa4a30-16ca-4fc4-82a9-183169147140": {
+                    "id": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 807,
+                        "y": 447
+                    },
+                    "args": {}
+                },
+                "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a": {
+                    "id": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "props": {
+                        "type": "FFT"
+                    },
+                    "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "outputs": [
+                        "7025601b-2781-4e44-8fd6-8f903d5035b1"
+                    ],
+                    "styles": {
+                        "x": 565,
+                        "y": 142
+                    },
+                    "args": {
+                        "type": "fft"
+                    }
+                },
+                "7025601b-2781-4e44-8fd6-8f903d5035b1": {
+                    "id": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 808,
+                        "y": 20
+                    },
+                    "args": {}
+                },
+                "1184a274-4d53-463c-af18-150ce7bc7a74": {
+                    "id": "1184a274-4d53-463c-af18-150ce7bc7a74",
+                    "props": {
+                        "type": "GRAPPA"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 565,
+                        "y": 447
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "bf66aa86-ca5e-4b44-bff2-f9a8f78dfe18",
+                    "startNode": "c3cc277b-dycf7-4e80-9e26-032ba76c99bc",
+                    "startPort": 0,
+                    "endNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "endPort": 0
+                },
+                {
+                    "id": "f83e6c87-5a3a-4c05-91ca-a476204ed617",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "endPort": 0
+                },
+                {
+                    "id": "395e3af5-6e91-439d-b7ef-17a29d54df3f",
+                    "startNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "startPort": 0,
+                    "endNode": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "endPort": 0
+                },
+                {
+                    "id": "2226dc7f-08f7-4871-bd32-43080b0d77c8",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "1184a274-4d53-463c-af18-150ce7bc7a74",
+                    "endPort": 0
+                },
+                {
+                    "id": "1b0176c8-ae0d-47e4-b87e-8665d7786bc9",
+                    "startNode": "1184a274-4d53-463c-af18-150ce7bc7a74",
+                    "startPort": 0,
+                    "endNode": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "endPort": 0
+                },
+                {
+                    "id": "1a7d6c27-0c40-4e50-b1cc-de4fe5499d4c",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 1,
+                    "endNode": "1184a274-4d53-463c-af18-150ce7bc7a74",
+                    "endPort": 1
                 }
             ]
         }
