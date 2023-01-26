@@ -15,6 +15,9 @@ class Link:
     def __str__(self):
         return f'[{self.startNode}, {self.endNode}]'
 
+    def hasEndNode(self, endNodeId):
+        return endNodeId == self.endNode
+
     def dict(self):
         return { 'id': self.id, 
             'startNode': self.startNode, 'startPort': self.startPort, 

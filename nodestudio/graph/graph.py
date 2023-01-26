@@ -40,6 +40,9 @@ class Graph:
     def getLink(self, linkid):
         return next(link for link in self.links if linkid == link.id)
 
+    def getLinksFromEndNode(self, nodeid):
+        return [link for link in self.links if link.hasEndNode(nodeid)]
+
     def addLink(self, link):
         ''' Adds link to graph '''
 

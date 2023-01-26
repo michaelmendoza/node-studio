@@ -55,10 +55,10 @@ class Node:
             args = self.args
             inputs = graph.current_graph.getNodeList(self.inputs)
 
-            values = []
-            for input in inputs:
-                value = self.get_input_value(input)
-                values.append(value)
+            links = graph.current_graph.getLinksFromEndNode(self.id)
+            values = [None] * len(links)
+            for link in links:
+                values[link.endPort] = self.get_input_value(link)
 
             # Try to compute node fn and do error handling on error 
             try: 
@@ -69,12 +69,13 @@ class Node:
 
         print(f'Computed complete.')
 
-    def get_input_value(self, input):
+    def get_input_value(self, link):
         ''' Retrieves input value. Handles case of multiple outputs '''
 
+        input = graph.current_graph.getNode(link.startNode)
         hasMultipleOutputs = len(input.props.output) > 1
         if(hasMultipleOutputs):
-            index = input.outputs.index(self.id)
+            index = link.startPort
 
             if isinstance(input.value, DataGroup):
                 key = input.props.output[index]
