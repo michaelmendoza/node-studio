@@ -9,6 +9,7 @@ from graph.link import Link
 from graph.enums import NodeType
 from graph.nodes import NodeInfo, NodeProps
 from graph.interfaces import NodeData
+from core import DataGroup
 
 class NodeStyles(BaseModel):
     x: int = 0
@@ -24,7 +25,7 @@ class Node:
         self.styles = styles        # Node UI styles
         self.args = args            # Function args
         self.value = None           # Cached compute result
-
+        
         # Add links to all input nodes
         inputs = graph.current_graph.getNodeList(inputs)
         for index, input in enumerate(inputs):
@@ -53,7 +54,11 @@ class Node:
         if self.props.fn:
             args = self.args
             inputs = graph.current_graph.getNodeList(self.inputs)
-            values = [input.value for input in inputs]
+
+            links = graph.current_graph.getLinksFromEndNode(self.id)
+            values = [None] * len(links)
+            for link in links:
+                values[link.endPort] = self.get_input_value(link)
 
             # Try to compute node fn and do error handling on error 
             try: 
@@ -63,6 +68,25 @@ class Node:
                 raise Exception({ 'nodeid': self.id, 'error': error_message })
 
         print(f'Computed complete.')
+
+    def get_input_value(self, link):
+        ''' Retrieves input value. Handles case of multiple outputs '''
+
+        input = graph.current_graph.getNode(link.startNode)
+        hasMultipleOutputs = len(input.props.output) > 1
+        if(hasMultipleOutputs):
+            index = link.startPort
+
+            if isinstance(input.value, DataGroup):
+                key = input.props.output[index]
+                value = input.value[key]                        
+            elif isinstance(input.value, list):
+                value = input.value[index]
+            else:
+                raise Exception("Invalid Node data: Node value must be a list or DataGroup")
+        else:
+            value = input.value
+        return value
 
     def add_link(self, link: Link):
         ''' Add link to nodde -- Assumes Link already created '''

@@ -152,7 +152,7 @@ const PluginItemView = ({item}) => {
     }
 
     const handleDragEnd = (e) => {
-        dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
+        //dispatch({type:ActionTypes.SET_SIDENAV_SHOW, show: false });
         dispatch({type:ActionTypes.SET_SIDENAV_BACKDROP, backdrop: true });
     }
 

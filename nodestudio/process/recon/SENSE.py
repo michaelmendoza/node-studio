@@ -6,20 +6,23 @@ from process.recon.SOS import inati_cmap, rsos, walsh_cmap
 from process.recon.zpad import zpad
 flags_for_undersampling = ["PATREFSCAN"]
 
-def SENSErecon(datagroup):
-    if type(datagroup) is not DataGroup: 
-        raise Exception("SENSE requires datagroup as input")
-    
-    keys = datagroup.keys()
-    if "DATA" not in keys:
-        raise Exception("No data availble for the operation")
-    
-    if any(i in keys for i in flags_for_undersampling) == False:
-        raise Exception("Fully sampled")
-    
-    dataRset = datagroup["DATA"].data
-    calibset = datagroup["PATREFSCAN"].data
-    reconset = NodeDataset(None, datagroup["DATA"].metadata, datagroup["DATA"].dims[:3], "image")
+def SENSErecon(data, ref):
+    ''' SENSE: Paralleling imaging reconstruction  '''
+    '''
+        if type(datagroup) is not DataGroup: 
+            raise Exception("SENSE requires datagroup as input")
+        
+        keys = datagroup.keys()
+        if "DATA" not in keys:
+            raise Exception("No data availble for the operation")
+        
+        if any(i in keys for i in flags_for_undersampling) == False:
+            raise Exception("Fully sampled")
+    '''
+
+    dataRset = data.data
+    calibset = ref.data
+    reconset = NodeDataset(None, data.metadata, data.dims[:3], "image")
     for sli in range(dataRset.shape[0]):
         data = sense( dataRset[sli,...], calibset[0,...])
         if reconset.data == None: 

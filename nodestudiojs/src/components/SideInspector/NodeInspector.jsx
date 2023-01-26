@@ -112,6 +112,11 @@ const NodeInspectorView = () => {
             </div>
 
             <div className='node-property-item'>
+                <label>Dims</label>
+                <div> { JSON.stringify(view.dims) } </div>
+            </div>
+
+            <div className='node-property-item'>
                 <label>isComplex</label>
                 <div> { view.isComplex ? 'Yes': 'No' } </div>
             </div>

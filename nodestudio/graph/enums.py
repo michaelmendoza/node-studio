@@ -30,6 +30,7 @@ class NodeType(Enum):
     GRAPPA = 'GRAPPA'
     SENSE = 'SENSE'
     UNDERSAMPLE = 'UNDERSAMPLE'
+    RESIZE = 'RESIZE'
     SENSITIVITY_MAP = 'SENSITIVITY_MAP'
     DOSMA_TEST = "DOSMA_TEST"
     DOSMA_QDESS = "DOSMA_QDESS"
@@ -77,13 +78,13 @@ class NodeDetail(Enum):
     $$
     SOS = a^2 + b^2
     $$
-    So it's still a bit buggy - only a certain combo is allowed hmmm...
     '''
     CRSOS = '''Coil combination algorithm takes a collection of coil images and produces a weighted combination. The coil combination module in adopted the most commonly used root sum of squares (RSOS) method to preserve signal to noise ratio (SNR) without requiring detailed information about the magnetic field for each coil'''
     T2_qDESS = '''The QDESS T2 mapping module is able to compute pixel wise T2 values (an intrinsic tissue parameter) analytically using dicom images acquired at multiple echo times(TE). Applying a threshold on the set of T2 values allows quantitative mapping of a specific tissue.'''
     GRAPPA = '''The GRAPPA module realises a k-space domain reconstruction, whose inputs are undersampled k-space data where every few rows are skipped except for the centre, known as the auto-calibration signal. The spatial harmonics in a local k-space can be obtained from the ACS region and enables filling the unsampled region in k-space using linear interpolation. '''
     SENSE = '''SENSE allows is an common image domain based reconstruction algorithm. The input to both algorithms is undersampled k-space data where every few rows are skipped. SENSE uses the prior knowledge of the sensitivity profile as additional spatial encoding to ‘unfold’ the aliased image'''
     UNDERSAMPLE = '''For testing of the parallel imaging plugins as well as potential educational needs, an undersampling module was developed to reproduce aliasing artefacts resulting from direct inverse fourier transform of undersampled k-space data. As each parallel imaging method was designed for a particular undersampling pattern, the module incorporates undersampling trajectories for each technique and can be selected by the user upon running the app.'''
+    RESIZE = 'RESIZE'
     SENSITIVITY_MAP = '''Sensitivity maps are used for sense, and can be obtained from dicom images'''
     DOSMA_TEST = "DOSMA_TEST"
     DOSMA_QDESS = "T2 quantitative map. Generates a T2 map for qDESS data using the DOSMA library. ( A deep-learning, open-source framework for musculoskeletal MRI analysis )"
