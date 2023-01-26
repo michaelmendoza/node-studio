@@ -9,6 +9,7 @@ from graph.link import Link
 from graph.enums import NodeType
 from graph.nodes import NodeInfo, NodeProps
 from graph.interfaces import NodeData
+from core import DataGroup
 
 class NodeStyles(BaseModel):
     x: int = 0
@@ -53,7 +54,11 @@ class Node:
         if self.props.fn:
             args = self.args
             inputs = graph.current_graph.getNodeList(self.inputs)
-            values = [input.value for input in inputs]
+
+            values = []
+            for input in inputs:
+                value = self.get_input_value(input)
+                values.append(value)
 
             # Try to compute node fn and do error handling on error 
             try: 
@@ -63,6 +68,24 @@ class Node:
                 raise Exception({ 'nodeid': self.id, 'error': error_message })
 
         print(f'Computed complete.')
+
+    def get_input_value(self, input):
+        ''' Retrieves input value. Handles case of multiple outputs '''
+
+        hasMultipleOutputs = len(input.props.output) > 1
+        if(hasMultipleOutputs):
+            index = input.outputs.index(self.id)
+
+            if isinstance(input.value, DataGroup):
+                key = input.props.output[index]
+                value = input.value[key]                        
+            elif isinstance(input.value, list):
+                value = input.value[index]
+            else:
+                raise Exception("Invalid Node data: Node value must be a list or DataGroup")
+        else:
+            value = input.value
+        return value
 
     def add_link(self, link: Link):
         ''' Add link to nodde -- Assumes Link already created '''

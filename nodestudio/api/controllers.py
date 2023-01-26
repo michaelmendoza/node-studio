@@ -60,7 +60,10 @@ def encode_data(data, key):
 
 def get_node_value(node_id, key):
     node = current_graph.getNode(node_id)
-    encoded = encode_data(node.value, key)
+    value = node.value
+    if isinstance(value, DataGroup):
+        value = value.values()[0]
+    encoded = encode_data(value, key)
     return encoded
 
 def get_node_value_uncompressed(node_id, key):

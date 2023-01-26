@@ -90,3 +90,18 @@ class NodeDataset():
     def dtype(self):
         """The ``dtype`` of the ndarray. Same as ``self.volume.dtype``."""
         return self.data.dtype
+
+    @property
+    def depth(self):
+        """Retrieves the width of dataset image."""
+        return self.data.shape[0]
+
+    @property
+    def height(self):
+        """Retrieves the width of dataset image."""
+        return self.data.shape[1]
+
+    @property
+    def width(self):
+        """Retrieves the width of dataset image."""
+        return self.data.shape[2]

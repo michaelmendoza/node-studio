@@ -5,6 +5,7 @@ from core.datagroup import DataGroup
 from core.metadata import NodeMetadata
 from process.recon.SOS import *
 from process.core.mask import * 
+
 def acs(rawKspace,acsShape):
     ny, nx = rawKspace.shape[1:3]
     [cny, cnx] = acsShape
@@ -29,33 +30,34 @@ def var_den_mask(shape, R):
 
 def undersample(dataset, type, undersampling_ratio):
     if dataset.tag != "kspace":
-        dataset.data = fft2c(dataset.data, (1, 2))
+        data = fft2c(dataset.data, (1, 2))
+    else:
+        data = dataset.data
 
     if type == "GRAPPA": 
         undersampling_ratio = int(undersampling_ratio)    
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
-        ref = acs(dataset.data,(32,32))
+        ref = acs(data,(32,32))
 
     if type == "SENSE":
-        ref = acs(dataset.data,(32,32))
+        ref = acs(data,(32,32))
         undersampling_ratio = int(undersampling_ratio)    
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
-        # ref = inati_cmap(ifft2c(dataset.data))
+        # ref = inati_cmap(ifft2c(data))
         
-
     if type == "Variable Density":
         ns, ny, nx, nc = dataset.data.shape
         # i need to think about this. 
         mask = var_den_mask([ny, nx], int(undersampling_ratio)    ) 
         mask = np.tile(mask.reshape(1, ny,nx, 1), (ns, 1,1, nc))
-        ref = inati_cmap(ifft2c(dataset.data))
-         
+        ref = inati_cmap(ifft2c(data))
+    
+    data = data * mask
 
-    dataset.data = dataset.data * mask
-       
     metadata = NodeMetadata("phantom", "phantom")
+    ds = NodeDataset(data, metadata, dataset.dims, 'kspace')
     reference = NodeDataset(ref, metadata , ["Sli", "Lin", "Col", "Cha"], tag = 'kspace')
-    datagroup = DataGroup({"DATA": dataset, "PATREFSCAN": reference})
+    datagroup = DataGroup({"data": ds, "ref": reference})
     return datagroup
