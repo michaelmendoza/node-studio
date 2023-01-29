@@ -575,5 +575,162 @@
                 }
             ]
         }
+    },
+    {
+        "name": "cgSENSE",
+        "description": "cgSENSE Example with Phantom",
+        "graph": {
+            "nodes": {
+                "c3cc277b-dycf7-4e80-9e26-032ba76c99bc": {
+                    "id": "c3cc277b-dycf7-4e80-9e26-032ba76c99bc",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "styles": {
+                        "x": 104,
+                        "y": 277
+                    },
+                    "args": {
+                        "type": "Brain",
+                        "coil": "8",
+                        "fov": "256"
+                    }
+                },
+                "d4c31035-642b-4894-b966-2a4d84475e06": {
+                    "id": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [
+                        "c3cc277b-dycf7-4e80-9e26-032ba76c99bc"
+                    ],
+                    "outputs": [
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2",
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "styles": {
+                        "x": 304,
+                        "y": 277
+                    },
+                    "args": {
+                        "type": "SENSE",
+                        "undersampling_ratio": "2"
+                    }
+                },
+                "c9fa4a30-16ca-4fc4-82a9-183169147140": {
+                    "id": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "368794d8-b585-4bab-bee7-8de9c3f8f2f2"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 812,
+                        "y": 441
+                    },
+                    "args": {}
+                },
+                "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a": {
+                    "id": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "props": {
+                        "type": "FFT"
+                    },
+                    "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "outputs": [
+                        "7025601b-2781-4e44-8fd6-8f903d5035b1"
+                    ],
+                    "styles": {
+                        "x": 560,
+                        "y": 42
+                    },
+                    "args": {
+                        "type": "fft"
+                    }
+                },
+                "7025601b-2781-4e44-8fd6-8f903d5035b1": {
+                    "id": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 813,
+                        "y": 25
+                    },
+                    "args": {}
+                },
+                "79411449-a90a-4044-9440-291e86b9fb05": {
+                    "id": "79411449-a90a-4044-9440-291e86b9fb05",
+                    "props": {
+                        "type": "CGSENSE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 565,
+                        "y": 436
+                    },
+                    "args": {
+                        "numIter": "100"
+                    }
+                }
+            },
+            "links": [
+                {
+                    "id": "bf66aa86-ca5e-4b44-bff2-f9a8f78dfe18",
+                    "startNode": "c3cc277b-dycf7-4e80-9e26-032ba76c99bc",
+                    "startPort": 0,
+                    "endNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "endPort": 0
+                },
+                {
+                    "id": "395e3af5-6e91-439d-b7ef-17a29d54df3f",
+                    "startNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "startPort": 0,
+                    "endNode": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "endPort": 0
+                },
+                {
+                    "id": "cdfdc27c-fd9c-458a-9568-9502de98eec5",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 1,
+                    "endNode": "79411449-a90a-4044-9440-291e86b9fb05",
+                    "endPort": 1
+                },
+                {
+                    "id": "c78edde2-a2b9-4c27-90eb-5ad8170aa818",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "79411449-a90a-4044-9440-291e86b9fb05",
+                    "endPort": 0
+                },
+                {
+                    "id": "f4ee9dd5-bf3f-4dbd-83b8-804046b754aa",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "endPort": 0
+                },
+                {
+                    "id": "060d596d-1ece-48fd-8190-4072a36a11f7",
+                    "startNode": "79411449-a90a-4044-9440-291e86b9fb05",
+                    "startPort": 0,
+                    "endNode": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "endPort": 0
+                }
+            ]
+        }
     }
 ]
