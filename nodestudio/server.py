@@ -8,7 +8,7 @@ from fastapi import FastAPI, Request, Response
 from fastapi.middleware.cors import CORSMiddleware
 
 from api import routes, websocket
-from core import io, download_example_data
+from core import io, download_example_data, load_example_data
 
 app = FastAPI()
 websocket.create_websocket(app)
@@ -23,9 +23,9 @@ app.add_middleware(
 
 @app.on_event("startup")
 def load_examples():
-    filepath = os.path.join(os.getcwd(), 'data', 'examples', 'example1', '')
-    files = io.read_file(filepath, 'example1-b7027ec6f5b311ecbc2eacde48001122') #'./data/examples/example1'
-    print('Example data loaded: ' + files)
+    load_example_data()
+    
+
 
 @app.get("/")
 def read_root():
