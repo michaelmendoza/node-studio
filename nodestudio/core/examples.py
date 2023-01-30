@@ -45,8 +45,28 @@ def download_example1_data():
         print('Extract complete.')
         print('Example 1 data located at: ./data/examples')
 
+def download_dosma_example_data():
+    ''' Downloads and extracts examples data for nodestudio for DOSMA '''
 
+    # Checks if example 1 data folder exists
+    example_path = "./data/examples/example2"
+    example1Exists = os.path.exists(example_path)
+    if example1Exists:
+        print('Nodestudio Examples: Example 2 (DOSMA) data exists')
+        return
 
+    print('Example 2 (DOSMA): Downloading files ...')
+    url = 'https://huggingface.co/datasets/arjundd/dosma-data/resolve/main/healthy07-knee-anonymized.zip'
+
+    import requests, zipfile, io
+    r = requests.get(url)
+    print('Download complete.')
+
+    print('Extracting files ...')
+    z = zipfile.ZipFile(io.BytesIO(r.content))
+    z.extractall("./data/examples/example2")
+    print('Extract complete.')
+    print('Example 2 data located at: ./data/examples')
 
 def download_brain_phantom():
     # Downloads and extracts examples data for nodestudio from google drive location
