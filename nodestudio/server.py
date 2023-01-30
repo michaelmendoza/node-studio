@@ -11,7 +11,8 @@ from api import routes, websocket
 from core import io, download_example_data, load_example_data
 
 app = FastAPI()
-websocket.create_websocket(app)
+#websocket.create_websocket(app)
+websocket.init(app)
 
 app.add_middleware(
     CORSMiddleware,

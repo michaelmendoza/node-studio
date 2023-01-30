@@ -1,3 +1,4 @@
+import threading
 import socketio
 
 def create_websocket(app):
@@ -9,7 +10,7 @@ def create_websocket(app):
                 engineio_logger=False,
             )
     sapp = socketio.ASGIApp(sio)
-    manager.sio = sio
+    #manager.sio = sio
 
     @sio.event
     def connect(sid, environ):
@@ -22,14 +23,25 @@ def create_websocket(app):
     app.mount('/ws', sapp)
     return sio
 
-
-class WebsocketManager:
+class WebsocketManager():
     def __init__(self):
-        self.sio = None
+        pass
+
+    def init(self, app):
+        self.sio = create_websocket(app)
 
     async def emit(self, eventName, message):
         await self.sio.emit(eventName, message)
         await self.sio.sleep(0)
 
-manager = WebsocketManager()
+
+_socket = WebsocketManager()
+
+def init(app): 
+    _socket.init(app)
+
+async def emit(eventName, message):
+    await _socket.emit(eventName, message)
+
+
 

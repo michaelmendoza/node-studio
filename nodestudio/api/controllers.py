@@ -226,7 +226,7 @@ async def run_session(node_ids):
             error_message = str(traceback.format_exc())
             nodeid = None
 
-        await websocket.manager.emit('status', { 'session_id': id, 'nodeid': nodeid, 'status': 'error', 'message': "Error", 'error': error_message })
+        await websocket.emit('status', { 'session_id': id, 'nodeid': nodeid, 'status': 'error', 'message': "Error", 'error': error_message })
         session_metadata = { 'message':"Error: Session runtime error.", 'error': error_message }
     finally:
         return session_metadata
