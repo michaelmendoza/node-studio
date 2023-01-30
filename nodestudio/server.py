@@ -45,5 +45,4 @@ async def add_process_time_header(request: Request, call_next):
 
 if __name__ == "__main__":
     download_example_data()
-    download_brain_phantom()
     uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, debug=True, workers=4)

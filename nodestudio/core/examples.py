@@ -17,6 +17,7 @@ def download_example_data():
     ''' Downloads and extracts example data for nodestudio '''
     download_example1_data()
     download_dosma_example_data()
+    download_brain_phantom()
 
 def download_example1_data():
     ''' Downloads and extracts example data for nodestudio from google drive location '''
@@ -43,25 +44,6 @@ def download_example1_data():
         zip_ref.extractall(targetdir)
         print('Extract complete.')
         print('Example 1 data located at: ./data/examples')
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 
 
 
