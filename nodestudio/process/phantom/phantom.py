@@ -59,7 +59,7 @@ def brain(fov, coil = 1):
         brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/
     
     '''
-    image = np.array(convert_from_path('nodestudio/process/phantom/Brain.pdf', size = (fov, fov))[0])
+    image = np.array(convert_from_path('nodestudio/process/phantom/brain_phantom/Brain.pdf', size = (fov, fov))[0])
     image = np.asarray(np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]), dtype = complex)
     im = np.repeat(image[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)

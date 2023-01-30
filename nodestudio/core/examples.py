@@ -27,3 +27,41 @@ def download_example_data():
         zip_ref.extractall(targetdir)
         print('Extract complete.')
         print('Example 1 data located at: ./data/examples')
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+def download_brain_phantom():
+    # Downloads and extracts examples data for nodestudio from google drive location
+
+    # Checks if example 1 data folder exists
+    output = './nodestudio/process/phantom/brain_phantom'
+    example1Exists = os.path.exists(output)
+    if example1Exists:
+        print('Nodestudio Examples: phantom data exists')
+        return
+
+    output = './nodestudio/process/phantom/'
+    print('Downloading files ...')
+    url = 'https://drive.google.com/drive/folders/1wJ8sZwYzAxYqco57Nq1oWuoivRp20KLA?usp=share_link'
+    gdown.download_folder(url, quiet=False, output=output)
+    print('Download complete.')
