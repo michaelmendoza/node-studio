@@ -50,16 +50,17 @@ def undersample(dataset, type, undersampling_ratio):
         # ref = inati_cmap(ifft2c(data))
 
     if type == "SMS_CAIPI":
-        R = int(undersampling_ratio)
+        
         acs_data = acs(data, (32, 32))
         data =  np.moveaxis(data, 0, -1)
         acs_data =  np.moveaxis(acs_data, 0, -1)
 
         ny, nx, nc, ns = data.shape
+        R = ns
         cycle = np.arange(0,1,1/ns) * 2* np.pi
         numAccq = int(ns*ny/R)
         shift = cycle*numAccq/(2*np.pi)
-        data = fft2c(sms.multiSliceCAIPI(data, cycle, R), (0,1))
+        data = fft2c(sms.multiSliceCAIPI(ifft2c(data, (0,1)), cycle, R), (0,1))
         acsshift = cycle*int(ns* 32 /R)/(2*np.pi)
         acsIm = ifft2c(acs_data, (0,1))
         ref = fft2c(sms.singleSliceFov(acsIm,acsshift), (0,1))

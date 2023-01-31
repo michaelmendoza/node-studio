@@ -82,7 +82,7 @@ NodeInfo = {
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.FFT, input=['data'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft_recon),
     NodeType.QDESS_ADC: NodeProps(type=NodeType.QDESS_ADC, name='QDESS_ADC', tags=['compute'], description='QDESS ADC', detail=NodeDetail.QDESS_ADC, input=['scan1', 'scan2'],options=[{'name':'method', 'select':['Bragi','Bieri']}, 'spoiler_duration_ms', 'gradient_area1', 'gradient_area2'], output=['out'], fn=qDESS_ADC),
     NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD', 'FISTA']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
-    NodeType.SMS_RECON: NodeProps(type=NodeType.SMS_RECON, name='SMS Reconstruction', tags=['compute'], description='SMS Reconstruction', detail=NodeDetail.SMS_RECON, input=['data','ref'], options=[{'name':'type','select':['sg']}], output=['out'], fn=sms),
+    NodeType.SMS_RECON: NodeProps(type=NodeType.SMS_RECON, name='SMS Reconstruction', tags=['compute'], description='SMS Reconstruction', detail=NodeDetail.SMS_RECON, input=['data','ref'], options=[{'name':'type','select':['SG', 'SG_CAIPI']}], output=['out'], fn=sms),
     
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),

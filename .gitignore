@@ -16,8 +16,8 @@ __pycache__
 .npy
 .mat
 .dcm
-.npy
-.pdf
+*.npy
+*.pdf
 
 graph_model_data.json
 nodestudio/notebooks/
