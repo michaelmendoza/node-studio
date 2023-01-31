@@ -29,9 +29,19 @@ def phantom_generator(type, fov, coil):
     '''
     if type == "Shepp_logan":
         rawdata =  shepp_logan(fov, coil) #fft2c(shepp_logan(fov, coil))
+        rawdata = rawdata[np.newaxis, ...]
     if type == "Brain":
         rawdata =  brain(int(fov), int(coil)) #fft2c(brain(int(fov), int(coil)))
-    rawdata = rawdata[np.newaxis, ...]
+        rawdata = rawdata[np.newaxis, ...]
+    
+    if type == "SMS":
+        slice1 = np.load("nodestudio/process/phantom/brain_phantom/slice1_grappa1.npy")
+        slice2 = np.load("nodestudio/process/phantom/brain_phantom/slice2_grappa1.npy")
+        slice3 = np.load("nodestudio/process/phantom/brain_phantom/slice3_grappa1.npy")
+        slice4 = np.load("nodestudio/process/phantom/brain_phantom/slice4_grappa1.npy")
+        rawdata = np.concatenate((slice1[None,...], slice2[None,...], slice3[None,...], slice4[None,...]), 0)
+        rawdata = ifft2c(rawdata, (1,2))
+
 
     metadata = NodeMetadata("phantom", "phantom")
     dataset = NodeDataset(rawdata, metadata , ["Sli", "Lin", "Col", "Cha"])
@@ -59,7 +69,7 @@ def brain(fov, coil = 1):
         brain phantom obatined from: http://bigwww.epfl.ch/algorithms/mriphantom/
     
     '''
-    image = np.array(convert_from_path('nodestudio/process/phantom/Brain.pdf', size = (fov, fov))[0])
+    image = np.array(convert_from_path('nodestudio/process/phantom/brain_phantom/Brain.pdf', size = (fov, fov))[0])
     image = np.asarray(np.dot(image[...,:3], [0.2989, 0.5870, 0.1140]), dtype = complex)
     im = np.repeat(image[:, :, np.newaxis], coil, axis=2)
     s = im * generate_birdcage_sensitivities(matrix_size = fov,number_of_coils = coil)

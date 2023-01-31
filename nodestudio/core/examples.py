@@ -17,6 +17,7 @@ def download_example_data():
     ''' Downloads and extracts example data for nodestudio '''
     download_example1_data()
     download_dosma_example_data()
+    #download_siemens_rawdata()
 
 def download_example1_data():
     ''' Downloads and extracts example data for nodestudio from google drive location '''
@@ -66,3 +67,27 @@ def download_dosma_example_data():
     z.extractall("./data/examples/example2")
     print('Extract complete.')
     print('Example 2 data located at: ./data/examples')
+
+
+def download_siemens_rawdata():
+    ''' Downloads and extracts examples data for nodestudio for DOSMA '''
+
+    # Checks if example 1 data folder exists
+    example_path = "./data/raw_data"
+    example1Exists = os.path.exists(example_path)
+    if example1Exists:
+        print('Nodestudio Examples: example raw data exists')
+        return
+
+    print('Example 3 raw data: Downloading files ...')
+    url = 'https://drive.google.com/drive/folders/1VGVlU-ZJTF10df1vtvd2fQzwzWUTvHXP?usp=share_link'
+
+    import requests, zipfile, io
+    
+    print('Download complete.')
+
+    print('Extracting files ...')
+    gdown.download(url, "./data/raw_data", quiet=False)
+
+    print('Extract complete.')
+    print('Example 3 raw data located at: ./data/raw_data')

@@ -21,7 +21,7 @@ from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
 from process.quantative_map.qDESS_ADC import qDESS_ADC
 from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
-
+from process.recon.sms import sms
 class NodeNumberOption(BaseModel):
     name: str
     range: List[int] = None
@@ -55,7 +55,7 @@ NodeInfo = {
     #NodeType.MASK_GENERATOR: NodeProps(type=NodeType.MASK_GENERATOR, name='Mask Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
-    NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain']}, 'fov', 'coil'], fn=phantom_generator),
+    NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain', 'SMS']}, 'fov', 'coil'], fn=phantom_generator),
 
     # Filter Node
     #NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
@@ -72,7 +72,7 @@ NodeInfo = {
     #NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
     NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['data','ref'], output=['out'], fn=grappa),
      
-    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['data', 'ref'], options=[{'name':'type','select':['GRAPPA', 'SENSE', 'Variable Density']},'undersampling_ratio'], fn=undersample), 
+    NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['data', 'ref'], options=[{'name':'type','select':['GRAPPA', 'SENSE','SMS_CAIPI', 'Variable Density']},'undersampling_ratio'], fn=undersample), 
     NodeType.RESIZE: NodeProps(type=NodeType.RESIZE, name='Resize', tags=['compute'], description='Resizes image data', detail=NodeDetail.RESIZE, input=['a'], output=['out'], options=['height','width'], fn=resize2D),
     NodeType.SENSITIVITY_MAP: NodeProps(type=NodeType.SENSITIVITY_MAP,name='Sensitivity Map', tags=['compute'], description='Calculates sensitivity map', detail=NodeDetail.UNDERSAMPLE, input=['Kspace_data'], output=['out'], fn=get_sensitivity_map),
     NodeType.SENSE: NodeProps(type=NodeType.SENSE, name='SENSE Reconstruction', tags=['compute'], description='SENSE Reconstruction', detail=NodeDetail.SENSE, input=['data','ref'], output=['out'], fn=SENSErecon),
@@ -82,7 +82,8 @@ NodeInfo = {
     NodeType.FFT: NodeProps(type=NodeType.FFT, name='FFT', tags=['compute'], description='Fourier transform', detail=NodeDetail.FFT, input=['data'],options=[{'name':'type', 'select':['fft','ifft']}], output=['out'], fn=fft_recon),
     NodeType.QDESS_ADC: NodeProps(type=NodeType.QDESS_ADC, name='QDESS_ADC', tags=['compute'], description='QDESS ADC', detail=NodeDetail.QDESS_ADC, input=['scan1', 'scan2'],options=[{'name':'method', 'select':['Bragi','Bieri']}, 'spoiler_duration_ms', 'gradient_area1', 'gradient_area2'], output=['out'], fn=qDESS_ADC),
     NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD', 'FISTA']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
-
+    NodeType.SMS_RECON: NodeProps(type=NodeType.SMS_RECON, name='SMS Reconstruction', tags=['compute'], description='SMS Reconstruction', detail=NodeDetail.SMS_RECON, input=['data','ref'], options=[{'name':'type','select':['sg']}], output=['out'], fn=sms),
+    
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),
     NodeType.LINE_DISPLAY: NodeProps(type=NodeType.LINE_DISPLAY, name='Line Display', tags=['output'], description='Displays data as 1d plots', detail=NodeDetail.LINE_DISPLAY, input=['In']),
