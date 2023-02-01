@@ -2,7 +2,7 @@ import traceback
 from typing import Any, List
 from functools import wraps
 from fastapi import APIRouter, HTTPException
-from api import controllers, websocket
+from api import controllers
 from graph.interfaces import JsonData, ID_Data, NodeData, LinkData
 
 def handle_exception(func):

@@ -1,47 +1,7 @@
-import sys, os
-#sys.path.insert(0, os.getcwd())
-#print('cwd:' + os.getcwd())
-
-import time
 import uvicorn
-from fastapi import FastAPI, Request, Response
-from fastapi.middleware.cors import CORSMiddleware
-
-from api import routes, websocket
-from core import io, download_example_data, load_example_data
-
-app = FastAPI()
-websocket.create_websocket(app)
-
-app.add_middleware(
-    CORSMiddleware,
-    allow_origins=["*"],
-    allow_credentials=True,
-    allow_methods=["*"],
-    allow_headers=["*"],
-)
-
-@app.on_event("startup")
-def load_examples():
-    load_example_data()
-    
-
-
-@app.get("/")
-def read_root():
-    url_list = [{"path": route.path, "name": route.name} for route in app.routes]
-    return {"message": "Welcome Node Studio", "routes": url_list}
-
-app.include_router(routes.router)
-
-@app.middleware("http")
-async def add_process_time_header(request: Request, call_next):
-    start_time = time.time()
-    response = await call_next(request)
-    process_time = time.time() - start_time
-    response.headers["X-Process-Time"] = str(process_time)
-    return response
+from core import download_example_data
 
 if __name__ == "__main__":
-    download_example_data()
-    uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, debug=True, workers=4)
+    download_example_data()    
+    #uvicorn.run("server:app", host="0.0.0.0", port=8000, reload=True, debug=True, log_level="debug", workers=1)
+    uvicorn.run("app:app", host="0.0.0.0", port=8000, reload=True, debug=True, workers=1)
