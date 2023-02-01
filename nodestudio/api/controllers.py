@@ -217,7 +217,9 @@ async def run_session(node_ids):
     id = uuid.uuid1().hex
 
     try:
+        await websocket.startSession(id)
         session_metadata = await Session.run(id, node_ids)
+        process_time = session_metadata['process_time']
     except Exception as e:
         try:
             error_message = e.args[0]['error']
@@ -226,8 +228,10 @@ async def run_session(node_ids):
             error_message = str(traceback.format_exc())
             nodeid = None
 
-        await websocket.emit('status', { 'session_id': id, 'nodeid': nodeid, 'status': 'error', 'message': "Error", 'error': error_message })
+        await websocket.errorSession(id, nodeid, error_message)
         session_metadata = { 'message':"Error: Session runtime error.", 'error': error_message }
+    else:
+        await websocket.stopSession(id, process_time)
     finally:
         return session_metadata
 
