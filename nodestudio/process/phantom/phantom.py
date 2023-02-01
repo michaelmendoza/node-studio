@@ -35,10 +35,10 @@ def phantom_generator(type, fov, coil):
         rawdata = rawdata[np.newaxis, ...]
     
     if type == "SMS":
-        slice1 = np.load("nodestudio/process/phantom/brain_phantom/slice1_grappa1.npy")
-        slice2 = np.load("nodestudio/process/phantom/brain_phantom/slice2_grappa1.npy")
-        slice3 = np.load("nodestudio/process/phantom/brain_phantom/slice3_grappa1.npy")
-        slice4 = np.load("nodestudio/process/phantom/brain_phantom/slice4_grappa1.npy")
+        slice1 = np.load("nodestudio/process/phantom/data/slice1_grappa1.npy")
+        slice2 = np.load("nodestudio/process/phantom/data/slice2_grappa1.npy")
+        slice3 = np.load("nodestudio/process/phantom/data/slice3_grappa1.npy")
+        slice4 = np.load("nodestudio/process/phantom/data/slice4_grappa1.npy")
         rawdata = np.concatenate((slice1[None,...], slice2[None,...], slice3[None,...], slice4[None,...]), 0)
         rawdata = ifft2c(rawdata, (1,2))
 
