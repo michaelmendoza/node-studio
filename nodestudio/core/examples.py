@@ -94,7 +94,7 @@ def download_phantom_data():
         os.mkdir(example_path)
 
     print('Phantom data: Downloading files ...')
-    url = 'https://drive.google.com/file/d/1ku5gNxbsUePpnk5vOhZnC-U2JTLKv7ST/view?usp=share_link'
+    url = 'https://drive.google.com/file/d/12r-w7r96Jz0fAkPQYz3TI67pBXAFcnG_/view?usp=share_link'
     output = './nodestudio/process/phantom/data/phantom_data.zip'
     gdown.download(url, quiet=False, output=output, fuzzy=True)
     print('Download complete.')
