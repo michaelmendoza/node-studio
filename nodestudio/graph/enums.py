@@ -45,7 +45,8 @@ class NodeType(Enum):
     LINE_DISPLAY = 'LINE_DISPLAY'
     LAYER_DISPLAY = 'LAYER_DISPLAY'
     HISTOGRAM = 'HISTOGRAM'
-
+    EXPORT_FILE = 'EXPORT_FILE'
+    
     # Debug Nodes
     DELAY = 'DELAY'
     ERROR = 'ERROR'
@@ -99,7 +100,7 @@ class NodeDetail(Enum):
     LINE_DISPLAY = 'LINE_DISPLAY'
     LAYER_DISPLAY = 'Data display node. Displays data as 2d-image with second image layered on top of first.'
     HISTOGRAM = 'Display a histogram of data values and displays data statistics. '
-
+    EXPORT_FILE = 'EXPORT_FILE'
     # Debug Nodes
     DELAY = 'Adds a time delay'
     ERROR = 'Purposely throws an error'
