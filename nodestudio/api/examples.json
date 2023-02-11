@@ -732,5 +732,92 @@
                 }
             ]
         }
+    },
+    {
+        "name": "qDESS ADC",
+        "description": "qDESS ADC mapping ",
+        "graph": {
+            "nodes": {
+                "9d5e85c7-34f2-4805-8d41-5f211b353df0": {
+                    "id": "9d5e85c7-34f2-4805-8d41-5f211b353df0",
+                    "props": {
+                        "type": "FILE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 333,
+                        "y": 208
+                    },
+                    "args": {}
+                },
+                "b656ab38-1548-4c27-a751-bcac948878e5": {
+                    "id": "b656ab38-1548-4c27-a751-bcac948878e5",
+                    "props": {
+                        "type": "FILE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 324,
+                        "y": 413
+                    },
+                    "args": {}
+                },
+                "8063bfbe-0a9e-4eb3-bc0f-dbd050c2d941": {
+                    "id": "8063bfbe-0a9e-4eb3-bc0f-dbd050c2d941",
+                    "props": {
+                        "type": "QDESS_ADC"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 662,
+                        "y": 253
+                    },
+                    "args": {
+                        "spoiler_duration_ms": "4.8",
+                        "gradient_area1": "3000",
+                        "gradient_area2": "5000"
+                    }
+                },
+                "7e22c3cc-6b30-4170-a8d6-8acf6b07517a": {
+                    "id": "7e22c3cc-6b30-4170-a8d6-8acf6b07517a",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 978,
+                        "y": 238
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "2f7582c5-6a8c-4f02-b946-eeb939c2d962",
+                    "startNode": "9d5e85c7-34f2-4805-8d41-5f211b353df0",
+                    "startPort": 0,
+                    "endNode": "8063bfbe-0a9e-4eb3-bc0f-dbd050c2d941",
+                    "endPort": 0
+                },
+                {
+                    "id": "f522f60b-61c0-4493-80ad-2c344157dcca",
+                    "startNode": "b656ab38-1548-4c27-a751-bcac948878e5",
+                    "startPort": 0,
+                    "endNode": "8063bfbe-0a9e-4eb3-bc0f-dbd050c2d941",
+                    "endPort": 1
+                },
+                {
+                    "id": "16d53672-33dd-49e8-a364-db2b63e84199",
+                    "startNode": "8063bfbe-0a9e-4eb3-bc0f-dbd050c2d941",
+                    "startPort": 0,
+                    "endNode": "7e22c3cc-6b30-4170-a8d6-8acf6b07517a",
+                    "endPort": 0
+                }
+            ]
+        }
     }
 ]

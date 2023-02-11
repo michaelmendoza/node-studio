@@ -2,9 +2,6 @@ import numpy as np
 import scipy 
 from scipy.linalg import block_diag
 import matplotlib.pyplot as plt
-import sys
-sys.path.insert(1, '../../')
-sys.path.insert(1, '../')
 from tqdm.notebook import tqdm
 import scipy.io as io
 from pathlib import Path
@@ -193,7 +190,7 @@ def create_database(TR,TE,Tg,GhArea,GlArea,alpha_deg):
     r1Grid2D_alpha  = np.squeeze(np.mean(r1Grid,0))
     r2Grid2D_alpha = np.squeeze(np.mean(r2Grid,0))
     grid = database(TR, TE, Tg, GhArea, GlArea, alpha_deg, bGrid1D, r1Grid2D_alpha, r2Grid2D_alpha, Dvalues, NT2, ND, T1values, T2values)
-    with open(str(TR)+"_"+str(TE)+"_"+str(Tg)+"_"+str(GhArea)+"_"+str(GlArea)+"_"+str(alpha_deg)+'.pkl', 'wb') as outp:
+    with open("nodestudio/process/quantative_map/"+str(TR)+"_"+str(TE)+"_"+str(Tg)+"_"+str(GhArea)+"_"+str(GlArea)+"_"+str(alpha_deg)+'.pkl', 'wb') as outp:
         pickle.dump(grid, outp, pickle.HIGHEST_PROTOCOL)
         
 def search_and_load_database(TR,TE,Tg,GhArea,GlArea,alpha_deg):
