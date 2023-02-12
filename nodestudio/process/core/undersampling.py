@@ -54,6 +54,16 @@ def undersample(dataset, type, undersampling_ratio):
         mask = np.tile(mask.reshape(1, ny,nx, 1), (ns, 1,1, nc))
         ref = inati_cmap(ifft2c(data))
     
+    if type == "Partial Fourier":
+        if float(undersampling_ratio) > 1: 
+            undersampling_ratio = 0.7
+        [ny, nx] = dataset.data.shape[1:3]
+        readny = int(ny * float(undersampling_ratio))
+        mask = np.ones(dataset.data.shape)
+        mask[:,-(ny-readny):,...] = 0 
+        ref = acs(data,(32,nx))
+
+    
     data = data * mask
 
     metadata = NodeMetadata("phantom", "phantom")

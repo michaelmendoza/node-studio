@@ -732,5 +732,165 @@
                 }
             ]
         }
+    },
+    {
+        "name": "Partial Fourier ",
+        "description": "Partial Fourier Example with Phantom",
+        "graph": {
+            "nodes": {
+                "d4c31035-642b-4894-b966-2a4d84475e06": {
+                    "id": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [
+                        "c3cc277b-dycf7-4e80-9e26-032ba76c99bc"
+                    ],
+                    "outputs": [
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                        "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53",
+                        "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53"
+                    ],
+                    "styles": {
+                        "x": 334,
+                        "y": 447
+                    },
+                    "args": {
+                        "type": "Partial Fourier",
+                        "undersampling_ratio": "0.6"
+                    }
+                },
+                "c9fa4a30-16ca-4fc4-82a9-183169147140": {
+                    "id": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 812,
+                        "y": 447
+                    },
+                    "args": {}
+                },
+                "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a": {
+                    "id": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "props": {
+                        "type": "FFT"
+                    },
+                    "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "outputs": [
+                        "7025601b-2781-4e44-8fd6-8f903d5035b1"
+                    ],
+                    "styles": {
+                        "x": 565,
+                        "y": 142
+                    },
+                    "args": {
+                        "type": "fft"
+                    }
+                },
+                "7025601b-2781-4e44-8fd6-8f903d5035b1": {
+                    "id": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 808,
+                        "y": 20
+                    },
+                    "args": {}
+                },
+                "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53": {
+                    "id": "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53",
+                    "props": {
+                        "type": "PARTIAL_FOURIER"
+                    },
+                    "inputs": [
+                        "d4c31035-642b-4894-b966-2a4d84475e06",
+                        "d4c31035-642b-4894-b966-2a4d84475e06"
+                    ],
+                    "outputs": [
+                        "c9fa4a30-16ca-4fc4-82a9-183169147140"
+                    ],
+                    "styles": {
+                        "x": 606,
+                        "y": 446
+                    },
+                    "args": {
+                        "type": "Conjugate Synthesis"
+                    }
+                },
+                "b2a950cb-23c4-4588-adf9-1b99e076b452": {
+                    "id": "b2a950cb-23c4-4588-adf9-1b99e076b452",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 46,
+                        "y": 396
+                    },
+                    "args": {
+                        "type": "Shepp_logan",
+                        "fov": "256",
+                        "coil": "8"
+                    }
+                }
+            },
+            "links": [
+                {
+                    "id": "f83e6c87-5a3a-4c05-91ca-a476204ed617",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "endPort": 0
+                },
+                {
+                    "id": "395e3af5-6e91-439d-b7ef-17a29d54df3f",
+                    "startNode": "4f819f09-8de6-4f0a-9ee3-a7fa2871b49a",
+                    "startPort": 0,
+                    "endNode": "7025601b-2781-4e44-8fd6-8f903d5035b1",
+                    "endPort": 0
+                },
+                {
+                    "id": "2653317b-fc7a-4325-ad68-289fe08b94a0",
+                    "startNode": "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53",
+                    "startPort": 0,
+                    "endNode": "c9fa4a30-16ca-4fc4-82a9-183169147140",
+                    "endPort": 0
+                },
+                {
+                    "id": "fcbd9a4f-1774-44d2-9769-b1d1c51b537e",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 0,
+                    "endNode": "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53",
+                    "endPort": 0
+                },
+                {
+                    "id": "25dfd98a-32c5-42ff-967a-c48c50f07ab9",
+                    "startNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "startPort": 1,
+                    "endNode": "7de0ef4a-f8a8-46b3-9714-b6f7ca10fe53",
+                    "endPort": 1
+                },
+                {
+                    "id": "c5546c7f-88c4-44e9-8935-1374c32fb7d0",
+                    "startNode": "b2a950cb-23c4-4588-adf9-1b99e076b452",
+                    "startPort": 0,
+                    "endNode": "d4c31035-642b-4894-b966-2a4d84475e06",
+                    "endPort": 0
+                }
+            ]
+        }
     }
 ]
