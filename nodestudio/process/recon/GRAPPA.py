@@ -26,8 +26,8 @@ def grappa(data, ref):
     calibset = ref.data
     reconset = NodeDataset(None, data.metadata, data.dims[:3], "image")
     for sli in range(dataRset.shape[0]):
-        data = recon( dataRset[sli,...], calibset[0,...])
-        if reconset.data == None: 
+        data = recon( dataRset[sli,...], calibset[sli,...])
+        if reconset.data is None: 
             reconset.data = data
         else: 
             reconset.data = np.concatenate((reconset.data, data), axis = 0)

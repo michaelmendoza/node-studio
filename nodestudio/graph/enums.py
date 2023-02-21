@@ -39,6 +39,7 @@ class NodeType(Enum):
     FFT = "FFT"
     QDESS_ADC = "QDESS_ADC"
     MIRTorch_CS = "MIRTorch_CS"
+    SMS_RECON = "SMS_RECON"
 
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -94,6 +95,7 @@ class NodeDetail(Enum):
     FFT = "Applies Fourier transform on to input dataset"
     QDESS_ADC = "QDESS_ADC maps"
     MIRTorch_CS = "MIRTorch_CS"
+    SMS_RECON = "SMS_RECON"
 
     # Output Nodes
     DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
