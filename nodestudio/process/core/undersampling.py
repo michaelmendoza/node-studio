@@ -6,6 +6,7 @@ from core.metadata import NodeMetadata
 from process.recon.SOS import *
 from process.core.mask import * 
 import process.core.sms_sim as sms
+
 def acs(rawKspace,acsShape):
     ny, nx = rawKspace.shape[1:3]
     [cny, cnx] = acsShape
@@ -75,6 +76,15 @@ def undersample(dataset, type, undersampling_ratio):
         ref = inati_cmap(ifft2c(data))
         data = data * mask
         
+    if type == "Partial Fourier":
+        if float(undersampling_ratio) > 1: 
+            undersampling_ratio = 0.7
+        [ny, nx] = dataset.data.shape[1:3]
+        readny = int(ny * float(undersampling_ratio))
+        mask = np.ones(dataset.data.shape)
+        mask[:,-(ny-readny):,...] = 0 
+        ref = acs(data,(32,nx))
+        data = data * mask
 
     metadata = NodeMetadata("phantom", "phantom")
     ds = NodeDataset(data, metadata, dataset.dims, 'kspace')

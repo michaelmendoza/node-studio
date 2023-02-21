@@ -39,6 +39,7 @@ class NodeType(Enum):
     FFT = "FFT"
     QDESS_ADC = "QDESS_ADC"
     MIRTorch_CS = "MIRTorch_CS"
+    PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
 
     # Output Nodes
@@ -95,6 +96,7 @@ class NodeDetail(Enum):
     FFT = "Applies Fourier transform on to input dataset"
     QDESS_ADC = "QDESS_ADC maps"
     MIRTorch_CS = "MIRTorch_CS"
+    PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
 
     # Output Nodes
