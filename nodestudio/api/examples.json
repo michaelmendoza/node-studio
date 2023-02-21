@@ -734,6 +734,228 @@
         }
     },
     {
+        "name": "SMS reconstruction",
+        "description": "Slice Grappa with phantom",
+        "graph": {
+            "nodes": {
+                "dcdf6166-6dac-4b6b-9589-ea2a75715c9d": {
+                    "id": "dcdf6166-6dac-4b6b-9589-ea2a75715c9d",
+                    "props": {
+                        "type": "PHANTOM"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 272,
+                        "y": 244
+                    },
+                    "args": {
+                        "type": "SMS",
+                        "fov": "256",
+                        "coil": "8"
+                    }
+                },
+                "8fa63ee1-c1e7-49d7-a58b-5debafd02059": {
+                    "id": "8fa63ee1-c1e7-49d7-a58b-5debafd02059",
+                    "props": {
+                        "type": "SMS_RECON"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 759,
+                        "y": 402
+                    },
+                    "args": {
+                        "type": "SG_CAIPI"
+                    }
+                },
+                "b009a6a8-f31a-484e-837b-3217dfe33520": {
+                    "id": "b009a6a8-f31a-484e-837b-3217dfe33520",
+                    "props": {
+                        "type": "UNDERSAMPLE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 508,
+                        "y": 253
+                    },
+                    "args": {
+                        "type": "SMS_CAIPI",
+                        "undersampling_ratio": "4"
+                    }
+                },
+                "c2c0ddc7-5cc7-4229-a480-286bfb601702": {
+                    "id": "c2c0ddc7-5cc7-4229-a480-286bfb601702",
+                    "props": {
+                        "type": "FFT"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 876,
+                        "y": 104
+                    },
+                    "args": {
+                        "type": "fft"
+                    }
+                },
+                "5c6ca493-f59e-4a0f-aaa1-1aa8329981d8": {
+                    "id": "5c6ca493-f59e-4a0f-aaa1-1aa8329981d8",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 1096,
+                        "y": 443
+                    },
+                    "args": {}
+                },
+                "0ba99cbb-3234-4fd7-969e-e09cc7e75f1f": {
+                    "id": "0ba99cbb-3234-4fd7-969e-e09cc7e75f1f",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 1082,
+                        "y": 11
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "4413f814-c77c-4280-87ae-97f9f217148a",
+                    "startNode": "dcdf6166-6dac-4b6b-9589-ea2a75715c9d",
+                    "startPort": 0,
+                    "endNode": "b009a6a8-f31a-484e-837b-3217dfe33520",
+                    "endPort": 0
+                },
+                {
+                    "id": "e2ebd9aa-c5b4-43a9-9ba4-e864b9006d37",
+                    "startNode": "b009a6a8-f31a-484e-837b-3217dfe33520",
+                    "startPort": 0,
+                    "endNode": "c2c0ddc7-5cc7-4229-a480-286bfb601702",
+                    "endPort": 0
+                },
+                {
+                    "id": "0eb33e52-c42c-4fda-ba6b-265fc0013a38",
+                    "startNode": "b009a6a8-f31a-484e-837b-3217dfe33520",
+                    "startPort": 0,
+                    "endNode": "8fa63ee1-c1e7-49d7-a58b-5debafd02059",
+                    "endPort": 0
+                },
+                {
+                    "id": "0b211aa1-4d10-4190-aab0-67c5c1cafd1a",
+                    "startNode": "b009a6a8-f31a-484e-837b-3217dfe33520",
+                    "startPort": 1,
+                    "endNode": "8fa63ee1-c1e7-49d7-a58b-5debafd02059",
+                    "endPort": 1
+                },
+                {
+                    "id": "7e34be93-83be-413d-94be-dcdac9c3e966",
+                    "startNode": "8fa63ee1-c1e7-49d7-a58b-5debafd02059",
+                    "startPort": 0,
+                    "endNode": "5c6ca493-f59e-4a0f-aaa1-1aa8329981d8",
+                    "endPort": 0
+                },
+                {
+                    "id": "ac976182-cd99-4fee-b1c3-8c2f067072ce",
+                    "startNode": "c2c0ddc7-5cc7-4229-a480-286bfb601702",
+                    "startPort": 0,
+                    "endNode": "0ba99cbb-3234-4fd7-969e-e09cc7e75f1f",
+                    "endPort": 0
+                }
+            ]
+        }
+    },
+    {
+        "name": "Export",
+        "description": "Export data to Dicom, Mat, and Nifty",
+        "graph": {
+            "nodes": {
+                "1a2cf3f3-83cf-42b9-a471-213b8d5b7a59": {
+                    "id": "1a2cf3f3-83cf-42b9-a471-213b8d5b7a59",
+                    "props": {
+                        "type": "FILE"
+                    },
+                    "inputs": [],
+                    "outputs": [
+                        "405b37e5-3137-4ec2-9341-c5aac51b6f70"
+                    ],
+                    "styles": {
+                        "x": 187,
+                        "y": 357
+                    },
+                    "args": {
+                        "file": {
+                            "id": "example1-b7027ec6f5b311ecbc2eacde48001122",
+                            "path": "/Users/huozimu/Desktop/node-studio/data/examples/example1/",
+                            "name": "File 0",
+                            "type": "dicom"
+                        }
+                    }
+                },
+                "405b37e5-3137-4ec2-9341-c5aac51b6f70": {
+                    "id": "405b37e5-3137-4ec2-9341-c5aac51b6f70",
+                    "props": {
+                        "type": "EXPORT_FILE"
+                    },
+                    "inputs": [
+                        "1a2cf3f3-83cf-42b9-a471-213b8d5b7a59"
+                    ],
+                    "outputs": [
+                        "4bc6be0d-f36d-4b85-a6f8-64cebd18101e"
+                    ],
+                    "styles": {
+                        "x": 501,
+                        "y": 352
+                    },
+                    "args": {
+                        "file_name": "test",
+                        "type": "All"
+                    }
+                },
+                "4bc6be0d-f36d-4b85-a6f8-64cebd18101e": {
+                    "id": "4bc6be0d-f36d-4b85-a6f8-64cebd18101e",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [
+                        "405b37e5-3137-4ec2-9341-c5aac51b6f70"
+                    ],
+                    "outputs": [],
+                    "styles": {
+                        "x": 864,
+                        "y": 299
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "28afefb5-0aef-4e65-848b-ad4c9c339167",
+                    "startNode": "1a2cf3f3-83cf-42b9-a471-213b8d5b7a59",
+                    "startPort": 0,
+                    "endNode": "405b37e5-3137-4ec2-9341-c5aac51b6f70",
+                    "endPort": 0
+                },
+                {
+                    "id": "53b75a6c-a5b0-49e9-9933-5117b32b004f",
+                    "startNode": "405b37e5-3137-4ec2-9341-c5aac51b6f70",
+                    "startPort": 0,
+                    "endNode": "4bc6be0d-f36d-4b85-a6f8-64cebd18101e",
+                    "endPort": 0
+                }
+            ]
+        }
+    },
+    {
         "name": "Partial Fourier ",
         "description": "Partial Fourier Example with Phantom",
         "graph": {

@@ -24,7 +24,7 @@ def SENSErecon(data, ref):
     calibset = ref.data
     reconset = NodeDataset(None, data.metadata, data.dims[:3], "image")
     for sli in range(dataRset.shape[0]):
-        data = sense( dataRset[sli,...], calibset[0,...])
+        data = sense( dataRset[sli,...], calibset[sli,...])
         if reconset.data == None: 
             reconset.data = data
         else: 

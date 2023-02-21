@@ -1,7 +1,7 @@
 from pathlib import Path
 import os
 
-def query_path(relative_path = None, valid_filetypes=['.dcm','.ima','.dat']):
+def query_path(relative_path = None, valid_filetypes=['.dcm','.ima','.dat', '.nii', '.nii.gz', '.gz']):
     ''' Queries filesystem for all folders, and valid filestypes. Query is based off 
     cwd (Current Working Directory) and a relative path. Returns a queried path and list of 
     folders, and files.

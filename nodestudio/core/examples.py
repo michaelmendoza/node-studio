@@ -15,42 +15,56 @@ def load_example_data():
 
 def download_example_data():
     ''' Downloads and extracts example data for nodestudio '''
+
+    data_path = './data/'
+    example_path = './data/examples/'
+    exampleExists = os.path.exists(example_path)
+    if not exampleExists:
+        os.mkdir(data_path)
+        os.mkdir(example_path)
+
     download_example1_data()
     download_dosma_example_data()
+    download_phantom_data()
 
 def download_example1_data():
     ''' Downloads and extracts example data for nodestudio from google drive location '''
 
     # Checks if example 1 data folder exists
-    example_path = "./data/examples/example1"
-    example1Exists = os.path.exists(example_path)
-    if example1Exists:
+    example_path = './data/examples/example1'
+    exampleExists = os.path.exists(example_path)
+    if exampleExists:
         print('Nodestudio Examples: Example 1 data exists')
         return
+    else:
+        os.mkdir(example_path)
 
     # Downloads example 1 data
-    output = './data/examples'
     print('Example 1: Downloading files ...')
-    url = 'https://drive.google.com/drive/folders/1kdCB72bqZSpQqxkrVND9ZmsQydSJBG3F?usp=sharing'
-    gdown.download_folder(url, quiet=False, output=output)
+    url = 'https://drive.google.com/file/d/164c-yUWgnXrFKESCmiYlxX67tG1ySOY8/view?usp=sharing'
+    output = './data/examples/example1_footdata.zip'
+    gdown.download(url, quiet=False, output=output, fuzzy=True)
     print('Download complete.')
 
     # Extracts example data from .zip 
-    filepath = './data/examples/example1_footdata.zip'
-    targetdir = './data/examples/example1'
+    filepath = output
+    targetdir = example_path
     print('Extracting files ...')
     with zipfile.ZipFile(filepath,"r") as zip_ref:
         zip_ref.extractall(targetdir)
         print('Extract complete.')
-        print('Example 1 data located at: ./data/examples')
+        print(f'Example 1 data located at: ${example_path}')
+
+    # Remove downloaded zip file 
+    os.remove(output)
 
 def download_dosma_example_data():
     ''' Downloads and extracts examples data for nodestudio for DOSMA '''
 
     # Checks if example 1 data folder exists
     example_path = "./data/examples/example2"
-    example1Exists = os.path.exists(example_path)
-    if example1Exists:
+    exampleExists = os.path.exists(example_path)
+    if exampleExists:
         print('Nodestudio Examples: Example 2 (DOSMA) data exists')
         return
 
@@ -63,6 +77,36 @@ def download_dosma_example_data():
 
     print('Extracting files ...')
     z = zipfile.ZipFile(io.BytesIO(r.content))
-    z.extractall("./data/examples/example2")
+    z.extractall(example_path)
     print('Extract complete.')
-    print('Example 2 data located at: ./data/examples')
+    print(f'Example 2 data located at: ${example_path}')
+
+def download_phantom_data():
+    ''' Downloads and extracts phantom data for nodestudio '''
+
+    # Checks if example 1 data folder exists
+    example_path = './nodestudio/process/phantom/data'
+    exampleExists = os.path.exists(example_path)
+    if exampleExists:
+        print('Nodestudio Examples: example phantom data exists')
+        return
+    else:
+        os.mkdir(example_path)
+
+    print('Phantom data: Downloading files ...')
+    url = 'https://drive.google.com/file/d/12r-w7r96Jz0fAkPQYz3TI67pBXAFcnG_/view?usp=share_link'
+    output = './nodestudio/process/phantom/data/phantom_data.zip'
+    gdown.download(url, quiet=False, output=output, fuzzy=True)
+    print('Download complete.')
+    
+    # Extracts example data from .zip 
+    filepath = output
+    targetdir = example_path
+    print('Extracting files ...')
+    with zipfile.ZipFile(filepath,"r") as zip_ref:
+        zip_ref.extractall(targetdir)
+        print('Extract complete.')
+        print(f'Phantom data located at: ${example_path}')
+
+    # Remove downloaded zip file 
+    os.remove(output)

@@ -5,6 +5,7 @@ from core.datagroup import DataGroup
 from core.metadata import NodeMetadata
 from process.recon.SOS import *
 from process.core.mask import * 
+import process.core.sms_sim as sms
 
 def acs(rawKspace,acsShape):
     ny, nx = rawKspace.shape[1:3]
@@ -39,21 +40,42 @@ def undersample(dataset, type, undersampling_ratio):
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
         ref = acs(data,(32,32))
+        data = data * mask
 
     if type == "SENSE":
         ref = acs(data,(32,32))
         undersampling_ratio = int(undersampling_ratio)    
         mask = np.zeros(dataset.shape)
         mask[:,::undersampling_ratio,...] = 1
+        data = data * mask
         # ref = inati_cmap(ifft2c(data))
+
+    if type == "SMS_CAIPI":
         
+        acs_data = acs(data, (32, 32))
+        data =  np.moveaxis(data, 0, -1)
+        acs_data =  np.moveaxis(acs_data, 0, -1)
+
+        ny, nx, nc, ns = data.shape
+        R = ns
+        cycle = np.arange(0,1,1/ns) * 2* np.pi
+        numAccq = int(ns*ny/R)
+        shift = cycle*numAccq/(2*np.pi)
+        data = fft2c(sms.multiSliceCAIPI(ifft2c(data, (0,1)), cycle, R), (0,1))
+        acsshift = cycle*int(ns* 32 /R)/(2*np.pi)
+        acsIm = ifft2c(acs_data, (0,1))
+        ref = fft2c(sms.singleSliceFov(acsIm,acsshift), (0,1))
+        ref = np.moveaxis(ref, -1, 0)
+        data = data[None,...]
+
     if type == "Variable Density":
         ns, ny, nx, nc = dataset.data.shape
         # i need to think about this. 
-        mask = var_den_mask([ny, nx], int(undersampling_ratio)    ) 
+        mask = var_den_mask([ny, nx], int(undersampling_ratio)) 
         mask = np.tile(mask.reshape(1, ny,nx, 1), (ns, 1,1, nc))
         ref = inati_cmap(ifft2c(data))
-    
+        data = data * mask
+        
     if type == "Partial Fourier":
         if float(undersampling_ratio) > 1: 
             undersampling_ratio = 0.7
@@ -62,9 +84,7 @@ def undersample(dataset, type, undersampling_ratio):
         mask = np.ones(dataset.data.shape)
         mask[:,-(ny-readny):,...] = 0 
         ref = acs(data,(32,nx))
-
-    
-    data = data * mask
+        data = data * mask
 
     metadata = NodeMetadata("phantom", "phantom")
     ds = NodeDataset(data, metadata, dataset.dims, 'kspace')
