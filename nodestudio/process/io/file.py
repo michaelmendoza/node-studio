@@ -2,10 +2,13 @@ import glob
 import pydicom
 import numpy as np
 import mapvbvd
-
+import nibabel as nib
+import os
 def read_file(filetype, filepath):
     if filetype == 'dicom' or filetype == 'dcm':
         return read_dicom(filepath)
+    elif filetype == 'nii' or filetype == 'nii.gz' or filetype == 'nifti':
+        return read_nifti(filepath)
     elif filetype == 'test':
         return filepath
     else:
@@ -69,3 +72,13 @@ def read_rawdata(filepath, datatype, avg_coils, avg_averages, avg_phase_cycles):
         data = np.expand_dims(data, axis=0)
 
     return data
+
+def read_nifti(filepath):
+    if os.path.isdir(filepath):
+        paths = glob.glob(filepath + '*.nii')       
+        paths.extend(glob.glob(filepath + '*.nii.gz'))  
+    elif os.path.isfile(filepath):
+        paths = [filepath]
+    else:
+        raise IOError(f"No directory or file found: {filepath}")
+    return nib.load(paths[0]).get_fdata()

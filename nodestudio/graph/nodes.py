@@ -21,7 +21,9 @@ from process.integration.dosma.dosma_segmentation import dosma_segmentation
 from process.debug.debug import time_delay, error_node
 from process.quantative_map.qDESS_ADC import qDESS_ADC
 from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
+from process.io.export import export_data
 from process.recon.sms import sms
+
 class NodeNumberOption(BaseModel):
     name: str
     range: List[int] = None
@@ -89,7 +91,7 @@ NodeInfo = {
     NodeType.LINE_DISPLAY: NodeProps(type=NodeType.LINE_DISPLAY, name='Line Display', tags=['output'], description='Displays data as 1d plots', detail=NodeDetail.LINE_DISPLAY, input=['In']),
     NodeType.LAYER_DISPLAY: NodeProps(type=NodeType.LAYER_DISPLAY, name='Layer Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.LAYER_DISPLAY, input=['Layer 1', 'Layer 2'], fn=process_2channel_data),
     NodeType.HISTOGRAM: NodeProps(type=NodeType.HISTOGRAM, name='Histogram', tags=['output'], description='Displays data as histogram', detail=NodeDetail.HISTOGRAM, input=['In'], fn=process_historam),
-
+    NodeType.EXPORT_FILE: NodeProps(type=NodeType.EXPORT_FILE, name='Export', tags=['export'], description='File export', detail=NodeDetail.EXPORT_FILE,input = ['data'],output=['out'], options=['file_name',{'name':'type', 'select':['All','Dicoms', 'Nifti', 'Mat']}], fn=export_data),
     # Debug Nodes
     #NodeType.DELAY: NodeProps(type=NodeType.DELAY, name='Delay', tags=['debug'], description='Creates time delay', detail=NodeDetail.DELAY, input=['In'], output=['Out'], fn=time_delay),
     #NodeType.ERROR: NodeProps(type=NodeType.ERROR, name='Error', tags=['debug'], description='Creates an error', detail=NodeDetail.ERROR, input=['In'], output=['Out'], fn=error_node),
