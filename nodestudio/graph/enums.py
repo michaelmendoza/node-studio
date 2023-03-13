@@ -41,6 +41,7 @@ class NodeType(Enum):
     MIRTorch_CS = "MIRTorch_CS"
     PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
+    SIGPY_L1_SENSE = " SIGPY_L1_SENSE"
 
     # Output Nodes
     DISPLAY = 'DISPLAY'
@@ -98,7 +99,7 @@ class NodeDetail(Enum):
     MIRTorch_CS = "MIRTorch_CS"
     PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
-
+    SIGPY_L1_SENSE = " sigpy l1 sense"
     # Output Nodes
     DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
     LINE_DISPLAY = 'LINE_DISPLAY'
