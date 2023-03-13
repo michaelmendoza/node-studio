@@ -6,6 +6,7 @@ from ssfp import planet
 def planet(data):
 
     dataset = data.data
+    # need to implement alpha, T2 and phase cycle
     
     Meff, T1, T2, df = planet(dataset, alpha, TR, pcs=np.linspace(0, np.pi * 2, 8))
     M0maps = NodeDataset(Meff, data.metadata, Meff.shape, "image")
