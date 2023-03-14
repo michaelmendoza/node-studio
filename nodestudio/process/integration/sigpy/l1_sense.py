@@ -11,9 +11,12 @@ import sigpy.mri as mr
 import sigpy.plot as pl
 
 
-def sigpy_l1_sense(dataset, coilmap, lamda = 0.0005):
+def sigpy_l1_sense(data, ref):
+    dataset = data
+    coilmap = ref
     mask = dataset.data > 0 
     max_iter = 30
+    lamda = 0.005
     lamda = float(lamda)
     recon = np.zeros([dataset.shape[:3]], dtype = complex)
     for slice in range(dataset.shape[0]):
@@ -22,7 +25,7 @@ def sigpy_l1_sense(dataset, coilmap, lamda = 0.0005):
         mps = np.moveaxis(coilmap, -1, 0)
         recon[slice,...] = L1WaveletRecon(ksp, mask, mps, lamda, max_iter).run()
     ds = NodeDataset(recon, dataset.metadata,recon.shape, 'image')
-    return [ds]
+    return ds
 
 class L1WaveletRecon(sp.app.App):
     def __init__(self, ksp, mask, mps, lamda, max_iter):
