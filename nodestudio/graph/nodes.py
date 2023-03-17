@@ -1,6 +1,5 @@
-from typing import Dict, List, Callable, Optional, Union, Any
-from pydantic import BaseModel
-from graph.enums import NodeType, NodeDetail
+from graph.interfaces import NodeProps
+from graph.enums import  NodeType, NodeDetail
 from core import io, dataset, aggregate
 from process.core.fft import fft_recon
 from process.core.fit import fit
@@ -25,28 +24,9 @@ from process.recon.partialFourier import partialFourierRecon
 from process.io.export import export_data
 from process.recon.sms import sms
 
-class NodeNumberOption(BaseModel):
-    name: str
-    range: List[int] = None
-
-class NodeSelectOption(BaseModel):
-    name: str
-    select: List[str] = []
-    default: None
-
-class NodeBoolOption(BaseModel):
-    name: str
-    flag: bool
-class NodeProps(BaseModel):
-    type: NodeType
-    name: str
-    tags: List[str] = []
-    description: str = ''
-    detail: NodeDetail = NodeDetail.BLANK
-    input: List[str] = []
-    output: List[str] = []
-    options: List[Union[str, Any]] = []
-    fn: Callable = lambda x:x
+from process.generator import TISSUE
+from process.simulation import SSFP, SSFP_SPECTRUM
+from process.ssfp import SSFP_BAND_REMOVAL, SSFP_PLANET, SSFP_SFOV
 
 NodeInfo = {
 
@@ -59,6 +39,16 @@ NodeInfo = {
     #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
     NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain', 'SMS']}, 'fov', 'coil'], fn=phantom_generator),
+    NodeType.TISSUE: TISSUE(),
+
+    # Simulation Nodes
+    NodeType.SSFP: SSFP(),
+    NodeType.SSFP_SPECTRUM: SSFP_SPECTRUM(),
+
+    # SSFP Nodes
+    NodeType.SSFP_BAND_REMOVAL: SSFP_BAND_REMOVAL(),
+    NodeType.SSFP_PLANET: SSFP_PLANET(),
+    NodeType.SSFP_SFOV: SSFP_SFOV(),
 
     # Filter Node
     #NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
