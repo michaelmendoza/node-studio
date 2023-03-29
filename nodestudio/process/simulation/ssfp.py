@@ -13,11 +13,18 @@ def SSFP():
                     detail=NodeDetail.SSFP, 
                     input=['tissue'],
                     output=['out'], 
-                    options=['phase_cyles'], 
+                    options=['phase_cyles','TR','TE','alpha','sigma'], 
                     fn=_ssfp)
 
-def _ssfp(tissue, phase_cyles, TR = 3e-3, TE = 3e-3, alpha = np.deg2rad(15), sigma=0):
+def _ssfp(tissue, phase_cyles, TR = 3e-3, TE = 3e-3 / 2, alpha = 60, sigma=0.001):
 
+    phase_cyles = int(phase_cyles)
+    TR = float(TR)
+    TE = float(TE)
+    alpha = float(alpha)
+    sigma = float(sigma)
+
+    alpha = np.deg2rad(alpha)
     npcs = int(phase_cyles) # TODO: check for int 
     data = tissue['raw']
     M0 = tissue['M0']
