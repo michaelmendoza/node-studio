@@ -184,7 +184,7 @@ async def get_file_preview_img(id: str, size: int = 128):
 
 @router.get("/files/add")
 @handle_exception
-async def read_file(filepath: str):
+async def read_file(filepath: str, filename: str):
     ''' Reads files in filepath '''
     data = controllers.read_file(filepath)
     return { 'message': 'Read file', 'data': data }

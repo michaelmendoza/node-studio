@@ -1114,5 +1114,101 @@
                 }
             ]
         }
+    },
+    {
+        "name": "SSFP ",
+        "description": "SSFP Band Removal Example",
+        "graph": {
+            "nodes": {
+                "b977d591-aed5-4148-88d6-6dd0fa54eac0": {
+                    "id": "b977d591-aed5-4148-88d6-6dd0fa54eac0",
+                    "props": {
+                        "type": "SSFP"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 355,
+                        "y": 275
+                    },
+                    "args": {
+                        "phase_cyles": "4",
+                        "TR": "3e-3",
+                        "TE": "1.5e-3",
+                        "alpha": "60",
+                        "sigma": "0.001"
+                    }
+                },
+                "61902632-6e41-4b73-8519-02a6a19d0c85": {
+                    "id": "61902632-6e41-4b73-8519-02a6a19d0c85",
+                    "props": {
+                        "type": "TISSUE"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 121,
+                        "y": 294
+                    },
+                    "args": {
+                        "size": "128",
+                        "frequency": "300",
+                        "rotate": false,
+                        "deform": false
+                    }
+                },
+                "2e7802eb-293c-4691-9075-0a1a9267c825": {
+                    "id": "2e7802eb-293c-4691-9075-0a1a9267c825",
+                    "props": {
+                        "type": "SSFP_BAND_REMOVAL"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 579,
+                        "y": 277
+                    },
+                    "args": {
+                        "type": "SOS"
+                    }
+                },
+                "7479b996-d27f-4e10-b8f1-2d5b1f4d2747": {
+                    "id": "7479b996-d27f-4e10-b8f1-2d5b1f4d2747",
+                    "props": {
+                        "type": "DISPLAY"
+                    },
+                    "inputs": [],
+                    "outputs": [],
+                    "styles": {
+                        "x": 853,
+                        "y": 295
+                    },
+                    "args": {}
+                }
+            },
+            "links": [
+                {
+                    "id": "5ddacb9f-702d-4885-97d6-b0bf5609c162",
+                    "startNode": "61902632-6e41-4b73-8519-02a6a19d0c85",
+                    "startPort": 0,
+                    "endNode": "b977d591-aed5-4148-88d6-6dd0fa54eac0",
+                    "endPort": 0
+                },
+                {
+                    "id": "6fe1401d-4fe1-48ee-bee7-b33da91184f3",
+                    "startNode": "b977d591-aed5-4148-88d6-6dd0fa54eac0",
+                    "startPort": 0,
+                    "endNode": "2e7802eb-293c-4691-9075-0a1a9267c825",
+                    "endPort": 0
+                },
+                {
+                    "id": "c0f4be69-913c-44b2-b020-3f3d8b268a04",
+                    "startNode": "2e7802eb-293c-4691-9075-0a1a9267c825",
+                    "startPort": 0,
+                    "endNode": "7479b996-d27f-4e10-b8f1-2d5b1f4d2747",
+                    "endPort": 0
+                }
+            ]
+        }
     }
 ]

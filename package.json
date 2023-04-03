@@ -3,7 +3,7 @@
   "version": "0.0.1",
   "private": false,
   "scripts": {
-    "start": "cd nodestudiojs && npm start",
+    "start": "cd nodestudiojs && PORT=4000 npm start",
     "api": "python nodestudio/server.py",
     "tests": "python nodestudio/test_runner.py",
     "build": "cd nodestudiojs && npm install",

@@ -7,8 +7,8 @@ from pydantic import BaseModel
 import graph
 from graph.link import Link
 from graph.enums import NodeType
-from graph.nodes import NodeInfo, NodeProps
-from graph.interfaces import NodeData
+from graph.nodes import NodeInfo
+from graph.interfaces import NodeData, NodeProps
 from core import DataGroup
 
 class NodeStyles(BaseModel):
