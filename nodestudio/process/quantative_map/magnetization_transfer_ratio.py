@@ -6,11 +6,11 @@ def list_2_3D(data):
     ny, nx = data[0].shape
     out = np.zeros([len(data), ny, nx])
     for i in range(len(data)):
-        out[i] = data[i]
+        out[i] = data[i].astype(float)
     return out 
 
 def mtr(scan):
-    ns, ny, nx = scan.shape
+    ns, ny, nx = scan.data.shape
     So = []
     Smt = []
     for sli in range(ns):
@@ -24,4 +24,7 @@ def mtr(scan):
     So = list_2_3D(So)
     Smt = list_2_3D(Smt)
     mtr = (So-Smt)/(So+np.finfo(float).eps)
-    return mtr
+    metadata = scan.metadata
+    metadata.headers = metadata.headers[:len(metadata.headers)//2]
+    data = NodeDataset(np.abs(mtr), scan.metadata, mtr.shape, 'image')
+    return data

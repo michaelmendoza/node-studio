@@ -23,7 +23,7 @@ from process.integration.MIRTorch.cs import MIRTorch_compressed_sensing
 from process.recon.partialFourier import partialFourierRecon
 from process.io.export import export_data
 from process.recon.sms import sms
-
+from process.quantative_map.magnetization_transfer_ratio import mtr
 from process.generator import TISSUE
 from process.simulation import SSFP, SSFP_SPECTRUM
 from process.ssfp import SSFP_BAND_REMOVAL, SSFP_PLANET
@@ -75,6 +75,7 @@ NodeInfo = {
     NodeType.MIRTorch_CS: NodeProps(type=NodeType.MIRTorch_CS, name='MIRTorch_CS', tags=['compute'], description='MIRTorch Compressed Sensing', detail=NodeDetail.MIRTorch_CS, input=['data'],options=[{'name':'method', 'select':['POGM','FBPD', 'FISTA']},{'name':'device', 'select':['cpu','gpu']}], output=['out'], fn=MIRTorch_compressed_sensing),
     NodeType.PARTIAL_FOURIER: NodeProps(type=NodeType.PARTIAL_FOURIER, name='Partial Fourier', tags=['compute'], description='Partial Fourier reconstruction', detail=NodeDetail.PARTIAL_FOURIER, input=['data', 'ref'], output=['recon'], options=[{'name':'type','select':['Conjugate Synthesis','POCS','Homodyne']}], fn=partialFourierRecon), 
     NodeType.SMS_RECON: NodeProps(type=NodeType.SMS_RECON, name='SMS Reconstruction', tags=['compute'], description='SMS Reconstruction', detail=NodeDetail.SMS_RECON, input=['data','ref'], options=[{'name':'type','select':['SG', 'SG_CAIPI', 'SPSG', 'SPSG_CAIPI', 'SG2K', 'SG2K_CAIPI', 'SPSG2K', 'SPSG2K_CAIPI']}], output=['out'], fn=sms),
+    NodeType.MTR: NodeProps(type=NodeType.MTR, name='MTR', tags=['compute'], description='Magnetization transfer ratio', detail=NodeDetail.MTR, input=['data'], output=['out'], fn=mtr),
     
     # Output Nodes
     NodeType.DISPLAY: NodeProps(type=NodeType.DISPLAY, name='Display', tags=['output'], description='Displays data as an image', detail=NodeDetail.DISPLAY, input=['In'], fn=process_data),

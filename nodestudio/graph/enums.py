@@ -51,7 +51,8 @@ class NodeType(Enum):
     MIRTorch_CS = "MIRTorch_CS"
     PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
-
+    MTR = "MTR"
+    
     # Output Nodes
     DISPLAY = 'DISPLAY'
     LINE_DISPLAY = 'LINE_DISPLAY'
@@ -118,6 +119,7 @@ class NodeDetail(Enum):
     MIRTorch_CS = "MIRTorch_CS"
     PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
+    MTR = "MTR"
 
     # Output Nodes
     DISPLAY = '''Data display node. Displays data as 2d-image. Double click on image to use 3D Viewer. '''
