@@ -15,12 +15,22 @@ class NodeType(Enum):
     MASK_GENERATOR = 'MASK_GENERATOR'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR'
     PHANTOM = "PHANTOM"
+    TISSUE = 'TISSUE'
+
+    # Simulation Nodes
+    SSFP = 'SSFP'
+    SSFP_SPECTRUM = 'SSFP_SPECTRUM'
+
+    # SSFP Nodes
+    SSFP_BAND_REMOVAL = 'SSFP_BAND_REMOVAL'
+    SSFP_PLANET = 'SSFP_PLANET'
+    SSFP_SFOV = 'SSFP_SFOV'
 
     # Filter Nodes
     MASK = 'MASK'
     THRESHOLD_MASK = 'THRESHOLD_MASK'
 
-    # Computer Nodes
+    # Compute Nodes
     ADD = 'ADD'
     MULT = 'MULT'
     FIT = 'FIT'
@@ -63,13 +73,23 @@ class NodeDetail(Enum):
     # Input Nodes
     FILE = ''' File Node for accessing loaded file data. Supports dicom and raw file data. '''
     MOCK = '''MOCK detail'''
-    PHANTOM = "PHANTOM_GENERATOR"   
     GROUP_BY = 'Data Aggregation node for grouping dicom files. For example GROUP_BY: "EchoNumber" will create a datagroup with 2 datasets if there files were qDESS data  '
 
     # Generator Nodes
     MASK_GENERATOR = 'MASK_GENERATOR detail'
     SHAPE_GENERATOR = 'SHAPE_GENERATOR detail'
+    PHANTOM = "PHANTOM_GENERATOR"   
+    TISSUE = 'TISSUE'
 
+    # Simulation Nodes
+    SSFP = 'SSFP'
+    SSFP_SPECTRUM = 'SSFP_SPECTRUM'
+
+    # SSFP Nodes
+    SSFP_BAND_REMOVAL = 'SSFP_BAND_REMOVAL'
+    SSFP_PLANET = 'SSFP_PLANET'
+    SSFP_SFOV = 'SSFP_SFOV'
+    
     # Filter Nodes
     MASK = '''Applies a mask to a dataset. Resultant image has all values where the corresponding value in the mask is zero set to zero. '''
     THRESHOLD_MASK = 'THRESHOLD_MASK detail'
@@ -107,6 +127,7 @@ class NodeDetail(Enum):
     LAYER_DISPLAY = 'Data display node. Displays data as 2d-image with second image layered on top of first.'
     HISTOGRAM = 'Display a histogram of data values and displays data statistics. '
     EXPORT_FILE = 'EXPORT_FILE'
+
     # Debug Nodes
     DELAY = 'Adds a time delay'
     ERROR = 'Purposely throws an error'

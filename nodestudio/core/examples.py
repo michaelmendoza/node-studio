@@ -2,6 +2,7 @@ import os
 import gdown
 import zipfile
 from core import io
+from mssfp.phantoms.phantom import download_brain_data
 
 def load_example_data():
     ''' Loads example file data into memory '''
@@ -26,6 +27,7 @@ def download_example_data():
     download_example1_data()
     download_dosma_example_data()
     download_phantom_data()
+    download_brain_data()
 
 def download_example1_data():
     ''' Downloads and extracts example data for nodestudio from google drive location '''

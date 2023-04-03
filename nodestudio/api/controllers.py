@@ -114,7 +114,11 @@ def get_node_value_dims(node_id):
 
     if isinstance(node.value, DataGroup):
         ds = list(node.value.values())[0] # Return first value 
-        return ds.dims
+
+        if isinstance(ds, NodeDataset):
+            return ds.dims
+        else:
+            return []
 
 def get_node_value_isComplex(node_id):
     node = current_graph.getNode(node_id)

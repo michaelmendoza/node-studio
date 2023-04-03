@@ -1,6 +1,5 @@
-from typing import Dict, List, Callable, Optional, Union, Any
-from pydantic import BaseModel
-from graph.enums import NodeType, NodeDetail
+from graph.interfaces import NodeProps
+from graph.enums import  NodeType, NodeDetail
 from core import io, dataset, aggregate
 from process.core.fft import fft_recon
 from process.core.fit import fit
@@ -25,28 +24,9 @@ from process.recon.partialFourier import partialFourierRecon
 from process.io.export import export_data
 from process.recon.sms import sms
 from process.quantative_map.magnetization_transfer_ratio import mtr
-class NodeNumberOption(BaseModel):
-    name: str
-    range: List[int] = None
-
-class NodeSelectOption(BaseModel):
-    name: str
-    select: List[str] = []
-    default: None
-
-class NodeBoolOption(BaseModel):
-    name: str
-    flag: bool
-class NodeProps(BaseModel):
-    type: NodeType
-    name: str
-    tags: List[str] = []
-    description: str = ''
-    detail: NodeDetail = NodeDetail.BLANK
-    input: List[str] = []
-    output: List[str] = []
-    options: List[Union[str, Any]] = []
-    fn: Callable = lambda x:x
+from process.generator import TISSUE
+from process.simulation import SSFP, SSFP_SPECTRUM
+from process.ssfp import SSFP_BAND_REMOVAL, SSFP_PLANET
 
 NodeInfo = {
 
@@ -59,6 +39,15 @@ NodeInfo = {
     #NodeType.SHAPE_GENERATOR: NodeProps(type=NodeType.SHAPE_GENERATOR, name='Shape Generator', tags=['generator'], description='Can generate simple masks', input=['data'], output=['out'], options=[], fn=process_data),
     #NodeType.MOCK: NodeProps(type=NodeType.MOCK, name="Mock", tags=['generator'], description='Mock data generator', detail=NodeDetail.MOCK, output=['out'], options=[{'name':'pattern', 'select':['linear','radial']}], fn=mock_2d_data),
     NodeType.PHANTOM: NodeProps(type=NodeType.PHANTOM, name="phantom", tags=['generator'], description='phantom generator', detail=NodeDetail.PHANTOM, output=['out'], options=[{'name':'type', 'select':['Shepp_logan','Brain', 'SMS']}, 'fov', 'coil'], fn=phantom_generator),
+    NodeType.TISSUE: TISSUE(),
+
+    # Simulation Nodes
+    NodeType.SSFP: SSFP(),
+    NodeType.SSFP_SPECTRUM: SSFP_SPECTRUM(),
+
+    # SSFP Nodes
+    NodeType.SSFP_BAND_REMOVAL: SSFP_BAND_REMOVAL(),
+    NodeType.SSFP_PLANET: SSFP_PLANET(),
 
     # Filter Node
     #NodeType.MASK: NodeProps(type=NodeType.MASK, name='Mask', tags=['filter'], description='Mask', detail=NodeDetail.MASK, input=['a'], output=['out'], options=[{'name':'masktype', 'select':['circular', 'threshold']}], fn=apply_mask), 
@@ -71,7 +60,7 @@ NodeInfo = {
     NodeType.MULT: NodeProps(type=NodeType.MULT, name='Mult', tags=['compute'], description='Multiplier', detail=NodeDetail.MULT, input=['a','b'], output=['out'], fn=lambda a, b: a * b),
     #NodeType.FIT: NodeProps(type=NodeType.FIT, name='Fit', tags=['compute'], description='Linear Fit', input=['a'], detail=NodeDetail.FIT, output=['out'], fn=fit),
     NodeType.SOS: NodeProps(type=NodeType.SOS, name='SOS', tags=['compute'], description='Sum of squares',input=['a','b'], detail=NodeDetail.SOS, output = ['out'], fn=sum_of_squares),
-    #NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares',input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
+    #NodeType.CRSOS: NodeProps(type=NodeType.CRSOS, name='Complex RSOS', tags=['compute'], description='Complex root sum of squares', input=['a'], detail=NodeDetail.CRSOS, output = ['out'], fn=complex_root_sum_of_squares),
     #NodeType.T2_qDESS: NodeProps(type=NodeType.T2_qDESS, name='qDESS T2 Mapping', tags=['compute'], description='T2 mapping from qDESS', detail=NodeDetail.T2_qDESS, input=['a'], output=['out'],options=[{'name':'tissue', 'select':['SciaticNerve']}], fn=qDESS_T2),
     NodeType.GRAPPA: NodeProps(type=NodeType.GRAPPA, name='GRAPPA', tags=['compute'], description='GRAPPA Reconstruction', detail=NodeDetail.GRAPPA, input=['data','ref'], output=['out'], fn=grappa),
     NodeType.UNDERSAMPLE: NodeProps(type=NodeType.UNDERSAMPLE, name='Undersampling', tags=['compute'], description='Undersamples k-space', detail=NodeDetail.UNDERSAMPLE, input=['a'], output=['data', 'ref'], options=[{'name':'type','select':['GRAPPA', 'SENSE', 'Variable Density', 'SMS_CAIPI', 'Partial Fourier']},'undersampling_ratio'], fn=undersample), 
