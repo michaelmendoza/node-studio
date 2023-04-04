@@ -8,7 +8,7 @@ def SSFP_PLANET():
                      name="ssfp PLANET", 
                      tags=['ssfp'], 
                      description='ssfp t1/t2 estimator', 
-                     detail=' ', 
+                     detail='SSFP PLANET: T1/T2 Estimator',  
                      input=['dataset', 'tissue'],
                      output=['out'], 
                      options=[], 
