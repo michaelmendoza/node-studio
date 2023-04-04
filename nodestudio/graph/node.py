@@ -6,9 +6,9 @@ import traceback
 from pydantic import BaseModel
 import graph
 from graph.link import Link
-from graph.enums import NodeType
-from graph.nodes import NodeInfo, NodeProps
-from graph.interfaces import NodeData
+from graph.enums import NodeType, NodeDetail
+from graph.nodes import NodeInfo
+from graph.interfaces import NodeData, NodeProps
 from core import DataGroup
 
 class NodeStyles(BaseModel):
@@ -43,8 +43,10 @@ class Node:
         ''' Returns dictionary representation of node. Used in saving node to json. '''
         props = self.props.dict()
         styles = self.styles.dict()
-        props['type'] = props['type'].name
-        props['detail'] = props['detail'].value
+        if isinstance(props['type'], NodeType):
+            props['type'] = props['type'].name
+        if isinstance( props['detail'], NodeDetail):
+            props['detail'] = props['detail'].value
         del props['fn']
         return { 'id': self.id, 'props': props, 'inputs': self.inputs, 'outputs': self.outputs, 'styles': styles, 'args': self.args }
 

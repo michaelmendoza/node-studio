@@ -3,7 +3,7 @@ import threading
 import socketio
 
 def create_websocket(app):
-    origins = ['http://localhost:3000', 'http://localhost:3001']
+    origins = ['http://localhost:3000', 'http://localhost:3001', 'http://localhost:4000']
     sio = socketio.AsyncServer(
                 cors_allowed_origins=origins,
                 async_mode="asgi",

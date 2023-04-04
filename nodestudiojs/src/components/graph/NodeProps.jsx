@@ -40,19 +40,6 @@ export const NodePropsOption = ({id, option}) => {
     const {state, dispatch} = useContext(AppState.AppContext);
     const args = state.nodes[id].args;
 
-    useEffect(() => {
-        // Set default values for BooleanInput        
-        const hasFlag = option.flag;
-        if(hasFlag) {
-            const checked = option.name in args ? args[option.name] : option.flag;
-            const node = state.nodes[id].copy();
-            node.args[option.name] = checked;
-            dispatch({type: ActionTypes.UPDATE_NODE, node, updateAPI:true });
-        }
-
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-    }, [])
-
     const renderTextInput = ({option}) =>  {
         const value = args[option];
 
