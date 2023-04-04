@@ -10,7 +10,6 @@ import sigpy as sp
 import sigpy.mri as mr
 import sigpy.plot as pl
 
-
 def sigpy_l1_sense(data, ref):
     dataset = data
     coilmap = ref

@@ -1,5 +1,7 @@
 from enum import Enum
 
+# TODO: Check property NodeTypes
+
 class NodeType(Enum):
     # Variable Nodes
     VARIABLE = 'VARIABLE'
@@ -51,7 +53,7 @@ class NodeType(Enum):
     MIRTorch_CS = "MIRTorch_CS"
     PARTIAL_FOURIER = "PARTIAL_FOURIER"
     SMS_RECON = "SMS_RECON"
-    SIGPY_L1_SENSE = " SIGPY_L1_SENSE"
+    SIGPY_L1_SENSE = "SIGPY_L1_SENSE"
     MTR = "MTR"
     
     # Output Nodes
