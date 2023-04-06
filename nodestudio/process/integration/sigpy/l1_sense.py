@@ -17,12 +17,14 @@ def sigpy_l1_sense(data, ref):
     max_iter = 30
     lamda = 0.005
     lamda = float(lamda)
-    recon = np.zeros([dataset.shape[:3]], dtype = complex)
+    recon = np.zeros(dataset.shape[:3], dtype = complex)
     for slice in range(dataset.shape[0]):
         ksp = dataset[slice, ...]
         ksp = np.moveaxis(ksp, -1, 0)
-        mps = np.moveaxis(coilmap, -1, 0)
-        recon[slice,...] = L1WaveletRecon(ksp, mask, mps, lamda, max_iter).run()
+        mps = np.moveaxis(coilmap[0, ...], -1, 0)
+        _mask = np.moveaxis(mask[slice, ...], -1, 0) * 1.0
+        _recon = L1WaveletRecon(ksp, _mask, mps, lamda, max_iter).run()
+        recon[slice,...] = _recon
     ds = NodeDataset(recon, dataset.metadata,recon.shape, 'image')
     return ds
 
